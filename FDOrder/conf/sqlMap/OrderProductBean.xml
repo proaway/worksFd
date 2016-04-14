@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertOrderProductBean" parameterClass="com.fd.fashion.order.bean.OrderProductBean">
+        <![CDATA[
+insert into T_ORDER_PRODUCT
+  (PRODUCT_ID, ORDER_ID, SKU, QUANTITY, ITEM_COST, ITEM_TOTAL,  ITEM_PRICE, COMMISSION, DISCOUNT, STANDARD_ID, COUPON_AMOUNT,STOCK_OUT)
+values
+  (#productId#, #orderId#, #sku#, #quantity#, #itemCost#, #itemTotal#, #itemPrice#, #commission#, #discount#, #standardId#, #couponAmount#,#stockOut#)
+        ]]>
+        <selectKey keyProperty="orderProductId" resultClass="long">
+            <![CDATA[select @@identity as orderProductId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateOrderProductBean" parameterClass="com.fd.fashion.order.bean.OrderProductBean">
+        <![CDATA[
+update T_ORDER_PRODUCT 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="orderProductId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ORDER_PRODUCT_ID = #orderProductId#]]>
+            </isNotNull>
+            <isNotNull property="productId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="orderId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ORDER_ID = #orderId#]]>
+            </isNotNull>
+            <isNotNull property="sku" prepend="," removeFirstPrepend="true">
+                <![CDATA[SKU = #sku#]]>
+            </isNotNull>
+            <isNotNull property="quantity" prepend="," removeFirstPrepend="true">
+                <![CDATA[QUANTITY = #quantity#]]>
+            </isNotNull>
+            <isNotNull property="itemCost" prepend="," removeFirstPrepend="true">
+                <![CDATA[ITEM_COST = #itemCost#]]>
+            </isNotNull>
+            <isNotNull property="itemTotal" prepend="," removeFirstPrepend="true">
+                <![CDATA[ITEM_TOTAL = #itemTotal#]]>
+            </isNotNull>
+            <isNotNull property="itemPrice" prepend="," removeFirstPrepend="true">
+                <![CDATA[ITEM_PRICE = #itemPrice#]]>
+            </isNotNull>
+            <isNotNull property="commission" prepend="," removeFirstPrepend="true">
+                <![CDATA[COMMISSION = #commission#]]>
+            </isNotNull>
+            <isNotNull property="discount" prepend="," removeFirstPrepend="true">
+                <![CDATA[DISCOUNT = #discount#]]>
+            </isNotNull>
+            <isNotNull property="standardId" prepend="," removeFirstPrepend="true">
+                <![CDATA[STANDARD_ID = #standardId#]]>
+            </isNotNull>
+            <isNotNull property="couponAmount" prepend="," removeFirstPrepend="true">
+                <![CDATA[COUPON_AMOUNT = #couponAmount#]]>
+            </isNotNull>
+            <isNotNull property="stockOut" prepend="," removeFirstPrepend="true">
+                <![CDATA[STOCK_OUT = #"stockOut"#]]>
+            </isNotNull>
+            <isNotNull property="snapshot" prepend="," removeFirstPrepend="true">
+                <![CDATA[SNAPSHOT = #snapshot#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ORDER_PRODUCT_ID = #orderProductId#
+        ]]>
+    </update>
+
+    <sql id="getOrderProductBeanCondition">
+         <isNotNull property="orderProductId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ORDER_PRODUCT_ID = #orderProductId#]]>
+         </isNotNull>
+         <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PRODUCT_ID = #productId#]]>
+         </isNotNull>
+         <isNotNull property="orderId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ORDER_ID = #orderId#]]>
+         </isNotNull>
+         <isNotNull property="sku" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SKU = #sku#]]>
+         </isNotNull>
+         <isNotNull property="quantity" prepend="and" removeFirstPrepend="true">
+             <![CDATA[QUANTITY = #quantity#]]>
+         </isNotNull>
+         <isNotNull property="itemCost" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ITEM_COST = #itemCost#]]>
+         </isNotNull>
+         <isNotNull property="itemTotal" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ITEM_TOTAL = #itemTotal#]]>
+         </isNotNull>
+         <isNotNull property="itemPrice" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ITEM_PRICE = #itemPrice#]]>
+         </isNotNull>
+         <isNotNull property="commission" prepend="and" removeFirstPrepend="true">
+             <![CDATA[COMMISSION = #commission#]]>
+         </isNotNull>
+         <isNotNull property="discount" prepend="and" removeFirstPrepend="true">
+             <![CDATA[DISCOUNT = #discount#]]>
+         </isNotNull>
+        <isNotNull property="standardId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[STANDARD_ID = #standardId#]]>
+         </isNotNull>
+         <isNotNull property="couponAmount" prepend="," removeFirstPrepend="true">
+                <![CDATA[COUPON_AMOUNT = #couponAmount#]]>
+          </isNotNull>
+          <isNotNull property="stockOut" prepend="," removeFirstPrepend="true">
+                <![CDATA[STOCK_OUT = #"stockOut"#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getOrderProductBeanCount" parameterClass="com.fd.fashion.order.bean.OrderProductBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_ORDER_PRODUCT 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getOrderProductBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getOrderProductBean" parameterClass="com.fd.fashion.order.bean.OrderProductBean"
+        resultClass="com.fd.fashion.order.bean.OrderProductBean">
+        <![CDATA[
+select 
+	ORDER_PRODUCT_ID	as orderProductId,
+	PRODUCT_ID	as productId,
+	ORDER_ID	as orderId,
+	SKU	as sku,
+	QUANTITY	as quantity,
+	ITEM_COST	as itemCost,
+	ITEM_TOTAL	as itemTotal,
+	ITEM_PRICE	as itemPrice,
+	COMMISSION	as commission,
+	DISCOUNT	as discount,
+    STANDARD_ID as standardId,
+    COUPON_AMOUNT as couponAmount,
+    STOCK_OUT  as stockOut,
+    SNAPSHOT   as snapshot
+from T_ORDER_PRODUCT 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getOrderProductBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteOrderProductBean" parameterClass="com.fd.fashion.order.bean.OrderProductBean">
+        <![CDATA[
+delete from T_ORDER_PRODUCT where ORDER_PRODUCT_ID=#orderProductId#
+        ]]>
+    </delete>
+
+    <select id="getNeedsSnapshotProd" resultClass="com.fd.fashion.order.bean.OrderProductBean"
+        parameterClass="long">
+        <![CDATA[
+select 
+	ORDER_PRODUCT_ID	as orderProductId
+from T_ORDER_PRODUCT 
+where PRODUCT_ID=#productId# and SNAPSHOT is null
+        ]]>
+    </select>
+</sqlMap>

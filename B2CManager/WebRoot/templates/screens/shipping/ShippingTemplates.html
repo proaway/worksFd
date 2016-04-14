@@ -1,0 +1,138 @@
+	<br class="clear" />
+  	<h4 class="mar_top_15">运费模板</h4>
+    <br class="clear" />
+    <table class="table table-hover table-bordered center_t font14" style="margin-bottom:0px;">
+        <tr class="info">
+            <td><label class="checkbox left"><input type="checkbox" id="select_all" value="size_templet_name" onclick="selectAllCost(this)">全选</label>模板名称</td>
+            <td>摘要信息</td>
+            <td>创建时间</td>
+            <td>添加人</td>
+            <td>操作</td>
+        </tr>
+        <tbody>
+#foreach($shipping in $shippings)
+			<tr>
+              <td><label class="checkbox"><input type="checkbox" id="shippingCostId" value="$shipping.shippingInfoBean.shippingInfoId">$shipping.shippingInfoBean.name</label></td>
+              <td>
+  #foreach($detail in $shipping.tempDetails)
+	${detail.shippingCompany}(${DictUtil.getShippingDesc($detail.shippingType)})
+  #end
+			  </td>
+              <td>$StringUtil.getDateTimeString($shipping.shippingInfoBean.createDate)</td>
+              <td>$!shipping.shippingInfoBean.sellerId</td>
+              <td>
+				<a href="javascript:;" class="btn btn-primary btn-small mar_right_5 font12" onclick="showEditShipping($shipping.shippingInfoBean.shippingInfoId)"><span class="white">编 辑</span></a>
+				<a role="button" class="btn btn-warning btn-small font12" onclick="showDelpan($shipping.shippingInfoBean.shippingInfoId)"><span class="white">删 除</span></a>
+			  </td>
+            </tr>
+#end
+        </tbody>
+    </table>
+    <table class="table font14" style="margin-top:0px;">
+        <tr class="success">
+            <td><label class="checkbox left mar_top_5"><input type="checkbox" id="select_all" value="size_templet_name" onclick="selectAllCost(this)">全选</label>
+				<a role="button" class="btn btn-warning btn-small font12 left mar_left_15" onclick="showDelpanAll()"><span class="white">删 除</span></a>
+				<a href="javascript:;" class="btn btn-success font12 left mar_left_20" onclick="showAddShipping()"><span class="white">新增运费模板</span></a>
+				<a href="javascript:;" class="btn btn-success font12 right" onclick="showAddShipping()"><span class="white">新增运费模板</span></a>
+			</td>
+        </tr>
+    </table>
+<script>
+function showAddShipping() {
+	var div = jQuery("#addpan");
+	if (div.find("#add_feeTemplet[shippingId]").length>0){
+		div.empty();
+	}
+	if (div.html() == "") {
+		div.load("$link.setPage('shipping,AddShipping.html')");
+	}
+}
+function showEditShipping(infoId) {
+	var div = jQuery("#addpan");
+	if (div.find("#add_feeTemplet[shippingId='"+infoId+"']").length==0) {
+		div.empty();
+		div.load("$link.setPage('shipping,AddShipping.html')?shippingInfoId=" + infoId);
+	}
+}
+function selectAllCost(o) {
+	if (o.checked) {
+		jQuery("input#shippingCostId").attr("checked","checked")
+		jQuery("input#select_all").attr("checked","checked")
+	} else {
+		jQuery("input#shippingCostId").removeAttr("checked");
+		jQuery("input#select_all").removeAttr("checked");
+	}
+}
+function showDelpanAll() {
+	jQuery("#delpan").empty();
+	var len = jQuery("input#shippingCostId:checked").length;
+	if (len == 0) {
+		alert("请选择模版！");
+		return;
+	}
+	var param = "";
+	for(var i=0; i<len; i++) {
+		if (i>0) {
+			param += "&";
+		}
+		param += "shippingId=" + jQuery("input#shippingCostId:checked")[i].value;
+	}
+	jQuery("#delpan").load("$link.setPage('shipping,DelShipping.html')?" + param);
+}
+function showDelpan(shippingId) {
+	jQuery("#delpan").empty();
+	jQuery("#delpan").load("$link.setPage('shipping,DelShipping.html')?shippingId=" + shippingId);
+}
+</script>
+	<div id="addpan"></div>
+    <div id="delpan"></div>
+    <div id="cpinfo"></div>
+    <div id="hkpinfo"></div>
+     
+    <div id="custom_shipping" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:610px;">
+      <div class="modal-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h5 id="myModalLabel">自定义运输方式</h5>
+      </div>
+      <div class="modal-body">
+        <table border="0" cellspacing="0" cellpadding="0" class="upload_tab font14 mar_bottom_20">
+          <tr>
+            <td><label class="control-label">运输方式：</label></td>
+            <td><input placeholder="运输方式" class="input-large" type="text"></td>
+          </tr>
+          <tr>
+            <td>定义运费：</td>
+            <td><label class="radio">
+              <input value="免运费" name="define_fee" checked="checked" type="radio">
+              免运费
+            </label>
+            <label class="radio left">
+              <input value="自定义运费" name="define_fee" type="radio">
+              自定义运费
+            </label>
+            </td>
+          </tr>
+        </table>
+        <table border="0" cellspacing="0" cellpadding="0" class="upload_tab font14">
+            <tr>
+              <td>首重最低采购量</td>
+              <td>首重最高采购量</td>
+              <td align="center">首重运费</td>
+              <td>每增加产品数</td>
+              <td align="center">续加运费</td>
+            </tr>
+            <tr>
+              <td><input type="text" placeholder="" class="input-mini"></td>
+              <td><input type="text" placeholder="" class="input-mini"></td>
+              <td>US $<input type="text" placeholder="" class="input-mini"></td>
+              <td><input type="text" placeholder="" class="input-mini"></td>
+              <td>US $<input type="text" placeholder="" class="input-mini"></td>
+            </tr>
+        </table> 
+      </div>
+      <div class="modal-footer">
+      <button class="btn btn-info" data-dismiss="modal" aria-hidden="true">取消</button>
+      <button class="btn btn-primary" data-dismiss="modal">确定</button>
+      </div>
+  </div><!-- E custom_shipping -->
+  

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap>
+	<sql id="getBuyerAddressBookCondition">
+		<isNotNull property="buyerId" prepend="and" removeFirstPrepend="true">
+			<![CDATA[BUYERID = #buyerId#]]>
+		</isNotNull>
+		<isNotNull property="addressId" prepend="and" removeFirstPrepend="true">
+			<![CDATA[ADDRESSID = #addressId#]]>
+		</isNotNull>
+	</sql>
+
+	<select id="getBuyerAddressBook" resultClass="com.fd.fashion.buyer.bean.BuyerAddressBookBean"
+		parameterClass="com.fd.fashion.buyer.bean.BuyerAddressBookBean">
+		<![CDATA[
+select 
+	ADDRESSID	addressId,
+	BUYERID	buyerId,
+	FIRSTNAME	firstName,
+	LASTNAME	lastName,
+	ADDRESSLINE1	addressLine1,
+	ADDRESSLINE2	addressLine2,
+	CITY	city,
+	COUNTRY	country,
+	PROVINCE	province,
+	POSTALCODE	postalCode,
+	PHONE	phone,
+	ISDEFAULT isDefault
+from t_buyeraddress_book
+ 		]]>
+		<dynamic prepend="where">
+			<include refid="getBuyerAddressBookCondition"/>
+		</dynamic>
+	</select>
+
+	<insert id="insertBuyerAddressBook"
+		parameterClass="com.fd.fashion.buyer.bean.BuyerAddressBookBean">
+		<![CDATA[
+insert into t_buyeraddress_book(BUYERID, FIRSTNAME, LASTNAME, ADDRESSLINE1, ADDRESSLINE2, CITY, COUNTRY, PROVINCE, POSTALCODE, PHONE)
+values(#buyerId#, #firstName#, #lastName#, #addressLine1#, #addressLine2#, #city#, #country#, #province#, #postalCode#, #phone#)
+		]]>
+		<selectKey keyProperty="addressId" resultClass="long">
+			<![CDATA[select @@identity as addressId]]>
+		</selectKey>
+	</insert>
+
+	<update id="updateBuyerAddressBook"
+		parameterClass="com.fd.fashion.buyer.bean.BuyerAddressBookBean">
+		<![CDATA[
+update t_buyeraddress_book set
+	FIRSTNAME = #firstName#,
+	LASTNAME = #lastName#,
+	ADDRESSLINE1 = #addressLine1#,
+	ADDRESSLINE2 = #addressLine2#,
+	CITY = #city#,
+	COUNTRY = #country#,
+	PROVINCE = #province#,
+	POSTALCODE = #postalCode#,
+	PHONE = #phone#
+		]]>
+		<dynamic prepend="where">
+			<include refid="getBuyerAddressBookCondition"/>
+		</dynamic>
+	</update>
+
+	<update id="clearDefaultAddressBook" parameterClass="long">
+		<![CDATA[
+update t_buyeraddress_book set ISDEFAULT = 0 where BUYERID = #buyerId#
+		]]>
+	</update>
+	<update id="setDefaultAddressBook" parameterClass="long">
+		<![CDATA[
+update t_buyeraddress_book set ISDEFAULT = 1 where ADDRESSID = #addressId#
+		]]>
+	</update>
+	
+	<delete id="deleteAddressBook" parameterClass="long">
+		<![CDATA[ DELETE FROM t_buyeraddress_book WHERE addressid=#addressId#  ]]>
+	</delete>
+</sqlMap>

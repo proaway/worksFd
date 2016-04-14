@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertPickingInfoBean" parameterClass="com.fd.fashion.order.bean.PickingInfoBean">
+        <![CDATA[
+insert into T_PICKING_INFO
+  (SKU, ORDER_ID, PICKING_STATUS,PRODUCT_COUNT,PRODUCT_ID,PRODUCT_NAME,PRODUCT_STANDAR1,PRODUCT_STANDAR2,STATUS,CURRENT_COUNT)
+values
+  (#sku#, #orderId#, #pickingStatus#,#productCount#,#productId#,#productName#,#productStandar1#,#productStandar2#,#status#,#currentCount#)
+        ]]>
+        <selectKey keyProperty="infoId" resultClass="long">
+            <![CDATA[select @@identity as infoId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updatePickingInfoBean" parameterClass="com.fd.fashion.order.bean.PickingInfoBean">
+        <![CDATA[
+update T_PICKING_INFO 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="status" prepend="," removeFirstPrepend="true">
+                <![CDATA[STATUS = #status#]]>
+            </isNotNull>
+             <isNotNull property="pickingStatus" prepend="," removeFirstPrepend="true">
+                <![CDATA[PICKING_STATUS = #pickingStatus#]]>
+            </isNotNull>
+            <isNotNull property="currentCount" prepend="," removeFirstPrepend="true">
+                <![CDATA[CURRENT_COUNT = #currentCount#]]>
+            </isNotNull>
+        </dynamic>
+        <dynamic prepend="where">
+            <isNotNull property="infoId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[INFO_ID = #infoId#]]>
+         </isNotNull>
+         <isNotNull property="sku" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SKU = #sku#]]>
+         </isNotNull>
+         <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PRODUCT_ID = #productId#]]>
+         </isNotNull>
+         <isNotNull property="orderId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ORDER_ID = #orderId#]]>
+         </isNotNull>
+        </dynamic>
+    </update>
+
+    <sql id="getPickingInfoBeanCondition">
+         <isNotNull property="infoId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[INFO_ID = #infoId#]]>
+         </isNotNull>
+         <isNotNull property="sku" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SKU = #sku#]]>
+         </isNotNull>
+         <isNotNull property="orderId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ORDER_ID = #orderId#]]>
+         </isNotNull>
+         <isNotNull property="status" prepend="and" removeFirstPrepend="true">
+             <![CDATA[STATUS = #status#]]>
+         </isNotNull>
+         <isNotNull property="productCount" prepend="and" removeFirstPrepend="true">
+                <![CDATA[PRODUCT_COUNT = #productCount#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getPickingInfoBeanCount" parameterClass="com.fd.fashion.order.bean.PickingInfoBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_PICKING_INFO 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getPickingInfoBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getPickingInfoBean" parameterClass="com.fd.fashion.order.bean.PickingInfoBean"
+        resultClass="com.fd.fashion.order.bean.PickingInfoBean">
+        <![CDATA[ 
+select 
+	INFO_ID				as  infoId,
+	SKU					as  sku,
+	ORDER_ID			as  orderId,
+	STATUS				as  status,
+	PICKING_STATUS    	as  pickingStatus,
+	PRODUCT_ID   		as  productId,
+	PRODUCT_NAME   		as  productName,
+	PRODUCT_STANDAR1 	as  productStandar1,
+	PRODUCT_STANDAR2  	as  productStandar2,
+	PRODUCT_COUNT  		as  productCount,
+	CURRENT_COUNT  		as  currentCount
+from T_PICKING_INFO 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getPickingInfoBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deletePickingInfoBean" parameterClass="com.fd.fashion.order.bean.PickingInfoBean">
+        <![CDATA[
+delete from T_PICKING_INFO 
+        ]]>
+             <dynamic prepend="where">
+	            <isNotNull property="infoId" prepend="and" removeFirstPrepend="true">
+	             <![CDATA[INFO_ID = #infoId#]]>
+	         </isNotNull>
+	         <isNotNull property="sku" prepend="and" removeFirstPrepend="true">
+	             <![CDATA[SKU = #sku#]]>
+	         </isNotNull>
+	         <isNotNull property="orderId" prepend="and" removeFirstPrepend="true">
+	             <![CDATA[ORDER_ID = #orderId#]]>
+	         </isNotNull>
+	        </dynamic>
+    </delete>
+
+</sqlMap>

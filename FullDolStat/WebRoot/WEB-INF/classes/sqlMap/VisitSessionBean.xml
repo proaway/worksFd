@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertVisitSessionBean" parameterClass="com.fd.statistics.bean.VisitSessionBean">
+        <![CDATA[
+insert into T_VISIT_SESSION
+  (SESSION_ID, VISIT_TIME, IP_ADDRESS, LANGUAGE, VISITOR_CODE, LANDING_PAGE, COUNTRY, IP, SYSTEM, USER_AGENT, BROWSER, BUYER)
+values
+  (#sessionId#, #visitTime#, #ipAddress#, #language#, #visitorCode#, #landingPage#, #country#, #ip#, #system#, #userAgent#, #browser#, #buyer#)
+        ]]>
+        <selectKey keyProperty="visitId" resultClass="long">
+            <![CDATA[select @@identity as visitId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateVisitSessionBean" parameterClass="com.fd.statistics.bean.VisitSessionBean">
+        <![CDATA[
+update T_VISIT_SESSION 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="visitId" prepend="," removeFirstPrepend="true">
+                <![CDATA[VISIT_ID = #visitId#]]>
+            </isNotNull>
+            <isNotNull property="sessionId" prepend="," removeFirstPrepend="true">
+                <![CDATA[SESSION_ID = #sessionId#]]>
+            </isNotNull>
+            <isNotNull property="visitTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[VISIT_TIME = #visitTime#]]>
+            </isNotNull>
+            <isNotNull property="ipAddress" prepend="," removeFirstPrepend="true">
+                <![CDATA[IP_ADDRESS = #ipAddress#]]>
+            </isNotNull>
+            <isNotNull property="language" prepend="," removeFirstPrepend="true">
+                <![CDATA[LANGUAGE = #language#]]>
+            </isNotNull>
+            <isNotNull property="visitorCode" prepend="," removeFirstPrepend="true">
+                <![CDATA[VISITOR_CODE = #visitorCode#]]>
+            </isNotNull>
+            <isNotNull property="landingPage" prepend="," removeFirstPrepend="true">
+                <![CDATA[LANDING_PAGE = #landingPage#]]>
+            </isNotNull>
+            <isNotNull property="country" prepend="," removeFirstPrepend="true">
+                <![CDATA[COUNTRY = #country#]]>
+            </isNotNull>
+            <isNotNull property="ip" prepend="," removeFirstPrepend="true">
+                <![CDATA[IP = #ip#]]>
+            </isNotNull>
+            <isNotNull property="system" prepend="," removeFirstPrepend="true">
+                <![CDATA[SYSTEM = #system#]]>
+            </isNotNull>
+            <isNotNull property="userAgent" prepend="," removeFirstPrepend="true">
+                <![CDATA[USER_AGENT = #userAgent#]]>
+            </isNotNull>
+            <isNotNull property="browser" prepend="," removeFirstPrepend="true">
+                <![CDATA[BROWSER = #browser#]]>
+            </isNotNull>
+            <isNotNull property="buyer" prepend="," removeFirstPrepend="true">
+                <![CDATA[BUYER = #buyer#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where VISIT_ID = #visitId#
+        ]]>
+    </update>
+
+    <sql id="getVisitSessionBeanCondition">
+         <isNotNull property="visitId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VISIT_ID = #visitId#]]>
+         </isNotNull>
+         <isNotNull property="sessionId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SESSION_ID = #sessionId#]]>
+         </isNotNull>
+         <isNotNull property="visitTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VISIT_TIME = #visitTime#]]>
+         </isNotNull>
+         <isNotNull property="ipAddress" prepend="and" removeFirstPrepend="true">
+             <![CDATA[IP_ADDRESS = #ipAddress#]]>
+         </isNotNull>
+         <isNotNull property="language" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LANGUAGE = #language#]]>
+         </isNotNull>
+         <isNotNull property="visitorCode" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VISITOR_CODE = #visitorCode#]]>
+         </isNotNull>
+         <isNotNull property="landingPage" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LANDING_PAGE = #landingPage#]]>
+         </isNotNull>
+         <isNotNull property="country" prepend="and" removeFirstPrepend="true">
+             <![CDATA[COUNTRY = #country#]]>
+         </isNotNull>
+         <isNotNull property="ip" prepend="and" removeFirstPrepend="true">
+             <![CDATA[IP = #ip#]]>
+         </isNotNull>
+         <isNotNull property="system" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SYSTEM = #system#]]>
+         </isNotNull>
+         <isNotNull property="userAgent" prepend="and" removeFirstPrepend="true">
+             <![CDATA[USER_AGENT = #userAgent#]]>
+         </isNotNull>
+         <isNotNull property="browser" prepend="and" removeFirstPrepend="true">
+             <![CDATA[BROWSER = #browser#]]>
+         </isNotNull>
+         <isNotNull property="buyer" prepend="and" removeFirstPrepend="true">
+             <![CDATA[BUYER = #buyer#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getVisitSessionBeanCount" parameterClass="com.fd.statistics.bean.VisitSessionBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_VISIT_SESSION 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitSessionBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getVisitSessionBean" parameterClass="com.fd.statistics.bean.VisitSessionBean"
+        resultClass="com.fd.statistics.bean.VisitSessionBean">
+        <![CDATA[
+select 
+	VISIT_ID	as visitId,
+	SESSION_ID	as sessionId,
+	VISIT_TIME	as visitTime,
+	IP_ADDRESS	as ipAddress,
+	LANGUAGE	as language,
+	VISITOR_CODE	as visitorCode,
+	LANDING_PAGE	as landingPage,
+	COUNTRY	as country,
+	IP	as ip,
+	SYSTEM	as system,
+	USER_AGENT	as userAgent,
+	BROWSER	as browser,
+	BUYER as buyer
+from T_VISIT_SESSION 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitSessionBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteVisitSessionBean" parameterClass="com.fd.statistics.bean.VisitSessionBean">
+        <![CDATA[
+delete from T_VISIT_SESSION where VISIT_ID=#visitId#
+        ]]>
+    </delete>
+    
+        <select id="getVisitId" parameterClass="com.fd.statistics.bean.VisitSessionBean"
+        resultClass="long">
+        <![CDATA[
+select VISIT_ID	as visitId from T_VISIT_SESSION
+where SESSION_ID=#sessionId#
+and VISIT_TIME > now()
+        ]]>
+    </select>
+
+</sqlMap>

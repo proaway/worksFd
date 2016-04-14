@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertActivityBean" parameterClass="com.fd.fashion.product.bean.ActivityBean">
+        <![CDATA[
+insert into T_ACTIVITY
+  (ACTIVITY_ID, TYPE, ACTIVITY_NAME, CREATE_TIME, LAST_EDIT_TIME, MIN_AMOUNT, COUNTRY, PRODUCT_ID, START_TIME, END_TIME, SKU, STATUS, OPERATOR)
+values
+  (#activityId#, #type#, #activityName#, #createTime#, #lastEditTime#, #minAmount#, #country#, #productId#, #startTime#, #endTime#, #sku#, #status#, #operator#)
+        ]]>
+    </insert>
+
+    <update id="updateActivityBean" parameterClass="com.fd.fashion.product.bean.ActivityBean">
+        <![CDATA[
+update T_ACTIVITY 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="activityId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ACTIVITY_ID = #activityId#]]>
+            </isNotNull>
+            <isNotNull property="type" prepend="," removeFirstPrepend="true">
+                <![CDATA[TYPE = #type#]]>
+            </isNotNull>
+            <isNotNull property="activityName" prepend="," removeFirstPrepend="true">
+                <![CDATA[ACTIVITY_NAME = #activityName#]]>
+            </isNotNull>
+            <isNotNull property="createTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_TIME = #createTime#]]>
+            </isNotNull>
+            <isNotNull property="lastEditTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[LAST_EDIT_TIME = #lastEditTime#]]>
+            </isNotNull>
+            <isNotNull property="minAmount" prepend="," removeFirstPrepend="true">
+                <![CDATA[MIN_AMOUNT = #minAmount#]]>
+            </isNotNull>
+            <isNotNull property="country" prepend="," removeFirstPrepend="true">
+                <![CDATA[COUNTRY = #country#]]>
+            </isNotNull>
+            <isNotNull property="productId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="startTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[START_TIME = #startTime#]]>
+            </isNotNull>
+            <isNotNull property="endTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[END_TIME = #endTime#]]>
+            </isNotNull>
+            <isNotNull property="sku" prepend="," removeFirstPrepend="true">
+                <![CDATA[SKU = #sku#]]>
+            </isNotNull>
+            <isNotNull property="status" prepend="," removeFirstPrepend="true">
+                <![CDATA[STATUS = #status#]]>
+            </isNotNull>
+            <isNotNull property="operator" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPERATOR = #operator#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ACTIVITY_ID = #activityId#
+        ]]>
+    </update>
+
+    <sql id="getActivityBeanCondition">
+         <isNotNull property="activityId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ACTIVITY_ID = #activityId#]]>
+         </isNotNull>
+         <isNotNull property="type" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TYPE = #type#]]>
+         </isNotNull>
+         <isNotNull property="activityName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ACTIVITY_NAME = #activityName#]]>
+         </isNotNull>
+         <isNotNull property="createTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATE_TIME = #createTime#]]>
+         </isNotNull>
+         <isNotNull property="lastEditTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LAST_EDIT_TIME = #lastEditTime#]]>
+         </isNotNull>
+         <isNotNull property="minAmount" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MIN_AMOUNT = #minAmount#]]>
+         </isNotNull>
+         <isNotNull property="country" prepend="and" removeFirstPrepend="true">
+             <![CDATA[COUNTRY = #country#]]>
+         </isNotNull>
+         <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PRODUCT_ID = #productId#]]>
+         </isNotNull>
+         <isNotNull property="startTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[START_TIME = #startTime#]]>
+         </isNotNull>
+         <isNotNull property="endTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[END_TIME = #endTime#]]>
+         </isNotNull>
+         <isNotNull property="sku" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SKU = #sku#]]>
+         </isNotNull>
+         <isNotNull property="status" prepend="and" removeFirstPrepend="true">
+             <![CDATA[STATUS = #status#]]>
+         </isNotNull>
+         <isNotNull property="operator" prepend="and" removeFirstPrepend="true">
+             <![CDATA[OPERATOR = #operator#]]>
+         </isNotNull>
+         <isNotNull property="searchDateType" >
+			 <isEqual property="searchDateType" compareValue="1" removeFirstPrepend="true">
+			 	<isNotNull property="searchStartDate" prepend="and" removeFirstPrepend="true">
+             		<![CDATA[CREATE_TIME > #searchStartDate#]]>
+        		</isNotNull>
+			 	<isNotNull property="searchEndDate" prepend="and" removeFirstPrepend="true">
+             		<![CDATA[CREATE_TIME <= ADDDATE(#searchEndDate#,1)]]>
+        		</isNotNull>        		
+			 </isEqual>
+            <isEqual property="searchDateType" compareValue="2" removeFirstPrepend="true">
+            	<isNotNull property="searchStartDate" prepend="and" removeFirstPrepend="true">
+             		<![CDATA[LAST_EDIT_TIME > #searchStartDate#]]>
+        		</isNotNull>
+			 	<isNotNull property="searchEndDate" prepend="and" removeFirstPrepend="true">
+             		<![CDATA[LAST_EDIT_TIME <= ADDDATE(#searchEndDate#,1)]]>
+        		</isNotNull> 
+            </isEqual>
+            <isEqual property="searchDateType" compareValue="3" removeFirstPrepend="true">
+            	<isNotNull property="searchStartDate" prepend="and" removeFirstPrepend="true">
+             		<![CDATA[START_TIME > #searchStartDate#]]>
+        		</isNotNull>
+			 	<isNotNull property="searchEndDate" prepend="and" removeFirstPrepend="true">
+             		<![CDATA[START_TIME <= ADDDATE(#searchEndDate#,1)]]>
+        		</isNotNull> 
+            </isEqual>
+            <isEqual property="searchDateType" compareValue="4" removeFirstPrepend="true">
+            	<isNotNull property="searchStartDate" prepend="and" removeFirstPrepend="true">
+             		<![CDATA[END_TIME > #searchStartDate#]]>
+        		</isNotNull>
+			 	<isNotNull property="searchEndDate" prepend="and" removeFirstPrepend="true">
+             		<![CDATA[END_TIME <= ADDDATE(#searchEndDate#,1)]]>
+        		</isNotNull> 
+            </isEqual>
+		</isNotNull>
+    </sql>
+
+    <select id="getActivityBeanCount" parameterClass="com.fd.fashion.product.bean.ActivityBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_ACTIVITY 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getActivityBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getActivityBean" parameterClass="com.fd.fashion.product.bean.ActivityBean"
+        resultClass="com.fd.fashion.product.bean.ActivityBean">
+        <![CDATA[
+select 
+	ACTIVITY_ID	as activityId,
+	TYPE	as type,
+	ACTIVITY_NAME	as activityName,
+	CREATE_TIME	as createTime,
+	LAST_EDIT_TIME	as lastEditTime,
+	MIN_AMOUNT	as minAmount,
+	COUNTRY	as country,
+	PRODUCT_ID	as productId,
+	START_TIME	as startTime,
+	END_TIME	as endTime,
+	SKU	as sku,
+	STATUS	as status,
+	OPERATOR	as operator
+from T_ACTIVITY 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getActivityBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteActivityBean" parameterClass="com.fd.fashion.product.bean.ActivityBean">
+        <![CDATA[
+delete from T_ACTIVITY where ACTIVITY_ID=#activityId#
+        ]]>
+    </delete>
+
+</sqlMap>

@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>$page.title</title>
+<meta name="description" content="<!--MICCMS:Meta-Description-->" />
+<meta name="keywords" content="<!--MICCMS:Meta-Keywords-->" />
+<link rel="shortcut icon" href="/static/web/images/logo-ico.ico" type="image/ico" />
+<script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/jquery-1.7.2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/whole.css" />
+<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/fashion.css" />
+<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/cart.css" />
+
+      <link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/log_reg.css" />
+
+<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/showLoading.css"/>
+<script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/jquery.showLoading.js"></script>
+<script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/product_fashion_nav.js"></script>
+<script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/show_layer.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/prototype/shopcart/css/tips.css" />
+<script language="javascript" src="/static/prototype/shopcart/inc/tips.js"></script>
+<script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/jsonconvert.js"></script>
+<script type="text/javascript" src="/static/prototype/product_fashion/inc/statclick.js"></script>
+</head>
+<body>
+<div id="container">
+  <!-- ------------------------- S header ------------------------- -->
+  <div id="header">
+    <!--S header-->
+    <div class="header_cart">
+	<div class="header_cart_left">
+		<a href="http://www.shopmadeinchina.com/" title="ShopMadeInChina.com"><img src="/static/web/images/logo-shopMadeInChina.gif" alt="" title="" border="0" style=" margin-top:6px;"></a>
+    </div>
+    <div class="header_cart_right">
+    	<img src="/static/prototype/product_fashion/images/verisignLogo.gif" width="92" height="46" alt="VeriSign Trusted" title="VeriSign Trusted" class="header_cart_vst" />
+    	<span class="header_cart_rspan">You are securely signed in &nbsp;&nbsp; | &nbsp;&nbsp;<a href="http://www.shopmadeinchina.com/static/help-whoselsale/index.shtml" target="_blank">Help</a></span>
+    </div>
+</div>
+<br class="clearfloat" />
+    <!--E header-->
+  </div>
+  <!-- ------------------------- E header ------------------------- -->
+  <br class="clearfloat" />
+  <!-- ------------------------- S menu ------------------------- -->
+  <div style=" float:left; height:21px; margin-top:6px; margin-bottom:15px;">
+    <div style="width:324px; height:21px; line-height:21px; float:left; #if($cartStep==2)background:#f1623c;#else background:#fdcfb1; #end  ">
+    	<span style="color:#FFF; font-weight:bold; margin-left:12px;">Confirm Order</span><img src="/static/prototype/product_fashion/images/next-ico.gif" width="16" height="13" style="float:right; margin:4px 6px 0 0;" />
+    </div>
+    <div style="width:324px; height:21px; line-height:21px; float:left; #if($cartStep==3)background:#f1623c;#else background:#e0e0e0;#end margin-left:8px;">
+    	<span style="color:#666; font-weight:bold; margin-left:12px;">Pay Order</span><img src="/static/prototype/product_fashion/images/next-ico.gif" width="16" height="13" style="float:right; margin:4px 6px 0 0;" />
+    </div>
+	<div style="width:324px; height:21px; line-height:21px; float:left; background:#e0e0e0; margin-left:8px;">
+    	<span style="color:#666; font-weight:bold; margin-left:12px;">Payment Successful</span>
+    </div>
+  </div>
+  <!-- ------------------------- E menu ------------------------- -->
+  <br class="clearfloat" />
+  <!-- ------------------------- S mainContent ------------------------- -->
+  	$screen_placeholder
+  <!-- ------------------------- E mainContent ------------------------- -->
+  <br class="clearfloat" />
+  <!-- ------------------------- S footer ------------------------- -->
+  <div id="footer">
+    <!--S footer-->
+	$navigation.setTemplate('Bottom.html')
+	<br class="clearfloat" />
+    <!--E footer-->
+  </div>
+  <!-- ------------------------- S footer ------------------------- -->
+  <br class="clearfloat" />
+</div>
+</body>
+</html>

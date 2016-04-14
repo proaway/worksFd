@@ -1,0 +1,185 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"><head>
+  <title>打印发货单模板 <!--MICCMS:Title--></title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="<!--MICCMS:Meta-Description-->" name="description">
+  <meta content="<!--MICCMS:Meta-Keywords-->" name="keywords">
+  <meta content="" name="author">
+  <link type="image/ico" href="/static/web/images/ys-logo-ico.ico" rel="shortcut icon"> 
+  <link href="/static/prototype/shopmic-manage/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+  <link href="/static/prototype/shopmic-manage/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
+  <link href="/static/prototype/shopmic-manage/css/whole.css" type="text/css" rel="stylesheet">
+  <link href="/static/prototype/shopmic-manage/css/shopmic_m.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+
+  <div class="mar_bottom_20 pad_bottom_80 label_cursor_auto buyer_details_container" id="container_print_it">
+  	<br class="clear">
+  	<h4 class="text-center pad_bottom_5 mar_bottom_10">发货单</h4>    
+	<input type="hidden" id="orderIds" name="orderIds" value="$!orderIds" />
+	
+    <br class="clear">
+    <div class="border_top width_100 mar_top_20 mar_bottom_20"></div>
+    
+    #if($!orderList)
+		#foreach($order in $!orderList)
+  	<br class="clear">
+  	<h4 class="text-center pad_bottom_5 mar_bottom_10">发货单</h4>
+    <table width="100%" class="mar_bottom_5">
+        <tbody><tr>
+            <td width="40%">
+                <ul class="unstyled">
+                    <li><strong>订单号：</strong><span>$!order.orderBean.orderId</span></li>
+                    <li><strong>收货人：</strong><span>$!order.orderBean.userId</span></li>
+                    <li><strong>收货地址：</strong><span>$!order.orderAddr.addressline1,$!order.orderAddr.province,$!order.orderAddr.city,$!order.orderAddr.country</span></li>
+                </ul>
+            </td>
+            <td width="40%">
+                <ul class="unstyled">
+                    <li><strong>订单生成时间：</strong><span>$!StringUtil.getDateString($!order.orderBean.createDate,'yyyy-MM-dd HH:mm:ss')</span></li>
+                    <li><strong>联系方式：</strong><span>$!order.orderAddr.phone</span></li>
+                    <li><strong>商品总数：</strong><span>$!order.totalCount</span></li>
+                </ul>
+            </td>
+            <td>
+            	<img class="right" src="/manager/BarcodeServlet?image=3&type=6&data=$!order.orderBean.orderId">
+            </td>
+        </tr>
+    </tbody></table>
+	<table class="table table-striped table-bordered table-hover table-condensed left mar_bottom_15 center_t statistics_time_analysis" style="width:100%;">
+        <tbody><tr class="info bold">
+            <td>序号</td>
+            <td>商品编号</td>
+            <td>商品名称</td>
+            <td>规格尺码</td>
+            <td>数量</td>
+            <td>单价</td>
+            <td>小计</td>
+        </tr>
+		#if($order.productList)
+			#set($i=1)
+			#foreach($p in $order.productList)
+          <tr>
+              <td>$i</td>
+              <td>$!p.sku</td>
+              <td>$!StringUtil.substring($!p.productName,80)</td>
+              <td>$!p.config.get('mainValue').getValue() / $!p.config.get('subValue').getValue()</td>
+              <td>$!p.quantity</td>
+              <td>$!p.itemPrice</td>
+              <td>$!p.itemTotal</td>
+          </tr>
+		  #set($i = $i+1)
+		  #end
+		 #end
+    </tbody></table>
+    <ul class="inline">
+    	<li>商品总价：$ $!order.orderBean.itemTotal</li>
+        <li>运费：$ #if($!order.orderBean.shippingTotal && $!order.orderBean.shippingTotal>0)$!order.orderBean.shippingTotal #else 0.0 #end</li>
+        <li>优惠：$ $!order.orderBean.couponAmount</li>
+        <li>调整：$  #if($order.orderBean.adjustAmount) $!order.orderBean.adjustAmount #else 0.0 #end</li>
+        <li class="right"><strong>实际收取：$ $!order.orderBean.total</strong></li>
+    </ul>
+    <br class="clear">
+    <div class="border_top width_100 mar_top_20 mar_bottom_20"></div>
+    
+    <br class="clear">
+  	<h4 class="text-center pad_bottom_5 mar_bottom_10">SHIPPING LIST</h4>
+    <table width="100%" class="mar_bottom_5">
+        <tbody><tr>
+            <td width="40%">
+                <ul class="unstyled">
+                    <li><strong>Order Number：</strong><span>$!order.orderBean.orderId</span></li>
+                    <li><strong>Consignee：</strong><span>$!order.orderBean.userId</span></li>
+                    <li><strong>Shipping Address：</strong><span>$!order.orderAddr.addressline1,$!order.orderAddr.province,$!order.orderAddr.city,$!order.orderAddr.country</span></li>
+                </ul>
+            </td>
+            <td width="40%">
+                <ul class="unstyled">
+                    <li><strong>Order Creation Time：</strong><span>$!StringUtil.getDateString($!order.orderBean.createDate,'yyyy-MM-dd HH:mm:ss')</span></li>
+                    <li><strong>TEL：</strong><span>$!order.orderAddr.phone</span></li>
+                    <li><strong>Items Total：</strong><span>$!order.totalCount</span></li>
+                </ul>
+            </td>
+            <td>
+            	<img class="right" src="/manager/BarcodeServlet?image=3&type=6&data=$!order.orderBean.orderId">
+            </td>
+        </tr>
+    </tbody></table>
+	<table class="table table-striped table-bordered table-hover table-condensed left mar_bottom_15 center_t statistics_time_analysis" style="width:100%;">
+        <tbody><tr class="info bold">
+            <td>NO.</td>
+            <td>SKU</td>
+            <td>Product Name</td>
+            <td>Specifications</td>
+            <td>Quantity</td>
+            <td>Unit Price</td>
+            <td>Total</td>
+        </tr>
+		#if($order.productList)
+			#set($i=1)
+			#foreach($p in $order.productList)
+          <tr>
+               <td>$i</td>
+              <td>$!p.sku</td>
+              <td>$!StringUtil.substring($!p.productName,80)</td>
+              <td>$!p.config.get('mainValue').getValue() / $!p.config.get('subValue').getValue()</td>
+              <td>$!p.quantity</td>
+              <td>$!p.itemPrice</td>
+              <td>$!p.itemTotal</td>
+          </tr>
+		   #set($i = $i+1)
+		  #end
+		 #end
+    </tbody></table>
+    <ul class="inline">
+    	<li>Total：$ $!order.orderBean.itemTotal</li>
+        <li>Shipping Cost：$ #if($!order.orderBean.shippingTotal && $!order.orderBean.shippingTotal>0)$!order.orderBean.shippingTotal #else 0.0 #end</li>
+        <li>Discount：$ $!order.orderBean.couponAmount</li>
+        <li>Adjust：$  #if($order.orderBean.adjustAmount) $!order.orderBean.adjustAmount #else 0.0 #end</li>
+        <li class="right"><strong>Actually Cost：$ $!order.orderBean.total</strong></li>
+    </ul>
+    <br class="clear">
+    <div class="border_top width_100 mar_top_20 mar_bottom_20"></div>
+	
+	#end
+  #end  
+   <input type="button" value="打印" class="btn btn-primary right mar_top_20" onclick="printOrder()">
+  </div><!-- E container -->
+  <br class="clear">
+    
+  <div id="footer"></div>
+
+  <div id="layer_box">
+   <p class="layer_box_tit"><a href="javascript:();">新支付</a></p>
+   <p class="layer_box_tit"><a href="javascript:();">新订单</a></p>
+  </div>
+<!-- S javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/static/prototype/shopmic-manage/js/jquery-1.7.2.min.js" type="text/javascript" language="javascript"></script>
+<script src="/static/prototype/shopmic-manage/js/bootstrap.min.js" type="text/javascript" language="javascript"></script>
+<script type="text/javascript">
+(function() {
+    var backToTopTxt = "",  backToTopEle = jQuery('<div class="backToTop_pro"></div>').appendTo(jQuery("body"))
+    .text( backToTopTxt).attr("title",  backToTopTxt).click(function() {
+        jQuery("html, body").animate({ scrollTop: 0 }, 120);
+	}),  backToTopFun = function() {
+	    var st = jQuery(document).scrollTop(), winh = jQuery(window).height();
+	    (st > 0)?  backToTopEle.show():  backToTopEle.hide();
+	    //IE6下的定位
+	    if (!window.XMLHttpRequest) {
+	         backToTopEle.css("top", st + winh - 166);
+	    }
+	};
+	jQuery(window).bind("scroll", backToTopFun);
+	jQuery(function() { backToTopFun(); });
+})();
+</script><div class="backToTop_pro" title="" style="display: none;"></div>
+<script>
+function printOrder(){
+	//打印
+	alert("暂未连接打印机");
+}
+
+</script>
+
+</body></html>

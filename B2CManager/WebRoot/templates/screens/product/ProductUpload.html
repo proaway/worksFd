@@ -1,0 +1,262 @@
+#if(!$product.product.productId)
+$page.setTitle("产品上传")
+#else
+$page.setTitle("产品更新")
+#end
+<div class="accordion-heading upload_tit">
+	<span class="accordion-toggle font_s_14 blue">产品基本信息</span>
+</div>
+<div id="collapseOne" class="accordion-body collapse in">
+	<div class="accordion-inner">
+		<table class="upload_tab" border="0" cellpadding="0" cellspacing="0"
+			width="100%">
+			<tbody>
+				<tr>
+					<td class="td_136_r"><label class="right mar_top_5"><span
+							class="required">*</span>产品名称：</label>
+	<input type="hidden" name="productId" value="$!product.product.productId"/>
+							<input type="hidden" name="specificationsUrl" value="$!product.product.specifications"/>
+					</td>
+					<td>
+						<input name="productName" class="span7 left" id="productName" maxlength="200" type="text" style="ime-mode:disabled" verify="name" value="$!product.product.productName"
+							onkeyup="textleft(this,this.id,200);"   
+							onfocus="javascript:hideOtextOptions('span_productName_spell');hideOtextOptions('span_productName_empty');hideOtextOptions('span_productName_already');";
+							placeholder="请用英文填写产品名称。只能由数字、字母、下划线、空格、撇号组成，长度不能超过200字符。"/>
+						<br class="clear">
+						 <span class="help-block left">您还可以输入<span class="red" id="productNameleft">200</span>字符。</span>
+                         <br class="clear" />
+						 <input type="hidden"  name="productNameFlag" id="productNameFlag" value="0" />
+						<span class="help-block left hide" id="span_productName_spell"><span class="red">产品名称只能由数字、字母、下划线、空格组成，请检查并重新填写。</span>
+    					</span><span class="help-block left hide" id="span_productName_empty"><span class="red">产品名称不能为空</span>
+    					</span><span class="help-block left hide" id="span_productName_already"><span class="red">该产品名称已存在，请重新填写。</span>
+    					</span></td>
+				</tr>
+				<tr>
+					<td class="td_136_r">关键词：</td>
+					<td><input name="keyword" class="input-xxlarge left" id="keyword" onblur="javascript:checkKeyword();"  value="$!product.product.keyword" style="ime-mode:disabled"
+						onfocus="javascript:hideOtextOptions('keywordMsg');"
+						placeholder="请用英文填写10个以内的产品关键词，每个中间用英文状态下的逗号(,)隔开。" type="text">
+						 <input type="hidden"  name="keywordFlag" id="keywordFlag" value="1" />
+                         <span id="keywordMsg" class="help-block left hide"><span class="red">填写10个以内的产品关键词，每个中间用英文状态下的逗号(,)隔开。</span></span>
+					</td>
+				</tr>
+				<tr>
+					<td class="td_136_r"><label class="right mar_top_5"><span
+							class="required">*</span>SKU：</label>
+					</td>
+					<td><input class="input-large left" name="sku" id="sku" onblur="changeSku(this);" verify="sku" value="$!product.product.sku"
+						onkeyup="textleft(this,this.id,10);" onfocus="javascript:hideOtextOptions('sku_spell');javascript:hideOtextOptions('sku_empty');"
+						placeholder="请填写SKU号，方便您管理产品。" type="text" style="ime-mode:disabled" maxlength="10"> <span
+						class="help-block left mar_left_10 mar_top_5">您还可以输入<span
+							class="red" id="skuleft">10</span>字符。</span>
+							<br class="clear"/>
+							<span
+						class="help-block left mar_left_10 mar_top_5 hide" id="sku_spell"><span
+							class="red">SKU号只能由数字、字母、中横线、下划线组成，请重新填写。</span>
+					</span> <span class="help-block left mar_left_10 mar_top_5 hide" id="sku_empty"><span
+							class="red">sku不能为空</span>
+					</span> <span class="help-block left mar_left_10 mar_top_5 hide" id="sku_ready"><span
+							class="red">该产品SKU编码已存在，请重新填写。</span>
+					</span>
+					 <input type="hidden"  name="skuFlag" id="skuFlag" value="0" />
+					</td>
+				</tr>
+				<tr>
+					<td class="td_136_r">条形码：</td>
+					<td><input class="input-large left" value="$!product.product.barcode" placeholder="条形码,只能输入数字" name="barcode" id="barcode" onkeyup="this.value=this.value.replace(/\D/g,'');textleft(this,this.id,50);"
+						type="text" maxlength="50"  onafterpaste="this.value=this.value.replace(/\D/g,'')"><span
+						class="help-block left mar_left_10 mar_top_5">条形码可以有效的帮助您管理产品，并提高搜索的准确度，建议填写。您还可以输入<span
+							class="red" id="barcodeleft" >50</span>字符。</span>
+					 <input type="hidden"  name="barcodeFlag" id="barcodeFlag" value="1" />
+					</td>
+				</tr>
+				<tr>
+					<td class="td_136_r">品牌：</td>
+					<td><input name="brand" id="brand" class="input-large left" placeholder="请填写产品品牌。" value="$!product.product.brand"  onkeyup="textleft(this,this.id,50);"
+						type="text" maxlength="50"><span
+						class="help-block left mar_left_10 mar_top_5">您还可以输入<span
+							class="red" id="brandleft">50</span>字符</span> <span
+						class="help-block left mar_left_10 mar_top_5 hide"><span
+							class="red">您输入的品牌长度超过规定字符数，请重新填写。</span>
+					</span> <input type="hidden"  name="brandFlag" id="brandFlag" value="1" /></td>
+				</tr>
+				<tr id="wid_sel_td">
+					<td class="td_136_r"><label class="right mar_top_5"><span
+							class="required">*</span>自定义分类：</label>
+					</td>
+					<td><input type="hidden" name="customCatId" id="customCatId" value="$!product.product.customCatId" verify="id"/>
+					  <script language="javascript" src="/static/prototype/shopmic-manage/js/customcatselector.js"></script> 
+					  ##<script language="javascript" src="$content.getURI('js/customcatselector.js')"></script>
+						<select class="mar_right_10" id="customCatId1">
+							<option value="000">一级分类</option>
+					</select> 
+					<select class="mar_right_10" id="customCatId2">
+							<option value="000000">二级分类</option>
+					</select> 
+					<select class="mar_right_10" id="customCatId3">
+							<option value="000000000">三级分类</option>
+					</select> 
+					<select id="customCatId4">
+							<option value="000000000000">四级分类</option>
+					</select> 
+					  <script>var CustomCatSelector = new CustomCategorySelector(4, "customCatId");</script>
+					##if($product.product.customCatId)<script>jQuery("document").ready(function(){CustomCatSelector.selectCatId('$product.product.customCatId');});</script>#end
+					<span class="help-block clear">您可以将该产品放入您自己定义的分类中，此操作不影响该产品的标准分类属性，可自由分配。<a href="$link.setPage('category,CategoryManage.html')" target="_blank">点此进入类目管理。</a></span>
+					<span class="help-block left mar_left_10 mar_top_5 hide" id="customCatIdErrDiv"><span
+							class="red">请选择自定义分类，并选择到最终分类(没有子类)。</span>
+					</span> <input type="hidden"  name="customCatIdFlag" id="customCatIdFlag" value="0" />
+					</td>
+				</tr>
+				<tr>
+					<td class="td_136_r"><label class="right mar_top_5">产地：</label>
+					</td>
+					<td><input name="origin" id="origin" class="input-large left" value="$!product.product.origin" placeholder="请用英文填写商品产地" verify="name" type="text" style="ime-mode:disabled" onkeyup="value=value.replace(/[^\w\.\/ \-\']/ig,'')"
+						/>
+					 <input type="hidden"  name="originFlag" id="originFlag" value="0" />
+					</td>
+				</tr>
+				<tr>
+					<td class="td_136_r"><label class="right mar_top_5"><span
+							class="required">*</span>简短描述：</label>
+					</td>
+					<td><textarea rows="3" name="description" id="description" class="input-xxlarge left" maxlength="200" style="ime-mode:disabled"  verify="name"
+							placeholder="请用英文填写简短描述。" style="resize: none;" onkeyup="value=value.replace(/[^\w\.\/ \-\']/ig,'');textleft(this,this.id,200);" 
+							onfocus="javascript:hideOtextOptions('descriptionMsg');"
+						    onblur="javascript:checkDescription();"  />$!product.product.description</textarea>
+							<span	class="help-block left mar_left_10 mar_top_5">最多输入<span
+							class="red" id="descriptionleft">200</span>字符，<br>建议不要输入HTML代码或邮箱地址。</span>
+							<input type="hidden" name="descriptionFlag" id="descriptionFlag" value="0" />
+							<br class="clear"> <span class="help-block left hide" id="descriptionMsg"><span
+							class="red">简短描述不能为空</span>
+							</span>
+							<span id="span_discription" class="fontRed"></span>
+							 <input type="hidden"  name="descriptionFlag" id="descriptionFlag" value="0" />
+					</td>
+				</tr>
+<script>
+jQuery("document").ready(function(){
+	textleft(jQuery("#productName")[0], "productName", 200);
+	textleft(jQuery("#description")[0], "description", 200);
+	textleft(jQuery("#sku")[0], "sku", 10);
+	textleft(jQuery("#barcode")[0], "barcode", 50);
+	textleft(jQuery("#brand")[0], "brand", 50);
+});
+</script>
+				<tr>
+					<td class="td_136_r"><label class="right mar_top_5"><span
+							class="required">*</span>产品有效期：</label></td>
+					<td class="pad_bottom_ 10">
+						<label class="radio inline"><input name="expiredDay" id="rd_validity1" value="30" type="radio" verify="radio">30天 </label> 
+						<label class="radio inline"><input name="expiredDay" id="rd_validity2" value="90" type="radio" verify="radio">90天 </label> 
+						<label class="radio inline"><input name="expiredDay" id="rd_validity3" value="0" checked="" type="radio" verify="radio">无有效期 </label> 
+						<span class="help-block inline">如选择30天（90天）有效期，到指定日期后该产品将自动下架。</span>
+						 <input type="hidden"  name="expiredDayFlag" id="expiredDayFlag" value="0" />
+					</td>
+				</tr>
+				<!-- 零售价批发价原来的位置 -->
+				<!--<tr>
+					<td class="td_136_r">尺码表：</td>
+					<td><select class="left" name="sizeTemplateId">
+							<option value="" selected >无</option>
+							#foreach($sizeTemp in $sizeTemplates)
+								<option value="$sizeTemp.templateId" #if($sizeTemp.templateId == $!product.product.sizeTemplateId)selected#end>$sizeTemp.templateName</option>
+							#end
+					</select> 
+					<input type="hidden"  name="sizeTemplateIdFlag" id="sizeTemplateIdFlag" value="0" />
+					</td>
+				</tr>-->
+				<tr>
+					<td class="td_136_r"><label class="right mar_top_5"><span
+							class="required">*</span>最小计量单位：</label>
+					</td>
+					<td><select class="left" name="packing" id="packing" onchange="javascript:changePackage();" verify="select">
+						#foreach($packageUnit in $packageUnits)
+							<option value="$packageUnit.name" #if($packageUnit.name==$!product.product.packing)selected#end>$!packageUnit.name ($!packageUnit.nameCn)</option>
+						#end
+					</select>
+					 <input type="hidden"  name="packageInfoFlag" id="packageInfoFlag" value="1" />
+					</td>
+				</tr>
+				<tr>
+					<td class="td_136_r">销售方式：</td>
+					<td><label class="radio"><input name="ispackage" 
+							id="packing_1" value="0" checked="checked"
+							onclick="javascript:checkRdMode(1);"
+							type="radio"><span id="salePackageDiv">件/个（piece/pieces）</span></label> <label
+						class="radio left mar_top_5"><input name="ispackage"
+							id="packing_2" value="1"
+							onclick="javascript:checkRdMode(2);"
+							type="radio">打包出售</label>
+						<div class="control-group info left hide" id="mode_content">
+							<label class="control-label left mar_left_15 mar_top_5"
+								for="inputWarning">每包</label>
+							<div class="controls left">
+								<input class="input-mini left mar_left_5 mar_right_5" onblur="javascript:checkRdMode(2);" onfocus="document.getElementById('packageErrDiv').style.display='none';"
+									placeholder="数量" type="text" name="quantity" value="$!product.product.quantity" id="quantity" onkeyup="if(event.keyCode!=37&&event.keyCode!=39)value=value.replace(/\D/g,'');"> <label
+                                    class="control-label left mar_top_5" for="inputWarning"><span id="quantityPackageDiv">件/个（piece/pieces）</span></label>
+							</div>
+							<br class="clear" />
+                            <div><span class="help-block left mar_left_10 mar_top_5" id="packageErrDiv"><span class="red">选择按包销售时需要填写每包数量</span></span></div>
+						</div>#if($product.product.ispackage)<script>jQuery("[name='ispackage'][value='${product.product.ispackage}']").click();</script>#end
+						<input type="hidden"  name="packingFlag" id="packingFlag" value="1" />
+						<!-- E mode_content --></td>
+				</tr>
+				<tr>
+					<td class="td_136_r"><label class="right mar_top_5"><span
+							class="required">*</span>备货时间：</label>
+					</td>
+					<td><input name="stockDays" id="stockDays" value="$!product.product.stockDays" class="input-large left" placeholder="备货时间,只能输入数字" verify="int"
+						type="text" onkeyup="this.value=this.value.replace(/\D/g,'');" onblur="javascript:isValueEmpty('stockDays');" 
+						onfocus="javascript:hideOtextOptions('stockDaysEmpty');" /><span
+						class="help-block left mar_left_10 mar_top_5 mar_right_15"><span
+							class="black">天</span></span> 
+							<span class="help-block mar_top_5">从接到订单到发货所需要的时间。</span>
+					<br class="clear" />
+					<span
+						class="help-block mar_top_5 hide" id="stockDaysEmpty"><span class="red">输入备货时间不能为空</span>
+					</span>
+					<input type="hidden"  name="stockDaysFlag" id="stockDaysFlag" value="0" />
+					</td>
+				</tr>
+				<tr>
+					<td class="td_136_r">
+						<label class="right mar_top_5"><span
+							class="required">*</span>产品详细描述：</label><button id="spectitle" class="hide" width="0"></button>
+						</td>
+					<td class="pad_bottom_20"><span
+						class="help-block mar_top_5 mar_bottom_5" id="specSpan">请用英文填写产品详细描述以便买家能更好的了解您的产品。</span><br
+						class="clear"><span
+						class="help-block mar_top_5 mar_bottom_5 hide" id="specificationsErrDiv"><span class="red">产品详细描述不能为空</span></span><br
+						class="clear">
+						<textarea  name="specifications" id="specifications" verify="name"
+                        style="width: 750px; height: 400px; visibility: hidden; display: none;">$!spec</textarea></td></tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<script type="text/javascript">
+var options={
+	allowUpload : true,
+	fillDescAfterUploadImage : true,
+	allowFileManager : true,
+	fileManagerJson : '$link.setAction('product.ProductImageZone')',
+	uploadJson : '$link.setAction('product.ProductUploadImage')',
+	resizeType:1,
+	items:
+	[
+	 'undo', 'redo', '|', 'preview', 'cut', 'copy', 'paste',
+	'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+	'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+	'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', '/',
+	'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+	'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|','link', 'unlink', 'image', 'multiimage', 'table', 'hr', 'pagebreak'
+	]
+};
+	var editor;
+	 KindEditor.ready(function(K){
+		editor = K.create('textarea[name="specifications"]', options);
+	 })
+function changeSku(o) {
+	jQuery("span#baseSku").html(o.value + "-");
+}
+</script>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertVisitAdclickBean" parameterClass="com.fd.statistics.bean.VisitAdclickBean">
+        <![CDATA[
+insert into T_VISIT_ADCLICK
+  (CLICK_ID, VISIT_ID, CHANNEL_ID, POSITION, CLICK_TIME, URL)
+values
+  (#clickId#, #visitId#, #channelId#, #position#, #clickTime#, #url#)
+        ]]>
+        <selectKey keyProperty="clickId" resultClass="long">
+            <![CDATA[select @@identity as clickId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateVisitAdclickBean" parameterClass="com.fd.statistics.bean.VisitAdclickBean">
+        <![CDATA[
+update T_VISIT_ADCLICK 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="clickId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CLICK_ID = #clickId#]]>
+            </isNotNull>
+            <isNotNull property="visitId" prepend="," removeFirstPrepend="true">
+                <![CDATA[VISIT_ID = #visitId#]]>
+            </isNotNull>
+            <isNotNull property="channelId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CHANNEL_ID = #channelId#]]>
+            </isNotNull>
+            <isNotNull property="position" prepend="," removeFirstPrepend="true">
+                <![CDATA[POSITION = #position#]]>
+            </isNotNull>
+            <isNotNull property="clickTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[CLICK_TIME = #clickTime#]]>
+            </isNotNull>
+            <isNotNull property="url" prepend="," removeFirstPrepend="true">
+                <![CDATA[URL = #url#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where CLICK_ID = #clickId#
+        ]]>
+    </update>
+
+    <sql id="getVisitAdclickBeanCondition">
+         <isNotNull property="clickId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CLICK_ID = #clickId#]]>
+         </isNotNull>
+         <isNotNull property="visitId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VISIT_ID = #visitId#]]>
+         </isNotNull>
+         <isNotNull property="channelId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CHANNEL_ID = #channelId#]]>
+         </isNotNull>
+         <isNotNull property="position" prepend="and" removeFirstPrepend="true">
+             <![CDATA[POSITION = #position#]]>
+         </isNotNull>
+         <isNotNull property="clickTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CLICK_TIME = #clickTime#]]>
+         </isNotNull>
+         <isNotNull property="url" prepend="and" removeFirstPrepend="true">
+             <![CDATA[URL = #url#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getVisitAdclickBeanCount" parameterClass="com.fd.statistics.bean.VisitAdclickBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_VISIT_ADCLICK 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitAdclickBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getVisitAdclickBean" parameterClass="com.fd.statistics.bean.VisitAdclickBean"
+        resultClass="com.fd.statistics.bean.VisitAdclickBean">
+        <![CDATA[
+select 
+	CLICK_ID	as clickId,
+	VISIT_ID	as visitId,
+	CHANNEL_ID	as channelId,
+	POSITION	as position,
+	CLICK_TIME	as clickTime,
+	URL	as url
+from T_VISIT_ADCLICK 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitAdclickBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteVisitAdclickBean" parameterClass="com.fd.statistics.bean.VisitAdclickBean">
+        <![CDATA[
+delete from T_VISIT_ADCLICK where CLICK_ID=#clickId#
+        ]]>
+    </delete>
+
+</sqlMap>

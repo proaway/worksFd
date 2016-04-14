@@ -1,0 +1,196 @@
+
+<br class="clear">
+<h4 class="mar_top_15 mar_bottom_20">Tickets</h4>
+<form action="$link.setPage('ticket,TicketsBackstage.html')" id="listForm" name="listForm" method="get">
+<div class="search_form mar_bottom_10">
+    <ul class="inline">
+    	<li><select class="left oi_status_max_w" name="timeType" id="timeType">
+              <option value="1" #if($searchVo.timeType=="1")selected #end>发信时间</option>
+              <option value="2" #if($searchVo.timeType=="2")selected #end>最后回复时间</option>
+            </select>
+			<input type="text" class="input-small mar_right_5 mar_left_10 left " id="datepickera" #if($searchVo.timeType==1) value="$!StringUtil.getDateString($!searchVo.sendTimeStart)" #elseif($searchVo.timeType==2) value="$!StringUtil.getDateString($!searchVo.replyTimeStart)" #end name="timeStart">
+			<label class="left mar_top_5">到</label>
+			<input type="text" class="input-small mar_left_5 mar_right_5 left " id="datepickerb" #if($searchVo.timeType==1) value="$!StringUtil.getDateString($!searchVo.sendTimeEnd)" #elseif($searchVo.timeType==2) value="$!StringUtil.getDateString($!searchVo.replyTimeEnd)" #end name = "timeEnd">
+		</li>
+         <li>
+			<label class="left mar_top_5">发信人：</label>
+			<select class="left oi_status_max_w" name="sendType" id="sendType">
+			  <option value="" #if($searchVo.sendType=="")selected #end >全部</option>
+              <option value="1" #if($searchVo.sendType=="1")selected #end >买家</option>
+              <option value="2" #if($searchVo.sendType=="2")selected #end>运营人员</option>
+            </select>
+			<input type="text" placeholder="发信人" class="input-medium left" name="sender" id="sender" value="$!searchVo.sender">
+		</li>
+        <li>
+            <label class="left mar_top_5">问题分类：</label>
+            <select class="left oi_status_max_w" name="questionType" id="questionType">
+				<option value="" #if($searchVo.questionType=="")selected #end>请选择</option>
+				<option value="1" #if($searchVo.questionType=="1")selected #end>账户问题</option>
+                <option value="2" #if($searchVo.questionType=="2")selected #end>交易和询盘</option>
+				<option value="3" #if($searchVo.questionType=="3")selected #end>订单投诉</option>
+				<option value="4" #if($searchVo.questionType=="4")selected #end>功能报错</option>
+				<option value="5" #if($searchVo.questionType=="5")selected #end>侵权举报</option>
+				<option value="6" #if($searchVo.questionType=="6")selected #end>其他</option>
+				
+            </select>
+        </li><br class="clear">
+        <li>
+            <label class="left mar_top_5">消息状态：</label>
+            <select class="left oi_status_max_w" name="messType" id="messType">
+              <option value="" #if($searchVo.messType=="")selected #end>全部</option>
+              <option value="1" #if($searchVo.messType=="1")selected #end>未回复</option>
+              <option value="2" #if($searchVo.messType=="2")selected #end>已回复</option>
+              <option value="3" #if($searchVo.messType=="3")selected #end>已关闭</option>
+            </select>
+        </li>
+        <li><input type="text" placeholder="可以输入主题内容查询" class="input-xxlarge" name="subjectContent" id="subjectContent" value="$!searchVo.keyword"></li>
+        <li><a class="btn btn-primary left" href="javascript:submitSearch();"><span class="white">查询</span></a></li>
+	    <li><a href="javascript:addTikcet();" role="button" class="btn btn-success left" data-toggle="modal"><span class="white">新增Tickects</span></a></li>
+    </ul>
+    <br class="clear">
+</div>
+
+<table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-striped table-hover center_t font12 tl_mt3_mb3 mar_bottom_0">
+  <tbody><tr class="info bold">
+<td><label>发信时间</label></td>
+<td><label>主题</label></td>
+<td><label>发信人</label></td>
+<td><label>问题分类</label></td>
+<td><label>消息状态</label></td>
+<td><label>最后回复时间</label></td>
+<td><label>最后回复人</label></td>
+<td><label>操作</label></td>
+</tr>
+#if($ticketList)
+	#foreach($tick in $ticketList)
+      <tr trid="$tick.ticketsId">
+        <td class="font10"><label>#if($tick.sendTime)$!StringUtil.getDateTimeString($!tick.sendTime)#end</label></td>
+        <td><label>${tick.title}</label></td>
+        <td>#if($tick.identity==1) $!{tick.ticketsSystem}(system)  #else ${tick.buyerName}(buyer) #end</td>
+        <td><label>#if($tick.questionType == 2) 交易和询盘 #elseif($tick.questionType == 1) 账号问题  #elseif($tick.questionType == 3) 订单投诉  #elseif($tick.questionType == 4) 功能报错  #elseif($tick.questionType == 5)侵权举报 #else 其他 #end</label></td>
+        <td id="ticketStatus_${tick.ticketsId}">
+			<label>
+			#if($tick.status==3)
+				关闭
+			#else
+				#if($tick.status==1)
+					未回复
+				#else
+					已回复 
+				#end
+			#end
+			</label>
+		</td>
+        <td class="font10"><label>#if($tick.lastReplayTime)$!StringUtil.getDateTimeString($!tick.lastReplayTime)#end</label></td>
+        <td><label>#if($tick.lastRelayer) $tick.lastRelayer #end</label></td>
+        <td id="operId_${tick.ticketsId}">
+			#if($tick.status==3)
+				<a href="$link.setPage('ticket,tickets_backstage_reply.html')?ticketsId=$tick.ticketsId&flag=1" target="_blank">查看</a>
+			#else
+				<a href="$link.setPage('ticket,tickets_backstage_reply.html')?ticketsId=$tick.ticketsId" target="_blank">回复</a>
+				<a href="javascript:closeTicket('$tick.ticketsId')" role="button" class="mar_left_10">关闭</a>
+    			<!--
+				#if($tick.status==1)
+    				<a href="$link.setPage('ticket,tickets_backstage_reply.html')?ticketsId=$tick.ticketsId" target="_blank">回复</a>
+    			#end-->
+				
+			#end
+		</td>
+      </tr>
+	#end
+#end
+</tbody></table>
+#parse("screens/Nap.html")
+</form>
+
+<script>
+function submitSearch(){
+	document.listForm.submit();
+}
+
+function addTikcetToShow(ticket){
+	if(ticket==null){
+		return;
+	}else{
+		submitSearch();
+	}
+}
+
+function addTikcet(){
+	var div = jQuery("#addTicketDiv");
+	if (div.length == 0) {
+		div = jQuery("<div id='addTicketDiv'></div>");
+		jQuery("body").append(div);
+	}
+	div.empty();
+	div.load("$link.setPage('ticket,AddTickets.html')");
+}
+
+function closeTicket(ticketsId){
+    if(confirm("确定要关闭该tickets吗？")){
+    	jQuery.get(
+    		"$link.setAction('ticket.AjaxCloseTicketAction')?ticketsId="+ticketsId,
+    		function(data){
+    			if(data==1){
+					jQuery("tr[trid='"+ticketsId+"']").find("#ticketStatus_"+ticketsId).html("<label>关闭</label>");
+					jQuery("tr[trid='"+ticketsId+"']").find("#operId_"+ticketsId).html("");
+    				alert("成功关闭");
+    			} else{
+    				alert("关闭失败");
+    			}
+    		});
+    }
+}
+</script>
+<script type="text/javascript">
+jQuery(function () {
+    // Datepicker
+    jQuery.datepicker.regional['zh-CN'] = {  
+        clearText: '清除',  
+        clearStatus: '清除已选日期',  
+        closeText: '关闭',  
+        closeStatus: '不改变当前选择',  
+        prevText: '<上月',  
+        prevStatus: '显示上月',  
+        prevBigText: '<<',  
+        prevBigStatus: '显示上一年',  
+        nextText: '下月>',  
+        nextStatus: '显示下月',  
+        nextBigText: '>>',  
+        nextBigStatus: '显示下一年',  
+        currentText: '今天',  
+        currentStatus: '显示本月',  
+        monthNames: ['一月','二月','三月','四月','五月','六月', '七月','八月','九月','十月','十一月','十二月'],  
+        monthNamesShort: ['一','二','三','四','五','六', '七','八','九','十','十一','十二'],  
+        monthStatus: '选择月份',  
+        yearStatus: '选择年份',  
+        weekHeader: '周',  
+        weekStatus: '年内周次',  
+        dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],  
+        dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],  
+        dayNamesMin: ['日','一','二','三','四','五','六'],  
+        dayStatus: '设置 DD 为一周起始',  
+        dateStatus: '选择 m月 d日, DD',  
+        dateFormat: 'yy-mm-dd',  
+        firstDay: 1,  
+        initStatus: '请选择日期',  
+        isRTL: false};  
+        jQuery.datepicker.setDefaults(jQuery.datepicker.regional['zh-CN']);  
+
+    });
+
+jQuery( "#datepickera" ).datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#datepickerb" ).datepicker( "option", "minDate", selectedDate );
+    }
+});
+
+jQuery( "#datepickerb" ).datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#datepickera" ).datepicker( "option", "maxDate", selectedDate );
+    }
+});
+
+</script>

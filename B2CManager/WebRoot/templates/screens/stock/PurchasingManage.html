@@ -1,0 +1,214 @@
+ #set($page.title="采购管理")
+  	<br class="clear" />
+  	<h4 class="mar_top_15 mar_bottom_20">采购管理</h4>
+<form name="listForm" id="listForm" method="get" action="$link.setPage('stock,InventoryManage.html')">
+    <div class="search_form mar_bottom_10">
+        <ul class="inline">
+            <li><label class="left mar_top_5">SKU：</label><input type="text" class="input-medium left" placeholder="SKU" /></li>
+            <li><a class="btn btn-primary left">查询</a><a id="block_more_search" class="btn btn-link left" onclick="javascript:document.getElementById('more_search').style.display='block';document.getElementById('block_more_search').style.display='none';document.getElementById('hide_more_search').style.display='block';">高级查询<span class="icon-chevron-down"></span></a><a id="hide_more_search" class="btn btn-link left hide" onclick="javascript:document.getElementById('more_search').style.display='none';document.getElementById('block_more_search').style.display='block';document.getElementById('hide_more_search').style.display='none';">收起<span class="icon-chevron-up"></span></a>
+            </li>
+            <li></li>
+        	<li><button type="button" class="btn" data-toggle="modal" data-target="#replenishment">新增采购任务</button></li>
+        </ul>
+        <br class="clear" />
+        <ul class="inline alert blue pad_left_5 pad_right_5 pad_top_15 hide" id="more_search">
+            <li><label class="left mar_top_5">采购状态：</label>
+              <select id="" name="" class="left oi_status_max_w">
+                <option value="1">全部</option>
+              </select>
+            </li>
+            <li><label class="left mar_top_5">凭证号：</label>
+              <input type="text" class="input-small left" placeholder="凭证号" />
+            </li>
+            <li><label class="left mar_top_5">任务发布人：</label>
+              <select id="" name="" class="left oi_status_max_w">
+                <option value="1">全部</option>
+              </select>
+            </li>
+            <li><label class="left mar_top_5">认领人：</label>
+              <select id="" name="" class="left oi_status_max_w">
+                <option value="1">全部</option>
+              </select>
+            </li>
+            <li><label class="left mar_top_5">产品名称：</label>
+              <input type="text" class="input-medium left" placeholder="凭证号" />
+            </li>
+            <li><button class="btn btn-success left"><span class="white">应用</span></button></li><br class="clear" />
+        </ul>
+    </div>
+    <table border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-striped table-hover center_t font12 tl_mt3_mb3 mar_bottom_0">
+  <tr class="info bold">
+            <td><label>SKU</label></td>
+    <td width="180px"><label>产品名称</label></td>
+    <td><label>上期采购日期</label></td>
+    <td><label>上期采购量<br />上期单价</label></td>
+    <td><label>应采数量</label></td>
+    <td><label>本次采购价</label></td>
+    <td><label>凭证号</label></td>
+    <td><label>本次采购时间</label></td>
+    <td><label>入库数</label></td>
+    <td><label>入库时间</label></td>
+    <td><label>任务发布人</label></td>
+    <td><label>状态</label></td>
+    <td><label>认领人</label></td>
+    <td width="110px"><label>操作</label></td>
+    </tr>
+      <tr>
+        <td><label>TG738709</label></td>
+        <td><label>If Edward struck gold in the Colorado Rockies</label></td>
+        <td><label class="font10"><span>2013-05-12</span></label></td>
+        <td><label class="font10"><span>100<br />
+        （￥ 23.2）</span></label></td>
+        <td><label>200</label></td>
+        <td><label>--</label></td>
+        <td><label>--</label></td>
+        <td><label>--</label></td>
+        <td><label>--</label></td>
+        <td><label>--</label></td>
+        <td><label>张三</label></td>
+        <td><label>未采购</label></td>
+        <td><label>--</label></td>
+        <td><a href="#purchase_confirmation" role="button" class="left" data-toggle="modal">采购确认</a><a href="#remark" role="button" class="left mar_left_10" data-toggle="modal">备注</a></td>
+      </tr>
+      <tr>
+        <td><label>TG738709</label></td>
+        <td><label>If Edward struck gold in the Colorado Rockies</label></td>
+        <td><label class="font10"><span>2013-05-12</span></label></td>
+        <td><label class="font10"><span>100<br />（￥ 23.2）</span></label></td>
+        <td><label>200</label></td>
+        <td><label>￥ 28.6</label></td>
+        <td><label>--</label></td>
+        <td><label>--</label></td>
+        <td><label>--</label></td>
+        <td><label>--</label></td>
+        <td><label>李四</label></td>
+        <td><label>已认领</label></td>
+        <td><label>张三</label></td>
+        <td><a href="#certificate" role="button" class="left" data-toggle="modal">输入凭证</a><a href="#stock_registration" role="button" class="left mar_left_10" data-toggle="modal">断货登记</a><a href="#remark" role="button" class="left" data-toggle="modal">备注</a></td>
+      </tr>
+      <tr>
+        <td><label>TG738709</label></td>
+        <td><label>If Edward struck gold in the Colorado Rockies</label></td>
+        <td><label class="font10"><span>2013-05-12</span></label></td>
+        <td><label class="font10"><span>100<br />（￥ 23.2）</span></label></td>
+        <td><label>200</label></td>
+        <td><label>￥ 28.6</label></td>
+        <td><label>766688890T66</label></td>
+        <td><label class="font10"><span>2013-05-12</span></label></td>
+        <td><label>56</label></td>
+        <td><label class="font10"><span>2013-05-12</span></label></td>
+        <td><label>张三</label></td>
+        <td><label>等待入库</label></td>
+        <td><label>--</label></td>
+        <td><a href="#certificate" role="button" class="left" data-toggle="modal">输入凭证</a><a href="#stock_registration" role="button" class="left mar_left_10" data-toggle="modal">打印SKU</a><a href="#stock_registration" role="button" class="left" data-toggle="modal">断货登记</a><a href="#remark" role="button" class="left mar_left_10" data-toggle="modal">备注</a></td>
+      </tr>
+      <tr>
+        <td><label>TG738709</label></td>
+        <td><label>If Edward struck gold in the Colorado Rockies</label></td>
+        <td><label class="font10"><span>2013-05-12</span></label></td>
+        <td><label class="font10"><span>100<br />（￥ 23.2）</span></label></td>
+        <td><label>200</label></td>
+        <td><label>￥ 28.6</label></td>
+        <td><label>766688890T66</label></td>
+        <td><label class="font10"><span>2013-05-12</span></label></td>
+        <td><label>56</label></td>
+        <td><label class="font10"><span>2013-05-12</span></label></td>
+        <td><label>张三</label></td>
+        <td><label>采购完成</label></td>
+        <td><label>--</label></td>
+        <td><a href="#remark" role="button" class="left" data-toggle="modal">备注</a></td>
+      </tr>
+    </table>
+	#parse("/screens/Nap.html")
+</form>
+	
+<div id="replenishment" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 990px; max-width: 990px; margin-left: -495px; ">
+  <div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+  <h5 id="myModalLabel">新增采购任务</h5>
+  </div>
+  <div class="modal-body">
+    <table cellspacing="0" cellpadding="0" border="0" class="mar_left_20">
+    <tbody><tr>
+    <td width="110px" class="v_top right_t"><label class="mar_right_10">SKU：</label></td>
+    <td><input type="text" placeholder="SKU" class="input-medium left"></td>
+    </tr>
+    <tr>
+    <td width="110px" class="v_top right_t"><label class="mar_right_10">产品名称：</label></td>
+    <td>
+		<input type="text" placeholder="产品名称" class="input-medium left">
+		##<label>If Edward struck gold in the Colorado Rockies...</label>
+	</td>
+    </tr>
+    <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">采购数量：</label><span class="required mar_right_5 right mar_top_5">*</span></td>
+    <td>
+      <input type="text" placeholder="采购数量" class="input-small">
+    </td>
+    </tr>
+    <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">采购渠道：</label></td>
+    <td>
+      <input type="text" placeholder="采购渠道" class="input-medium left">
+    </td>
+    </tr>
+    <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">描述</label></td>
+    <td>
+      <textarea style="resize: none;" placeholder="" class="input-xxlarge left" rows="3"></textarea>
+    </td>
+    </tr>
+    <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">附件：</label></td>
+    <td>
+    	<!--<a href="#view_attachments" role="button" class="btn btn-small btn-link left" data-toggle="modal">View</a>-->
+        <input type="file" id="fileInput" class="input-file left">
+        <button class="btn left mar_left_10">Upload</button><br class="clear"><!--<span class="help-block red">Here can only upload pictures, jpg/gif file within 200KB.</span>-->
+        <ul class="inline">
+        <li><img class="left wh_50px" src="/static/prototype/shopmic-manage/img/product_default.gif" /><span class="left mar_left_3 red font20 cursor_pointer">×</span></li>
+        <li><img class="left wh_50px" src="/static/prototype/shopmic-manage/img/product_default.gif" /><span class="left mar_left_3 red font20 cursor_pointer">×</span></li>
+        </ul><br class="clear">
+    </td>
+    </tr>
+    </tbody></table>
+  </div>
+  <div class="modal-footer">
+  <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+  <button class="btn btn-primary" data-dismiss="modal">确定</button>
+  </div>
+</div><!-- E replenishment -->
+
+
+  <br class="clear" />
+  <div id="footer"></div>
+
+  <!--<div style="width:100%; height:30px; margin-top:50px; background:url(/static/prototype/shopmic-manage/img/footer.jpg) repeat-x;"></div>-->
+  
+  <div id="layer_box">
+   <p class="layer_box_tit"><a href="javascript:();">新支付</a></p>
+   <p class="layer_box_tit"><a href="javascript:();">新订单</a></p>
+  </div>
+<!-- S javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/jquery-1.7.2.min.js"></script>
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/bootstrap.min.js"></script>
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/jquery-ui-1.10.0.custom.min.js"></script>
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/datepicker.js"></script>
+<script type="text/javascript">
+(function() {
+    var ￥backToTopTxt = '', ￥backToTopEle = ￥('<div class="backToTop_pro"></div>').appendTo(￥("body"))
+        .text(￥backToTopTxt).attr("title", ￥backToTopTxt).click(function() {
+            ￥("html, body").animate({ scrollTop: 0 }, 120);
+    }), ￥backToTopFun = function() {
+        var st = ￥(document).scrollTop(), winh = ￥(window).height();
+        (st > 0)? ￥backToTopEle.show(): ￥backToTopEle.hide();
+        //IE6下的定位
+        if (!window.XMLHttpRequest) {
+            ￥backToTopEle.css("top", st + winh - 166);
+        }
+    };
+    ￥(window).bind("scroll", ￥backToTopFun);
+    ￥(function() { ￥backToTopFun(); });
+})();
+</script>

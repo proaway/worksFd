@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertStockoutBean" parameterClass="com.fd.fashion.product.bean.StockoutBean">
+        <![CDATA[
+insert into T_STOCKOUT
+  (PRODUCT_ID, SKU, STOCKOUT_USER, STOCKOUT_COUNT, STOCKOUT_DATE, VALD, BUYER_ID)
+values
+  (#productId#, #sku#, #stockoutUser#, #stockoutCount#, #stockoutDate#, #vald#, #buyerId#)
+        ]]>
+        <selectKey keyProperty="stockoutId" resultClass="long">
+            <![CDATA[select @@identity as stockoutId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateStockoutBean" parameterClass="com.fd.fashion.product.bean.StockoutBean">
+        <![CDATA[
+update T_STOCKOUT 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="productId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="sku" prepend="," removeFirstPrepend="true">
+                <![CDATA[SKU = #sku#]]>
+            </isNotNull>
+            <isNotNull property="stockoutUser" prepend="," removeFirstPrepend="true">
+                <![CDATA[STOCKOUT_USER = #stockoutUser#]]>
+            </isNotNull>
+            <isNotNull property="stockoutCount" prepend="," removeFirstPrepend="true">
+                <![CDATA[STOCKOUT_COUNT = #stockoutCount#]]>
+            </isNotNull>
+            <isNotNull property="stockoutDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[STOCKOUT_DATE = #stockoutDate#]]>
+            </isNotNull>
+            <isNotNull property="vald" prepend="," removeFirstPrepend="true">
+                <![CDATA[VALD = #vald#]]>
+            </isNotNull>
+            <isNotNull property="buyerId" prepend="," removeFirstPrepend="true">
+                <![CDATA[BUYER_ID = #buyerId#]]>
+            </isNotNull>
+        </dynamic>
+        <dynamic prepend="where">
+             <isNotNull property="stockoutId" prepend="and" removeFirstPrepend="true">
+	             <![CDATA[STOCKOUT_ID = #stockoutId#]]>
+	         </isNotNull>
+	         <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+	             <![CDATA[PRODUCT_ID = #productId#]]>
+	         </isNotNull>
+	         <isNotNull property="sku" prepend="and" removeFirstPrepend="true">
+	             <![CDATA[SKU = #sku#]]>
+	         </isNotNull>
+	         <isNotNull property="stockoutUser" prepend="and" removeFirstPrepend="true">
+	             <![CDATA[STOCKOUT_USER = #stockoutUser#]]>
+	         </isNotNull>
+	         <isNotNull property="buyerId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[BUYER_ID = #buyerId#]]>
+         </isNotNull>
+	    </dynamic>
+    </update>
+
+    <sql id="getStockoutBeanCondition">
+         <isNotNull property="stockoutId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[STOCKOUT_ID = #stockoutId#]]>
+         </isNotNull>
+         <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PRODUCT_ID = #productId#]]>
+         </isNotNull>
+         <isNotNull property="sku" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SKU = #sku#]]>
+         </isNotNull>
+         <isNotNull property="stockoutUser" prepend="and" removeFirstPrepend="true">
+             <![CDATA[STOCKOUT_USER = #stockoutUser#]]>
+         </isNotNull>
+         <isNotNull property="stockoutCount" prepend="and" removeFirstPrepend="true">
+             <![CDATA[STOCKOUT_COUNT = #stockoutCount#]]>
+         </isNotNull>
+         <isNotNull property="stockoutDate" prepend="and" removeFirstPrepend="true">
+             <![CDATA[STOCKOUT_DATE = #stockoutDate#]]>
+         </isNotNull>
+         <isNotNull property="vald" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VALD = #vald#]]>
+         </isNotNull>
+         <isNotNull property="buyerId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[BUYER_ID = #buyerId#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getStockoutBeanCount" parameterClass="com.fd.fashion.product.bean.StockoutBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_STOCKOUT 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getStockoutBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getStockoutBean" parameterClass="com.fd.fashion.product.bean.StockoutBean"
+        resultClass="com.fd.fashion.product.bean.StockoutBean">
+        <![CDATA[
+select 
+	STOCKOUT_ID	as stockoutId,
+	PRODUCT_ID	as productId,
+	SKU	as sku,
+	STOCKOUT_USER	as stockoutUser,
+	STOCKOUT_COUNT	as stockoutCount,
+	STOCKOUT_DATE	as stockoutDate,
+	VALD	as vald,
+	BUYER_ID	as buyerId
+from T_STOCKOUT 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getStockoutBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteStockoutBean" parameterClass="com.fd.fashion.product.bean.StockoutBean">
+        <![CDATA[
+delete from T_STOCKOUT where STOCKOUT_ID=#stockoutId#
+        ]]>
+    </delete>
+
+</sqlMap>

@@ -1,0 +1,514 @@
+$page.setTitle("Coupon管理")
+<form name="listForm" id="listForm"  method="get" action="$link.setPage('marketing,CouponList.html')">
+	<br class="clear" />
+	<h4 class="mar_top_15 mar_bottom_20">Coupon管理</h4>
+	<div class="search_form mar_bottom_10">
+		
+		<input type="hidden" value="$searchType" name="searchType" id="searchType"/>
+		<ul class="inline">
+			<li><label class="left mar_top_5">Coupon Code：</label><input
+				type="text" class="input-medium left" placeholder="Coupon Code"
+				value="$!couponCode" id="couponCode" name="couponCode" /></li>
+			<li><input class="btn btn-primary left" type="submit" value="查询"></input>
+			
+				<a id="block_more_search" class="btn btn-link left #if($!searchType == 1) hide #end"
+				onclick="javascript:document.getElementById('more_search').style.display='block';jQuery('#searchType').val(1);document.getElementById('block_more_search').style.display='none';document.getElementById('hide_more_search').style.display='block';setCookie('advSearch',1,30);">高级查询
+					<span class="icon-chevron-down"></span> </a>
+			
+				<a id="hide_more_search" class="btn btn-link left #if($!searchType == 0) hide #end"
+				onclick="javascript:document.getElementById('more_search').style.display='none';document.getElementById('block_more_search').style.display='block';document.getElementById('hide_more_search').style.display='none';document.getElementById('searchType').value=0;setCookie('advSearch',0,30);">收起<span
+					class="icon-chevron-up"></span> </a>
+
+			</li>
+		</ul><script>jQuery("document").ready(function(){if(getCookie("advSearch")==1){jQuery("a#block_more_search").click();}});</script>
+		<br class="clear" />
+		<ul class="inline alert blue pad_left_5 pad_right_5 pad_top_15 #if($searchType == 0) hide #end"
+			id="more_search">
+			<li><label class="left mar_top_5">Coupon类型：</label> <select
+				id="couponType" name="couponType" class="left">
+					<option value="">所有</option>
+					<option value="0" #if($!counponType== '0') selected="selected" #end>现金</option>
+					<option value="1" #if($!counponType== '1') selected="selected" #end>折扣</option>
+			</select>
+			</li>
+			<li><label class="left mar_top_5">优惠额度：</label> <input
+				type="text" class="input-mini left" placeholder="优惠额度" value="$!startAmount"
+				name="startAmount" /> <label
+				class="left mar_top_5 mar_left_5 mar_right_5">至</label> <input
+				type="text" class="input-mini left" placeholder="优惠额度" value="$!endAmount"
+				name="endAmount" /></li>
+			<li><label class="left mar_top_5">最低消费：</label> <input
+				type="text" class="input-mini left" placeholder="最低消费"
+				value="$!startMiniAmount" id="minaMount" name="startMiniAmount" />
+				 <label class="left mar_top_5 mar_left_5 mar_right_5">至</label>
+				<input
+				type="text" class="input-mini left" placeholder="最低消费" value="$!endMiniAmount"
+				name="endMiniAmount" /></li>
+			</li>
+			<li><label class="left mar_top_5">创建时间：</label><input
+				type="text" id="datepickera" value="$!createDateStart"
+				class="input-small mar_right_10 left" name="createDateStart" /> <label
+				class="left mar_top_5">到</label><input type="text"
+				id="datepickerb" name="createDateEnd" value="$!createDateEnd"
+				class="input-small mar_left_10 mar_right_5 left" /></li>
+			<li><label class="left mar_top_5">Coupon状态：</label> <select
+				id="normalState" name="normalState" class="left">
+					<option value="">全部</option>
+					<option value="0" #if($!normalState== '0') selected="selected" #end>正常</option>
+					<option value="1" #if($!normalState== '1') selected="selected" #end>失效</option>
+					<option value="2" #if($!normalState== '2') selected="selected" #end>已使用</option>
+					<option value="3" #if($!normalState== '3') selected="selected" #end>未开始</option>
+			</select>
+			</li>
+			<li><label class="left mar_top_5">买家昵称：</label> <input
+				type="text" class="input-small left" placeholder="买家昵称"
+				value="$!userId" name="userId" id="userId" />
+			</li>
+			<li><input  type="submit" class="btn btn-success left" value="应用"/></li>
+			<br class="clear" />
+		</ul>
+	</div>
+
+	<table border="0" cellspacing="0" cellpadding="0"
+		class="table table-bordered table-striped table-hover center_t font12 tl_mt3_mb3 mar_bottom_0">
+		<tr class="info bold">
+			<td><label class="checkbox left"><input type="checkbox"
+					name="chk_all" value="size_templet_name">全选</label>Coupon Code</td>
+			<td><label>创建时间</label></td>	
+			<td><label>Coupon类型</label></td>
+			<td><label>优惠额度</label></td>
+			<td><label>最低消费（$）</label></td>
+			<td><label>使用次数</label></td>
+			<td><label>有效期</label></td>
+			<td><label>适用范围</label></td>
+			<td><label>订单信息</label></td>
+			<td><label>Coupon状态</label></td>
+			<td><label>操作</label></td>
+		</tr>
+		<tbody>
+			#foreach($coupon in $couponList)
+			<tr>
+				<td><label class="checkbox"><input type="checkbox" name="chk_list"
+						id="" value="$coupon.couponCode">
+						$coupon.couponCode</label></td>
+				<td><label class="font10"><span>$!StringUtil.getDateString($coupon.createDate)</span> </label></td>
+				<td><label>#if($coupon.couponType == "1") 折扣 #else 现金
+						#end</label></td>
+				<td><label>#if($coupon.couponType == "1")
+						$!coupon.couponDiscount % #else $ $!coupon.couponAmount #end</label></td>
+				<td><label>$!coupon.minaMount</label></td>
+				<td><label>#if($coupon.numberType==1)多次 #else 单次 #end</label></td>
+				<td><label class="font10">
+					<span>
+					#if($coupon.startDate && $coupon.endDate)
+						$!StringUtil.getDateString($coupon.startDate)
+							至 $!StringUtil.getDateString($coupon.endDate)
+					#else
+						--
+					#end
+					</span> </label></td>
+				<td><a data-toggle="modal" class="" role="button" href="#" onclick="getCouponLimit('$coupon.couponCode')">查看</a></td>
+				<td><label class=""> #if($coupon.normalState == '2')
+				<a data-toggle="modal" class="mar_left_5" role="button" href="#" onclick="getCouponOrder('$coupon.couponCode')">查看</a>
+				#else
+				--
+				#end
+				</label></td>
+				<td><label>#if($coupon.normalState == '0') 正常
+						#elseif($coupon.normalState == '1') 失效 #elseif($coupon.normalState
+						== '2') 已用 #end
+						#if($coupon.status == '0') (已禁用) #end
+						</label></td>
+				<td>#if($coupon.status == '0') <a href="#" onclick="showTab(this,'enabled_coupon')"
+					role="button" class="mar_right_10" data-toggle="modal">启用</a> #else
+					<a href="#" role="button" class="mar_right_10"
+					data-toggle="modal" onclick="showTab(this,'forbidden_coupon')">禁用</a> #end</td>
+			</tr>
+			#end
+		</tbody>
+	</table>
+	<table class="table font14" style="margin-top:0px;">
+		<tr class="success">
+			<td><label class="checkbox left mar_top_5"><input
+					type="checkbox" name="chk_all" value="size_templet_name">全选</label><a
+				href="#" role="button"
+				class="btn btn-warning btn-small font12 left mar_left_15"
+				data-toggle="modal"><span class="white" onclick="showTab(this,'forbidden_coupon')">禁 用</span>
+			</a><a href="#add_coupon" role="button"
+				class="btn btn-success btn-small font12 left mar_left_15"
+				data-toggle="modal"><span class="white">新增Coupon</span>
+			</a><a href="#add_coupon" role="button"
+				class="btn btn-success btn-small font12 right mar_right_10"
+				data-toggle="modal"><span class="white">新增Coupon</span>
+			</a>
+			</td>
+			</a>
+			</td>
+		</tr>
+	</table>
+	#parse("/screens/Nap.html")
+<!-- 	<div class="pagination pagination-right">
+		<span style="display:block; margin-bottom:5px;">总条数：<strong
+			class="red mar_right_15">4</strong> 总页数：<strong class="red">1</strong>
+		</span>
+		<ul>
+			<li class="disabled"><a href="javascript:();">«</a></li>
+			<li class="active"><a href="javascript:();">1</a></li>
+			<li><a href="javascript:();">2</a></li>
+			<li><a href="javascript:();">3</a></li>
+			<li><a href="javascript:();">4</a></li>
+			<li><a href="javascript:();">5</a></li>
+			<li><a href="javascript:();">»</a></li>
+		</ul>
+	</div> -->
+	<!-- E page -->
+	
+	<div id="view_conditions" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h5 id="myModalLabel">查看适用范围</h5>
+        </div>
+        <div class="modal-body">
+        	<dl class="dl-horizontal font12" id="limitList">
+            </dl>
+        </div>
+        <div class="modal-footer">
+        <!--<button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>-->
+        <button class="btn btn-primary" data-dismiss="modal">确定</button>
+        </div>
+    </div><!-- E view_conditions -->
+    
+    <div id="more_order_number" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h5 id="myModalLabel">查看Coupon订单</h5>
+        </div>
+        <div class="modal-body">
+        	<ul class="inline" id="orderList">
+
+            </ul>
+        </div>
+        <div class="modal-footer">
+        
+        </div>
+    </div><!-- E more_order_number -->
+    
+
+	<div id="forbidden_coupon" class="modal hide fade" tabindex="-1"
+		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">×</button>
+			<h5 id="myModalLabel">禁用Coupon</h5>
+		</div>
+		<div class="modal-body">
+			<p class="font16">确定禁用所选Coupon吗？</p>
+		</div>
+		<div class="modal-footer">
+			<input type="button" class="btn" data-dismiss="modal" aria-hidden="true" onclick="cancelChk();" value="取消"/>
+			<input type="button" class="btn btn-primary" data-dismiss="modal" onclick="disableCoupon(0)" value="确定"/>
+		</div>
+	</div>
+	<!-- E forbidden_coupon -->
+	
+		<div id="enabled_coupon" class="modal hide fade" tabindex="-1"
+		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">×</button>
+			<h5 id="myModalLabel">启用Coupon</h5>
+		</div>
+		<div class="modal-body">
+			<p class="font16">确定启用所选Coupon吗？</p>
+		</div>
+		<div class="modal-footer">
+			<input type="button" class="btn" data-dismiss="modal" aria-hidden="true" onclick="cancelChk();" value="取消"/>
+			<input type="button" class="btn btn-primary" data-dismiss="modal" onclick="disableCoupon(1)" value="确定"/>
+		</div>
+	</div>
+	<!-- E forbidden_coupon -->
+
+</form>
+
+<form id="couponForm">
+<div id="add_coupon" class="modal hide fade" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true"
+	style="width: 990px; max-width: 990px; margin-left: -495px; ">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">×</button>
+		<h5 id="myModalLabel">新增Coupon</h5>
+	</div>
+	<div class="modal-body">
+		<div class="coupon_detail mar_bottom_10">
+			<dl class="dl-horizontal">
+				<dt>
+					<label class="mar_top_5 right">Coupon类型：</label><span
+						class="required">*</span>
+				</dt>
+				<dd>
+					<label class="radio inline mar_right_10"><input value="0"
+						name="cCouponType" type="radio" checked="checked" onclick="jQuery('#dolId').show();jQuery('#modId').hide();">现金</label><label
+						class="radio inline"><input value="1" name="cCouponType"
+						type="radio" onclick="jQuery('#dolId').hide();jQuery('#modId').show();">折扣</label>
+				</dd>
+				<dt>
+					<label class="mar_top_5 right">优惠额度：</label><span class="required">*</span>
+				</dt>
+				<dd>
+					<input placeholder="优惠额度" class="input-medium left" type="text" name="cCouponAmount">
+					<label class="left mar_top_5 mar_left_5" id="dolId">$</label>
+					<label class="left mar_top_5 mar_left_5 hide" id="modId">%</label>
+				</dd>
+				<dt>
+					<label class="mar_top_5 right">有效期：</label><span class="required">*</span>
+				</dt>
+				<dd>
+					<input
+						type="text" value="" id="datepickerc" name="cStartDate"
+						class="input-small mar_right_5 left" /><label
+						class="left mar_top_5">到</label><input type="text" name="cEndDate"
+						value="" id="datepickerd"
+						class="input-small mar_left_5 mar_right_5 left" /><br class="clear" />
+				</dd>
+				<dt><label class="mar_top_5 right">使用次数：</label><span class="required">*</span><br class="clear"></dt>
+				<dd><label class="radio inline mar_right_10">
+					<input type="radio" checked="checked" name="numType" value="0">单次</label>
+					<label class="radio inline"><input type="radio" name="numType" value="1">不限次</label>
+				</dd>
+				<dt>
+					<label class="mar_top_5 right">最低消费限额：</label>
+				</dt>
+				<dd>
+					<input placeholder="最低消费限额" class="input-medium left" type="text" name="cMinaMount"><label
+						class="left mar_top_5 mar_left_5">$</label><br class="clear">
+					<span class="help-block">填写指定限额后，买家只能再达到指定金额的订单中使用该Coupon。</span>
+				</dd>
+				<dt>
+					<label class="mar_top_5 right">指定可用分类：</label>
+				</dt>
+				<dd>
+					 <script language="javascript" src="/static/prototype/shopmic-manage/js/customcatselector.js"></script> 
+					  <script>var CustomCatSelector = new CustomCategorySelector(4, "customCatId","selectCatName");</script>
+						<select class="left mar_right_10 width_110px" id="customCatId1">
+							<option value="000">一级分类</option>
+					</select> 
+					<select class="left mar_right_10 width_110px" id="customCatId2">
+							<option value="000000">二级分类</option>
+					</select> 
+					<select class="left mar_right_10 width_110px" id="customCatId3">
+							<option value="000000000">三级分类</option>
+					</select> 
+					<select class="left mar_right_10 width_110px" id="customCatId4">
+							<option value="000000000000">四级分类</option>
+					</select> 
+					<input type="button" class="btn btn-success left" onclick="return addCat();" value="添加">
+					<br class="clear" /> <span class="help-block">如果不指定分类，则生成的Coupon所有分类都可使用。</span>
+					<div class="alert alert-info blue">
+						<table id="selectCatIds" style="display:none;">
+                        <tr >
+                            <td><label class="mar_top_5 mar_right_20" id="choose_category"> <b id="selectCatName"></b><input type="button" class="btn btn-link" onclick="delCat(this);" value="删除"></label>
+                            </td>
+                        	<input type="hidden" name="customCatId" id="customCatId" value="" verify="id"/>
+                        </tr>
+	                    </table>
+	                    <table id="cats">
+	                    
+	                    </table>
+					</div>
+				</dd>
+				<dt>
+					<label class="mar_top_5 right">指定买家：</label>
+				</dt>
+				<dd>
+					<input placeholder="买家昵称" class="input-medium left mar_right_10" id="selUserId" name="selUserId"
+						type="text">
+					<input type="button" class="btn btn-success left" onclick="addUser()" value="添加">
+					<span class="help-block left mar_left_10 mar_top_5">请输入买家昵称。</span>
+					<br class="clear" />
+					<div class="alert alert-info blue">
+						 <ul class="inline" id="userIds">
+                    	</ul>
+					</div>
+				</dd>
+				<dt>
+					<label class="mar_top_5 right">指定产品：</label>
+				</dt>
+				<dd>
+					<input placeholder="SKU/Item Code"
+						class="input-medium left mar_right_10" type="text" name="selSku" id="selSku">
+					<input type="button" class="btn btn-success left" onclick="addSkus()" value="添加"/>
+					<span class="help-block left mar_left_10 mar_top_5">请输入产品SKU。</span>
+					<br class="clear" />
+					<div class="alert alert-info blue">
+						 <ul class="inline" id="skus">
+                   		</ul>
+					</div>
+				</dd>
+			</dl>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<input type="button" class="btn btn-primary" onclick="couponSubmit();" value="生成"/>
+	</div>
+</div>
+</form>
+<!-- E add_coupon -->
+
+<!-- S javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script language="javascript" type="text/javascript"
+	src="/static/prototype/shopmic-manage/js/jquery-ui-1.10.0.custom.min.js"></script>
+<script language="javascript" type="text/javascript"
+	src="/static/prototype/shopmic-manage/js/datepicker.js"></script>
+<script type="text/javascript">
+<!--
+jQuery('#datepickerc').datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#datepickerd" ).datepicker( "option", "minDate", selectedDate );
+    }
+});
+
+
+jQuery( "#datepickerd" ).datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#datepickerc" ).datepicker( "option", "maxDate", selectedDate );
+    }
+});
+
+function addUser(){
+	var userId = jQuery("#selUserId").val();
+	jQuery("#userIds").append('<li><input type="hidden" name="userIds" value="'+userId+'"/><label class="left lineh_30"><span class="black">'+userId+'</span></label><button class="btn btn-link left" onclick="del(this);">删除</button></li>');                                                              
+	jQuery("#selUserId").val('');
+}
+function addSkus(){
+	var sku = jQuery("#selSku").val();
+	jQuery("#skus").append('<li><input type="hidden" name="skus" value="'+sku+'"/><label class="left lineh_30"><span class="black">'+sku+'</span></label><button class="btn btn-link left" onclick="del(this);">删除</button></li>');                                                              
+	jQuery("#selSku").val('');
+}
+function addCat(){
+	var html = jQuery("#selectCatIds").html();
+	var selCatIds = jQuery("#cats").find("input[name='customCatId']");
+	for(var i=0;i<selCatIds.length;i++){
+		var tmpId = jQuery(html).find("input[name='customCatId']").val();
+		var catId = selCatIds[i].value;
+		if(tmpId == catId){
+			alert("已经添加过该分类!");
+			return false;
+		}
+	}
+	jQuery("#cats").append(html);
+	jQuery("#cats").find("input[name='customCatId']").attr("id","");
+	jQuery("#cats").find("b[id=selectCatName]").attr("id","");
+}
+function delCat(obj){
+	jQuery(obj).parents("tbody").remove();
+}
+function del(obj){
+	jQuery(obj).parent().remove();
+}
+function couponSubmit(){
+	var cCouponAmount = jQuery("input[name=cCouponAmount]").val();
+	var cStartDate = jQuery("input[name=cStartDate]").val();
+	var cEndDate = jQuery("input[name=cEndDate]").val();
+	if(cCouponAmount == '' || cStartDate=='' || cEndDate==''){
+		alert('信息不完整!');
+		return;
+	}
+	jQuery("body").showLoading();
+	jQuery("#selectCatIds").html('');
+	jQuery.ajax({
+		url:"$link.setAction('marketing.CreateCoupon')",
+		type:"post",
+		data:form2URL("couponForm"),
+		dataType:"json",
+		success:function(data){
+			jQuery("body").hideLoading();
+			if (data==1) {
+				alert("添加成功!");
+				jQuery("#add_coupon").modal("hide");
+				location.reload();
+			} else {
+				alert(0);
+			}
+		},
+		error:function(){
+				jQuery("body").hideLoading();
+			}
+	 });	
+}
+jQuery("input[name=chk_all]").click(function(){
+	 if(jQuery(this).attr("checked") == 'checked'){
+    	jQuery("input[name='chk_list']").attr("checked","checked");
+	 }else{
+	 	jQuery("input[name='chk_list']").removeAttr("checked")
+	 }
+});
+
+function disableCoupon(status){
+	jQuery("body").showLoading();
+	var coupons = '';
+	jQuery('input[name="chk_list"]:checked').each(function(){
+		coupons += jQuery(this).attr("value") + ","
+	});
+	var param = "couponCode="+coupons+"&status="+status;
+	jQuery.ajax({
+		url:"$link.setAction('marketing.DisableCoupon')",
+		type:"post",
+		data:param,
+		success:function(data){
+			jQuery("body").hideLoading();
+			jQuery('input[name="chk_list"]:checked').removeAttr("checked");
+			if (data==1) {
+				location.reload();
+			} else {
+				alert('操作失败!');	
+			}
+		},
+		error:function(){
+			jQuery("body").hideLoading();
+		}
+	 });	
+}
+function showTab(obj,div){
+	jQuery(obj).parents("tr").find("input[name=chk_list]").attr("checked","checked");
+	jQuery("#"+div).modal("show");
+}
+function cancelChk(){
+	jQuery('input[name="chk_list"]:checked').removeAttr("checked");
+	jQuery('input[name="chk_all"]:checked').removeAttr("checked");
+}
+
+function getCouponLimit(couponCode){
+	jQuery.ajax({
+		url:"$link.setPage('marketing,AjaxGetCouponLimit.html')",
+		type:"post",
+		data:"couponCode="+couponCode,
+		success:function(data){
+			jQuery("#limitList").html(data);
+			jQuery("#view_conditions").modal("show");
+		}
+	 });	
+}
+
+function getCouponOrder(couponCode){
+	jQuery("body").showLoading();
+	jQuery.ajax({
+		url:"$link.setPage('marketing,AjaxGetCouponOrder.html')",
+		type:"post",
+		data:"couponCode="+couponCode,
+		success:function(data){
+			jQuery("body").hideLoading();
+			jQuery("#orderList").html(data);
+			jQuery("#more_order_number").modal("show");
+		},
+		error:function(){
+			jQuery("body").hideLoading();
+		}
+	 });	
+}
+//-->
+</script>

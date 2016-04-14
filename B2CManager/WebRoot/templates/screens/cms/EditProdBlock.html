@@ -1,0 +1,102 @@
+<div id="edit_product" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+<h5 id="myModalLabel">编辑产品</h5>
+</div>
+<div class="modal-body"><form id="blockForm">
+	<input type="hidden" name="blockId" value="$!block.blockId"/>
+	<input type="hidden" name="blockName" value="$!block.blockName"/>
+	<input type="hidden" name="blockLocation" value="$!block.blockLocation"/>
+	<input type="hidden" name="channelId" value="$!block.channelId"/>
+	<input type="hidden" name="imgSpec" value="$!block.imgSpec"/>
+	<input type="hidden" name="blockType" value="0"/>
+	<input type="hidden" name="imgUrl" value="$!block.imgUrl"/>
+	<input type="hidden" name="imgAlt" value="$!block.imgAlt"/>
+	<input type="hidden" name="infoId" value="$!block.infoId"/>
+	<input type="hidden" name="newProd" value="0"/>
+    <table class="font12 mar_left_20" width="470px">
+    	<tr>
+        	<td width="130px">
+            	<img src="$!block.imgUrl" width="106" height="92" class="img-polaroid" id="imgUrl"/><br />
+                <span class="font11 lineh_14">图片尺寸：$!block.imgSpec pix<br />图片大小： 200k以内</span>
+            </td>
+            <td class="v_top">
+            	<ul class="unstyled">
+                	<li><label class="left mar_top_5">SKU：</label>
+						<input placeholder="" name="sku" value="$!block.sku" class="input-small left" type="text">
+							<input type="button" class="btn btn-small left mar_left_10" value="搜索" onclick="searchSku()"/>
+							<span class="red left mar_left_10 mar_top_5 hide" id="skuErr">错误的SKU，请重试。</span><br class="clear" /></li>
+                	<li>SKU: <span id="sku">$!block.sku</span></li>
+                	<li>上架时间: $!StringUtil.getDateString($product.createTime)</li>
+                    <li>分类: $!cats</li>
+                	<li>价格: $ $!price.discountPrice 
+#if($price.priceBean.discount && $price.priceBean.discount>0)
+						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 折扣: ${price.priceBean.discount}% off
+#end
+					</li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+        	<td colspan="2" class="pad_top_5">
+				<input type="button" id="selectLocalImg" class="btn btn-mini left" value="本地上传"/>
+				<input type="button"  id="selectImg" class="btn btn-mini left mar_left_15" value="图片空间"/>
+				<br class="clear" /><p class="red mar_bottom_5 hide">您上传的图片尺寸应该为 150*200 pix，请重新上传。</p></td>
+        </tr>
+        <tr>
+        	<td>链接地址: </td><td class="right_t gray"></td>
+        </tr>
+        <tr><td colspan="2"><input type="text" placeholder="" class="span5" name="linkUrl" value="$!block.linkUrl"></td></tr>
+        <tr>
+        	<td>产品标题: </td><td class="right_t gray">(50个字符以内）</td>
+        </tr>
+        <tr><td colspan="2"><input type="text" placeholder="" class="span5" name="title" value="$!block.title"></td></tr>
+        <tr>
+        	<td>产品摘要: </td><td class="right_t gray">(100个字符以内）</td>
+        </tr>
+        <tr><td colspan="2"><textarea rows="2" class="span5 mar_right_15" name="summary" placeholder="" style="resize: none;">$!block.summary</textarea></td></tr>
+    </table>
+</div>
+<div class="modal-footer">
+<input type="button" class="btn" data-dismiss="modal" aria-hidden="true" value="取消"/>
+<input type="button" class="btn btn-primary" onclick="confirmAdBlock('edit_product', $block.blockLocation)" value="确定"/>
+</div>
+</div><!-- E edit_product -->
+<script>
+jQuery('#edit_product').modal({
+	show:true
+})
+function searchSku() {
+	jQuery("#skuErr").hide();
+	var sku = jQuery.trim(jQuery("#blockForm").find("[name='sku']").val());
+	if (sku == "") {
+		alert("请输入sku");
+		return;
+	}
+	jQuery.getJSON("$link.setAction('product.AjaxGetProduct')", 
+		{sku:sku}, 
+		function(data){
+			if (data != null) {
+				jQuery("#imgUrl").attr("src", data.bigImageUrl);
+				jQuery("#sku").html(data.product.sku);
+				jQuery("[name='imgUrl']").val(data.midImageUrl);
+				jQuery("[name='imgAlt']").val(data.product.productName);
+				jQuery("[name='title']").val(data.product.productName);
+				jQuery("[name='linkUrl']").val(data.productUrl);
+				jQuery("[name='summary']").val(data.product.description);
+				jQuery("[name='infoId']").val(data.product.productId);
+				jQuery("[name='newProd']").val(1);
+			} else {
+				jQuery("#imgUrl").attr("src", "");
+				jQuery("#sku").html("");
+				jQuery("[name='imgUrl']").val("");
+				jQuery("[name='imgAlt']").val("");
+				jQuery("[name='title']").val("");
+				jQuery("[name='linkUrl']").val("");
+				jQuery("[name='summary']").val("");
+				jQuery("[name='infoId']").val("");
+				jQuery("#skuErr").show();
+			}
+		});
+}
+</script>

@@ -1,0 +1,45 @@
+
+<dt>
+	<label>适用的类目：</label>
+</dt>
+<dd>
+	#if($catList)
+	#foreach($list in $catList)
+		<label>&bull;
+		#foreach($cat in $list)
+			$cat.catNameCn #if(${velocityCount} != $list.size()) >> #end 
+		#end
+		</label>
+	#end
+	#else
+	<label>全部</label>
+	#end
+</dd>
+
+
+<dt>
+	<label>适用的产品：</label>
+</dt>
+
+<dd>
+	#if($limitProduct)
+	<label>
+	$!limitProduct
+	</label>
+	#else
+	<label>全部</label>
+	#end
+</dd>
+
+
+<dt>
+	<label>适用的用户：</label>
+</dt>
+
+<dd>
+	#if($userIds)
+	<label>$!userIds</label>
+	#else
+	<label>全部</label>
+	#end
+</dd>

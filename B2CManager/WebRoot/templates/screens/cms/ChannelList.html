@@ -1,0 +1,279 @@
+<form name="listForm" id="listForm" method="get" action="$link.setPage('cms,ChannelList.html')" >  
+  	<br class="clear" />
+  	<h4 class="mar_top_15 mar_bottom_20">页面管理</h4>
+    <div class="search_form mar_bottom_10">
+        <ul class="inline">
+            <li><label class="left mar_top_5">页面名称：</label><input type="text" class="input-medium left" name="channelName" value="$!channelName" placeholder="页面名称" /></li>
+        <li><input class="btn btn-warning bold left mar_top_0" type="submit" value="查 询"/>
+			<a onclick="javascript:document.getElementById('more_search').style.display='block';document.getElementById('block_more_search').style.display='none';document.getElementById('hide_more_search').style.display='block';setCookie('advSearch',1,30);" class="btn btn-link left" id="block_more_search" href="javascript:;">高级查询<span class="icon-chevron-down"></span></a>
+			<a onclick="javascript:document.getElementById('more_search').style.display='none';document.getElementById('block_more_search').style.display='block';document.getElementById('hide_more_search').style.display='none';setCookie('advSearch',0,30);" class="btn btn-link left hide" id="hide_more_search" href="javascript:;">收起<span class="icon-chevron-up"></span></a>
+		</li><script>jQuery("document").ready(function(){if(getCookie("advSearch")==1){jQuery("a#block_more_search").click();}});</script>
+        </ul>
+        <br class="clear" />
+        <ul class="inline alert blue pad_left_5 pad_right_5 pad_top_15 hide" id="more_search">
+            <li><label class="left mar_top_5">页面编号：</label>
+              <input type="text" class="input-medium left" placeholder="页面编号"  name="channelId" value="$!channelId"/>
+            </li>
+            <li><label class="left mar_top_5">模板名称：</label>
+              <input type="text" class="input-medium left" placeholder="模板名称" name="templateName" value="$!templateName"/>
+            </li>
+            <li><label class="left mar_top_5">模板类型：</label>
+              <select id="" name="templateType" class="left">
+                <option value="">全部</option>
+              	<option value="1" #if($!templateType==1) selected #end>首页</option>
+				<option value="2" #if($!templateType==2) selected #end>频道</option>
+				<option value="3" #if($!templateType==3) selected #end>活动</option>
+				<option value="4" #if($!templateType==4) selected #end>文章</option>
+				<option value="5" #if($!templateType==5) selected #end>邮件</option>
+              </select>
+            </li>
+            <li><label class="left mar_top_5">页面地址：</label>
+              <input type="text" class="input-large left" placeholder="页面地址" name="channelUrl" value="$!channelUrl" />
+            </li><br class="clear" />
+            <li><label class="left mar_top_5">创建时间：</label><input type="text" value="$!createDateStart" name="createDateStart" id="datepickera" class="input-small mar_right_10 left" /><label class="left mar_top_5">到</label><input type="text" value="$!createDateEnd" name="createDateEnd" id="datepickerb" class="input-small mar_left_10 mar_right_5 left" /></li>
+            <li><label class="left mar_top_5">发布时间：</label><input type="text" value="$!pubDateStart" name="pubDateStart" id="datepickerc" class="input-small mar_right_10 left" /><label class="left mar_top_5">到</label><input type="text" value="$!pubDateEnd" name="pubDateEnd" id="datepickerd" class="input-small mar_left_10 mar_right_5 left" /></li>
+            <li><label class="left mar_top_5">创建者：</label>
+              <input type="text" class="input-medium left" placeholder="创建者" name="createUser" value="$!createUser"/>
+            </li>
+            <li><input type="submit" class="btn btn-success left" vlaue="应用"/></li><br class="clear" />
+        </ul>
+    </div>
+	
+    
+    <table border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-striped table-hover center_t font12 tl_mt3_mb3 mar_bottom_0">
+  <tr class="info bold">
+            <td><label class="checkbox left"><input type="checkbox" id="select_all" name="chk_all" value="size_templet_name">全选</label><label>页面编号</label></td>
+    <td><label>页面名称</label></td>
+    <td><label>模板类型</label></td>
+    <td><label>模板名称</label></td>
+    <td><label>页面地址</label></td>
+    <td><label>栏目数</label></td>
+    <td><label>创建时间</label></td>
+    <td><label>发布时间</label></td>
+    <td><label>创建者</label></td>
+    <td><label>更新</label></td>
+    <td><label>状态</label></td>
+    <td><label>操作</label></td>
+    </tr>
+    #foreach($channel in $cmsChannelList)
+          <tr>
+            <td><label class="checkbox"><input type="checkbox" name="chk_list" value="$!channel.channelId">$!channel.channelId</label></td>
+              <td><label>$!channel.channelName</label></td>
+              <td><label>$!channel.templateType</label></td>
+              <td><label>$!channel.templateName</label></td>
+              <td><a href="$!channel.channelUrl" target="_blank">$!channel.channelUrl</a></td>
+              <td><label>$!channel.blockNum</label></td>
+              <td><label class="font10"><span>$!StringUtil.getDateString($!channel.createTime,'yyyy-MM-dd hh:mm:ss')</span></label></td>
+              <td><label class="font10"><span>$!StringUtil.getDateString($!channel.pubDate,'yyyy-MM-dd hh:mm:ss')</span></label></td>
+              <td><label>$!channel.createUser</label></td>
+              <td><label>手动</label></td>
+              <td><label>#if($!channel.status==1)启用#elseif($!channel.status==2)禁用#end</label></td>
+              <td><a href="javascript:;;" onclick="editChannel('$!channel.channelId');" class="" >编辑</a>
+              <a class="mar_left_10" href="$link.setPage('cms,ModifyChannelDetail.html')?channelId=$!channel.channelId"  target="_blank">修改明细</a>
+			  <a href="$link.setAction('cms.ReviewChannel')?channelId=$!channel.channelId" class="mar_left_10" target="_blank">页面预览</a>
+              <a href="javascript:;" onclick="buildChannelFile('$!channel.channelId');" class="mar_left_10" >发布</a></td>
+         </tr>
+    #end
+    </table>
+    <table class="table font14" style="margin-top:0px;">
+  <tr class="success">
+       <td><label class="checkbox left mar_top_5"><input type="checkbox" id="select_all" name="chk_all" value="size_templet_name">全选</label>
+       <a href="javascript:changeChannelType(1)" role="button" class="btn btn-info btn-small font12 left mar_left_15" ><span class="white">启 用</span></a>
+       <a href="javascript:changeChannelType(2)" role="button" class="btn btn-warning btn-small font12 left mar_left_15" ><span class="white">禁 用</span></a>
+       <a href="javascript:changeChannelType(0)" role="button" class="btn btn-danger btn-small font12 left mar_left_15"><span class="white">删 除</span></a>
+       <a href="#add_page" role="button" class="btn btn-success btn-small font12 left mar_left_15" data-toggle="modal"><span class="white">新 增</span></a></td>
+      </tr>
+    </table>
+	#parse("/screens/Nap.html")
+</form>
+<form name="addChannel" id="addChannel" method="post" action="$link.setAction('cms.AddChannel')">   
+<div id="add_page" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h5 id="myModalLabel">新增页面</h5>
+        </div>
+        <div class="modal-body">
+        	<table border="0" cellspacing="0" cellpadding="0" class="mar_left_20">
+              <tr>
+                <td class="v_top"><label class="mar_right_10 right mar_top_5">页面：</label><span class="required mar_right_5 right mar_top_5">*</span></td>
+                <td>
+                    <input name="channelName" type="text" class="input-xlarge" placeholder="50个字符" />
+                </td>
+              </tr>
+              <tr>
+                <td class="v_top"><label class="mar_right_10 right mar_top_5">页面地址：</label><span class="required mar_right_5 right mar_top_5">*</span></td>
+                <td>
+                    <input type="text" name="channelUrl" class="input-xlarge left" placeholder="" value="promotion.shtml" /><span class="help-block left mar_left_10 mar_top_5 gray">省略http和域名网址
+</span>
+                </td>
+              </tr>
+<!--               <tr>
+                <td class="v_top"><label class="mar_right_10 right mar_top_10">添加方式：</label><span class="required mar_right_5 right mar_top_10">*</span></td>
+                <td>
+                    <select id="" name="" class="left mar_top_5 width_280px">
+                              <option value="0">以模板方式添加</option>
+                              <option value="1">自定义HTML源代码</option>
+                              <option value="2">复制已生成页面</option>
+                            </select>
+                </td>
+              </tr> -->
+              <tr>
+                <td class="v_top"><label class="mar_right_10 right mar_top_5">模板类型：</label></td>
+                <td>
+                    <select id="templateType" name="templateType" class="left width_280px">
+                       <option value="1">首页</option> 
+                       <option value="2">频道</option>
+                       <option value="3">活动</option>
+                       <option value="4">文章</option>
+                       <option value="5">邮件</option>
+                     </select>
+                </td>
+              </tr>
+              <tr>
+                <td class="v_top"><label class="mar_right_10 right mar_top_5">模板名称：</label></td>
+                <td>
+                    <select id="templateId" name="templateId" class="left width_280px">
+
+                            </select>
+                </td>
+              </tr>
+<!--               <tr>
+                <td class="v_top"><label class="mar_right_10 right mar_top_5">更新方式：</label></td>
+                <td>
+                    <select id="" name="" class="left width_280px">
+                              <option value="0">自动</option>
+                              <option value="1">手动</option>
+                            </select>
+                </td>
+              </tr> -->
+              <tr>
+                <td class="v_top"><label class="mar_right_10 right mar_top_5">页面状态：</label></td>
+                <td>
+                    <select id="" name="status" class="left width_280px">
+                              <option value="1">启用（可见）</option>
+                              <option value="2">禁用（不可见）</option>
+                            </select>
+                </td>
+              </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+        <input type="button"  class="btn" data-dismiss="modal" aria-hidden="true" value="取消"/>
+        <input type="button" class="btn btn-primary" data-dismiss="modal" onclick="fromsubmit('addChannel');" value="确定"/>
+        </div>
+    </div><!-- E add_page -->
+</form> 
+ <script language="javascript" type="text/javascript"
+	src="/static/prototype/shopmic-manage/js/jquery-ui-1.10.0.custom.min.js"></script>
+<script language="javascript" type="text/javascript"
+	src="/static/prototype/shopmic-manage/js/datepicker.js"></script>
+<script type="text/javascript">
+
+jQuery("#datepickerc").datepicker(
+		{
+			onClose : function(selectedDate) {
+				defaultDate: "+1w", jQuery("#datepickerd").datepicker(
+						"option", "minDate", selectedDate);
+			}
+		});
+
+jQuery("#datepickerd").datepicker(
+		{
+			onClose : function(selectedDate) {
+				defaultDate: "+1w", jQuery("#datepickerc").datepicker(
+						"option", "maxDate", selectedDate);
+			}
+		});
+		
+jQuery("input[name=chk_all]").click(function(){
+	 if(jQuery(this).attr("checked") == 'checked'){
+  	jQuery("input[name='chk_list']").attr("checked","checked");
+	 }else{
+	 	jQuery("input[name='chk_list']").removeAttr("checked")
+	 }
+});
+
+
+jQuery("#templateType").change(function(){
+	var type = this.value;
+	var param = "type="+type;
+	jQuery.ajax({
+		url:"$link.setPage('cms,AjaxGetTemplateByType.html')",
+		type:"post",
+		data:param,
+		success:function(data){
+			jQuery("#templateId").html(data);
+		}
+	 });	
+});
+function fromsubmit(formId){
+	//jQuery("#"+formId).submit();
+	jQuery.ajax({
+		url:"$link.setAction('cms.AddChannel')",
+		type:"post",
+		data:form2URL(formId),
+		dataType:"json",
+		success:function(data){
+			if (data==1) {
+				alert("添加成功!");
+				location.reload();
+			} else {
+				alert("添加失败!");
+			}
+		}
+	 });	
+}
+
+function editChannel(channelId){
+	var div = jQuery("#edit_channel");
+	if (div.length == 0) {
+		div = jQuery("<div id='edit_channel'></div>");
+		jQuery("body").append(div);
+	}
+	div.empty();
+	div.load("$link.setPage('cms,EditChannel.html')?channelId=" + channelId);
+}
+
+function changeChannelType(status){
+	var flag=false;
+	if(status == 1){
+		flag = confirm("您确认要启用吗？", function() { }, null);
+	}else if(status == 2){
+		flag = confirm("您确认要禁用吗？", function() { }, null);
+	}else if(status == 0){
+		flag = confirm("您确认要删除吗？", function() { }, null);
+	}
+	if(flag){
+		var channelIds = '';
+		jQuery('input[name="chk_list"]:checked').each(function(){
+			channelIds += jQuery(this).attr("value") + ","
+		});
+		var param = "channelIds="+channelIds+"&status="+status;
+		jQuery.ajax({
+			url:"$link.setAction('cms.ChangeChannelType')",
+			type:"post",
+			data:param,
+			success:function(data){
+				jQuery('input[name="chk_list"]:checked').removeAttr("checked");
+				jQuery("input[name=chk_all]").removeAttr("checked");
+				if (data>0) {
+					alert('操作成功!');	
+					location.reload();
+				} else {
+					alert('操作失败!');	
+				}
+			}
+		 });	
+	}
+}
+function buildChannelFile(channelId) {
+	tipsWindown("","text:正在发布","200","50","true","","true","text","确定");
+	jQuery.getJSON("$link.setAction('cms.BuildeChannelFile')", {channelId:channelId}, function(data2){
+		if (data2.status == 1) {
+			tipsWindown("","text:发布成功","200","50","true","","true","text","确定");
+		} else {
+			tipsWindown("","text:发布失败","200","50","true","","true","text","确定");
+		}
+	});
+}
+</script>

@@ -1,0 +1,60 @@
+<script type="text/javascript"> 
+    /**
+*翻页脚本
+*@param pageIndex 页号
+*@param frm 翻页的表单
+*/
+function TurnPage(pageIndex,frm){
+ numStr  = /^(\d*)?$/;  
+ if(frm==null || frm==''){
+  	frm=document.getElementById('listForm');
+ }else{
+  	frm=document.getElementById(frm);
+ }
+ //设置点分页时的提交默认值, 1:查找
+ frm.smtType.value="1";  
+  
+ if(frm!=null && frm.pageIndex!=null){ 
+   if (pageIndex!="goto"){
+    frm.pageIndex.value = pageIndex;
+   }
+   if(numStr.exec(frm.pageIndex.value)!=null && frm.pageIndex.value>0){
+    frm.submit();
+   }else{
+    alert('\u9875\u7801\u8f93\u5165\u9519\u8bef\uff0c\u8bf7\u91cd\u65b0\u8f93\u5165!'); //alert("页码输入错误，请重新输入！)"
+   }
+ }
+ }
+ </script>
+
+<div class="list-page">
+    <div class="global-page">
+    	<div class="sabrosus">Records:$!{pageInfo.recordCount}   Pages: $!{pageInfo.pageCount} &nbsp;&nbsp;&nbsp;
+			<input type="hidden" id="pageIndex" name="pageIndex" value="$pageInfo.pageIndex"/>
+			<input type="hidden" name="smtType" id="smtType" value="1" />
+    		 #if($!pageInfo.pageIndex && $!pageInfo.prePageNo)
+            		#if($!pageInfo.pageIndex == $!pageInfo.prePageNo||$!pageInfo.prePageNo == 0)
+                    <span class="disabled"> &lt; </span>
+                      #else
+                       <a href="#" onclick="javascript:TurnPage('$pageInfo.prePageNo','listForm')">&lt;</a>
+                     #end 
+        	 #end  
+			 #if($!pageInfo.rangeMin && $!pageInfo.rangeMax)
+                  #foreach($!i in [$!pageInfo.rangeMin ..$!pageInfo.rangeMax] )
+                    #if($!i==$!pageInfo.pageIndex)   
+                    ##不加链接  
+                    <span class="current">$!i</span>
+                    #else
+                    ##加上链接
+                    <a href="#" onclick="javascript:TurnPage('$!i','listForm')">$!i</a>
+                    #end
+                  #end
+                #end 
+			 #if($pageInfo.pageIndex==$pageInfo.nextPageNo||$pageInfo.nextPageNo==0)   
+                  <span class="disabled"> &gt; </span>
+               #else
+                <a href="#" onclick="javascript:TurnPage('$pageInfo.prePageNo','listForm')">&gt;</a>
+               #end 
+    	</div>
+    </div>
+</div>

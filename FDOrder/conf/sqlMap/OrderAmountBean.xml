@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertOrderAmountBean" parameterClass="com.fd.fashion.order.bean.OrderAmountBean">
+        <![CDATA[
+insert into T_ORDER_AMOUNT
+  (ORDER_ID, AMOUNT, AMOUNT_TYPE, MEMO, CREATE_DATE, OPERATOR)
+values
+  (#orderId#, #amount#, #amountType#, #memo#, #createDate#, #operator#)
+        ]]>
+        <selectKey keyProperty="amountId" resultClass="long">
+            <![CDATA[select @@identity as amountId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateOrderAmountBean" parameterClass="com.fd.fashion.order.bean.OrderAmountBean">
+        <![CDATA[
+update T_ORDER_AMOUNT 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="amountId" prepend="," removeFirstPrepend="true">
+                <![CDATA[AMOUNT_ID = #amountId#]]>
+            </isNotNull>
+            <isNotNull property="orderId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ORDER_ID = #orderId#]]>
+            </isNotNull>
+            <isNotNull property="amount" prepend="," removeFirstPrepend="true">
+                <![CDATA[AMOUNT = #amount#]]>
+            </isNotNull>
+            <isNotNull property="amountType" prepend="," removeFirstPrepend="true">
+                <![CDATA[AMOUNT_TYPE = #amountType#]]>
+            </isNotNull>
+            <isNotNull property="memo" prepend="," removeFirstPrepend="true">
+                <![CDATA[MEMO = #memo#]]>
+            </isNotNull>
+            <isNotNull property="createDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_DATE = #createDate#]]>
+            </isNotNull>
+            <isNotNull property="operator" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPERATOR = #operator#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where AMOUNT_ID = #amountId#
+        ]]>
+    </update>
+
+    <sql id="getOrderAmountBeanCondition">
+         <isNotNull property="amountId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[AMOUNT_ID = #amountId#]]>
+         </isNotNull>
+         <isNotNull property="orderId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ORDER_ID = #orderId#]]>
+         </isNotNull>
+         <isNotNull property="amount" prepend="and" removeFirstPrepend="true">
+             <![CDATA[AMOUNT = #amount#]]>
+         </isNotNull>
+         <isNotNull property="amountType" prepend="and" removeFirstPrepend="true">
+             <![CDATA[AMOUNT_TYPE = #amountType#]]>
+         </isNotNull>
+         <isNotNull property="memo" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MEMO = #memo#]]>
+         </isNotNull>
+         <isNotNull property="createDate" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATE_DATE = #createDate#]]>
+         </isNotNull>
+         <isNotNull property="operator" prepend="and" removeFirstPrepend="true">
+             <![CDATA[OPERATOR = #operator#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getOrderAmountBeanCount" parameterClass="com.fd.fashion.order.bean.OrderAmountBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_ORDER_AMOUNT 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getOrderAmountBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getOrderAmountBean" parameterClass="com.fd.fashion.order.bean.OrderAmountBean"
+        resultClass="com.fd.fashion.order.bean.OrderAmountBean">
+        <![CDATA[
+select 
+	AMOUNT_ID	as amountId,
+	ORDER_ID	as orderId,
+	AMOUNT	as amount,
+	AMOUNT_TYPE	as amountType,
+	MEMO	as memo,
+	CREATE_DATE	as createDate,
+	OPERATOR	as operator
+from T_ORDER_AMOUNT 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getOrderAmountBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteOrderAmountBean" parameterClass="com.fd.fashion.order.bean.OrderAmountBean">
+        <![CDATA[
+delete from T_ORDER_AMOUNT where AMOUNT_ID=#amountId#
+        ]]>
+    </delete>
+
+</sqlMap>

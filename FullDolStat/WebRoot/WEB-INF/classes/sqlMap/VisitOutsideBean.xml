@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertVisitOutsideBean" parameterClass="com.fd.statistics.bean.VisitOutsideBean">
+        <![CDATA[
+insert into T_VISIT_OUTSIDE
+  (OPEN_ID, VISIT_ID, OPEN_TIME, OPEN_FROM, OPEN_URL, REFERER, DOMAIN)
+values
+  (#openId#, #visitId#, #openTime#, #openFrom#, #openUrl#, #referer#, #domain#)
+        ]]>
+        <selectKey keyProperty="openId" resultClass="long">
+            <![CDATA[select @@identity as openId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateVisitOutsideBean" parameterClass="com.fd.statistics.bean.VisitOutsideBean">
+        <![CDATA[
+update T_VISIT_OUTSIDE 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="openId" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPEN_ID = #openId#]]>
+            </isNotNull>
+            <isNotNull property="visitId" prepend="," removeFirstPrepend="true">
+                <![CDATA[VISIT_ID = #visitId#]]>
+            </isNotNull>
+            <isNotNull property="openTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPEN_TIME = #openTime#]]>
+            </isNotNull>
+            <isNotNull property="openFrom" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPEN_FROM = #openFrom#]]>
+            </isNotNull>
+            <isNotNull property="openUrl" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPEN_URL = #openUrl#]]>
+            </isNotNull>
+            <isNotNull property="referer" prepend="," removeFirstPrepend="true">
+                <![CDATA[REFERER = #referer#]]>
+            </isNotNull>
+            <isNotNull property="domain" prepend="," removeFirstPrepend="true">
+                <![CDATA[DOMAIN = #domain#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where OPEN_ID = #openId#
+        ]]>
+    </update>
+
+    <sql id="getVisitOutsideBeanCondition">
+         <isNotNull property="openId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[OPEN_ID = #openId#]]>
+         </isNotNull>
+         <isNotNull property="visitId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VISIT_ID = #visitId#]]>
+         </isNotNull>
+         <isNotNull property="openTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[OPEN_TIME = #openTime#]]>
+         </isNotNull>
+         <isNotNull property="openFrom" prepend="and" removeFirstPrepend="true">
+             <![CDATA[OPEN_FROM = #openFrom#]]>
+         </isNotNull>
+         <isNotNull property="openUrl" prepend="and" removeFirstPrepend="true">
+             <![CDATA[OPEN_URL = #openUrl#]]>
+         </isNotNull>
+         <isNotNull property="referer" prepend="and" removeFirstPrepend="true">
+             <![CDATA[REFERER = #referer#]]>
+         </isNotNull>
+         <isNotNull property="domain" prepend="and" removeFirstPrepend="true">
+             <![CDATA[DOMAIN = #domain#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getVisitOutsideBeanCount" parameterClass="com.fd.statistics.bean.VisitOutsideBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_VISIT_OUTSIDE 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitOutsideBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getVisitOutsideBean" parameterClass="com.fd.statistics.bean.VisitOutsideBean"
+        resultClass="com.fd.statistics.bean.VisitOutsideBean">
+        <![CDATA[
+select 
+	OPEN_ID	as openId,
+	VISIT_ID	as visitId,
+	OPEN_TIME	as openTime,
+	OPEN_FROM	as openFrom,
+	OPEN_URL	as openUrl,
+	REFERER	as referer,
+	DOMAIN	as domain
+from T_VISIT_OUTSIDE 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitOutsideBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteVisitOutsideBean" parameterClass="com.fd.statistics.bean.VisitOutsideBean">
+        <![CDATA[
+delete from T_VISIT_OUTSIDE where OPEN_ID=#openId#
+        ]]>
+    </delete>
+
+</sqlMap>

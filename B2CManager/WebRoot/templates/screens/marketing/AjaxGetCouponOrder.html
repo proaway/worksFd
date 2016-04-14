@@ -1,0 +1,20 @@
+#if($orderList)
+<table class="width_500px">
+  <tr class="info bold">
+    <td>订单号</td>	
+    <td>创建时间</td>	
+    <td>买家昵称</td>	
+    <td>Coupon金额</td>	
+    <td>订单金额</td>	
+  </tr>
+#foreach($order in $orderList)
+  <tr>
+    <td>$order.orderId</td>
+    <td>$!StringUtil.getDateString($order.createDate)</td>
+    <td>$order.userId</td>
+    <td>$order.couponAmount</td>
+    <td>$order.total</td>
+  </tr>
+#end
+</table>
+#end

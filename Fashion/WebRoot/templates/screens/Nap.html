@@ -1,0 +1,48 @@
+<script type="text/javascript"> 
+function TurnPage(pageIndex,frm){
+ numStr  = /^(\d*)?$/;  
+ if(frm==null || frm==''){
+  frm=document.getElementById('listForm');
+ }else{
+  frm=document.getElementById(frm);
+ }
+ if(frm!=null && frm.pageIndex!=null){ 
+   if (pageIndex!="goto"){
+    frm.pageIndex.value = pageIndex;
+   }
+   if(numStr.exec(frm.pageIndex.value)!=null && frm.pageIndex.value>0){
+    frm.submit();
+   }else{
+    alert('Wrong page index!'); 
+   }
+ }
+}
+</script>
+
+#if($pageInfo.rangeMin)#set($beginNo=$pageInfo.rangeMin)#end
+#if($pageInfo.rangeMax)#set($endNo=$pageInfo.rangeMax)#end
+<div class="global-page">
+	<div class="sabrosus">Records:$!pageInfo.recordCount   Pages: $!pageInfo.pageCount &nbsp;&nbsp;&nbsp;
+#if($pageInfo.rangeMin && $pageInfo.rangeMax)
+      #if($pageInfo.pageIndex==$pageInfo.prePageNo||$pageInfo.prePageNo==0)
+		<span class="disabled"> < </span>
+      #else
+		<a href="javascript:TurnPage('$pageInfo.prePageNo','listForm')"> < </a>
+      #end     
+   #foreach($i in [$beginNo ..$endNo] )   
+       #if($i==$pageInfo.pageIndex)   
+       ##不加链接  
+       <span class="current">$i</span>
+       #else
+       ##加上链接
+       <a href="javascript:TurnPage('$i','listForm')">$i</a>
+       #end
+   #end
+   #if($pageInfo.pageIndex==$pageInfo.nextPageNo||$pageInfo.nextPageNo==0)   
+		<span class="disabled"> > </span>
+   #else
+		<a href="javascript:TurnPage('$pageInfo.nextPageNo','listForm')"> > </a>
+   #end   
+#end
+	</div>
+</div>

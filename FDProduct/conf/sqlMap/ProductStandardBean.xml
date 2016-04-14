@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertProductStandardBean" parameterClass="com.fd.fashion.product.bean.ProductStandardBean">
+        <![CDATA[
+insert into T_PRODUCT_STANDARD
+  (STANDARD_ID, PRODUCT_ID, MAIN_CONFIG_ID, SUB_CONFIG_ID, STOCK, SKU, PRICE, WHOLESALE, DISCOUNT)
+values
+  (#standardId#, #productId#, #mainConfigId#, #subConfigId#, #stock#, #sku#, #price#, #wholesale#, #discount#)
+        ]]>
+        <selectKey keyProperty="standardId" resultClass="long">
+            <![CDATA[select @@identity as standardId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateProductStandardBean" parameterClass="com.fd.fashion.product.bean.ProductStandardBean">
+        <![CDATA[
+update T_PRODUCT_STANDARD 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="standardId" prepend="," removeFirstPrepend="true">
+                <![CDATA[STANDARD_ID = #standardId#]]>
+            </isNotNull>
+            <isNotNull property="productId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="mainConfigId" prepend="," removeFirstPrepend="true">
+                <![CDATA[MAIN_CONFIG_ID = #mainConfigId#]]>
+            </isNotNull>
+            <isNotNull property="subConfigId" prepend="," removeFirstPrepend="true">
+                <![CDATA[SUB_CONFIG_ID = #subConfigId#]]>
+            </isNotNull>
+            <isNotNull property="stock" prepend="," removeFirstPrepend="true">
+                <![CDATA[STOCK = #stock#]]>
+            </isNotNull>
+            <isNotNull property="sku" prepend="," removeFirstPrepend="true">
+                <![CDATA[SKU = #sku#]]>
+            </isNotNull>
+            <isNotNull property="price" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRICE = #price#]]>
+            </isNotNull>
+            <isNotNull property="wholesale" prepend="," removeFirstPrepend="true">
+                <![CDATA[WHOLESALE = #wholesale#]]>
+            </isNotNull>
+            <isNotNull property="discount" prepend="," removeFirstPrepend="true">
+                <![CDATA[DISCOUNT = #discount#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where STANDARD_ID = #standardId#
+        ]]>
+    </update>
+
+    <sql id="getProductStandardBeanCondition">
+        <isNotNull property="standardId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[STANDARD_ID = #standardId#]]>
+        </isNotNull>
+        <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[PRODUCT_ID = #productId#]]>
+        </isNotNull>
+        <isNotNull property="mainConfigId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[MAIN_CONFIG_ID = #mainConfigId#]]>
+        </isNotNull>
+        <isNotNull property="subConfigId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[SUB_CONFIG_ID = #subConfigId#]]>
+        </isNotNull>
+        <isNotNull property="stock" prepend="and" removeFirstPrepend="true">
+            <![CDATA[STOCK = #stock#]]>
+        </isNotNull>
+        <isNotNull property="sku" prepend="and" removeFirstPrepend="true">
+            <![CDATA[SKU = #sku#]]>
+        </isNotNull>
+        <isNotNull property="price" prepend="and" removeFirstPrepend="true">
+            <![CDATA[PRICE = #price#]]>
+        </isNotNull>
+        <isNotNull property="wholesale" prepend="and" removeFirstPrepend="true">
+            <![CDATA[WHOLESALE = #wholesale#]]>
+        </isNotNull>
+        <isNotNull property="discount" prepend="and" removeFirstPrepend="true">
+            <![CDATA[DISCOUNT = #discount#]]>
+        </isNotNull>
+    </sql>
+
+    <select id="getProductStandardBeanCount" parameterClass="com.fd.fashion.product.bean.ProductStandardBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_PRODUCT_STANDARD 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getProductStandardBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getProductStandardBean" parameterClass="com.fd.fashion.product.bean.ProductStandardBean"
+        resultClass="com.fd.fashion.product.bean.ProductStandardBean">
+        <![CDATA[
+select 
+	STANDARD_ID	as standardId,
+	PRODUCT_ID	as productId,
+	MAIN_CONFIG_ID	as mainConfigId,
+	SUB_CONFIG_ID	as subConfigId,
+	STOCK	as stock,
+	SKU	as sku,
+	PRICE as price,
+	WHOLESALE as wholesale,
+	DISCOUNT as discount
+from T_PRODUCT_STANDARD 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getProductStandardBeanCondition"/>        </dynamic>
+    </select>
+
+    <delete id="deleteProductStandardBean" parameterClass="com.fd.fashion.product.bean.ProductStandardBean">
+        <![CDATA[
+delete from T_PRODUCT_STANDARD where PRODUCT_ID = #productId#
+        ]]>
+    </delete>
+    
+    <select id="getStockCount" parameterClass="com.fd.fashion.product.bean.ProductStandardBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	sum(stock)
+from T_PRODUCT_STANDARD 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getProductStandardBeanCondition"/>
+        </dynamic>
+    </select>
+    
+</sqlMap>

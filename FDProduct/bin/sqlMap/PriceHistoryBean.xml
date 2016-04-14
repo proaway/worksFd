@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertPriceHistoryBean" parameterClass="com.fd.fashion.product.bean.PriceHistoryBean">
+        <![CDATA[
+insert into T_PRICE_HISTORY
+  (HISTORY_ID, PRODUCT_ID, STANDARD_ID, PRICE, WHOLESALE_COUNT, WHOLESALE_DISCOUNT, DISCOUNT_START_DATE, DISCOUNT_END_DATE, DISCOUNT, MODIFY_TIME)
+values
+  (#historyId#, #productId#, #standardId#, #price#, #wholesaleCount#, #wholesaleDiscount#, #discountStartDate#, #discountEndDate#, #discount#, #modifyTime#)
+        ]]>
+        <selectKey keyProperty="historyId" resultClass="long">
+            <![CDATA[select @@identity as historyId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updatePriceHistoryBean" parameterClass="com.fd.fashion.product.bean.PriceHistoryBean">
+        <![CDATA[
+update T_PRICE_HISTORY 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="historyId" prepend="," removeFirstPrepend="true">
+                <![CDATA[HISTORY_ID = #historyId#]]>
+            </isNotNull>
+            <isNotNull property="productId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="standardId" prepend="," removeFirstPrepend="true">
+                <![CDATA[STANDARD_ID = #standardId#]]>
+            </isNotNull>
+            <isNotNull property="price" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRICE = #price#]]>
+            </isNotNull>
+            <isNotNull property="wholesaleCount" prepend="," removeFirstPrepend="true">
+                <![CDATA[WHOLESALE_COUNT = #wholesaleCount#]]>
+            </isNotNull>
+            <isNotNull property="wholesaleDiscount" prepend="," removeFirstPrepend="true">
+                <![CDATA[WHOLESALE_DISCOUNT = #wholesaleDiscount#]]>
+            </isNotNull>
+            <isNotNull property="discountStartDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[DISCOUNT_START_DATE = #discountStartDate#]]>
+            </isNotNull>
+            <isNotNull property="discountEndDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[DISCOUNT_END_DATE = #discountEndDate#]]>
+            </isNotNull>
+            <isNotNull property="discount" prepend="," removeFirstPrepend="true">
+                <![CDATA[DISCOUNT = #discount#]]>
+            </isNotNull>
+            <isNotNull property="modifyTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[MODIFY_TIME = #modifyTime#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where HISTORY_ID = #historyId#
+        ]]>
+    </update>
+
+    <sql id="getPriceHistoryBeanCondition">
+            <isNotNull property="historyId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[HISTORY_ID = #historyId#]]>
+            </isNotNull>
+            <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="standardId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[STANDARD_ID = #standardId#]]>
+            </isNotNull>
+            <isNotNull property="price" prepend="and" removeFirstPrepend="true">
+                <![CDATA[PRICE = #price#]]>
+            </isNotNull>
+            <isNotNull property="wholesaleCount" prepend="and" removeFirstPrepend="true">
+                <![CDATA[WHOLESALE_COUNT = #wholesaleCount#]]>
+            </isNotNull>
+            <isNotNull property="wholesaleDiscount" prepend="and" removeFirstPrepend="true">
+                <![CDATA[WHOLESALE_DISCOUNT = #wholesaleDiscount#]]>
+            </isNotNull>
+            <isNotNull property="discountStartDate" prepend="and" removeFirstPrepend="true">
+                <![CDATA[DISCOUNT_START_DATE = #discountStartDate#]]>
+            </isNotNull>
+            <isNotNull property="discountEndDate" prepend="and" removeFirstPrepend="true">
+                <![CDATA[DISCOUNT_END_DATE = #discountEndDate#]]>
+            </isNotNull>
+            <isNotNull property="discount" prepend="and" removeFirstPrepend="true">
+                <![CDATA[DISCOUNT = #discount#]]>
+            </isNotNull>
+            <isNotNull property="modifyTime" prepend="and" removeFirstPrepend="true">
+                <![CDATA[MODIFY_TIME = #modifyTime#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getPriceHistoryBeanCount" parameterClass="com.fd.fashion.product.bean.PriceHistoryBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_PRICE_HISTORY 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getPriceHistoryBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getPriceHistoryBean" parameterClass="com.fd.fashion.product.bean.PriceHistoryBean"
+        resultClass="com.fd.fashion.product.bean.PriceHistoryBean">
+        <![CDATA[
+select 
+	HISTORY_ID	as historyId,
+	PRODUCT_ID	as productId,
+	STANDARD_ID	as standardId,
+	PRICE	as price,
+	WHOLESALE_COUNT	as wholesaleCount,
+	WHOLESALE_DISCOUNT	as wholesaleDiscount,
+	DISCOUNT_START_DATE	as discountStartDate,
+	DISCOUNT_END_DATE	as discountEndDate,
+	DISCOUNT	as discount,
+	MODIFY_TIME	as modifyTime
+from T_PRICE_HISTORY 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getPriceHistoryBeanCondition"/>        </dynamic>
+    </select>
+
+    <delete id="deletePriceHistoryBean" parameterClass="com.fd.fashion.product.bean.PriceHistoryBean">
+        <![CDATA[
+delete from T_PRICE_HISTORY where HISTORY_ID=#historyId#
+        ]]>
+    </delete>
+</sqlMap>

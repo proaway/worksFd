@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertProblemOrderBean" parameterClass="com.fd.fashion.order.bean.ProblemOrderBean">
+        <![CDATA[
+insert into T_PROBLEM_ORDER
+  (ORDER_ID, CREATE_TIME,STATUS)
+values
+  (#orderId#, #createTime#,#status#)
+        ]]>
+    </insert>
+
+    <update id="updateProblemOrderBean" parameterClass="com.fd.fashion.order.bean.ProblemOrderBean">
+        <![CDATA[
+update T_PROBLEM_ORDER 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="orderId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ORDER_ID = #orderId#]]>
+            </isNotNull>
+            <isNotNull property="createTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_TIME = #createTime#]]>
+            </isNotNull>
+            <isNotNull property="status" prepend="," removeFirstPrepend="true">
+           		 <![CDATA[STATUS = #status#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ORDER_ID = #orderId#
+        ]]>
+    </update>
+
+    <sql id="getProblemOrderBeanCondition">
+         <isNotNull property="orderId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ORDER_ID = #orderId#]]>
+         </isNotNull>
+         <isNotNull property="createTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATE_TIME = #createTime#]]>
+         </isNotNull>
+          <isNotNull property="status" prepend="," removeFirstPrepend="true">
+           		 <![CDATA[STATUS = #status#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getProblemOrderBeanCount" parameterClass="com.fd.fashion.order.bean.ProblemOrderBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_PROBLEM_ORDER 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getProblemOrderBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getProblemOrderBean" parameterClass="com.fd.fashion.order.bean.ProblemOrderBean"
+        resultClass="com.fd.fashion.order.bean.ProblemOrderBean">
+        <![CDATA[
+select 
+	ORDER_ID	as orderId,
+	CREATE_TIME	as createTime,
+	STATUS       as status
+from T_PROBLEM_ORDER 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getProblemOrderBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteProblemOrderBean" parameterClass="com.fd.fashion.order.bean.ProblemOrderBean">
+        <![CDATA[
+delete from T_PROBLEM_ORDER where ORDER_ID=#orderId#
+        ]]>
+    </delete>
+
+</sqlMap>

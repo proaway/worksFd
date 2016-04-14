@@ -1,0 +1,200 @@
+$page.setTitle("订单管理")
+<br class="clear">
+<form name="listForm" id="listForm" method="get">
+  	<h4 class="mar_top_15 mar_bottom_20">订单管理</h4>
+  	<input type="hidden" id="atcionFlag" name="atcionFlag" value="OrderList" />
+    <div class="alert alert-warning search_form">
+    	<ul class="inline mar_top_5 black">
+            <li><label class="left">待付款订单：</label><a class="left" target="_blank" href="$link.setPage('order,WaitingForPayment.html')"><label class="red bold">（$!searchOrderVo.waitPaymentcCount）</label></a></li>
+            <li><label class="left">待发货订单：</label><a class="left" target="_blank" href="$link.setPage('order,WaitingForSend.html')"><label class="red bold">（$!searchOrderVo.waitDeliveryCount）</label></a></li>
+            <li><label class="left">纠纷中订单：</label><a class="left" target="_blank" href="$link.setPage('order,DisputeOrder.html')"><label class="red bold">（$!searchOrderVo.issueCount）</label></a></li>
+            <li><label class="left">剩余备货时间小于1天：</label><a class="left" target="_blank" href="$link.setPage('order,WaitingForSend.html')?stockDay=1"><label class="red bold">（$!searchOrderVo.isStockCount）</label></a></li>
+        </ul><br class="clear">
+    </div>
+    <div class="search_form">
+        <ul class="inline">
+             <li><label class="left mar_top_5">订单号：</label><input type="text" placeholder="订单号" class="input-medium left" id="orderId" value="#if($orderVo.orderId&&$orderVo.orderId>0) $!orderVo.orderId #end" name="orderId" ></li>
+            <li><label class="left mar_top_5">生成时间：</label>
+				<input id="datepickera" class="input-small   mar_right_10 left" type="text" value="$!StringUtil.getDateString($!orderVo.startCreateDate)" name="createOrderStart">
+				<label class="left mar_top_5">到</label>
+				<input id="datepickerb" class="input-small  mar_left_10 mar_right_10  left" type="text" value="$!StringUtil.getDateString($!orderVo.endCreateDate)" name="createOrderEnd">
+			</li>
+			<li>
+                <label class="left mar_top_5">订单状态：</label>
+                <select class="left oi_status_max_w" name="statusType" id="statusType">
+					<option value="" #if($orderVo.orderStatus=="") selected #end>请选择订单状态</option>
+                    <option value="OA001" #if($orderVo.orderStatus=="OA001") selected #end> 等待买家付款</option>
+                    <option value="OA002" #if($orderVo.orderStatus=="OA002") selected  #end>付款待确认</option>
+                    <option value="OS001" #if($orderVo.orderStatus=="OS001") selected #end>付款成功，等待发货</option>
+					<option value="OS002" #if($orderVo.orderStatus=="OS002") selected #end>已打印订单，待拣货</option>
+                    <option value="OS003" #if($orderVo.orderStatus=="OS003") selected #end>已完成拣货，待打包</option>
+                    <option value="OS004" #if($orderVo.orderStatus=="OS004") selected #end>已打包，等待出库</option>
+                    <option value="OS005" #if($orderVo.orderStatus=="OS005") selected #end>已发货，等待买家确认</option>
+					<option value="OS006" #if($orderVo.orderStatus=="OS006") selected #end>订单已拆分</option>
+                    <option value="OC101" #if($orderVo.orderStatus=="OC101") selected #end>订单完成</option>
+                    <option value="OD001" #if($orderVo.orderStatus=="OD001") selected #end>Paypal纠纷</option>
+					<option value="OD002" #if($orderVo.orderStatus=="OD002") selected #end>Paypal调查</option>
+                    <option value="OD003" #if($orderVo.orderStatus=="OD003") selected #end>ChargeBack</option>
+                    <option value="OC201" #if($orderVo.orderStatus=="OC201") selected #end>订单取消</option>
+                    <option value="OF101" #if($orderVo.orderStatus=="OF101") selected #end>订单冻结</option>
+					<option value="OR201" #if($orderVo.orderStatus=="OR201") selected #end>退款待确认</option>
+                    <option value="OR213" #if($orderVo.orderStatus=="OR213") selected #end>等待买家退货</option>
+                    <option value="OR214" #if($orderVo.orderStatus=="OR214") selected #end>退款成功</option>
+                    <option value="OR101" #if($orderVo.orderStatus=="OR101") selected #end>风险订单待审核</option>
+                </select>
+            </li>
+            <li><input type="button" class="btn btn-primary left" value="查询" onclick="searchOrder();">
+				<a onclick="javascript:document.getElementById('more_search').style.display='block';document.getElementById('block_more_search').style.display='none';document.getElementById('hide_more_search').style.display='block';setCookie('advSearch',1,30);" class="btn btn-link left" id="block_more_search" href="javascript:;">高级查询<span class="icon-chevron-down"></span></a>
+				<a onclick="javascript:document.getElementById('more_search').style.display='none';document.getElementById('block_more_search').style.display='block';document.getElementById('hide_more_search').style.display='none';setCookie('advSearch',0,30);" class="btn btn-link left hide" id="hide_more_search" href="javascript:;">收起<span class="icon-chevron-up"></span></a></li>
+        </ul><script>jQuery("document").ready(function(){if(getCookie("advSearch")==1){jQuery("a#block_more_search").click();}});</script>
+        <br class="clear">
+        <ul id="more_search" class="inline alert alert-success pad_left_5 pad_right_5 pad_top_15 #if($!orderVo.startShippingDate||$!orderVo.startPaymentDate||$!orderVo.endShippingDate ||$!orderVo.endPaymentDate||$orderVo.shippingType) #else hide #end">
+            <li><label class="left mar_top_5">发货时间：</label><input type="text" class="input-small mar_right_10 left" id="delivedatepickera" #if($!orderVo.startShippingDate) value="$StringUtil.getDateString($!orderVo.startShippingDate)"#end name="deliveryDateStart"><label class="left mar_top_5">到</label><input type="text" class="input-small mar_left_10 mar_right_5 left" id="delivedatepickerb" #if($!orderVo.endShippingDate)value="$StringUtil.getDateString($!orderVo.endShippingDate)"#end name="deliveryDateEnd"></li>
+            <li><label class="left mar_top_5">付款时间：</label><input type="text" class="input-small mar_right_10 left" id="paymentdatepickera" #if($!orderVo.startPaymentDate)value="$StringUtil.getDateString($!orderVo.startPaymentDate)"#end name="paymentDateStart"><label class="left mar_top_5">到</label><input type="text" class="input-small mar_left_10 mar_right_5 left" id="paymentdatepickerb" #if($!orderVo.endPaymentDate)value="$StringUtil.getDateString($!orderVo.endPaymentDate)"#end name="paymentDateEnd"></li>
+			<li><label class="left mar_top_5">货运方式：</label>
+              <select class="left" name="shippingType" id="shippingType">
+                    <option value="">请选择货运方式</option>
+					<option value="CPAM" #if('CPAM'==$orderVo.shippingType) selected #end>China Post Air Mail</option>
+					<option value="CPAP" #if('CPAP'==$orderVo.shippingType) selected #end>China Post Air Parcel </option>
+					<option value="HKPAM" #if('HKPAM'==$orderVo.shippingType) selected #end>Hongkong Post Air Mail</option>
+					<option value="HKPAP" #if('HKPAP'==$orderVo.shippingType) selected #end>Hongkong Post Air Parcel</option>
+					<option value="UPS" #if('UPS'==$orderVo.shippingType) selected #end>UPS</option>
+					<option value="TNT" #if('TNT'==$orderVo.shippingType) selected #end>TNT</option>
+					<option value="FEDEX" #if('FEDEX'==$orderVo.shippingType) selected #end>FEDEX</option>
+					<option value="EMS" #if('EMS'==$orderVo.shippingType) selected #end>EMS</option>
+					<option value="COSTOMER" #if('COSTOMER'==$orderVo.shippingType) selected #end>用户自定义</option>
+              </select>
+            </li>
+            <li>
+				<input type="button" class="btn btn-success left" onclick="searchOrder();" value="应用" />
+				<input type="hidden" value="0" id="isHignGreat" name="isHignGreat"  />
+			</li><br class="clear">
+        </ul>
+    </div>
+    <div class="search_form well well-small padding_5 mar_bottom_10">
+    	<ul class="inline mar_top_5 black">
+            <li class="pad_top_5"><label class="left">订单总数：</label><a class="left" target="_blank" href="javascript:();"><label class="red bold">（$!searchOrderVo.orderCount）</label></a></li>
+            <li class="pad_top_5"><label class="left">订单总金额（$）：</label><a class="left" target="_blank" href="javascript:();"><label class="red bold">$cnu.cullNum($!searchOrderVo.orderPriceTotal)</label></a></li>
+            <li><button type="button" class="btn btn-link" onclick="javascript:exportAllDataForExcel('listForm');">
+<span class="icon-list"></span>
+Excel导出
+</button></li>
+        </ul>
+    	<br class="clear">
+    </div>
+	<table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-striped table-hover center_t font12 tl_mt3_mb3">
+  <tbody><tr class="info bold">
+    <td><label>订单号</label></td>
+    <td class="width_70px"><label>生成时间</label></td>
+    <td class="width_70px"><label>付款时间</label></td>
+    <td><label>付款方式</label></td>
+    <td><label>金额（$）</label></td>
+    <td><label>买家</label></td>
+    <td><label>发货日期</label></td>
+    <td><label>货运方式</label></td>
+    <td><label>订单状态</label></td>
+    <td><label>操作</label></td>
+  </tr>
+  #if($searchOrderVo && $searchOrderVo.orders && $searchOrderVo.orders.size()>0)
+	#foreach($ord in $searchOrderVo.orders)
+	<tr id="$ord.orderId">
+        <td>
+    		<a class="mar_right_5" target="_blank" href="$link.setPage('order,OrderDetail.html')?orderId=$ord.orderId">$!ord.orderId</a>
+    	</td>
+        <td class="font10">
+    		<label>#if($ord.createDate)$!StringUtil.getDateTimeString($!ord.createDate)#end</label>
+    	</td>
+        <td class="font10">
+    		<label>	#if($!ord.paymentDate)$!StringUtil.getDateTimeString($!ord.paymentDate)#end</label>
+    	</td>
+        <td>
+    		<label>$!ord.paymentType</label>
+    	</td>
+        <td>
+    		<label name="total">$cnu.cullNum($ord.total)</label>
+    	</td>
+        <td>
+    		<label>#if($ord.userId) $ord.userId #end</label>
+    	</td>
+        <td class="font10"><label id="shippingDate_$ord.orderId">#if($ord.shippingDate) $!StringUtil.getDateTimeString($ord.shippingDate) #end</label></td>
+        <td>
+    		<label id="shippingType_$ord.orderId">
+				#if($ord.shippingType=='CPAM')
+					China Post Air Mail  
+				#elseif($ord.shippingType=='CPAP')
+					China Post Air Parcel 
+				#elseif($ord.shippingType=='HKPAM')
+					Hongkong Post Air Mail
+				#elseif($ord.shippingType=='HKPAP')
+					Hongkong Post Air Parcel
+				#else
+					$!ord.shippingType
+				#end
+			</label>
+    	</td>
+        <td>
+    		<label> #if($ord.orderStatusCN) $!ord.orderStatusCN  #end
+			</label>
+    	</td>
+        <td orderId="$ord.orderId">
+			#if($ord.freeze=='OF001')
+				<a class="mar_right_10" href="javascript:freezeOrUnfreezeOrder('$ord.orderId',2,'orderListFlag');">解冻</a>
+			#else
+    			#if($ord.orderStatus=='OA001'||$ord.orderStatus=='OA003')
+    				<a class="mar_right_10" href="javascript:showAdjustAmount('$ord.orderId','$ord.orderStatus');">调整金额</a>
+    			#elseif($ord.orderStatus=='OA002')
+    				<a class="mar_right_5" href="javascript:showConfirmPayment('$ord.orderId','$ord.orderStatus');">付款确认</a>
+    			#elseif($ord.refundStatus=='OR201')
+    				<a class="mar_right_5" href="javascript:showPaymentHandle('$ord.orderId');">退款处理</a>
+    			#elseif($ord.refundStatus=='OR213'||$ord.refundStatus=='OR202'||$ord.refundStatus=='OR203'||$ord.refundStatus=='OR204'
+					||$ord.refundStatus=='OR205'||$ord.refundStatus=='OR206'||$ord.refundStatus=='OR207'||$ord.refundStatus=='OR208'||$ord.refundStatus=='OR209'
+					||$ord.refundStatus=='OR210' ||$ord.refundStatus=='OR211'||$ord.refundStatus=='OR212')
+    				<a class="mar_right_5"  href="showRefundPayment('$ord.orderId');" >退款确认</a>
+    			#elseif($ord.orderStatus =='OR101'||$ord.riskStatus=='OR101')
+    				<a class="mar_right_5"  href="riskOrder('$ord.orderId');" >风控审核</a>
+    			#end
+    		    #if($ord.orderStatus.startsWith('OC') || $ord.orderStatus.startsWith('OD')||$ord.refundStatus=='OR214'||$ord.refundStatus=='OR230'||$ord.refundStatus=='OR221'||$ord.refundStatus=='OR222'||$ord.refundStatus=='OR224'||$ord.refundStatus=='OR225'||$ord.refundStatus=='OR227'||$ord.refundStatus=='OR228')
+    			#else
+    				<a class="mar_right_10" href="javascript:freezeOrUnfreezeOrder('$ord.orderId',1,'orderListFlag');">冻结</a>
+				#end
+				#if($ord.orderStatus.startsWith('OS'))
+					#if($ord.orderStatus=='OS006')
+    				<a class="mar_right_5"  href="javascript:splitOrder('$ord.orderId');" >拆分订单</a>
+					#else
+    					#if($ord.badOrder && $ord.badOrder==1)
+						#else
+							<a class="mar_right_5"  href="javascript:showShippingInfo('$ord.orderId');" >发货</a>
+    					#end
+					#end
+				#end
+		#end
+			    <a class="mar_right_10" href="javascript:showContactBuyer('$ord.buyerId','$ord.orderId');">联系买家</a>
+    			<a href="javascript:showOrderMeno('$ord.orderId','$ord.orderStatus');">备注</a>
+		</td>
+	</tr>
+	#end
+  #end
+</tbody></table>
+#parse("screens/Nap.html")
+ <!--   <div class="pagination pagination-right">
+    <span style="display:block; margin-bottom:5px;">总条数：<strong class="red mar_right_15">12</strong> 总页数：<strong class="red">1</strong></span>
+        <ul>
+            <li class="disabled"><a href="javascript:();">«</a></li>
+            <li class="active"><a href="javascript:();">1</a></li>
+            <li><a href="javascript:();">2</a></li>
+            <li><a href="javascript:();">3</a></li>
+            <li><a href="javascript:();">4</a></li>
+            <li><a href="javascript:();">5</a></li>
+            <li><a href="javascript:();">»</a></li>
+        </ul>
+    </div>--><!-- E page -->
+</form>
+<script>
+function splitOrder(orderId){
+	//拆分订单
+}
+
+function riskOrder(orderId){
+	//风控审核
+}
+</script>	

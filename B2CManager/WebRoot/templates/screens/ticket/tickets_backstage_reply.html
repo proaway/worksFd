@@ -1,0 +1,89 @@
+  <link rel="shortcut icon" href="/static/web/images/ys-logo-ico.ico" type="image/ico" /> 
+  <link rel="stylesheet" type="text/css" href="/static/prototype/shopmic-manage/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="/static/prototype/shopmic-manage/css/bootstrap-responsive.min.css" />
+  <link rel="stylesheet" type="text/css" href="/static/prototype/shopmic-manage/css/jquery-ui-1.10.0.custom.css" />
+  <link rel="stylesheet" type="text/css" href="/static/prototype/shopmic-manage/css/whole.css" />
+  <link rel="stylesheet" type="text/css" href="/static/prototype/shopmic-manage/css/shopmic_m.css" />
+  <script src="/static/prototype/shopmic-manage/js/jquery-1.7.2.min.js" type="text/javascript" language="javascript"></script>
+  <script src="/static/prototype/shopmic-manage/js/bootstrap.min.js" type="text/javascript" language="javascript"></script>
+  <script src="/static/prototype/shopmic-manage/js/jquery-ui-1.10.0.custom.min.js" type="text/javascript" language="javascript"></script>
+
+<br class="clear">
+<div style="width:860; max-width:890px; margin:0px auto; margin-bottom:100px;">
+    <div style="background:#fff; border:#CCC 1px solid;" class="alert black pad_bottom_20 pad_top_20 font12">
+<form action="$link.setPage('ticket,tickets_backstage_reply.html')" name="actionForm" id="actionForm" method="post">
+	<input type="hidden" id="actionFlag" name="actionFlag" value="" />
+	<input type="hidden" id="ticketsId" name="ticketsId" value="$ticketsId" />
+  <table class="table border_none table-condensed">
+          <tbody><tr>
+            <td width="90px" class="v_top"><b class="right">主题：</b></td>
+            <td><b class="green">$!ticketVo.ticket.title</b></td>
+          </tr>
+          <tr>
+            <td class="v_top"><b class="right">问题分类：</b></td>
+            <td><p>#if($tick.questionType == 2) 交易和询盘 #elseif($tick.questionType == 1) 账号问题  #elseif($tick.questionType == 3) 订单投诉  #elseif($tick.questionType == 4) 功能报错  #elseif($tick.questionType == 5)侵权举报 #else 其他 #end</p></td>
+          </tr>
+          <tr>
+            <td class="v_top"><b class="right">发信人：</b></td>
+            <td><b class="gray">#if($!ticketVo.ticket.identity==1) $!ticketVo.ticket.ticketsSystem  #else $!ticketVo.ticket.buyerName #end</b></td>
+          </tr>
+          <tr>
+            <td class="v_top"><b class="right">发信时间：</b></td>
+            <td><p>#if($!ticketVo.ticket.sendTime)$!StringUtil.getDateTimeString($!ticketVo.ticket.sendTime)#end</p></td>
+          </tr>
+          <tr>
+            <td class="v_top"><b class="right">正文：</b></td>
+            <td><p>$!ticketInfoVo.ticketInfo.message</p></td>
+          </tr>
+		 <!-- 
+		 #if($!ticketInfoVo.ticketInfo.attachList && $!ticketInfoVo.ticketInfo.attachList.size()>0)
+          <tr>
+            <td class="v_top"><b class="right">附件：</b></td>
+            <td><a data-toggle="modal" class="btn btn-small btn-link" role="button" href="#view_attachments">查看</a></td>
+          </tr>
+		  #end-->
+        #if($flag)
+		  <tr>
+            <td class="v_top"><b class="right">回复：</b></td>
+            <td><textarea style="resize: none;ime-mode:disabled;" placeholder="请用英文回复" class="span7 left" rows="3" id="messContent" name="messContent"></textarea>
+            	<br class="clear">
+                <input type="button" class="btn right mar_right_20 btn-small" value="确认发送" onclick="doSubmit();" #if($!ticketInfoVo.ticketInfo.identity==1) disabled  #end><label class="checkbox right mar_top_5 mar_right_10">
+                <input type="checkbox" value="同时发送邮件" onclick="changeSend();" name="sendIt" id="sendIt"><input type="hidden" value="0" id="isEmail" name="isEmail" />
+					同时发送邮件
+              </label>
+            </td>
+          </tr>
+		  #end
+        </tbody>
+	</table>
+</form>
+        <div id="ticketInfoDiv"></div>
+    </div>
+</div>
+<script>
+function getTicketInfo(pageIndex){
+	jQuery.get(
+		"$link.setAction('ticket.AjaxGetTicketInfomation')?ticketsId=$ticketsId&pageIndex="+pageIndex,
+		function(data){
+			if(data!=null){
+				jQuery("#ticketInfoDiv").html(data);
+			} 
+		});
+}
+getTicketInfo(1);
+
+//发送邮件，选中状态为1时表示发送
+	function changeSend(){
+		if(jQuery("#sendIt").checked==true){
+			jQuery("#isEmail").val("1");
+		}else{
+			jQuery("#isEmail").val("0");
+		}
+	}
+	
+	
+	function doSubmit(){
+		document.getElementById("actionFlag").value="ticketFlag";
+		document.actionForm.submit();
+	}
+</script>

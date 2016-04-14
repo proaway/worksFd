@@ -1,0 +1,257 @@
+$page.setTitle("买家管理")
+<form action="$link.setPage('buyer,BuyerIndex.html')" id="listForm" name="listForm" method="get">
+<br class="clear">
+<h4 class="mar_top_15 mar_bottom_20">买家管理</h4>
+<div class="search_form mar_bottom_10">
+    <ul class="inline">
+        <li><label class="left mar_top_5">买家昵称：</label><input type="text" placeholder="买家昵称" class="input-medium left" id="userId" name="userId" value="$!buyer.userId"></li>
+        <li><label class="left mar_top_5">注册时间：</label>
+			<input id="datepickera" class="input-small   mar_right_10 left" type="text" value="$!StringUtil.getDateString($!buyer.regStartDate)" name="regStartDate">
+			<label class="left mar_top_5">到</label>
+			<input id="datepickerb" class="input-small  mar_left_10 mar_right_10  left" type="text" value="$!StringUtil.getDateString($!buyer.regEndDate)" name="regEndDate">
+		</li>
+        <li>
+            <label class="left mar_top_5">用户等级：</label>
+            <select class="left oi_status_max_w" name="userLevel" id="userLevel">
+              <option value="1" selected >普通用户</option>
+            </select>
+        </li>
+        <li>
+            <label class="left mar_top_5">国家：</label>
+            <select class="left oi_status_max_w" name="countryId" id="countryId">
+                <optgroup label="---------">
+					<option value="">请选择注册国家</option>
+					#foreach($regionVo in $regionLists)
+						<option value="$regionVo.regionId" #if($buyer.shippingCountry==$regionVo.regionId) selected #end >${regionVo.regionName}(${regionVo.regionNameCn})</option>
+					#end
+                </optgroup>
+            </select>
+        </li>
+      <li><input type="submit" class="btn btn-primary left" value="查询"/></li>
+    </ul>
+    <br class="clear">
+</div>
+
+<table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-striped table-hover center_t font12 tl_mt3_mb3 mar_bottom_0" id="buyerTable">
+  <tbody><tr class="info bold">
+<td><label class="checkbox left"><input type="checkbox" value="size_templet_name" id="select_all" onclick="checkAll('select_all');">全选</label><label>买家昵称</label></td>
+<td><label>注册邮箱</label></td>
+<td><label>注册时间</label></td>
+<td><label>用户等级</label></td>
+<td><label>国家</label></td>
+<td><label>状态</label></td>
+<td><label>最近购买时间</label></td>
+</tr>
+
+#if($buyerList)
+	#set($index=1)
+	#foreach($buyerVo in $buyerList)
+    <tr>
+        <td>
+			<label class="checkbox">
+			<input type="hidden" id="emailActive_$index" name="emailActive" value="$!buyerVo.emailActive" />
+			<input type="hidden" id="freeze_$index" name="freeze" value="$!buyerVo.freeze" />
+			<input type="checkbox" value="$buyerVo.buyerId" name="buyerIds" id="id_$index" onclick="unCheck();">
+					<a class="" target="_blank" href="$link.setPage('buyer,BuyerDetail.html')?buyerId=$buyerVo.buyerId">$!buyerVo.userId</a>
+			</label>
+		</td>
+        <td>
+			$buyerVo.email
+		</td>
+        <td class="font10"><label>#if($buyerVo.regDate)$!StringUtil.getDateTimeString($!buyerVo.regDate)#end</label></td>
+        <td><label>#if($buyerVo.buyerLevel=="1") 普通用户 #end</label></td>
+        <td><label>$regionMap.get("$!buyerVo.country").regionName</label></td>
+        <td>
+			<label>
+				#if($buyerVo.emailActive && $buyerVo.emailActive==1) 已激活 #else 未激活 #end
+				#if($buyerVo.freeze==0) 未冻结 #else 已冻结 #end
+			</label>
+		</td>
+        <td class="font10"><label>#if($buyerVo.lastBuyDate)$!StringUtil.getDateTimeString($!buyerVo.lastBuyDate)#end</label></td>
+	</tr>
+	#set($index = $index+1)
+	#end
+#end
+</tbody></table>
+
+<table style="margin-top:0px;" class="table font14">
+    <tbody>
+	  <tr class="success">
+            <td><label class="checkbox left mar_top_5">
+				<input type="checkbox" value="size_templet_name" id="select_all2" onclick="checkAll('select_all2');">全选</label>
+				<a data-toggle="modal" class="btn btn-success btn-small font12 left mar_left_15" role="button" href="javascript:activeBuyer(1);">
+					<span class="white">激活</span>
+				</a>
+				<a data-toggle="modal" class="btn btn-small font12 left mar_left_15" role="button" href="javascript:activeBuyer(2);">冻结</a>
+				<a data-toggle="modal" class="btn btn-small font12 left mar_left_15" role="button" href="javascript:activeBuyer(3);">解冻</a>
+				<a data-toggle="modal" class="btn btn-success btn-small font12 right mar_right_10" role="button" href="javascript:activeBuyer(1);">
+					<span class="white">激活</span>
+				</a>
+			</td>
+      </tr>
+    </tbody>
+</table>
+#parse("screens/Nap.html")
+</form>
+<script>
+jQuery( "#datepickera" ).datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#datepickerb" ).datepicker( "option", "minDate", selectedDate );
+    }
+});
+
+jQuery( "#datepickerb" ).datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#datepickera" ).datepicker( "option", "maxDate", selectedDate );
+    }
+});
+</script>
+
+<script>
+ function checkAll(id) {
+    if(document.getElementById(id).checked==true){
+		 var ids = document.getElementsByName("buyerIds");
+         for (var i = 0; i < ids.length; i++) {
+                ids[i].checked=true;
+         }
+		 if(id=="select_all"){
+		 	 document.getElementById("select_all2").checked=true;
+		 }else{
+			 document.getElementById("select_all").checked=true;
+		 }
+    	 
+    	
+	}else{
+		 var ids = document.getElementsByName("buyerIds");
+         for (var i = 0; i < ids.length; i++) {
+            	ids[i].checked=false;
+         }
+    	  if(id=="select_all"){
+		 	 document.getElementById("select_all2").checked=false;
+		 }else{
+			 document.getElementById("select_all").checked=false;
+		 }
+	}
+ }
+ 
+ function unCheck(){
+ 	var ids = document.getElementsByName("buyerIds");
+	var len = ids.length;
+	var count = 0;
+	if(len>0){
+		for(var i=0;i<ids.length;i++){
+			if(	ids[i].checked==true){
+				count++;
+			}
+		}
+		if(count==len){
+		 	 document.getElementById("select_all2").checked=true;
+			 document.getElementById("select_all").checked=true;
+		 }else{
+			 document.getElementById("select_all2").checked=false;
+			 document.getElementById("select_all").checked=false;
+		 }
+	}	
+ }
+</script>
+
+<script>
+
+function activeBuyer(flag){
+	var ids = document.getElementsByName("buyerIds");
+	var count = returnIdsLength();
+	if(count<=0){
+		alert("请至少选择一项");
+		return ;
+	}
+	var paramId="";
+	var j=0;
+	for(var i=0;i<ids.length;i++){
+		if(ids[i].checked==true){
+			var activeId;
+			if(flag==1){
+				activeId = document.getElementById("emailActive_"+(i+1)).value;
+				if(activeId==0){
+    				if(paramId!=""){
+    					paramId = paramId+",";
+    				}
+    				paramId = paramId+ids[i].value;
+    				j++;
+    			}
+			}else if(flag==2){
+				activeId = document.getElementById("freeze_"+(i+1)).value;
+				if(activeId==0){
+    				if(paramId!=""){
+    					paramId = paramId+",";
+    				}
+    				paramId = paramId+ids[i].value;
+    				j++;
+    			}
+			}else {
+				activeId = document.getElementById("freeze_"+(i+1)).value;
+				if(activeId==1){
+    				if(paramId!=""){
+    					paramId = paramId+",";
+    				}
+    				paramId = paramId+ids[i].value;
+    				j++;
+    			}
+			}
+			
+		}
+	}
+	if(confirm("确定要执行此操作吗？")){
+		if(paramId.length<1){
+			if(flag==1){
+				alert("所选都已经激活，无需再执行该操作");
+			}else if(flag==2){
+				alert("所选都已经冻结，无需再执行该操作");
+			}else {
+				alert("没有需要解冻的，无需再执行该操作");
+			}
+			return ;
+		}
+		jQuery("body").showLoading();
+    	jQuery.get(
+    		"$link.setAction('buyer.AjaxUpdateBuyerStatusAction')?ids="+paramId+"&flag="+flag,
+        		function(data){
+					jQuery("body").hideLoading();
+    				if(flag==1){
+        				if(data=="0"){
+        					alert("激活失败!");
+            			} else {
+    						alert(data+"个买家被激活");
+							document.listForm.submit();
+            			}
+    				}else if(flag==2){
+    					if(data=="0"){
+        					alert("冻结失败!");
+            			} else {
+    						alert(data+"个买家被冻结");
+							document.listForm.submit();
+            			}
+    				}else{
+    					if(data=="0"){
+        					alert("解冻失败!");
+            			} else {
+    						alert(data+"个买家已解冻");
+							document.listForm.submit();
+            			}
+    				}
+    		});
+		}
+}
+
+function returnIdsLength(){
+	var ids = document.getElementsByName("buyerIds");
+	var count = 0;
+	for(var i=0;i<ids.length;i++){
+			if(	ids[i].checked==true){
+				count++;
+			}
+		}
+	return count;
+}
+</script>

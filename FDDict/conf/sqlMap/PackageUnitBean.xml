@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertPackageUnitBean" parameterClass="com.fd.fashion.dict.bean.PackageUnitBean">
+        <![CDATA[
+insert into TC_PACKAGE_UNIT
+  (UNIT_ID, NAME, NAME_CN)
+values
+  (#unitId#, #name#, #nameCn#)
+        ]]>
+        <selectKey keyProperty="unitId" resultClass="long">
+            <![CDATA[select @@identity as unitId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updatePackageUnitBean" parameterClass="com.fd.fashion.dict.bean.PackageUnitBean">
+        <![CDATA[
+update TC_PACKAGE_UNIT 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="unitId" prepend="," removeFirstPrepend="true">
+                <![CDATA[UNIT_ID = #unitId#]]>
+            </isNotNull>
+            <isNotNull property="name" prepend="," removeFirstPrepend="true">
+                <![CDATA[NAME = #name#]]>
+            </isNotNull>
+            <isNotNull property="nameCn" prepend="," removeFirstPrepend="true">
+                <![CDATA[NAME_CN = #nameCn#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where UNIT_ID = #unitId#
+        ]]>
+    </update>
+
+    <sql id="getPackageUnitBeanCondition">
+            <isNotNull property="unitId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[UNIT_ID = #unitId#]]>
+            </isNotNull>
+            <isNotNull property="name" prepend="and" removeFirstPrepend="true">
+                <![CDATA[NAME = #name#]]>
+            </isNotNull>
+            <isNotNull property="nameCn" prepend="and" removeFirstPrepend="true">
+                <![CDATA[NAME_CN = #nameCn#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getPackageUnitBeanCount" parameterClass="com.fd.fashion.dict.bean.PackageUnitBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from TC_PACKAGE_UNIT 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getPackageUnitBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getPackageUnitBean" parameterClass="com.fd.fashion.dict.bean.PackageUnitBean"
+        resultClass="com.fd.fashion.dict.bean.PackageUnitBean">
+        <![CDATA[
+select 
+	UNIT_ID	as unitId,
+	NAME	as name,
+	NAME_CN	as nameCn
+from TC_PACKAGE_UNIT 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getPackageUnitBeanCondition"/>        </dynamic>
+    </select>
+
+    <delete id="deletePackageUnitBean" parameterClass="com.fd.fashion.dict.bean.PackageUnitBean">
+        <![CDATA[
+delete from TC_PACKAGE_UNIT where UNIT_ID=#unitId#
+        ]]>
+    </delete>
+</sqlMap>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertVisitProdshowBean" parameterClass="com.fd.statistics.bean.VisitProdshowBean">
+        <![CDATA[
+insert into T_VISIT_PRODSHOW
+  (OPEN_ID, PRODUCT_ID)
+values
+  (#openId#, #productId#)
+        ]]>
+    </insert>
+
+    <update id="updateVisitProdshowBean" parameterClass="com.fd.statistics.bean.VisitProdshowBean">
+        <![CDATA[
+update T_VISIT_PRODSHOW 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="openId" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPEN_ID = #openId#]]>
+            </isNotNull>
+            <isNotNull property="productId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where OPEN_ID = #openId#
+        ]]>
+    </update>
+
+    <sql id="getVisitProdshowBeanCondition">
+         <isNotNull property="openId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[OPEN_ID = #openId#]]>
+         </isNotNull>
+         <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PRODUCT_ID = #productId#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getVisitProdshowBeanCount" parameterClass="com.fd.statistics.bean.VisitProdshowBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_VISIT_PRODSHOW 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitProdshowBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getVisitProdshowBean" parameterClass="com.fd.statistics.bean.VisitProdshowBean"
+        resultClass="com.fd.statistics.bean.VisitProdshowBean">
+        <![CDATA[
+select 
+	OPEN_ID	as openId,
+	PRODUCT_ID	as productId
+from T_VISIT_PRODSHOW 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitProdshowBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteVisitProdshowBean" parameterClass="com.fd.statistics.bean.VisitProdshowBean">
+        <![CDATA[
+delete from T_VISIT_PRODSHOW where OPEN_ID=#openId#
+        ]]>
+    </delete>
+
+</sqlMap>

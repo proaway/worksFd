@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertRegionBean" parameterClass="com.fd.fashion.dict.bean.RegionBean">
+        <![CDATA[
+insert into TC_REGION
+  (REGION_ID, REGION_LEVEL, REGION_NAME, REGION_NAME_CN, SHORT_NAME, CONTINENT, TEL_COUNTRY_CODE, AREA,TIME_ZONE)
+values
+  (#regionId#, #regionLevel#, #regionName#, #regionNameCn#, #shortName#, #continent#, #telCountryCode#, #area#,#timeZone#)
+        ]]>
+        <selectKey keyProperty="regionId" resultClass="long">
+            <![CDATA[select @@identity as regionId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateRegionBean" parameterClass="com.fd.fashion.dict.bean.RegionBean">
+        <![CDATA[
+update TC_REGION 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="regionId" prepend="," removeFirstPrepend="true">
+                <![CDATA[REGION_ID = #regionId#]]>
+            </isNotNull>
+            <isNotNull property="regionLevel" prepend="," removeFirstPrepend="true">
+                <![CDATA[REGION_LEVEL = #regionLevel#]]>
+            </isNotNull>
+            <isNotNull property="regionName" prepend="," removeFirstPrepend="true">
+                <![CDATA[REGION_NAME = #regionName#]]>
+            </isNotNull>
+            <isNotNull property="regionNameCn" prepend="," removeFirstPrepend="true">
+                <![CDATA[REGION_NAME_CN = #regionNameCn#]]>
+            </isNotNull>
+            <isNotNull property="shortName" prepend="," removeFirstPrepend="true">
+                <![CDATA[SHORT_NAME = #shortName#]]>
+            </isNotNull>
+            <isNotNull property="continent" prepend="," removeFirstPrepend="true">
+                <![CDATA[CONTINENT = #continent#]]>
+            </isNotNull>
+            <isNotNull property="telCountryCode" prepend="," removeFirstPrepend="true">
+                <![CDATA[TEL_COUNTRY_CODE = #telCountryCode#]]>
+            </isNotNull>
+            <isNotNull property="area" prepend="," removeFirstPrepend="true">
+                <![CDATA[AREA = #area#]]>
+            </isNotNull>
+            <isNotNull property="timeZone" prepend="and" removeFirstPrepend="true">
+                <![CDATA[TIME_ZONE = #timeZone#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where REGION_ID = #regionId#
+        ]]>
+    </update>
+
+    <sql id="getRegionBeanCondition">
+            <isNotNull property="regionId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[REGION_ID = #regionId#]]>
+            </isNotNull>
+            <isNotNull property="regionLevel" prepend="and" removeFirstPrepend="true">
+                <![CDATA[REGION_LEVEL = #regionLevel#]]>
+            </isNotNull>
+            <isNotNull property="regionName" prepend="and" removeFirstPrepend="true">
+                <![CDATA[REGION_NAME = #regionName#]]>
+            </isNotNull>
+            <isNotNull property="regionNameCn" prepend="and" removeFirstPrepend="true">
+                <![CDATA[REGION_NAME_CN = #regionNameCn#]]>
+            </isNotNull>
+            <isNotNull property="shortName" prepend="and" removeFirstPrepend="true">
+                <![CDATA[SHORT_NAME = #shortName#]]>
+            </isNotNull>
+            <isNotNull property="continent" prepend="and" removeFirstPrepend="true">
+                <![CDATA[CONTINENT = #continent#]]>
+            </isNotNull>
+            <isNotNull property="telCountryCode" prepend="and" removeFirstPrepend="true">
+                <![CDATA[TEL_COUNTRY_CODE = #telCountryCode#]]>
+            </isNotNull>
+            <isNotNull property="area" prepend="and" removeFirstPrepend="true">
+                <![CDATA[AREA = #area#]]>
+            </isNotNull>
+            <isNotNull property="timeZone" prepend="and" removeFirstPrepend="true">
+                <![CDATA[TIME_ZONE = #timeZone#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getRegionBeanCount" parameterClass="com.fd.fashion.dict.bean.RegionBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from TC_REGION 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getRegionBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getRegionBean" parameterClass="com.fd.fashion.dict.bean.RegionBean"
+        resultClass="com.fd.fashion.dict.bean.RegionBean">
+        <![CDATA[
+select 
+	REGION_ID	as regionId,
+	REGION_LEVEL	as regionLevel,
+	REGION_NAME	as regionName,
+	REGION_NAME_CN	as regionNameCn,
+	SHORT_NAME	as shortName,
+	CONTINENT	as continent,
+	TEL_COUNTRY_CODE	as telCountryCode,
+	AREA	as area,
+	TIME_ZONE  as timeZone
+from TC_REGION 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getRegionBeanCondition"/>
+        </dynamic>
+        <![CDATA[
+order by REGION_NAME
+        ]]>
+    </select>
+
+    <delete id="deleteRegionBean" parameterClass="com.fd.fashion.dict.bean.RegionBean">
+        <![CDATA[
+delete from TC_REGION where REGION_ID=#regionId#
+        ]]>
+    </delete>
+</sqlMap>

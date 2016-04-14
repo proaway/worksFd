@@ -1,0 +1,38 @@
+$page.setTitle("Review History")
+#if($recentHistorys)
+<h2 style="color:#9f020e; line-height:32px;">Review History</h2>
+<br class="clearfloat">
+
+            <div class="freeshipping">
+              <ul>
+				#foreach($prod in $recentHistorys)
+					<li>
+					<a title="Delete" href="javascript:();">
+						<span class="del_l">
+							<span class="del_l_1">×</span>
+							&nbsp;&nbsp;&nbsp;&nbsp;
+						</span>
+					</a>
+                  <div>
+					<a class="moveimg" target="_blank" href="$RewriteUtil.getProductUrl($prod.product.productName, $prod.product.productId)">
+						<img border="0" width="130" height="130" title="$prod.product.productName" src="$prod.midImageUrl">
+					</a>
+				  </div>
+                  <p class="freename">
+					<a target="_blank" href="$RewriteUtil.getProductUrl($prod.product.productName, $prod.product.productId)">$!StringUtil.stringformat($prod.product.productName,48)
+					</a>
+				  </p>
+                  <p class="price">
+					<span class="listprice_all">USD <span class="listprice_big">$prod.priceVo.discountPrice</span></span>
+				  </p>
+                </li>
+                #end
+              </ul>
+            </div>
+            
+            <!--<div class="list-page">
+<div class="global-page">Records:2   Pages: 1 &nbsp;&nbsp;&nbsp;<a class="global-page-previous" href="#">first</a> <a class="global-page-previous" href="#"><img src="/static/prototype/product_fashion/images/ico-previous.gif" width="8" height="7" vspace="6" align="absmiddle" /> prev</a> <a href="#">1</a> <span class="select">2</span><a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">6</a> <a href="#">7</a> <a href="#">8</a> <span class="global-page-break">...</span><a href="#">49</a> <a href="#">50</a> <a class="global-page-next" href="#">next <img src="/static/prototype/product_fashion/images/ico-next.gif" width="8" height="7" vspace="6" align="absmiddle" /></a> <a class="global-page-next" href="#">last</a>
+<input name="textfield" type="text"  class="input_go" id="textfield" onclick="this.value='';" value="Page" style="width:35px;" /> <input type="submit" name="button" id="button" value="Go" class="input_btn_protal_short"/></div></div>-->
+#parse("screens/BuyerNap.html")
+<br class="clearfloat">
+#end        

@@ -1,0 +1,259 @@
+
+<div class="accordion-heading upload_tit">
+	<a class="accordion-toggle font_s_14" data-toggle="collapse"
+		data-parent="#accordion1" href="#collapseFive">7. 活动设置</a>
+</div>
+<div id="collapseFive" class="accordion-body collapse in">
+	<div class="accordion-inner">
+		<table border="0" cellspacing="0" cellpadding="0" width="100%"
+			class="upload_tab">
+			<tr>
+				<td class="td_70">赠品：</td>
+				<td class="td_60 pad_top_15">促销时间：</td>
+				<td><input name="promotion_startTime" class="input-medium mar_top_10 mar_right_10" id="promotion_datepickera"
+					type="text" placeholder="起始日期"> 至 <input id="promotion_datepickerb" name="promotion_endTime"
+					class="input-medium mar_top_10 mar_left_10 mar_right_20"
+					type="text" placeholder="终止日期"></td>
+			</tr>
+			<tr>
+				<td class="td_70"></td>
+				<td class="v_top">赠品数量：</td>
+				<td><span
+					class="help-block left mar_left_10">若选择库存数量，则表示在活动期间内赠品一直赠送到无库存为止。</span>
+					<br class="clear" /> <span
+					class="help-block left mar_left_10">若选择自定义，则表示在活动期间内，赠送完指定数量赠品后赠品活动结束。</span>
+				</td>
+			</tr>
+			<tr>
+				<td class="td_70"></td>
+				<td colspan="2"><span class="help-block">最多添加5种赠品：</span>
+					<div id="gift_before">
+						
+							
+
+                	<table class="left" id="giftInput">
+                    	<tr>
+                        	<td>
+                            	<input class="width_135px mar_right_10" type="text" idx="1" id="giftProductId" name="giftProductId"
+							placeholder="输入SKU或ItemCode" onfocus="cpGifts(this);" onblur="chkGiftsInput(this);">
+                            </td>
+                        </tr>
+                    	<tr>
+                            <td>
+                                <label class="radio left"><input type="radio" name="giftNumChk1" id="giftNumChk" value="" checked onclick="jQuery(this).parents('table#giftInput').find('#giftNum').hide();">库存数量</label>
+                              <br class="clear" />
+                              <label class="radio left mar_top_5"><input type="radio" name="giftNumChk1" id="giftNumChk" value="" onclick="jQuery(this).parents('table#giftInput').find('#giftNum').show();">自定义数量</label>
+								<input type="text" name="giftNum1" id="giftNum" class="input-super-mini" style="display:none"/>
+								 <br class="clear" />
+								<span id="err" class="red hide">超出最大库存数，重新填写</span>
+                              </td>
+                        </tr>
+                    </table>
+							
+							
+							
+							<br class="clear" />
+						<button class="btn btn-primary btn-small mar_right_10"
+							type="button"
+							onclick="addGifts()">确认添加</button>
+						<button class="btn btn-primary btn-small" type="button"
+							href="#pModal" data-toggle="modal" onclick="selectGiftProd()">查找</button>
+					</div>
+					<!-- E gift_before -->
+					<div id="gift_after" class="hide">
+						<button class="btn btn-primary btn-small" type="button"
+							onclick="javascript:document.getElementById('gift_before').style.display='block';javascript:document.getElementById('gift_after').style.display='none';">重新编辑</button>
+						<ul class="inline" id="giftsDetail">
+							<li><img
+								src="/static/prototype/shopmic-manage/img/product_default.gif"
+								class="img-polaroid"><br />
+							<a href="/static/prototype/Product_2012/Product.shtml"
+								target="_blank">This is a default product, product title,
+									used to...</a><br />
+							<span class="red bold">$ 68.8</span><br />赠品数量：<input
+								class="input-mini mar_top_5" type="text" placeholder="数量"><br />
+							<span class="help-block"><span class="red">您输入的赠品数量超出该赠品最大库存数量，请重新填写。</span>
+							</span>
+							</li>
+						</ul>
+					</div>
+					<!-- E gift_after --></td>
+			</tr>
+		</table>
+		<!-- E gift table -->
+		<table border="0" cellspacing="0" cellpadding="0" width="100%"
+			class="upload_tab mar_top_20 mar_bottom_20 border_top">
+			<tr>
+				<td class="td_70"></td>
+				<td class="pad_top_15"></td>
+			</tr>
+			<tr>
+				<td class="td_70">组合销售：</td>
+				<td><span class="help-block">选择组合销售的产品（最多可以选择4个产品）：</span>
+					<div id="group_before">
+						<input class="width_135px mar_right_10" type="text" id="groupProdId" name="groupProdId" idx="1"
+							placeholder="输入SKU或ItemCode" onfocus="cpGroup(this)" onblur="chkGroupInput(this)"> <br class="clear" />
+						<button class="btn btn-primary btn-small mar_right_10"
+							type="button"
+							onclick="addGroupProds()">确认添加</button>
+						<button class="btn btn-primary btn-small" type="button"
+							href="#pModal" data-toggle="modal" onclick="return selectGroupProd();">查找</button>
+						<!-- E search_group_pModal -->
+					</div>
+					<!-- E group_before -->
+					<div id="group_after" class="hide">
+						<button class="btn btn-primary btn-small" type="button"
+							onclick="javascript:document.getElementById('group_before').style.display='block';javascript:document.getElementById('group_after').style.display='none';">重新编辑</button>
+						<ul class="inline" id="groupDetail">
+							<li><img
+								src="/static/prototype/shopmic-manage/img/product_default.gif"
+								class="img-polaroid"><br />
+							<a href="/static/prototype/Product_2012/Product.shtml"
+								target="_blank">This is a default product, product title,
+									used to...</a>
+							</span>
+							</li>
+						</ul>
+					</div>
+					<!-- E group_after --></td>
+			</tr>
+			<tr>
+				<td class="td_70"></td>
+				<td>
+					<div class="alert group_discount black font14">
+						输入折扣比例：
+						<span id="groupDiscount1"><br /> 购买2件，第二件商品折扣为：<input class="input-small" type="text" placeholder="折扣"/></span>
+						<span class="hide" id="groupDiscount2"><br /> 购买3件，第二、三件商品折扣为：<input class="input-small" type="text" placeholder="折扣"/></span>
+						<span class="hide" id="groupDiscount3"><br /> 购买4件，第二、三、四件商品折扣为：<input class="input-small" type="text" placeholder="折扣"/></span>
+						<span class="hide" id="groupDiscount4"><br /> 购买5件，第二、三、四、五件商品折扣为：<input class="input-small" type="text" placeholder="折扣"/></span>
+						<br /><span class="help-block"><span class="red">此处的的购买件数为：当前产品
+								+ 组合产品，输入的折扣值只针对组合产品。</span>
+						</span>
+					</div></td>
+			</tr>
+		</table>
+		<!-- E group table -->
+	</div>
+</div>
+	
+<script>
+function selectGiftProd() {
+	callbacks.empty();
+	callbacks = jQuery.Callbacks();
+	callbacks.add(function(prod){
+		var f = true;
+		var len = jQuery("input#giftProductId").length;
+		for(i=0; i<len; i++) {
+			var o = jQuery("input#giftProductId")[i];
+			if (o.value=="") {
+				cpGifts(o);
+				o.value = prod.productId;
+				f = false;
+			}
+		}
+		if (f) {
+			alert("已无空余赠品名额");
+		}
+	});
+}
+function cpGifts(o) {
+	var idx = parseInt(jQuery(o).attr("idx"));
+	idx = idx+1;
+	if (idx <= 5 && jQuery("#giftProductId[idx='"+idx+"']").length==0 ) {
+    	var oo = jQuery(o).parents("table#giftInput").clone();
+		oo.find("#giftProductId").attr("idx",idx);
+		oo.find("input:radio").attr("name", "giftNumChk" + idx);
+		oo.find("input#giftNum").attr("name", "giftNum" + idx);
+    	jQuery(o).parents("table#giftInput").after(oo);
+	}
+}
+function addGifts() {
+	jQuery("body").showLoading();
+	var param = form2URLbySelector("#giftProductId");
+	jQuery.getJSON("$link.setAction('product.AjaxGetGiftProduct')?" + param,
+		function(data) {
+			jQuery("body").hideLoading();
+			var detail = jQuery("#giftsDetail");
+			detail.empty();
+			for(i=0; i<data.length; i++) {
+				var p = data[i];
+				var li = "<li>";
+				li += "<img src='"+p.midImageUrl+"' class='img-polaroid'><br />"
+				li += "<a href='"+p.productUrl+"' target='_blank'>"+p.product.productName+"</a><br />"
+				li += "<span class='red bold'>$ "+p.priceVo.discountPrice+"</span><br />赠品数量：<inputclass='input-mini mar_top_5' type='text' placeholder='数量'><br />"
+				li += "<span class='help-block'><span class='red hide'>您输入的赠品数量超出该赠品最大库存数量，请重新填写。</span></span>";
+				li += "</li>";
+				detail.append(li);
+			}
+        	jQuery("#gift_before").hide();
+        	jQuery("#gift_after").show();
+		}
+	);
+}
+function chkGiftsInput(o) {
+	var idx = parseInt(jQuery(o).attr("idx"));
+	idx = idx+1;
+	if (jQuery(o).val()=="" && jQuery("#giftProductId[idx='"+idx+"']").val()=="") {
+		jQuery("#giftProductId[idx='"+idx+"']").parents("table#giftInput").remove();
+	}
+}
+function selectGroupProd() {
+	callbacks.empty();
+	callbacks.add(function(prod){
+		var f = true;
+		var len = jQuery("input#groupProdId").length;
+		for(i=0; i<len; i++) {
+			var o = jQuery("input#groupProdId")[i];
+			if (o.value=="") {
+				cpGroup(o);
+				o.value = prod.productId;
+				f = false;
+			}
+		}
+		if (f) {
+			alert("已无空余组合产品名额");
+		}
+	});
+}
+function cpGroup(o) {
+	var idx = parseInt(jQuery(o).attr("idx"));
+	idx = idx+1;
+	if (idx <= 4 && jQuery("#groupProdId[idx='"+idx+"']").length==0 ) {
+    	var oo = jQuery(o).clone();
+		oo.attr("idx",idx);
+    	jQuery(o).after(oo);
+		jQuery("#groupDiscount" + idx).show();
+	}
+}
+function chkGroupInput(o) {
+	var idx = parseInt(jQuery(o).attr("idx"));
+	idx = idx+1;
+	if (jQuery(o).val()=="" && jQuery("#groupProdId[idx='"+idx+"']").val()=="") {
+		jQuery("#groupProdId[idx='"+idx+"']").remove();
+		jQuery("#groupDiscount" + idx).hide();
+	}
+}
+
+function addGroupProds() {
+	jQuery("body").showLoading();
+	var param = form2URLbySelector("#groupProdId");
+	jQuery.getJSON("$link.setAction('product.AjaxGetGiftProduct')?" + param,
+		function(data) {
+			jQuery("body").hideLoading();
+			var detail = jQuery("#groupDetail");
+			detail.empty();
+			for(i=0; i<data.length; i++) {
+				var p = data[i];
+				var li = "<li>";
+				li += "<img src='"+p.midImageUrl+"' class='img-polaroid'><br />"
+				li += "<a href='"+p.productUrl+"' target='_blank'>"+p.product.productName+"</a><br />"
+				li += "<span class='red bold'>$ "+p.priceVo.discountPrice+"</span>"
+				li += "</li>";
+				detail.append(li);
+			}
+        	jQuery("#group_before").hide();
+        	jQuery("#group_after").show();
+		}
+	);
+}
+</script>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertSizeCatBean" parameterClass="com.fd.fashion.dict.bean.SizeCatBean">
+        <![CDATA[
+insert into TC_SIZE_CAT
+  (SIZECAT_ID, NAME, NAME_CN)
+values
+  (#sizecatId#, #name#, #nameCn#)
+        ]]>
+        <selectKey keyProperty="sizecatId" resultClass="long">
+            <![CDATA[select @@identity as sizecatId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateSizeCatBean" parameterClass="com.fd.fashion.dict.bean.SizeCatBean">
+        <![CDATA[
+update TC_SIZE_CAT 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="sizecatId" prepend="," removeFirstPrepend="true">
+                <![CDATA[SIZECAT_ID = #sizecatId#]]>
+            </isNotNull>
+            <isNotNull property="name" prepend="," removeFirstPrepend="true">
+                <![CDATA[NAME = #name#]]>
+            </isNotNull>
+            <isNotNull property="nameCn" prepend="," removeFirstPrepend="true">
+                <![CDATA[NAME_CN = #nameCn#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where SIZECAT_ID = #sizecatId#
+        ]]>
+    </update>
+
+    <sql id="getSizeCatBeanCondition">
+            <isNotNull property="sizecatId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[SIZECAT_ID = #sizecatId#]]>
+            </isNotNull>
+            <isNotNull property="name" prepend="and" removeFirstPrepend="true">
+                <![CDATA[NAME = #name#]]>
+            </isNotNull>
+            <isNotNull property="nameCn" prepend="and" removeFirstPrepend="true">
+                <![CDATA[NAME_CN = #nameCn#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getSizeCatBeanCount" parameterClass="com.fd.fashion.dict.bean.SizeCatBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from TC_SIZE_CAT 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getSizeCatBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getSizeCatBean" parameterClass="com.fd.fashion.dict.bean.SizeCatBean"
+        resultClass="com.fd.fashion.dict.bean.SizeCatBean">
+        <![CDATA[
+select 
+	SIZECAT_ID	as sizecatId,
+	NAME	as name,
+	NAME_CN	as nameCn
+from TC_SIZE_CAT 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getSizeCatBeanCondition"/>        </dynamic>
+    </select>
+
+    <delete id="deleteSizeCatBean" parameterClass="com.fd.fashion.dict.bean.SizeCatBean">
+        <![CDATA[
+delete from TC_SIZE_CAT where SIZECAT_ID=#sizecatId#
+        ]]>
+    </delete>
+</sqlMap>

@@ -1,0 +1,674 @@
+#set($page.title = "产品管理")
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/dict.js"></script>
+<script language="javascript" src="/static/prototype/shopmic-manage/js/customcatselector.js"></script> 
+##<script language="javascript" src="$content.getURI('js/customcatselector.js')"></script>
+	<br class="clear" />
+  	<h4 class="mar_top_15">已传产品管理</h4>
+    <br class="clear" />
+	<div id="listProd">
+	<button class="btn left mar_right_15" onclick="window.location='$link.setPage('product,DeletedProducts.html')'">$DictUtil.getProductStatusBtn(-1)（<b class="red" prodSt="-1">0</b>）</button>
+	<button class="btn left mar_right_15" onclick="window.location='$link.setPage('product,ProductsManage.html')?productStatuses=0'">$DictUtil.getProductStatusBtn(0)（<b class="red" prodSt="0">0</b>）</button>
+	<button class="btn left mar_right_15" onclick="window.location='$link.setPage('product,ProductsManage.html')?productStatuses=1'">$DictUtil.getProductStatusBtn(1)（<b class="red" prodSt="1">0</b>）</button>
+	<button class="btn left mar_right_15" onclick="window.location='$link.setPage('product,ProductsManage.html')?productStatuses=2'">$DictUtil.getProductStatusBtn(2)（<b class="red" prodSt="2">0</b>）</button>
+	<button class="btn left mar_right_15" onclick="window.location='$link.setPage('product,DeletedProducts.html')'">$DictUtil.getProductStatusBtn(3)（<b class="red" prodSt="3">0</b>）</button>
+<script>
+#foreach($prodCount in $productCounts)
+	jQuery("b[prodSt='"+$prodCount.productStatus+"']").html($prodCount.productCount);
+#end
+</script>
+	<br class="clear" />
+
+    <div class="search_form mar_top_10"><form name="listForm" id="listForm" method="get" onsubmit="searchProduct();">
+		<input type="hidden" id="pageIndex" name="pageIndex" value="$pageInfo.pageIndex"/>
+        <ul class="inline">
+             <li><input type="text" name="key" value="$!searchVo.key" class="input-medium left" placeholder="请输入产品名称或者ID"></li>
+            <li><input type="hidden" name="catId" id="customCatId" value="$!searchVo.catId" verify="id"/>
+			<script>var CustomCatSelector = new CustomCategorySelector(4, "customCatId");</script>
+			<select class="left mar_right_10 width_110px" id="customCatId1">
+					<option value="000">一级分类</option>
+			</select> 
+			<select class="left mar_right_10 width_110px" id="customCatId2">
+					<option value="000000">二级分类</option>
+			</select> 
+			<select class="left mar_right_10 width_110px" id="customCatId3">
+					<option value="000000000">三级分类</option>
+			</select> 
+			<select class="left width_110px" id="customCatId4">
+					<option value="000000000000">四级分类</option>
+			</select> </li>
+            <li><select class="left">
+            <option>负责人</option>
+            <option>负责人2</option>
+            <option>负责人3</option>
+            </select></li>
+            <li><select class="left" name="orderType">
+            <option value="1">创建日期正序</option>
+            <option value="2" selected>创建日期倒序</option>
+            <option value="3">编辑日期正序</option>
+            <option value="4">编辑日期倒序</option>
+            </select></li>#if($!searchVo.orderType)<script>jQuery("[name='orderType']").val($!searchVo.orderType)</script>#end
+        <li><input class="btn btn-warning bold left mar_top_0" type="submit" value="搜 索"/>
+			<a onclick="javascript:document.getElementById('more_search').style.display='block';document.getElementById('block_more_search').style.display='none';document.getElementById('hide_more_search').style.display='block';setCookie('advSearch',1,30);" class="btn btn-link left" id="block_more_search" href="javascript:;">高级查询<span class="icon-chevron-down"></span></a>
+			<a onclick="javascript:document.getElementById('more_search').style.display='none';document.getElementById('block_more_search').style.display='block';document.getElementById('hide_more_search').style.display='none';setCookie('advSearch',0,30);" class="btn btn-link left hide" id="hide_more_search" href="javascript:;">收起<span class="icon-chevron-up"></span></a>
+		</li><script>jQuery("document").ready(function(){if(getCookie("advSearch")==1){jQuery("a#block_more_search").click();}});</script>
+        </ul>
+        <br class="clear">
+        <ul id="more_search" class="inline alert alert-success pad_left_5 pad_right_5 pad_top_15 hide">
+			<li><label class="checkbox"><input type="checkbox" name="productStatuses" value="0"/> 下架</label></li>
+			<li><label class="checkbox"><input type="checkbox" name="productStatuses" value="1"/> 在销</label></li>
+			<li><label class="checkbox"><input type="checkbox" name="productStatuses" value="2"/> 草稿</label></li>
+			<li><label class="checkbox"><input type="checkbox" name="productStatuses" value="3"/> 导入</label></li>
+            <li>
+				<input type="submit" class="btn btn-success left"  value="应用" />
+				<input type="hidden" value="0" id="isHignGreat" name="isHignGreat"  />
+			</li><br class="clear">
+        </ul></form>
+		#if($!searchVo.productStatuses)<script>#foreach($status in $!searchVo.productStatuses) jQuery("[name='productStatuses'][value='$status']").prop("checked",true);#end</script>#end
+    </div>
+	
+	
+	
+	<!-- E search -->
+    <div class="upload_tit pm_tit">
+    	<ul>
+        	<li><a href="javascript:offSaleProduct();" onclick="">下架</a></li>
+        	<li><a href="javascript:deleteProduct();" onclick="">删除</a></li>
+        	<li><a href="javascript:modifyProduct();">批量修改</a></li>
+        	<li><a href="javascript:setStockDays();" class="left">一键修改发货期</a></li>
+        	<li><a href="javascript:setExpiredDay()" class="left">一键延长有效期</a></li>
+        </ul>
+        <span class="help-block mar_top_10">&nbsp;&nbsp;&nbsp;&nbsp;（先勾选产品，再点击左侧操作选项）</span>
+    </div><!-- E tool -->
+    <table border="0" cellspacing="0" cellpadding="0" class="table table-hover center_t pm_table mar_bottom_5">
+      <tr class="warning">
+        <td><label class="checkbox left"><input type="checkbox" id="select_all" value="pm_info" onclick='if(this.checked){jQuery("input#prodId").attr("checked","checked");}else{jQuery("input#prodId").removeAttr("checked")};'> ID</label></td>
+        <td width="260px"><label>产品信息</label></td>
+        <td width="200"><label>产品分类</label></td>
+        <td><label>售价（$）</label></td>
+        <td><label>库存</label></td>
+        <td><label>产品状态</label></td>
+        <td><label>创建时间<br/>编辑时间</label></td>
+        <td><label>剩余到期时间</label></td>
+        <td><label>操作</label></td>
+      </tr>
+#foreach($prod  in $searchVo.productList)
+	  <tr id="$prod.product.productId">
+        <td><label class="checkbox left"><input type="checkbox" id="prodId" value="$prod.product.productId">$prod.product.productId</label></td>
+        <td class="pmp_info"><div class="div_left"><img src="$RewriteUtil.getImageUrl($prod.firstImage.imageUrl, 'm')" class="img-polaroid" alt="$prod.product.productName" title="$prod.product.productName" onerror="javascript:this.src='/static/prototype/shopmic-manage/img/product_default.gif'"/></div>
+			<div class="div_right"><a title="$prod.product.productName" alt="$prod.product.productName" target="_blank" href="$RewriteUtil.getProductUrl($prod.product.productName, $prod.product.productId)">$!StringUtil.stringformat($prod.product.productName,70)</a><label class="font12 mar_top_5">SKU: $prod.product.sku</label></div></td>
+        <td id="customCatName">#foreach($cat in $prod.cats) $cat.catNameCn >> #end</td>
+        <td><span class="label label-info left">零</span><label  class="left">$prod.priceVo.price</label><br  class="clear" style="height:2px; line-height:2px;" />
+			#if($prod.priceVo.wholesalePrice>0)<span class="label label-warning left">批</span><label  class="left">$!prod.priceVo.wholesalePrice</label>#end
+		</td>
+        <td><label id="stockDays">#if($prod.productConfigs) $prod.productConfigs.stockNum #else $!prod.product.stock #end</label></td>
+        <td><label id="productStatus">$DictUtil.getProductStatus($prod.product.productStatus)</label></td>
+        <td><label id="createTime">#if($prod.product.createTime) $!StringUtil.getDateTimeString($prod.product.createTime) #else -- #end</label>
+		    <label id="editTime">#if($prod.product.editTime) $!StringUtil.getDateTimeString($prod.product.editTime) #else -- #end</label>
+		</td>
+        <td><label id="expiredDay">#if($prod.expiredDays>0) $prod.expiredDays #else 无有效期 #end</label></td>
+        <td><a href="$link.setPage('product,ProductUpload.html')?productId=$prod.product.productId" target="_blank">编辑</a></td>
+      </tr>
+#end
+    </table><!-- E content -->
+    <div class="upload_tit pm_tit">
+    	<ul>
+        	<li><a href="javascript:offSaleProduct();" onclick="">下架</a></li>
+        	<li><a href="javascript:deleteProduct();" onclick="">删除</a></li>
+        	<li><a href="javascript:modifyProduct();">批量修改</a></li>
+        	<li><a href="javascript:setStockDays();" class="left">一键修改发货期</a></li>
+        	<li><a href="javascript:setExpiredDay()" class="left">一键延长有效期</a></li>
+        </ul>
+        <span class="help-block mar_top_10">&nbsp;&nbsp;&nbsp;&nbsp;（先勾选产品，再点击左侧操作选项）</span>
+    </div><!-- E tool -->
+    <br class="clear" />
+		#parse("/screens/Nap.html")
+    <!-- E page -->
+    <br class="clear" />
+    </div>
+    <div id="bulk_edit_product" class="well well-small hide">
+        <div class="modal-header">
+        <button type="button" class="close" onclick="jQuery('#bulk_edit_product').hide();jQuery('#listProd').show();">×</button>
+        <h5>批量修改产品</h5>
+        </div>
+        <div class="padding_15">
+            <table border="0" cellspacing="0" cellpadding="0" class="table border_none pm_bep_table mar_bottom_5">
+      <tr class="info">
+        <td width="270"><label class="left mar_right_10">产品标题</label><a href="#bulk_edit_product_tit" role="button" class="left" data-toggle="modal">修改</a>
+			<a href="#bulk_edit_product_category" role="button" class="left mar_left_40" data-toggle="modal">调整产品类目</a></td>
+        <td><label class="left mar_right_10">销售单位/方式</label><a href="#bulk_edit_product_unit" role="button" class="left" data-toggle="modal">修改</a></td>
+        <td><label class="left mar_right_10">包装重量</label><a href="#bulk_edit_product_pack_weight" role="button" class="left" data-toggle="modal">修改</a></td>
+        <td><label class="left mar_right_10">包装尺寸</label><a href="#bulk_edit_product_pack_size" role="button" class="left" data-toggle="modal">修改</a></td>
+        <td><label class="left mar_right_10">零售价（US $）</label><a href="#bulk_edit_product_retail_price" role="button" class="left" data-toggle="modal">修改</a></td>
+        <td><label>操作</label></td>
+      </tr>
+#foreach($prod  in $searchVo.productList)
+      <tr id="modifyProd" prodId="$prod.product.productId">
+        <td class="pmp_info"><div class="div_left"><img src="$RewriteUtil.getImageUrl($prod.firstImage.imageUrl, 'm')" class="img-polaroid" alt="" title=""  onerror="javascript:this.src='/static/prototype/shopmic-manage/img/product_default.gif'"/></div>
+			<div class="div_right"><a href="$RewriteUtil.getProductUrl($prod.product.productName, $prod.product.productId)">$prod.product.productName</a><label class="font12 mar_top_5">SKU: $prod.product.sku</label></div>
+			<p id="customCatName_$prod.product.productId">#foreach($cat in $prod.cats) $cat.catNameCn &gt; #end</p></td>
+        <td><label class="font12">按 <sapn id="packing">$prod.product.packing</span> 出售</label></td>
+        <td><label id="weight">$prod.product.weight</label>公斤</td>
+        <td><label>长：$prod.product.length厘米<br />宽：$prod.product.width厘米<br />高：$prod.product.height厘米</label></td>
+        <td><span class="label label-info left mar_right_5">零</span><label>$prod.priceVo.price</label></td>
+        <td><a href="javascript:removeSelectProd($prod.product.productId)"><span class="left icon-remove width_14px mar_left_10"></span></a></td>
+      </tr>
+#end
+    </table>
+        </div>
+        <div class="center_t mar_top_f10">
+        <button class="btn font_w_b mar_right_15" onclick="jQuery('#bulk_edit_product').hide();jQuery('#listProd').show();">取消</button>
+        <button class="btn btn-primary font_w_b mar_right_15">保存</button>
+        </div>
+    </div><!-- E bulk_edit_product -->
+    
+    <div id="bulk_edit_product_tit" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+<h5 id="myModalLabel">批量修改标题</h5>
+</div>
+<div class="modal-body">
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr><td width="60px"></td>
+    <td><label class="right">标题开头添加：</label></td>
+    <td><input placeholder="标题开头添加文字" class="input-xlarge mar_top_5 mar_left_10" type="text" name="nameBefore"></td>
+  </tr>
+  <tr><td></td>
+    <td><label class="right">标题结尾添加：</label></td>
+    <td><input placeholder="标题结尾添加文字" class="input-xlarge mar_top_5 mar_left_10" type="text" name="nameAfter"></td>
+  </tr>
+  <tr><td></td>
+    <td><label class="right">标题中的：</label></td>
+    <td><input class="input-small mar_top_5 left mar_left_10" type="text" name="replaceReg"><label class="left mar_left_10 mar_right_10 mar_top_10">替换为</label><input name="replaceStr" class="input-small mar_top_5 left" type="text"></td>
+  </tr>
+  <tr><td></td>
+    <td colspan="2"><p class="help-block">小提示：对标题进行修改将导致产品重新审核</p></td>
+  </tr>
+</table>
+</div>
+<div class="modal-footer">
+<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+<button class="btn btn-primary" onclick="saveProductName()">保存</button>
+</div>
+</div><!-- E bulk_edit_product_tit -->
+
+	<div id="bulk_edit_product_category" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width:990px; margin-left:-495px;">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+<h5 id="myModalLabel">批量修改产品类目</h5>
+</div>
+<div class="modal-body">
+<table width="100%" class="list_table">
+                <tbody>
+                <tr align="left">
+                  <td valign="middle" nowrap="nowrap">
+                    <table width="100%" cellspacing="2" cellpadding="2" border="0">
+                        <tbody>
+                            <tr class="font14blue">
+                              <td>一级分类</td>
+                              <td>二级分类</td>
+                              <td>三级分类</td>
+                              <td>四级分类</td>
+                            </tr>
+                            <tr>
+                              <td><input type='hidden' name='catIdSelect' id='catIdSelect' value=""/>
+							  <script>new CustomCategorySelector(4, "catIdSelect", "selectedCatName", 0, "saveCatBtn");</script>
+								<select id="catIdSelect1" size="15" name="oneSelect" style="width:200px;">
+                              </select>
+							  </td>
+                              <td>
+								<select id="catIdSelect2" size="15" name="oneSelect" style="width:200px;">
+                              </select>
+							  </td>
+                              <td>
+								<select id="catIdSelect3" size="15" name="oneSelect" style="width:200px;">
+                              </select></td>
+                              <td>
+								<select id="catIdSelect4" size="15" name="oneSelect" style="width:200px;">
+                              </select></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+					<div><b id="selectedCatName"></b></div>
+</div>
+<div class="modal-footer">
+<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+<button disabled="disabled" class="btn btn-primary" id="saveCatBtn" onclick="saveProductCat()">确定</button>
+</div>
+</div><!-- E bulk_edit_product_category -->
+
+	<div id="bulk_edit_product_unit" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+<h5 id="myModalLabel">批量修改销售方式</h5>
+</div>
+<div class="modal-body">
+<table border="0" cellspacing="0" cellpadding="0">
+<tr><td width="30px"></td>
+  <td><label class="right">最小计量单位：</label></td>
+  <td>
+      <select class="mar_top_10 mar_left_10" name="packing" onchange="selectUnit(this)">
+#foreach($unit in $units)
+	<option value="$unit.name">$unit.name</option>
+#end
+      </select>
+  </td>
+</tr>
+<tr><td></td>
+  <td style="vertical-align:top;"><label class="right">销售方式：</label></td>
+  <td>
+      <label class="radio mar_left_10"><input type="radio" name="ispackage" value="option_piece" checked onclick="document.getElementById('mode_content').style.display='none';"><span id="unit" >件/个（piece/pieces）</span></label>
+      <label class="radio left mar_top_5 mar_left_10"><input type="radio" name="ispackage" id="optionsRadios2" value="option_bag" onclick="document.getElementById('mode_content').style.display='block';">打包出售</label>
+      <div class="control-group info left hide" id="mode_content">
+          <label class="control-label left mar_left_15 mar_top_5" for="inputWarning">每包</label>
+          <div class="controls left">
+          <input class="input-mini left mar_left_5 mar_right_5" type="text" name="quantity" placeholder="数量">
+          <label class="control-label left mar_top_5" for="inputWarning" id="unit">件/个（piece/pieces）</label>
+          </div>
+      </div><!-- E mode_content -->
+  </td>
+</tr>
+</table>
+</div>
+<div class="modal-footer">
+<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+<button class="btn btn-primary" onclick="savePackingUnit()">保存</button>
+</div>
+</div><!-- E bulk_edit_product_unit -->
+
+	<div id="bulk_edit_product_pack_size" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+<h5 id="myModalLabel">批量修改包装尺寸</h5>
+</div>
+<div class="modal-body">
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr><td width="150px"></td>
+    <td><label class="right">长：</label></td>
+    <td><input class="input-small mar_top_5 mar_left_10 mar_right_5" name="length" type="text">厘米</td>
+  </tr>
+  <tr><td></td>
+    <td><label class="right">宽：</label></td>
+    <td><input class="input-small mar_top_5 mar_left_10 mar_right_5" name="width" type="text">厘米</td>
+  </tr>
+  <tr><td></td>
+    <td><label class="right">高：</label></td>
+    <td><input class="input-small mar_top_5 mar_left_10 mar_right_5" name="height" type="text">厘米</td>
+  </tr>
+</table>
+</div>
+<div class="modal-footer">
+<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+<button class="btn btn-primary" onclick="saveSize()">保存</button>
+</div>
+</div><!-- E bulk_edit_product_pack_size -->
+
+	<div id="bulk_edit_product_pack_weight" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+<h5 id="myModalLabel">批量修改包装重量</h5>
+</div>
+<div class="modal-body">
+<table border="0" cellspacing="0" cellpadding="0">
+<tr><td></td>
+  <td style="vertical-align:top;"><select class="mar_top_5 left mar_left_10" name="editFlag" onchange="if(this.value==2){jQuery(this).next().next().html('%');}else{jQuery(this).next().next().html('公斤')}">
+	  <option value="0">批量修改为</option>
+      <option value="1">按重量增加</option>
+      <option value="2">按百分比增加</option>
+      </select><input class="input-small mar_top_5 mar_left_10 left" type="text" name="addWeight"><label class="left mar_left_10 mar_top_10">公斤</label></td>
+</tr>
+<tr><td></td><td><p class="help-block">小提示：如果减少，可以输入负数</p></td></tr>
+</table>
+</div>
+<div class="modal-footer">
+<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+<button class="btn btn-primary" onclick="saveWeight()">保存</button>
+</div>
+</div><!-- E bulk_edit_product_pack_weight -->
+
+	<div id="bulk_edit_product_retail_price" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+<h5 id="myModalLabel">批量修改零售价</h5>
+</div>
+<div class="modal-body">
+<table border="0" cellspacing="0" cellpadding="0">
+<tr>
+  <td><label class="radio left mar_top_10">按</label><select class="input-small mar_top_5 left mar_left_10" id="priceAbs" onchange="if(this.value==1){jQuery(this).parent().children().last().html('美元');}else{jQuery(this).parent().children().last().html('%');}">
+      <option value="1">金额</option>
+      <option value="0">百分比</option>
+      </select><label class="left mar_left_10 mar_right_10 mar_top_10">增加</label><input class="input-small mar_top_5 left" type="text" name="addPrice"><label class="left mar_left_10 mar_top_10">美元</label></td>
+</tr>
+<tr><td><p class="help-block mar_left_20">小提示：如果减少，可以输入负数。批量修改价格仅对新价格体系的产品生效。</p></td></tr>
+</table>
+</div>
+<div class="modal-footer">
+<input type="button" class="btn" data-dismiss="modal" aria-hidden="true" value="关闭"/>
+<input type="button" class="btn btn-primary" onclick="savePrice();" value="保存"/>
+</div>
+</div><!-- E bulk_edit_product_retail_price -->
+    
+    <div id="edit_send_date" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+<h5 id="myModalLabel">一键修改发货期</h5>
+</div>
+<div class="modal-body">
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr><td></td>
+    <td class="v_top pad_top_10"><label class="right">修改方式：</label></td>
+    <td><label class="radio mar_left_10 mar_top_10 left">
+        <input checked="checked" value="0" name="editStockDay" type="radio">
+        修改为
+      </label><input name="stockDays" class="input-small mar_top_5 mar_left_10 left" type="text"><span  class="mar_top_10 mar_left_5 left"> 天</span><br />
+      <label class="radio mar_left_10 mar_top_10 left">
+        <input value="1" name="editStockDay" type="radio">
+        增加
+      </label><input name="stockDays" class="input-small mar_top_5 mar_left_10 left" type="text"><span  class="mar_top_10 mar_left_5 left"> 天</span></td>
+  </tr>
+  <tr><td></td>
+    <td colspan="2"><p class="help-block">小提示：如果减少，可以输入负数。</p></td>
+  </tr>
+</table>
+</div>
+<div class="modal-footer">
+<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+<button class="btn btn-primary" onclick="saveStockDays();">保存</button>
+</div>
+</div><!-- E edit_send_date -->
+    
+    <div id="extend_valid_date" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+<h5 id="myModalLabel">一键延长有效期</h5>
+</div>
+<div class="modal-body">
+<table border="0" cellspacing="0" cellpadding="0">
+  <tr><td width="30px"></td>
+    <td><label class="radio">
+        <input checked="checked" value="30" name="expiredDay" type="radio">
+        30天
+      </label></td>
+    <td><label class="radio">
+        <input checked="checked" value="90" name="expiredDay" type="radio">
+        90天
+      </label></td>
+    <td><label class="radio">
+        <input checked="checked" value="0" name="expiredDay" type="radio">
+        无有效期
+      </label></td>
+  </tr>
+  <tr><td></td>
+    <td colspan="3"><p class="help-block mar_top_15">小提示：以当前日期为开始时间向后延期30、90天</p></td>
+  </tr>
+</table>
+</div>
+<div class="modal-footer">
+<button class="btn" data-dismiss="modal" aria-hidden="true">关闭</button>
+<button class="btn btn-primary" onclick="saveExpiredDay()">保存</button>
+</div>
+</div><!-- E extend_valid_date -->
+<script>
+function removeSelectProd(productId) {
+	jQuery("tr[prodId='"+productId+"']").hide();
+	jQuery("input#prodId[value='"+productId+"']").prop("checked", false);
+}
+##搜索产品
+function searchProduct() {
+	var catId = jQuery("#customCatId").val();
+	if (catId.startsWith("000")) {
+		jQuery("#customCatId").val("");
+	}
+	return true;
+}
+##弹出发货期设置层
+function setStockDays() {
+	if(jQuery("input#prodId:checked").length>0) {
+		jQuery("#edit_send_date").modal("show");
+	} else {
+		alert("先选择产品");
+	}
+}
+##设置发货期
+function saveStockDays() {
+	var editStockDays = jQuery("input[name='editStockDay']:checked").val();
+	var stockDays = jQuery("input[name='editStockDay']:checked").parent().next().val();
+	if (isNaN(stockDays)) {
+		alert("请输入数字");
+	}
+	var url="$link.setAction('product.AjaxSaveStockDays')";
+	jQuery.getJSON();
+}
+##弹出有效期设置
+function setExpiredDay() {
+	if(jQuery("input#prodId:checked").length>0) {
+		jQuery("#extend_valid_date").modal("show");
+	} else {
+		alert("先选择产品");
+	}
+}
+##设置有效期
+function saveExpiredDay() {
+	jQuery("body").showLoading();
+	var url = "$link.setAction('product.AjaxSaveExpiredDay')";
+	var param = "expiredDay=" + jQuery("input[name='expiredDay']:checked").val();
+	for(var i=0; i<jQuery("input#prodId:checked").length; i++) {
+		param += "&productId=" + jQuery("input#prodId:checked")[i].value;
+	}
+	jQuery.getJSON(url + "?" + param, function(data){
+		jQuery("body").hideLoading();
+		if(data.status==1){
+			alert("修改成功");
+			jQuery("input#prodId:checked").parents("tr").find("#expiredDay").html(jQuery("input[name='expiredDay']:checked").parent().text());
+			jQuery("#extend_valid_date").modal("hide");
+		} else {
+			alert("修改失败");
+		}
+	});
+}
+##批量修改产品层
+function modifyProduct(){
+	if(jQuery("input#prodId:checked").length>0) {
+		jQuery("#listProd").hide();
+		jQuery("#bulk_edit_product").show();
+		jQuery("tr#modifyProd").hide();
+		for(var i=0; i<jQuery("input#prodId:checked").length; i++) {
+			var prodId = jQuery("input#prodId:checked")[i].value;
+			jQuery("tr#modifyProd[prodId='"+prodId+"']").show();
+		}
+	} else {
+		alert("先选择产品");
+	}
+}
+##选择计量单位
+function selectUnit(o) {
+	jQuery("[id='unit']").html(o.value);
+}
+selectUnit(jQuery("[name='packing']")[0]);
+##保存产品名称
+function saveProductName() {
+	jQuery("body").showLoading();
+	var url = "$link.setAction('product.AjaxSaveProductName')";
+	var param = "nameBefore=" + jQuery("input[name='nameBefore']").val();
+	param += "&nameAfter=" + jQuery("input[name='nameAfter']").val();
+	param += "&replaceReg=" + jQuery("input[name='replaceReg']").val();
+	param += "&replaceStr=" + jQuery("input[name='replaceStr']").val();
+	for(var i=0; i<jQuery("input#prodId:checked").length; i++) {
+		param += "&productId=" + jQuery("input#prodId:checked")[i].value;
+	}
+	jQuery.getJSON(url + "?" + param, function(data){
+		jQuery("body").hideLoading();
+		if(data.status==1){
+			alert("修改成功");
+			//jQuery("input#prodId:checked").parents("tr").find("#expiredDay").html(jQuery("input[name='expiredDay']:checked").parent().text());
+			jQuery("#bulk_edit_product_tit").modal("hide");
+		} else {
+			alert("修改失败");
+		}
+	});
+}
+## 保存分类
+function saveProductCat() {
+	jQuery("body").showLoading();
+	var url = "$link.setAction('product.AjaxSaveProductCat')";
+	var param = "catId=" + jQuery("input[name='catIdSelect']").val();
+	for(var i=0; i<jQuery("input#prodId:checked").length; i++) {
+		param += "&productId=" + jQuery("input#prodId:checked")[i].value;
+	}
+	jQuery.getJSON(url + "?" + param, function(data){
+		jQuery("body").hideLoading();
+		if(data.status==1){
+			alert("修改成功");
+			//jQuery("input#prodId:checked").parents("tr").find("#expiredDay").html(jQuery("input[name='expiredDay']:checked").parent().text());
+			jQuery("#bulk_edit_product_category").modal("hide");
+		} else {
+			alert("修改失败");
+		}
+	});
+}
+function savePackingUnit() {
+	jQuery("body").showLoading();
+	var url = "$link.setAction('product.AjaxSavePackingUnit')";
+	var param = "packing=" + jQuery("input[name='packing']").val();
+	param += "&ispackage=" + jQuery("input[name='ispackage']").val();
+	param += "&quantity=" + jQuery("input[name='quantity']").val();
+	for(var i=0; i<jQuery("input#prodId:checked").length; i++) {
+		param += "&productId=" + jQuery("input#prodId:checked")[i].value;
+	}
+	jQuery.getJSON(url + "?" + param, function(data){
+		jQuery("body").hideLoading();
+		if(data.status==1){
+			alert("修改成功");
+			//jQuery("input#prodId:checked").parents("tr").find("#expiredDay").html(jQuery("input[name='expiredDay']:checked").parent().text());
+			jQuery("#bulk_edit_product_unit").modal("hide");
+		} else {
+			alert("修改失败");
+		}
+	});
+}
+function saveSize() {
+	jQuery("body").showLoading();
+	var url = "$link.setAction('product.AjaxSaveProductSize')";
+	var param = "length=" + jQuery("input[name='length']").val();
+	param += "&width=" + jQuery("input[name='width']").val();
+	param += "&height=" + jQuery("input[name='height']").val();
+	for(var i=0; i<jQuery("input#prodId:checked").length; i++) {
+		param += "&productId=" + jQuery("input#prodId:checked")[i].value;
+	}
+	jQuery.getJSON(url + "?" + param, function(data){
+		jQuery("body").hideLoading();
+		if(data.status==1){
+			alert("修改成功");
+			//jQuery("input#prodId:checked").parents("tr").find("#expiredDay").html(jQuery("input[name='expiredDay']:checked").parent().text());
+			jQuery("#bulk_edit_product_unit").modal("hide");
+		} else {
+			alert("修改失败");
+		}
+	});
+	jQuery("#bulk_edit_product_pack_size").modal("hide");
+}
+function saveWeight() {
+	jQuery("body").showLoading();
+	var url = "$link.setAction('product.AjaxSaveProductWeight')";
+	var param = "addWeight=" + jQuery("input[name='addWeight']").val();
+	param += "&editFlag=" + jQuery("input[name='editFlag']").val();
+	for(var i=0; i<jQuery("input#prodId:checked").length; i++) {
+		param += "&productId=" + jQuery("input#prodId:checked")[i].value;
+	}
+	jQuery.getJSON(url + "?" + param, function(data){
+		jQuery("body").hideLoading();
+		if(data.status==1){
+			for(var i=0; i<data.weightMaps.length; i++) {
+				var map = data.weightMaps[i];
+				jQuery("tr[id='modifyProd'][prodId='"+map.productId+"']").find("#weight").html(map.weight);
+			}
+			alert("修改成功");
+			jQuery("#bulk_edit_product_unit").modal("hide");
+		} else {
+			alert("修改失败");
+		}
+	});
+	jQuery("#bulk_edit_product_pack_weight").modal("hide");
+}
+function savePrice() {
+	jQuery("body").showLoading();
+	var url = "$link.setAction('product.AjaxSaveProductPrice')";
+	var param = "addPrice=" + jQuery("input[name='addPrice']").val();
+	param += "&abs=" + jQuery("select[id='priceAbs']").val();
+	for(var i=0; i<jQuery("input#prodId:checked").length; i++) {
+		param += "&productId=" + jQuery("input#prodId:checked")[i].value;
+	}
+	jQuery.getJSON(url + "?" + param, function(data){
+		jQuery("body").hideLoading();
+		if(data.status==1){
+			alert("修改成功");
+			//jQuery("input#prodId:checked").parents("tr").find("#expiredDay").html(jQuery("input[name='expiredDay']:checked").parent().text());
+			jQuery("#bulk_edit_product_unit").modal("hide");
+		} else {
+			alert("修改失败");
+		}
+	});
+	jQuery("#bulk_edit_product_retail_price").modal("hide");
+}
+function deleteProduct(productId) {
+	if (!confirm("确定要删除?")) {
+		return;
+	}
+	jQuery("body").showLoading();
+	var param = "";
+	if (productId == null) {
+    	for(var i=0; i<jQuery("input#prodId:checked").length; i++) {
+    		param += "&productId=" + jQuery("input#prodId:checked")[i].value;
+    	}
+		param = param.substring(1);
+	} else {
+		param = "productId=" + productId;
+	}
+	jQuery.getJSON("$link.setAction('product.AjaxDeleteProduct')?" + param, function(data){
+		jQuery("body").hideLoading();
+		if(data.status==1){
+			alert("修改成功");
+			if (productId == null) {
+    			jQuery("input#prodId:checked").parents("tr").remove();
+			} else {
+				jQuery("tr#" + productId).remove();
+				jQuery("tr[prodId='" + productId+"']").remove();
+			}
+		} else {
+			alert("修改失败");
+		}
+	});
+}
+function offSaleProduct(productId) {
+	if (!confirm("确定要下架?")) {
+		return;
+	}
+	jQuery("body").showLoading();
+	var param = "";
+	if (productId == null) {
+    	for(var i=0; i<jQuery("input#prodId:checked").length; i++) {
+    		param += "&productId=" + jQuery("input#prodId:checked")[i].value;
+    	}
+		param = param.substring(1);
+	} else {
+		param = "productId=" + productId;
+	}
+	jQuery.getJSON("$link.setAction('product.AjaxOffsaleProduct')?" + param, function(data){
+		jQuery("body").hideLoading();
+		if(data.status==1){
+			alert("修改成功");
+			if (productId == null) {
+    			jQuery("input#prodId:checked").parents("tr").find("label#productStatus").html("下架");
+			} else {
+				jQuery("tr#" + productId).remove();
+				jQuery("tr[prodId='" + productId+"']").find("label#productStatus").html("下架");
+			}
+		} else {
+			alert("修改失败");
+		}
+	});
+}
+</script>

@@ -1,0 +1,23 @@
+#if($hotproduct.size() > 0)
+<div class="sidebar_title">Other customers also love</div>
+<br class="clearfloat" />
+<div class="sidebar_content">
+#foreach($productVo in $hotproduct)
+	<div class="related_pro_1">
+		<div>
+			<a href="$productVo.productUrl"
+				target="_blank" title=""><img
+				src="$RewriteUtil.getImageUrl($productVo.firstImage.imageUrl, 'm')"
+				width="130" height="130"> </a>
+		</div>
+		<div>
+			<a href="$productVo.productUrl"
+				target="_blank" title="">$StringUtil.stringformat($productVo.product.productName,50)</a>
+		</div>
+		<p class="price">
+			<span class="listprice_all">USD <span class="listprice_big">$productVo.priceVo.price</span>
+		</p>
+	</div>
+#end
+</div>
+#end

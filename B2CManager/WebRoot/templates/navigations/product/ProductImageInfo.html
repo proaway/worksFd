@@ -1,0 +1,155 @@
+
+<script>
+KindEditor.ready(function(K) {
+	var editor = K.editor({
+		allowFileManager : true,
+		allowUpload : true,
+		uploadJson : '$link.setAction('product.ProductUploadImage')',
+		fileManagerJson : '$link.setAction('product.ProductImageZone')'
+	});
+	K('#imageInfo_selectImage').click(function() {
+		editor.loadPlugin('multiimage', function() {
+			editor.plugin.multiImageDialog({
+				clickFn : function(urlList) {
+					var div = K('#productImageView');
+					//div.html('');
+					K.each(urlList, function(i, data) {
+						if(div.children('li').length < 10){
+						div.append('<li><input type="hidden" name="p_img" value="' + data.id +'" /><img class="img-polaroid pu_img" src="' 
+								+ data.url 
+								+ '"><span class="help-block left clear">&nbsp;</span><button class="btn btn-link font12 right" onclick="removeImg(this)" type="button">删除</button></li>');
+						}else{
+							alert("您只能选择十张图片!");
+						}
+					});
+					editor.hideDialog();
+				}
+			});
+		});
+	});
+	K('#imageInfo_imageZone').click(function() {
+		editor.loadPlugin('filemanager',function() {
+			editor.loadPlugin('filemanager', function() {
+				editor.plugin.filemanagerDialog({
+					viewType : 'VIEW',
+					dirName : 'image',
+					clickFn : function(url, title) {
+						var div = K('#productImageView');
+						if(div.children('li').length < 10){
+							div.append('<li><input type="hidden" name="p_img" value="' + title.split('.')[0] +'" /><img class="img-polaroid pu_img" src="' 
+									+ url 
+									+ '"><span class="help-block left clear">&nbsp;</span><button class="btn btn-link font12 right" onclick="removeImg(this)" type="button">删除</button></li>');
+						}else{
+							alert("您只能选择十张图片!");
+						}
+						editor.hideDialog();
+					}
+				});
+			});
+		});
+	});
+	K('#mainTr').click(function(o) {
+		var oo = jQuery(o.target);
+		if (oo.attr("id")!="selectLocalImg") {
+			return;
+		}
+		var mainId = oo.attr("mainId");
+		editor.loadPlugin('multiimage', function() {
+			editor.plugin.multiImageDialog({
+				clickFn : function(urlList) {
+					var div = oo.parent().find("ul");
+					//div.html('');
+					K.each(urlList, function(i, data) {
+						if(div.children('li').length < 10){
+							div.prev("span").hide();
+    						div.append('<li><input type="hidden" name="configImg_'+mainId+'" value="' + data.id +'" /><img src="'
+    								+ data.url + '" alt="" title="" /><br class="clear" /><button class="btn btn-link" onclick="removeImg(this)" type="button">删除</button></li>');
+						}else{
+							alert("您只能选择十张图片!");
+						}
+					});
+					editor.hideDialog();
+				}
+			});
+		});
+	});
+	K('#mainTr').click(function(o) {
+		var oo = jQuery(o.target);
+		if (oo.attr("id")!="selectImg") {
+			return;
+		}
+		var mainId = oo.attr("mainId");
+		editor.loadPlugin('filemanager',function() {
+			editor.loadPlugin('filemanager', function() {
+				editor.plugin.filemanagerDialog({
+					viewType : 'VIEW',
+					dirName : 'image',
+					clickFn : function(url, title) {
+						var div = oo.parent().find("ul");
+						if(div.children('li').length < 10){
+							div.prev("span").hide();
+    						div.append('<li><input type="hidden" name="configImg_'+mainId+'" value="' + title.split('.')[0] +'" /><img src="'
+    								+ url + '" alt="" title="" /><br class="clear" /><button class="btn btn-link" onclick="removeImg(this)" type="button">删除</button></li>');
+						}else{
+							alert("您只能选择十张图片!");
+						}
+						editor.hideDialog();
+					}
+				});
+			});
+		});
+	});
+});
+#if($product.images && $product.images.size()>0)
+var prodImages = $JSONUtil.list2JSON($product.images);
+jQuery("document").ready(function(){
+	var div = jQuery('#productImageView');
+	for(var i=0; i<prodImages.length; i++) {
+		var img = prodImages[i];
+		div.append('<li><input type="hidden" name="p_img" value="' + img.imageId +'" /><img class="img-polaroid pu_img" src="' 
+			+ img.imageUrl 
+			+ '"><span class="help-block left clear">&nbsp;</span><button class="btn btn-link font12 right" onclick="removeImg(this)" type="button">删除</button></li>');
+	}
+});
+#end
+</script>
+<div class="accordion-heading upload_tit">
+	<span class="accordion-toggle font_s_14 blue">图片信息</span>
+</div>
+<div id="collapseTwo" class="accordion-body collapse in">
+	<div class="accordion-inner">
+		<table class="upload_tab" border="0" cellpadding="0" cellspacing="0"
+			width="100%">
+			<tbody>
+				<tr>
+					<td><span class="help-block"><span
+							class="required">*</span>最少上传1张图片，最多可以上传10张图片。<br>如选择从本地选取图片请确保您的“图片空间”有足够空间存放图片。每张图片的尺寸不得小于400×400(px)，大小不超过800KB。建议上传图片尺寸为800×800(px)。</span>
+						<span class="help-block hide" id="imageSizeErrDiv"><span class="red">抱歉，您的图片空间已满，请先整理或删除部分图片后，再进行上传操作。<a
+								href="/static/prototype/shopmic-manage/images_space.shtml"
+								target="_blank">点此进入空间。</a>
+						</span>
+					</span></td>
+				</tr>
+				<tr>
+					<td><input type="button" class="btn inline" id="imageInfo_selectImage" value="从本地选取"/>
+						<input type="button" data-toggle="modal" id="imageInfo_imageZone"
+							 class="btn inline mar_left_20" value="从图片空间选取"/>
+
+						<!-- E sizeTemplet --></td>
+				</tr>
+				<tr>
+					<td>
+						<ul class="inline images_content" id="productImageView">
+							
+						</ul> <!--<button class="btn btn-link left pad_top_5 pad_bottom_20" type="button">添加图片</button>-->
+						<!-- 若需使添加图片按钮只读，添加disabled属性即可 --></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<script type="text/javascript">
+function removeImg(obj){
+	jQuery(obj).parents("li").remove();
+}
+</script>

@@ -1,0 +1,323 @@
+$page.setTitle("$!tag")
+<p style="margin-bottom:8px; line-height:22px;">
+    <strong style="font-size:13px;">Related Searches:</strong>
+    <a href="$RewriteUtil.getKeywordUrl('wedding books')">wedding books</a>, 
+	<a href="$RewriteUtil.getKeywordUrl('gift')">gift</a> , 
+	<a href="$RewriteUtil.getKeywordUrl('wedding clothes')">wedding clothes</a>, 
+	<a href="$RewriteUtil.getKeywordUrl('phone')">phone</a> , 
+	<a href="$RewriteUtil.getKeywordUrl('computer')">computer</a>,
+	<a href="$RewriteUtil.getKeywordUrl('test')">test</a>
+</p>
+<!--S Refine my search-->
+##<input name="keywords" type="hidden" value="$!keywords" id="keywords">
+<input name="isList" type="hidden" value="$!isList" id="isList">
+<input name="orderType" type="hidden" value="$!orderType" id="orderType">
+##<input name="catId"  type="hidden" value="$!catId" id="catId" />
+<input name="pageIndex" id="pageIndex"  type="hidden" value="$!pageIndex"/>
+<div id="left_list">
+    <div class="top" id="attrConfigDiv">
+    	<span class="option_tit">$!tag: </span>
+        <span class="option_num"> ($searchCount) </span><br class="clear">
+        <p class="mar_top_3" id="attrPiv"></p>
+		<br class="clear">
+        <p class="mar_top_5" id="configPiv"></p>
+    </div>
+    <br class="clearfloat">
+        <!--S View by-->
+    <div class="showtype">
+        <table width="760">
+            <tbody>
+                <tr>
+                    <td>
+                        Sort By : 
+						<a #if(!$orderType || $orderType=="")class="bold" #end href="javascript:;" onclick="changeOrderType('');" >Featured</a>	
+                        | <a href="javascript:;" onclick="changeOrderType('2');" #if($orderType=="2")class="bold" #end>New Arrivals</a>
+                        | <a href="javascript:;" onclick="changeOrderType('12');" #if($orderType=="12")class="bold" #end>Price Low to High</a>
+                        | <a href="javascript:;" onclick="changeOrderType('10');" #if($orderType=="10")class="bold" #end>Ratings High to Low</a>
+                    </td>
+                    <td align="right" width="230">
+                        <span class="showitem2 blank">
+							#if($!isList=="1")
+                        		<img border="0" align="absmiddle" width="15" height="15" alt="View by List" src="/static/prototype/product_fashion/images/icon-view-by-list-now.gif"> List
+                        		or
+								<a href="javascript:;" onClick="onListOrGrid(0)">
+									<img border="0" align="absmiddle" width="15" height="15" alt="View by Grid" src="/static/prototype/product_fashion/images/icon-view-by-grid.gif"> Grid
+								</a>
+							#elseif($!isList=="0")
+                        		<a href="javascript:;" onClick="onListOrGrid(1)">
+									<img border="0" align="absmiddle" width="15" height="15" alt="View by List" src="/static/prototype/product_fashion/images/icon-view-by-list.gif"> List
+								</a>
+                        		or
+									<img border="0" align="absmiddle" width="15" height="15" alt="View by Grid" src="/static/prototype/product_fashion/images/icon-view-by-grid-now.gif"> Grid
+							#end
+						</span>
+						<span class="showitem">Show 
+							<input name="pageSize" type="hidden" value="$pageInfo.getPageSize()" id="pageSize">
+							#if($pageInfo.getPageSize()==20)
+							<span class="sel">20</span>
+                    		<a href="javascript:;" onclick="chgPageSize(40)">40</a>
+                    		<a href="javascript:;" onclick="chgPageSize(60)">60</a>
+                    		#elseif($pageInfo.getPageSize()==40)
+                    		<a href="javascript:;" onclick="chgPageSize(20)">20</a>
+                    		<span class="sel">40</span>
+                    		<a href="javascript:;" onclick="chgPageSize(60)">60</a>
+                    		#elseif($pageInfo.getPageSize()==60)
+                    		<a href="javascript:;" onclick="chgPageSize(20)">20</a>
+                    		<a href="javascript:;" onclick="chgPageSize(40)">40</a>
+                    		<span class="sel">60</span> 
+							#end
+                        </span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+<!--E View by-->
+</div>
+<br class="clearfloat">
+<!--E Refine my search-->
+<div id="xgnContent" class="grid_15 flt_rgt">
+    <div class="panel_holder">
+        <div class="panel_body nopadding flt_wdt">
+            <div class="big_bannercontainer flt_wdt">
+                <div class="product_image_gallery2  organic_zone flt_wdt">
+					<div class="product_gallery_holder2">
+					#if($searchProductVo.productList)
+						#if($isList==0)
+								<ul>
+									<li>
+								#foreach($prod  in $searchProductVo.productList)
+                                   	 <div class="product_holder">
+                                          <div class="product_description">
+                                            <div onclick="showSpinner('bodyWrapper');"> 
+												<span class="product_image"> 
+													<a href="$RewriteUtil.getProductUrl($prod.product.productName, $prod.product.productId)" onMouseDown="clickProduct('$prod.product.productId','$prod.position')"> 
+														<img width="180" height="180" 
+															id="$prod.product.productId" 
+															alt=" $prod.product.productName" 
+															src="$RewriteUtil.getImageUrl($prod.firstImage.imageUrl, 'm')">
+													</a>
+													#if($prod.priceVo.priceBean.discount && $prod.priceVo.priceBean.discount>0)
+													<span class="discout_test_8030">
+														<span class="discout_test_8030_number">#if($prod.priceVo.priceBean.discount<10)&nbsp;#end $cu.getDoubleToString($prod.priceVo.priceBean.discount,"0")</span>
+													</span>
+													#end
+												</span> 
+											</div>
+                                            <div class="price_description">
+                                              <div class="colored_swatch flt_wdt">
+            									 ##<!-- 规格区 -->
+                										<ul class="small_swatches">
+            											#if($prod.productConfigs.mainShow && $prod.productConfigs.mainShow.showType=='color')
+            												#foreach($oneConfig in $prod.productConfigs.mainShow.configs)
+                                                              <li id="configImage"  tvalue="$oneConfig.attribute.value" prodid="$prod.product.productId" imageUrl="$!oneConfig.imageUrl">
+                                                                 #set($colorId = $oneConfig.attribute.attrId - 9000000000)<span id="img_$oneConfig.attribute.value" class="color_$colorId" title="$oneConfig.attribute.value"></span>
+                                                              </li>
+            											    #end
+														#else
+														<li class="hide_display no_swatch_mouseover"> </li>
+            											#end
+                                                        </ul>
+                                              </div>
+                                              <span class="detail"><a href="$RewriteUtil.getProductUrl($prod.product.productName, $prod.product.productId)" title="$prod.product.productName"> $!StringUtil.stringformat($prod.product.productName,48)</a></span> 
+                                				#if($prod.priceVo.priceBean.discount && $prod.priceVo.priceBean.discount>0)
+                                				<span class="buyer_discount">USD $ $prod.priceVo.price</span>
+                                				#end
+    											<span class="floatright">
+    												<span class="listprice_small">USD </span>
+    												<span class="listprice_big">$ ${prod.priceVo.discountPrice}</span>
+    											</span>
+    											<span class="gry_text disp_blk flt_clr"> </span>
+                                              <div class="rating rating225 gallery_rating nounder">
+                                                <a href="" title=" out of 5"></a>
+    											<strong class="mrgt5 channel_availability"> </strong> 
+    										 </div>
+											</div>
+                                          </div>
+                					 </div>
+								#end
+								</li>
+    							</ul>
+						#elseif($isList==1)
+    						<ul>
+                                <li>  
+									#foreach($prod in $searchProductVo.productList)
+                                    <div class="product_holder_l mar_bot_16">
+                                          <div class="product_description_list width_776">
+                                              <div onclick="showSpinner('bodyWrapper');" class="pro_list_img"> 
+        											<span class="product_image"> 
+        												<a href="$RewriteUtil.getProductUrl($prod.product.productName, $prod.product.productId)"> 
+        													<img width="130" height="130" id="mainImage" src="$RewriteUtil.getImageUrl($prod.firstImage.imageUrl, 'm')" alt="$prod.product.imageUrl">
+														</a>
+														#if($prod.priceVo.priceBean.discount && $prod.priceVo.priceBean.discount>0)
+    													<span class="discout_test_6020">
+    														<span class="discout_test_6020_number">#if($prod.priceVo.priceBean.discount<10)&nbsp;#end $cu.getDoubleToString($prod.priceVo.priceBean.discount,"0")</span>
+    													</span>
+														#end
+        											</span> 
+        									  </div>
+                                              <div class="price_description price_li_st">
+                                                  <div class="colored_swatch flt_wdt">
+                                                    ##<!-- 规格区 -->
+            											<ul class="small_swatches">
+													#if($prod.productConfigs.mainShow.showType=='color')
+        												#foreach($oneConfig in $prod.productConfigs.mainShow.configs)
+                                                          <li id="configImage"  tvalue="$oneConfig.attribute.value" prodid="$prod.product.productId" imageUrl="$!oneConfig.imageUrl">
+                                                             #set($colorId = $oneConfig.attribute.attrId - 9000000000)<span id="img_$oneConfig.attribute.value" class="color_$colorId" title="$oneConfig.attribute.attrId"></span>
+                                                          </li>
+        											    #end
+													#else
+														<li class="hide_display no_swatch_mouseover"> </li>
+													#end
+                                                        </ul>
+													##<!-- 规格结束  --> 
+                                                  </div>
+                                                  <span class="detail_li_st"> 
+        											<a href="$RewriteUtil.getProductUrl($prod.product.productName, $prod.product.productId)">$!StringUtil.stringformat($prod.product.productName,150)</a>
+        										  </span>  
+												  <span class="gry_text disp_blk flt_clr"> </span>
+                                                  <div class="rating rating225 gallery_rating nounder">
+                                                        <a href="$RewriteUtil.getProductUrl($prod.product.productName, $prod.product.productId)" title="4.6 out of 5"><img alt="4.58 out of 5" src="/static/prototype/product_fashion/images/list-new/fullstar.png"> <img alt="4.58 out of 5" src="/static/prototype/product_fashion/images/list-new/fullstar.png"> <img alt="4.58 out of 5" src="/static/prototype/product_fashion/images/list-new/fullstar.png"> <img alt="4.58 out of 5" src="/static/prototype/product_fashion/images/list-new/fullstar.png"> <img alt="4.58 out of 5" src="/static/prototype/product_fashion/images/list-new/halfstar3.png">
+        													<span>(19&nbsp;reviews)</span> 
+        												</a>
+        										  </div>
+												  <strong class="mrgt5 channel_availability"> </strong> 
+    										  </div>
+                                              <div class="price_li_st_btn">
+                                              	<table height="100" style="margin-top:20px;">
+                                                	<tbody>
+														#if($prod.priceVo.priceBean.discount && $prod.priceVo.priceBean.discount>0)
+        												<tr>
+                                                        	<td class="text_right"><span class="buyer_discount">USD $ ${prod.priceVo.price}</span></td>
+                                                        </tr>
+														#end
+                                                        <tr>
+                                                        	<td class="text_right"><span style="margin-left:10px;" class="listprice_small">USD </span><span class="listprice_big">$ ${prod.priceVo.discountPrice}</span></td>
+                                                        </tr>
+                                                        <tr>
+                                                        	<td width="120" valign="top" class="pd_pa text_right" rowspan="2">
+        														<input type="submit" value="Add to Favorite" onclick="addToFavorite('$prod.product.productId')" class="btn_pro_list_add" name="button2">
+                                                           </td>
+                                                        </tr>
+                                                    </tbody>
+    											</table>
+                                              </div>
+                                          </div>
+                                    </div>
+									#end
+                                </li>
+                            </ul>
+						#end
+    				#end
+					</div>
+				</div>
+			</div>
+		</div>
+    </div>
+<div class="clearit"></div>
+<div class="list-page">
+	#parse("screens/Nap.html")
+</div>
+
+</div>
+<!-- --------------- E content --------------- -->
+<script >
+function chgPageSize(s){
+    document.getElementById("pageIndex").value = 1;
+    document.getElementById("pageSize").value = s;
+    document.listForm.submit();
+}
+
+function onListOrGrid(listind){
+    document.getElementById("isList").value=listind;
+	document.listForm.submit();
+}
+
+function changeKeyword(keyword){
+    document.getElementById("pageIndex").value = 1;
+    document.getElementById("keywords").value=keyword;
+	document.listForm.submit();
+}
+
+function changeOrderType(orderType){
+    document.getElementById("pageIndex").value = 1;
+    document.getElementById("orderType").value=orderType;
+	document.listForm.submit();
+}
+
+function onSearch(catId){
+    document.getElementById("pageIndex").value = 1;
+	document.getElementById("catId").value=catId;
+    document.listForm.submit();
+}
+
+function searchPrice(){
+    document.getElementById("pageIndex").value = 1;
+    var p1 = document.getElementById("priceStart").value;
+	var p2 = document.getElementById("priceEnd").value;
+	if(p1=="" && p2==""){
+		alert("没有选择价格");
+		return;
+	}
+    document.listForm.submit();
+}
+
+function changePrice(p1,p2){
+	document.getElementById("priceStart").value = p1;
+	document.getElementById("priceEnd").value = p2;
+	searchPrice();
+}
+
+function attrConfigChanage(){
+    document.getElementById("pageIndex").value = 1;
+    document.listForm.submit();
+}
+</script>
+<script >
+function addOptionToConditionDiv(arrCon){
+	for(var i=0;i<arrCon.length;i++){
+		if(jQuery("#"+arrCon[i]).val()==null){
+		}else{
+			jQuery("#check_"+arrCon[i]).attr("checked","checked");
+			addOptionToCondition(arrCon[i],2);
+		}
+    }
+}
+
+	jQuery("li[id='configImage'][imageUrl^='http']").hover(
+		function() {
+			var img = jQuery(this).parents("[class^='product_description']").find(".product_image").find("img");
+			jQuery(this).attr("oldImgUrl", img.attr("src"));
+			var imgUrl = jQuery(this).attr("imageUrl");
+			img.attr("src", imgUrl);
+		},
+		function() {
+			var img = jQuery(this).parents("[class^='product_description']").find(".product_image").find("img");
+			var imgUrl = jQuery(this).attr("oldImgUrl");
+			img.attr("src", imgUrl);
+		}
+	);
+
+	function addToFavorite(productId) {
+    	testLogin(function(){
+			jQuery("body").showLoading();
+    		jQuery.getJSON("$link.setAction('product.AjaxAddProductListAction')", {productId:productId}, function(data){
+				jQuery("body").hideLoading();
+    			if (data != null && data > 0) {
+    				alert("Added to product list  sucess!");
+    			}else{
+    				alert("Added to product list  Failure!");
+    			}
+    		});
+    	});
+    }
+var result='0';	
+##搜索统计
+jQuery("document").ready(function(){
+	saveSearch("$!keywords", "$pageInfo.getPageSize()", "$!pageInfo.pageIndex", "$!pageInfo.recordCount");
+});
+##产品点击
+function clickProduct(itemcode,p) {
+	clickProd(resultId, itemcode, p);
+}
+</script>

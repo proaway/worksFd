@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertPaypalSettingBean" parameterClass="com.fd.payment.bean.PaypalSettingBean">
+        <![CDATA[
+insert into T_PAYPAL_SETTING
+  (API_USER_NAME, API_PASSWORD, API_SIGNATURE, API_ENVIRONMENT, ACCOUNT, POST_URL, IPN_URL)
+values
+  (#apiUserName#, #apiPassword#, #apiSignature#, #apiEnvironment#, #account#, #postUrl#, #ipnUrl#)
+        ]]>
+        <selectKey keyProperty="id" resultClass="long">
+            <![CDATA[select @@identity as id]]>
+        </selectKey>
+    </insert>
+
+    <update id="updatePaypalSettingBean" parameterClass="com.fd.payment.bean.PaypalSettingBean">
+        <![CDATA[
+update T_PAYPAL_SETTING 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="id" prepend="," removeFirstPrepend="true">
+                <![CDATA[ID = #id#]]>
+            </isNotNull>
+            <isNotNull property="apiUserName" prepend="," removeFirstPrepend="true">
+                <![CDATA[API_USER_NAME = #apiUserName#]]>
+            </isNotNull>
+            <isNotNull property="apiPassword" prepend="," removeFirstPrepend="true">
+                <![CDATA[API_PASSWORD = #apiPassword#]]>
+            </isNotNull>
+            <isNotNull property="apiSignature" prepend="," removeFirstPrepend="true">
+                <![CDATA[API_SIGNATURE = #apiSignature#]]>
+            </isNotNull>
+            <isNotNull property="apiEnvironment" prepend="," removeFirstPrepend="true">
+                <![CDATA[API_ENVIRONMENT = #apiEnvironment#]]>
+            </isNotNull>
+            <isNotNull property="account" prepend="," removeFirstPrepend="true">
+                <![CDATA[ACCOUNT = #account#]]>
+            </isNotNull>
+            <isNotNull property="postUrl" prepend="," removeFirstPrepend="true">
+                <![CDATA[POST_URL = #postUrl#]]>
+            </isNotNull>
+            <isNotNull property="ipnUrl" prepend="," removeFirstPrepend="true">
+                <![CDATA[IPN_URL = #ipnUrl#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ID = #id#
+        ]]>
+    </update>
+
+    <sql id="getPaypalSettingBeanCondition">
+         <isNotNull property="id" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ID = #id#]]>
+         </isNotNull>
+         <isNotNull property="apiUserName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[API_USER_NAME = #apiUserName#]]>
+         </isNotNull>
+         <isNotNull property="apiPassword" prepend="and" removeFirstPrepend="true">
+             <![CDATA[API_PASSWORD = #apiPassword#]]>
+         </isNotNull>
+         <isNotNull property="apiSignature" prepend="and" removeFirstPrepend="true">
+             <![CDATA[API_SIGNATURE = #apiSignature#]]>
+         </isNotNull>
+         <isNotNull property="apiEnvironment" prepend="and" removeFirstPrepend="true">
+             <![CDATA[API_ENVIRONMENT = #apiEnvironment#]]>
+         </isNotNull>
+         <isNotNull property="account" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ACCOUNT = #account#]]>
+         </isNotNull>
+         <isNotNull property="postUrl" prepend="and" removeFirstPrepend="true">
+             <![CDATA[POST_URL = #postUrl#]]>
+         </isNotNull>
+         <isNotNull property="ipnUrl" prepend="and" removeFirstPrepend="true">
+             <![CDATA[IPN_URL = #ipnUrl#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getPaypalSettingBeanCount" parameterClass="com.fd.payment.bean.PaypalSettingBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_PAYPAL_SETTING 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getPaypalSettingBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getPaypalSettingBean" parameterClass="com.fd.payment.bean.PaypalSettingBean"
+        resultClass="com.fd.payment.bean.PaypalSettingBean">
+        <![CDATA[
+select 
+	ID	as id,
+	API_USER_NAME	as apiUserName,
+	API_PASSWORD	as apiPassword,
+	API_SIGNATURE	as apiSignature,
+	API_ENVIRONMENT	as apiEnvironment,
+	ACCOUNT	as account,
+	POST_URL	as postUrl,
+	IPN_URL	as ipnUrl
+from T_PAYPAL_SETTING 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getPaypalSettingBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deletePaypalSettingBean" parameterClass="com.fd.payment.bean.PaypalSettingBean">
+        <![CDATA[
+delete from T_PAYPAL_SETTING where ID=#id#
+        ]]>
+    </delete>
+
+</sqlMap>

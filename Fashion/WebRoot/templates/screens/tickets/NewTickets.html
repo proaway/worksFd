@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>
+<!--MICCMS:Title-->
+my tickets</title>
+<meta name="description" content="<!--MICCMS:Meta-Description-->" />
+<meta name="keywords" content="<!--MICCMS:Meta-Keywords-->" />
+<link rel="shortcut icon" href="/static/web/images/logo-ico.ico" type="image/ico" />
+  <link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/bootstrap-responsive.min.css" />
+  <link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/jquery-ui-1.10.0.custom.css" />
+  <link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/whole_m.css" />
+  <link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/shopmic_m.css" />
+</head>
+<body>
+	<form  id="addTicketForm" name="addTicketForm" action="$link.setPage('tickets,NewTickets.html')" method="post" enctype="multipart/form-data">
+		<input type="hidden" value="" id="actionFLag" name="actionFlag" />
+  <div id="">
+  	<br class="clear" />
+    <div style="width:860; max-width:860px; margin:0px auto; margin-bottom:100px;">
+        <div class="alert black pad_bottom_20 pad_top_20 font12" style="background:#fff; border:#CCC 1px solid;">
+            <table cellspacing="0" cellpadding="0" border="0" class="mar_left_20">
+  <tbody>
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">Subject：</label></td>
+    <td>
+    	<input type="text" placeholder="Subject" class="input-xxlarge" id="titleContent" name="titleContent"  value="$!titleContent"/>
+			<br class="clear" />
+		<span class="help-block left hide" id="titleErr" name="err"><span class="red">主题不能为空。</span></span>
+    </td>
+  </tr>
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">Question classification：</label></td>
+    <td>
+    	<select class="left oi_status_max_w" name="question" id="question">
+                 <option value="1"  #if($!questionType==1) selected  #end >Account – Can’t sign in</option>
+                  <option value="2" #if($!questionType==2) selected  #end >Transaction—Inquiries about recent orders</option>
+                  <option value="3" #if($!questionType==3) selected  #end >Order Dispute</option>
+				  <option value="4" #if($!questionType==4) selected  #end >Report functional error</option >
+                  <option value="5" #if($!questionType==5) selected  #end >Report unfair or suspicious behavior</option>
+                  <option value="6" #if($!questionType==6) selected  #end >Others</option>
+                </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">Attachment：</label></td>
+    <td>
+    	<input class="input-file left mar_left_10" id="fileOldName" name="fileOldName" type="file"><input type="button" class="btn left mar_left_10" value="Upload" onclick="uploadAttach();">
+    <br class="clear" />
+	<ul class="unstyled" name="pic" id="pic">
+		#if($attaList)
+			#set($index = 1)
+			#foreach($att in $attaList)
+				<li><label>
+						#if($att.attachExt.toLowerCase()=="jpg"||$att.attachExt.toLowerCase()=="jpeg" ||$att.attachExt.toLowerCase()=="gif" ||$att.attachExt.toLowerCase()=="bmp"||$att.attachExt.toLowerCase()=="png")
+							<img src="$att.attachPath" alt="$att.attachName" title="img_$att.attachName"/>
+						#else
+							$att.attachName
+						#end
+					</label>
+					<input type="hidden" id="url_$index" name="url" value="$att.attachment.attachUrl"/>
+				</li>
+				#set($index = $index+1)
+			#end
+		#end
+		</ul>
+</td>
+  </tr>
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">Text：</label></td>
+    <td>
+    	<textarea name="messContent" id="messContent" rows="3" class="input-xxlarge left" style="resize: none;ime-mode:disabled;" placeholder="Text" value="$!messContent"></textarea>
+		<br class="clear" />
+		<span class="help-block left hide" id="messErr" name="err"><span class="red">内容不能为空。</span></span>
+    </td>
+  </tr>
+  <tr>
+  	<td></td><td align="center"><input type="button" class="btn right mar_right_20 btn-small" value="Send" onclick="return addTicketAjax();"></td>
+  </tr>
+</tbody></table>
+        </div>
+    </div>
+
+  </div><!-- E container -->
+  <br class="clear" /> 
+ </form>
+  
+<!-- S javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/static/prototype/shopmic-manage/js/jquery-1.7.2.min.js" type="text/javascript" language="javascript"></script>
+<script src="/static/prototype/shopmic-manage/js/bootstrap.min.js" type="text/javascript" language="javascript"></script>
+<script src="/static/prototype/shopmic-manage/js/jquery-ui-1.10.0.custom.min.js" type="text/javascript" language="javascript"></script>
+<script src="/static/prototype/shopmic-manage/js/datepicker.js" type="text/javascript" language="javascript"></script>
+<script type="text/javascript">
+(function() {
+    var backToTopTxt = "",  backToTopEle = jQuery('<div class="backToTop_pro"></div>').appendTo(jQuery("body"))
+    .text( backToTopTxt).attr("title",  backToTopTxt).click(function() {
+        jQuery("html, body").animate({ scrollTop: 0 }, 120);
+	}),  backToTopFun = function() {
+	    var st = jQuery(document).scrollTop(), winh = jQuery(window).height();
+	    (st > 0)?  backToTopEle.show():  backToTopEle.hide();
+	    //IE6下的定位
+	    if (!window.XMLHttpRequest) {
+	         backToTopEle.css("top", st + winh - 166);
+	    }
+	};
+	jQuery(window).bind("scroll", backToTopFun);
+	jQuery(function() { backToTopFun(); });
+})();
+</script>
+
+<script>
+
+function addTicketAjax(){
+	jQuery("span[name='err']").addClass("hide");
+	var titleContent = jQuery("#titleContent").val();
+	if(titleContent==""){
+		jQuery("span[id='titleErr']").show();
+		return ;
+	}
+	var messContent = jQuery("#messContent").val();
+	if(messContent==""){
+		jQuery("span[name='messErr']").show();
+		return ;
+	}
+	jQuery("#actionFLag").val("addTicketFlag");
+	
+	jQuery("span[name='err']").addClass("hide");
+	
+	doSubmit();
+			
+}
+
+function uploadAttach(){
+	var imageUrl = jQuery("#fileOldName").val();
+	if(imageUrl=="" || imageUrl==null){
+		alert("please upload the image first");
+		return ;
+	}
+	document.getElementById("actionFLag").value="uploadFlag";
+	doSubmit();
+}
+
+function doSubmit(){
+	document.addTicketForm.submit();
+}
+
+</script>
+#if($addTicketVo)
+<script>
+window.opener.addTikcetToShow(1);
+window.close();
+</script>
+#end
+#if($msg)
+<script>
+	alert('$msg');
+</script>
+#end
+</body>
+</html>
+

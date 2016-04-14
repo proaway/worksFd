@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertAlipaySettingBean" parameterClass="com.fd.payment.bean.AlipaySettingBean">
+        <![CDATA[
+insert into T_ALIPAY_SETTING
+  (partner, ali_key, seller_logon_id)
+values
+  (#partner#, #aliKey#, #sellerLogonId#)
+        ]]>
+        <selectKey keyProperty="partner" resultClass="long">
+            <![CDATA[select @@identity as partner]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateAlipaySettingBean" parameterClass="com.fd.payment.bean.AlipaySettingBean">
+        <![CDATA[
+update T_ALIPAY_SETTING 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="partner" prepend="," removeFirstPrepend="true">
+                <![CDATA[partner = #partner#]]>
+            </isNotNull>
+            <isNotNull property="aliKey" prepend="," removeFirstPrepend="true">
+                <![CDATA[ali_key = #aliKey#]]>
+            </isNotNull>
+            <isNotNull property="sellerLogonId" prepend="," removeFirstPrepend="true">
+                <![CDATA[seller_logon_id = #sellerLogonId#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where partner = #partner#
+        ]]>
+    </update>
+
+    <sql id="getAlipaySettingBeanCondition">
+         <isNotNull property="partner" prepend="and" removeFirstPrepend="true">
+             <![CDATA[partner = #partner#]]>
+         </isNotNull>
+         <isNotNull property="aliKey" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ali_key = #aliKey#]]>
+         </isNotNull>
+         <isNotNull property="sellerLogonId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[seller_logon_id = #sellerLogonId#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getAlipaySettingBeanCount" parameterClass="com.fd.payment.bean.AlipaySettingBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_ALIPAY_SETTING 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getAlipaySettingBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getAlipaySettingBean" parameterClass="com.fd.payment.bean.AlipaySettingBean"
+        resultClass="com.fd.payment.bean.AlipaySettingBean">
+        <![CDATA[
+select 
+	partner	as partner,
+	ali_key	as aliKey,
+	seller_logon_id	as sellerLogonId
+from T_ALIPAY_SETTING 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getAlipaySettingBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteAlipaySettingBean" parameterClass="com.fd.payment.bean.AlipaySettingBean">
+        <![CDATA[
+delete from T_ALIPAY_SETTING where partner=#partner#
+        ]]>
+    </delete>
+
+</sqlMap>

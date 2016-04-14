@@ -1,0 +1,297 @@
+
+<script type="text/javascript">
+jQuery("document").ready(function(){
+	var buyerId;
+	jQuery.getScript(
+		"$link.setAction('buyer.AjaxCheckLogin')",
+		function() {
+			if (info.LoginFlag == "1") {
+				buyerId = info.userId;
+				visitLogin(buyerId)
+			} else{
+				visitStat();
+			}
+		});
+
+});
+
+//-->
+</script>
+
+<div class="footer_top_line"></div>
+<br class="clearfloat" />
+<div class="footer_con_back">
+	<div id="shopping_help">
+		<div class="ShoppingHelp">
+			<b>Shopping Help</b>
+		</div>
+		<div class="bottom_item">
+			<ul>
+				<li>
+					<a href="http://www.shopmadeinchina.com/infos/sitemap.shtml"
+						target="_blank">Site Map</a>
+				</li>
+				<li>
+					<a
+						href="http://www.shopmadeinchina.com/static/help-whoselsale/payment_methods.shtml"
+						target="_blank">Payment</a>
+				</li>
+				<li>
+					<a
+						href="http://www.shopmadeinchina.com/static/help-whoselsale/shipping_costs.shtml"
+						target="_blank">Shipping</a>
+				</li>
+				<li>
+					<a
+						href="http://www.shopmadeinchina.com/static/help-whoselsale/dispute_role.shtml"
+						target="_blank">Dispute</a>
+				</li>
+				<li>
+					<a
+						href="http://www.shopmadeinchina.com/static/help-whoselsale/vip_buyer.shtml"
+						target="_blank">VIP Buyer Program</a>
+				</li>
+				<li>
+					<a
+						href="http://www.shopmadeinchina.com/static/pages/privacy_policy.shtml"
+						target="_blank">Privacy Policy</a>
+				</li>
+				<li>
+					<a
+						href="http://www.shopmadeinchina.com/static/help-whoselsale/terms_of_use.shtml"
+						target="_blank">Terms of Use</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div id="my_account">
+		<div class="MyAccount">
+			<b>My Account</b>
+		</div>
+		<div class="bottom_item">
+			<ul>
+				<li>
+					<a
+						href="http://www.shopmadeinchina.com/MicBuyer/turbine/template/buyer,signIn.vm?returnUrl=http%3A%2F%2Fbuyer.madeinchina.com%2Fstatic%2Fhelp-whoselsale%2Fterms_of_use.shtml"
+						target="_blank">Sign in / Register</a>
+				</li>
+				<li>
+					<a
+						href="http://www.shopmadeinchina.com/MicBuyer/turbine/template/index.vm"
+						target="_blank">My Summary</a>
+				</li>
+				<li>
+					<a
+						href="http://www.shopmadeinchina.com/MicBuyer/turbine/template/order%2Cmyorders_active_orders.vm"
+						target="_blank">Active Order</a>
+				</li>
+				<li>
+					<a
+						href="http://www.shopmadeinchina.com/MicBuyer/turbine/template/product%2CMyfavProducts.vm">My
+						Lists</a>
+				</li>
+				<li>
+					<a
+						href="http://www.shopmadeinchina.com/MicBuyer/turbine/template/order%2Cmyorders_awaiting_payment.vm">Awaiting
+						Payment</a>
+				</li>
+				<li>
+					<a
+						href="http://www.shopmadeinchina.com/MicBuyer/turbine/template/buyer,FeedbackWholesale.vm"
+						target="_blank">Announcement & Comment</a>
+				</li>
+				<li>
+					<a
+						href="http://www.shopmadeinchina.com/MicBuyer/turbine/template/buyer%2Cquestionnaire.vm"
+						target="_blank">Questionnaire</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div id="gift_giving">
+		<div class="GiftGiving">
+			<b>Gift Giving</b>
+		</div>
+		<div class="bottom_item">
+			<ul>
+				<li>
+					<a href="http://www.shopmadeinchina.com/catalog/gadgets.shtml"
+						target="_blank">Cool Gadgets</a>
+				</li>
+				<li>
+					<a href="http://www.shopmadeinchina.com/promotions.shtml"
+						target="_blank">Promotions</a>
+				</li>
+				<li>
+					<a
+						href="http://www.shopmadeinchina.com/wholesale-catelog/Cell--Phones_008.shtml"
+						target="_blank">Cell Phone</a>
+				</li>
+				<li>
+					<a href="http://www.shopmadeinchina.com/wholesale/handbag.shtml"
+						target="_blank">Handbag</a>
+				</li>
+				<li>
+					<a href="http://www.shopmadeinchina.com/wholesale/shoes.shtml"
+						target="_blank">Shoes</a>
+				</li>
+				<li>
+					<a href="http://www.shopmadeinchina.com/wholesale/clothes.shtml"
+						target="_blank">Clothes</a>
+				</li>
+				<li>
+					<a
+						href="http://www.shopmadeinchina.com/wholesale/wedding+dress.shtml"
+						target="_blank">Wedding Dress</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div id="company_info">
+		<div class="CompanyInfo">
+			<b>Company Info</b>
+		</div>
+		<div class="bottom_item">
+			<ul>
+				<li>
+					<a href="http://www.shopmadeinchina.com/about-us/en/index.shtml"
+						target="_blank">About Us</a>
+				</li>
+				<li>
+					<a
+						href="http://www.shopmadeinchina.com/about-us/en/right-owner.shtml"
+						target="_blank">IPR Policy</a>
+				</li>
+				<li>
+					<a
+						href="http://www.shopmadeinchina.com/infos/worldwide-resources/business.shtml"
+						target="_blank">Partners</a>
+				</li>
+				<li>
+					<a
+						href="http://www.shopmadeinchina.com/static/help-whoselsale/contact_us.shtml"
+						target="_blank">Contact Us</a>
+				</li>
+				<li>
+					<a href="http://www.shopmadeinchina.com/about-us/en/why-us.shtml"
+						target="_blank">Why Us</a>
+				</li>
+				<li>
+					<a
+						href="http://www.shopmadeinchina.com/about-us/en/milesfones.shtml"
+						target="_blank">Milestones</a>
+				</li>
+				<li>
+					<a href="http://seller.madeinchina.com/" target="_blank"><img
+							src="/static/prototype/product_fashion/images/img_seller.gif"
+							alt="My Wholesale Marketplace" title="My Wholesale Marketplace"
+							border="0" class="marbt-2" /> </a> |
+					<a
+						href="http://seller.madeinchina.com/MicSeller/turbine/template/product,BidProduct.vm"
+						target="_blank"><img
+							src="/static/prototype/product_fashion/images/img_selling_channel.gif"
+							alt="MadeInChina Stock" title="MadeInChina Stock" border="0"
+							class="marbt-2" /> </a>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<br class="clearfloat" />
+	<div
+		style="width: 910px; height: 2px; border-bottom: solid 1px #999; float: left; margin-left: 40px;"></div>
+	<br class="clearfloat" />
+	<div id="New_footer">
+		<div style="text-align: center;">
+			<a href="http://www.shopmadeinchina.com/">Made In China</a> -
+			<a
+				href="http://www.shopmadeinchina.com/wholesale-publish/wholesale-marketplace/index.shtml"
+				style="color: #FF0000">Wholesale Marketplace!</a>
+			<br />
+			Browse Alphabetically:
+			<span class="font11"><a
+				href="http://www.shopmadeinchina.com/wholesale-products/A/1.shtml"
+				target="_blank">A</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/B/1.shtml"
+				target="_blank">B</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/C/1.shtml"
+				target="_blank">C</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/D/1.shtml"
+				target="_blank">D</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/E/1.shtml"
+				target="_blank">E</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/F/1.shtml"
+				target="_blank">F</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/G/1.shtml"
+				target="_blank">G</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/H/1.shtml"
+				target="_blank">H</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/I/1.shtml"
+				target="_blank">I</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/J/1.shtml"
+				target="_blank">J</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/K/1.shtml"
+				target="_blank">K</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/L/1.shtml"
+				target="_blank">L</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/M/1.shtml"
+				target="_blank">M</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/N/1.shtml"
+				target="_blank">N</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/O/1.shtml"
+				target="_blank">O</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/P/1.shtml"
+				target="_blank">P</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/Q/1.shtml"
+				target="_blank">Q</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/R/1.shtml"
+				target="_blank">R</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/S/1.shtml"
+				target="_blank">S</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/T/1.shtml"
+				target="_blank">T</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/U/1.shtml"
+				target="_blank">U</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/V/1.shtml"
+				target="_blank">V</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/W/1.shtml"
+				target="_blank">W</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/X/1.shtml"
+				target="_blank">X</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/Y/1.shtml"
+				target="_blank">Y</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/Z/1.shtml"
+				target="_blank">Z</a> <a
+				href="http://www.shopmadeinchina.com/wholesale-products/0-9/1.shtml"
+				target="_blank">0-9</a> </span>
+			<br />
+			<a href="/infos/worldwide-resources/business.shtml"><strong>Partnerships:</strong>
+			</a>
+			<a href="http://www.hc360.com/" target="_blank">HC360.com</a> -
+			<a href="http://www.dealextreme.com/" target="_blank">DealExtreme</a>
+			-
+			<a href="http://www.exportdeck.com/" target="_blank">China
+				Manufacturer</a> -
+			<a href="http://www.isc.org.cn/" target="_blank">China Internet
+				Association</a> -
+			<a href="http://www.ec.org.cn/" target="_blank">China Electronic
+				Commerce Association</a> -
+			<a href="http://www.cecc.org.cn/" target="_blank">China
+				Electronic Chamber of Commerce</a>
+			<br />
+			Copyright&copy; 2011 MadeInChina.com Corporation and its licensors.
+			All Rights Reserved.&nbsp;
+			<img src="/static/prototype/product_fashion/images/icp.gif"
+				width="102" height="13" class="marbt-2" />
+			<div class="foot_box">
+				<div class="foot_boxCenter">
+					<IMG
+						src="/static/prototype/product_fashion/images/bottom_ico_s.gif"
+						width="396" height="44" />
+				</div>
+				<div style="clear: both;"></div>
+			</div>
+		</div>
+	</div>
+
+
+</div>

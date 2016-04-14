@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertOrderShippingBean" parameterClass="com.fd.fashion.order.bean.OrderShippingBean">
+        <![CDATA[
+insert into T_ORDER_SHIPPING
+  (ORDER_ID, TRACKING_NO, SHIPPING_TYPE, SHIPPING_DATE, REMARK, FREIGHT_BILL)
+values
+  (#orderId#, #trackingNo#, #shippingType#, #shippingDate#, #remark#, #freightBill#)
+        ]]>
+        <selectKey keyProperty="orderShippingId" resultClass="long">
+            <![CDATA[select @@identity as orderShippingId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateOrderShippingBean" parameterClass="com.fd.fashion.order.bean.OrderShippingBean">
+        <![CDATA[
+update T_ORDER_SHIPPING 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="orderShippingId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ORDER_SHIPPING_ID = #orderShippingId#]]>
+            </isNotNull>
+            <isNotNull property="orderId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ORDER_ID = #orderId#]]>
+            </isNotNull>
+            <isNotNull property="trackingNo" prepend="," removeFirstPrepend="true">
+                <![CDATA[TRACKING_NO = #trackingNo#]]>
+            </isNotNull>
+            <isNotNull property="shippingType" prepend="," removeFirstPrepend="true">
+                <![CDATA[SHIPPING_TYPE = #shippingType#]]>
+            </isNotNull>
+            <isNotNull property="shippingDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[SHIPPING_DATE = #shippingDate#]]>
+            </isNotNull>
+            <isNotNull property="remark" prepend="," removeFirstPrepend="true">
+                <![CDATA[REMARK = #remark#]]>
+            </isNotNull>
+            <isNotNull property="freightBill" prepend="," removeFirstPrepend="true">
+                <![CDATA[FREIGHT_BILL = #freightBill#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ORDER_SHIPPING_ID = #orderShippingId#
+        ]]>
+    </update>
+
+    <sql id="getOrderShippingBeanCondition">
+         <isNotNull property="orderShippingId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ORDER_SHIPPING_ID = #orderShippingId#]]>
+         </isNotNull>
+         <isNotNull property="orderId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ORDER_ID = #orderId#]]>
+         </isNotNull>
+         <isNotNull property="trackingNo" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TRACKING_NO = #trackingNo#]]>
+         </isNotNull>
+         <isNotNull property="shippingType" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SHIPPING_TYPE = #shippingType#]]>
+         </isNotNull>
+         <isNotNull property="shippingDate" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SHIPPING_DATE = #shippingDate#]]>
+         </isNotNull>
+         <isNotNull property="remark" prepend="and" removeFirstPrepend="true">
+             <![CDATA[REMARK = #remark#]]>
+         </isNotNull>
+         <isNotNull property="freightBill" prepend="and" removeFirstPrepend="true">
+             <![CDATA[FREIGHT_BILL = #freightBill#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getOrderShippingBeanCount" parameterClass="com.fd.fashion.order.bean.OrderShippingBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_ORDER_SHIPPING 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getOrderShippingBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getOrderShippingBean" parameterClass="com.fd.fashion.order.bean.OrderShippingBean"
+        resultClass="com.fd.fashion.order.bean.OrderShippingBean">
+        <![CDATA[
+select 
+	ORDER_SHIPPING_ID	as orderShippingId,
+	ORDER_ID	as orderId,
+	TRACKING_NO	as trackingNo,
+	SHIPPING_TYPE	as shippingType,
+	SHIPPING_DATE	as shippingDate,
+	REMARK	as remark,
+	FREIGHT_BILL	as freightBill
+from T_ORDER_SHIPPING 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getOrderShippingBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteOrderShippingBean" parameterClass="com.fd.fashion.order.bean.OrderShippingBean">
+        <![CDATA[
+delete from T_ORDER_SHIPPING where ORDER_SHIPPING_ID=#orderShippingId#
+        ]]>
+    </delete>
+    
+    <select id="getShippingCompany" resultClass="com.fd.fashion.order.bean.ShippingCompanyBean">
+    	<![CDATA[
+    	select 
+    	d.DETAIL_ID as shippingDetailId,
+    	d.SHIPPING_COMPANY  as shippingCompany
+    	from t_shipping_detail d 
+    	]]>
+    </select>
+
+</sqlMap>

@@ -1,0 +1,122 @@
+<form id="editChannelform">
+<div id="edit_channel2" class="modal hide fade" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">×</button>
+		<h5 id="myModalLabel">修改页面</h5>
+	</div>
+	<div class="modal-body">
+		<table border="0" cellspacing="0" cellpadding="0" class="mar_left_20">
+			<tr>
+				<td class="v_top"><label class="mar_right_10 right mar_top_5">页面：</label><span
+					class="required mar_right_5 right mar_top_5">*</span>
+				</td>
+				<td><input name="channelName" type="text" class="input-xlarge" value="$!channel.channelName"
+					placeholder="50个字符" /></td>
+			</tr>
+			<tr>
+				<td class="v_top"><label class="mar_right_10 right mar_top_5">页面地址：</label><span
+					class="required mar_right_5 right mar_top_5">*</span>
+				</td>
+				<td><input type="text" name="channelUrl" 
+					class="input-xlarge left" placeholder="" value="$!channel.channelUrl" /><span
+					class="help-block left mar_left_10 mar_top_5 gray">省略http和域名网址
+				</span></td>
+			</tr>
+			<!--               <tr>
+                <td class="v_top"><label class="mar_right_10 right mar_top_10">添加方式：</label><span class="required mar_right_5 right mar_top_10">*</span></td>
+                <td>
+                    <select id="" name="" class="left mar_top_5 width_280px">
+                              <option value="0">以模板方式添加</option>
+                              <option value="1">自定义HTML源代码</option>
+                              <option value="2">复制已生成页面</option>
+                            </select>
+                </td>
+              </tr> -->
+			<tr>
+				<td class="v_top"><label class="mar_right_10 right mar_top_5">模板类型：</label>
+				</td>
+				<td><select id="editTemplateType" name="templateType"
+					class="left width_280px">
+						<option value="1" #if($!channel.templateType==1) selected #end>首页</option>
+						<option value="2" #if($!channel.templateType==2) selected #end>频道</option>
+						<option value="3" #if($!channel.templateType==3) selected #end>活动</option>
+						<option value="4" #if($!channel.templateType==4) selected #end>文章</option>
+						<option value="5" #if($!channel.templateType==5) selected #end>邮件</option>
+				</select></td>
+			</tr>
+			<tr>
+				<td class="v_top"><label class="mar_right_10 right mar_top_5">模板名称：</label>
+				</td>
+				<td><select id="editTemplateId" name="templateId"
+					class="left width_280px">
+					#if($!channel.templateName)
+					<option value="$!channel.templateId">$!channel.templateName</option>
+					#end
+				</select></td>
+			</tr>
+			<!--               <tr>
+                <td class="v_top"><label class="mar_right_10 right mar_top_5">更新方式：</label></td>
+                <td>
+                    <select id="" name="" class="left width_280px">
+                              <option value="0">自动</option>
+                              <option value="1">手动</option>
+                            </select>
+                </td>
+              </tr> -->
+			<tr>
+				<td class="v_top"><label class="mar_right_10 right mar_top_5">页面状态：</label>
+				</td>
+				<td><select id="" name="status" class="left width_280px">
+						<option value="1" #if($!channel.status == 1) selected #end>启用（可见）</option>
+						<option value="2" #if($!channel.status == 2) selected #end>禁用（不可见）</option>
+						
+				</select></td>
+			</tr>
+		</table>
+	</div>
+	<div class="modal-footer">
+		<input type="button" class="btn" data-dismiss="modal"
+			aria-hidden="true" value="取消" /> <input type="button"
+			class="btn btn-primary" data-dismiss="modal"
+			onclick="doEditChannel('editChannelform')" value="确定" />
+	</div>
+</div>
+<input name="channelId" value="$!channel.channelId" type="hidden"/>
+</form>
+<script>
+jQuery('#edit_channel2').modal({
+	show:true
+})
+jQuery("#editTemplateType").change(function(){
+	var type = this.value;
+	var param = "type="+type;
+	jQuery.ajax({
+		url:"$link.setPage('cms,AjaxGetTemplateByType.html')",
+		type:"post",
+		data:param,
+		success:function(data){
+			jQuery("#editTemplateId").html(data);
+		}
+	 });	
+});
+
+function doEditChannel(formId){
+	//jQuery("#"+formId).submit();
+	jQuery.ajax({
+		url:"$link.setAction('cms.DoEditChannel')",
+		type:"post",
+		data:form2URL(formId),
+		dataType:"json",
+		success:function(data){
+			if (data==1) {
+				alert("修改成功!");
+				location.reload();
+			} else {
+				alert("修改失败!");
+			}
+		}
+	 });	
+}
+</script>

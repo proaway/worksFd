@@ -1,0 +1,134 @@
+#set($page.title = "产品类目管理")
+<h4 class="mar_top_15">产品发布</h4>
+<div style="margin-top:15px; font-size:14px; margin-bottom:5px;" class="alert alert-info">
+    <!--<button type="button" class="close" data-dismiss="alert">&times;</button>-->
+    <b>温馨提示：</b><br>在发布新产品之前，请先选择系统的标准分类。标准分类为系统定义，发布新品时必须选择。<br>如您需要灵活的划分产品分类，请到 产品管理-&gt;类目管理 中开启并编辑 “自定义分类” ，然后在 产品发布 页面中的 “产品基本信息” 中选择该产品需要划分的自定义分类。
+</div><!-- E alert info -->
+<a target="_blank" href="/static/prototype/shopmic-manage/help.shtml">&lt;&lt;帮助与规则</a>      
+<div class="panel mar_top_20">
+        <div class="title">
+                <h4 class="mar_left_15 lineh_44 left">选择类目</h4><button class="btn btn-link font_w_b left mar_top_7 mar_left_20" type="button" href="#pModal" data-toggle="modal" onclick="selectSameProd()">类似产品导入</button>
+            </div>
+            <div class="content padding_15" style="padding-bottom:0px;">
+            
+            <div style=" font-size:14px; margin-bottom:5px;" class="alert alert-success"><label id="choose_category">您当前选择的目录是： <b id="selectedCatName2"></b></label></div>
+			<div class="form-search mar_top_15">
+                 <input type="text" placeholder="输入您要查找的目录" class="span5" name="condition" id="condition" onkeypress="if(event.keyCode==13) {searchCategory();return false;}"/>
+                 <button class="btn font_w_b" type="button" onclick="searchCategory();">查找目录</button>
+		    </div>
+            <div id="searchResult">
+            </div><!-- E search -->           
+            <div class="mar_top_20">
+                 <h4>选择分类目录（请点击选择下列分类）：</h4>
+                 <div class="area mar_top_5">
+                   <table width="100%" class="list_table">
+                     <tbody>
+                     <tr align="left">
+                       <td valign="middle" nowrap="nowrap">
+                         <table width="100%" cellspacing="2" cellpadding="2" border="0" style="margin-top:10px;">
+                             <tbody>
+                                 <tr class="font14blue">
+                                   <td>一级分类</td>
+                                   <td>二级分类</td>
+                                   <td>三级分类</td>
+                                   <td>四级分类</td>
+                                 </tr>
+                                <tr>
+                                  <td><input type='hidden' name='catIdSelect' id='catIdSelect' value="$!product.product.catId"/>
+    							  <script language="javascript" src="/static/prototype/shopmic-manage/js/categoryselector.js"></script> 
+    							  <script>var CatSelector = new CategorySelector(4, "catIdSelect", "selectedCatName2");</script>
+    								<select id="catId1" size="15" name="oneSelect" style="width:200px;">
+                                  </select>
+    							  </td>
+                                  <td>
+    								<select id="catId2" size="15" name="oneSelect" style="width:200px;">
+                                  </select>
+    							  </td>
+                                  <td>
+    								<select id="catId3" size="15" name="oneSelect" style="width:200px;">
+                                  </select></td>
+                                  <td>
+    								<select id="catId4" size="15" name="oneSelect" style="width:200px;">
+                                  </select></td>
+                                </tr>
+                             </tbody>
+                         </table>
+                       </td>
+                     </tr>
+                     </tbody>
+                   </table>
+                 </div><!-- E area -->
+         </div><!-- E chance -->
+        </div><!-- E panel content -->
+ </div><!-- E panel -->
+<div style="text-align:center;" class="mar_top_20">
+    <button id="confirmCatBtn" class="btn btn-primary btn-large font_w_b" type="button" onclick="return selectCat();" disabled="disabled">我已经选择好，开始发布产品</button>
+</div>
+<script>
+function selectSameProd() {
+	callbacks.empty();
+	callbacks.add(function(prod){
+		window.location = "$link.setPage('product,ProductUpload.html')?addSame=1&productId=" + prod.productId ;
+##		jQuery("#catIdSelect").val(prod.catId);
+##		CatSelector.selectCatId(prod.catId);
+##		selectCat();
+##		jQuery("#confirmCatBtn").removeAttr("disabled");
+	});
+}
+function resetCat() {
+	jQuery("#cd").show();
+	jQuery("#pd").hide();
+}
+function selectCat() {
+	if (jQuery('#selectedCatName').html() != jQuery('#selectedCatName2').html()) {
+    	jQuery('#catId').val(jQuery('#catIdSelect').val()); 
+    	jQuery('#selectedCatName').html(jQuery('#selectedCatName2').html()); 
+    	jQuery.getScript("$link.setAction('category.AjaxGetCatAttr')?catId=" + jQuery('#catId').val());
+	}
+	jQuery("#cd").hide();
+	jQuery("#pd").show();
+	return false;
+}
+jQuery("#catId").val("");
+</script>
+
+<script>
+function searchCategory() {
+    var condition = jQuery("#condition").val();
+	condition = encodeURIComponent(condition);
+	if(condition == "" ||condition==null){
+	 	jQuery("#searchResult").empty("");
+		return;
+	}else{
+		jQuery("body").showLoading();
+    	jQuery.getJSON("$link.setAction('category.AjaxGetCategoryCondition')", {condition:condition}, 
+    		function(data){
+				jQuery("body").hideLoading();
+    			var searchResult = jQuery("#searchResult");
+    			searchResult.empty();
+				searchResult.append("<br /><b>搜索结果：</b><br />");
+    			for(var i=0; i<data.length; i++) {
+    				var cat=data[i];
+    				var li = "<li option='$cat.catId'>";
+    				li += "<a href='javascript:;' onclick=javascript:chooseCategory('"+cat.catId+"')>"+cat.catNameCn+"</a><br />";
+    				li += "</li>";
+    				searchResult.append(li);
+    			}
+    		});
+	}
+}
+//searchCategory();
+</script>
+
+<script>
+
+function chooseCategory(catId){
+		jQuery("#catIdSelect").val(catId);
+		CatSelector.selectCatId(catId);
+}
+#if($product)
+jQuery("document").ready(function(){
+	selectCat();
+});
+#end
+</script>

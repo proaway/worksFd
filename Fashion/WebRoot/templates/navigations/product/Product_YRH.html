@@ -1,0 +1,24 @@
+#if($recentHistorys)
+    <div class="cirbox floatleft Featured_WH" style="margin-top:-10px; margin-bottom:30px; width:990px;">
+        <div style="height:28px; background:url(/static/prototype/product_fashion/images/cart_tit_bg.gif) repeat-x; border:solid 1px #d9d9da; padding-left:12px; margin-top:10px;">
+              <h6 style="color:#990000; font-size:13px; line-height:28px;"><span>Your Recent History</span></h6>
+        </div>                 	
+        <div class="cc" style="border:solid 1px #CCC; float:left; width:982px; height:190px;">
+        <div class="freeshipping">
+          <ul style="margin-left:40px;">
+#foreach($prod in $recentHistorys)
+			<li>
+              <div><a href="$RewriteUtil.getProductUrl($prod.product.productName, $prod.product.productId)" target="_blank" title=""><img src="$prod.midImageUrl" width="130" height="130" title="Eyeshadow Palette" alt="Eyeshadow Palette" border="0"/></a></div>
+              <p class="freename"><a href="$RewriteUtil.getProductUrl($prod.product.productName, $prod.product.productId)" target="_blank" title="">$!StringUtil.stringformat($prod.product.productName,48)</a></p>
+              ##<p class="price"><span class="listprice_all">USD <span class="listprice_big">199</span><span class="listprice_small">.99</span></span></p>
+              <p class="price"><span class="listprice_all">USD <span class="listprice_big">$prod.priceVo.discountPrice</span></span></p>
+            </li>
+#end
+          </ul>
+        </div>
+      </div>
+    </div>
+#end
+<script >
+jQuery(document).ready(function(){saveHistory('$productVo.product.productId')});
+</script>

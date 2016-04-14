@@ -1,0 +1,67 @@
+$page.setTitle("My Coupons")
+<form name="listForm" id="listForm"  method="get" action="$link.setPage('marketing,CouponList.html')">
+<div class="acc_content">
+        <div class="acc_search mar_bottom_15">
+            <table cellspacing="0" cellpadding="0" border="0" width="100%" class="acc_tab_lh22">
+              <tbody><tr>
+                <td>Coupon Code:</td>
+                <td><input type="text" class="acc_text" maxlength="30" id="couponCode" name="couponCode" value="$!couponCode"/></td>
+                <td>Status:</td>
+                <td><select class="wid_110px" id="normalState" name="normalState">
+                	<option value="0" #if($!normalState== '0') selected="selected" #end>nor</option>
+					<option value="1" #if($!normalState== '1') selected="selected" #end>失效</option>
+					<option value="2" #if($!normalState== '2') selected="selected" #end>已使用</option>
+					<option value="3" #if($!normalState== '3') selected="selected" #end>未开始</option>
+                </select></td>
+                <td>Expiry Date:</td>
+                <td><input type="text" id="datepickerd" name="endDate" value="$!endDate"  class="acc_text" maxlength="4">
+                </td>
+                                <td align="right" style="  colspan="6">
+                <input type="submit" value="Search" onclick="" id="" class="btn_acc_search" name=""></td>
+              </tr>
+
+            </tbody></table>
+        <br class="clearfloat">
+        </div>
+        
+        <table cellspacing="0" cellpadding="0" width="780px" class="acc_addr_tab">
+          <tbody><tr class="acc_addr_tab_tit">
+            <td>Coupon Code</td>
+         <!-- <td>Note</td>-->
+          <td>Start Date</td>
+          <td>Expiry Date</td>
+          <td>Minimum Order Amount</td>
+          <td>Coupon Amount</td>
+          <td>Status</td>
+          </tr>
+          #foreach($coupon in $couponList)
+          <tr class="acc_tab_addr">
+            <td>$coupon.couponCode<br>#if(!$coupon.limitCategory)<span class="fontblue font11">Note: valid on all category</span>#end</td>
+         <!-- <td>#if($coupon.memo) $coupon.memo #else -- #end</td>-->
+          <td>#if($coupon.startDate) $!StringUtil.getDateString($coupon.startDate) #else -- #end</td>
+          <td>#if($coupon.endDate) $!StringUtil.getDateString($coupon.endDate)  #else -- #end</td>
+          <td>$coupon.minaMount</td>
+          <td>#if($coupon.couponType == "1")
+						$coupon.couponDiscount % #else USD $coupon.couponAmount #end</td>
+          <td>#if($coupon.normalState == '0') 正常
+						#elseif($coupon.normalState == '1') 失效 #elseif($coupon.normalState
+						== '2') 已用 #end</td>
+          </tr>
+          #end
+      </tbody></table>
+ #parse("screens/BuyerNap.html")       
+    <!--<div class="list-page">
+<div class="global-page">Records:2   Pages: 1 &nbsp;&nbsp;&nbsp;<a class="global-page-previous" href="#">first</a> <a class="global-page-previous" href="#"><img src="/static/prototype/product_fashion/images/ico-previous.gif" width="8" height="7" vspace="6" align="absmiddle" /> prev</a> <a href="#">1</a> <span class="select">2</span><a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">6</a> <a href="#">7</a> <a href="#">8</a> <span class="global-page-break">...</span><a href="#">49</a> <a href="#">50</a> <a class="global-page-next" href="#">next <img src="/static/prototype/product_fashion/images/ico-next.gif" width="8" height="7" vspace="6" align="absmiddle" /></a> <a class="global-page-next" href="#">last</a>
+<input name="textfield" type="text"  class="input_go" id="textfield" onclick="this.value='';" value="Page" style="width:35px;" /> <input type="submit" name="button" id="button" value="Go" class="input_btn_protal_short"/></div></div>-->
+<!-- <div class="list-page">
+<div class="global-page"><div class="sabrosus">Records:2   Pages: 1 &nbsp;&nbsp;&nbsp;<span class="disabled"> &lt; </span><span class="current">1</span><a href="#?page=2">2</a><a href="#?page=3">3</a><a href="#?page=4">4</a><a href="#?page=5">5</a><a href="#?page=6">6</a><a href="#?page=7">7</a>...<a href="#?page=199">199</a><a href="#?page=200">200</a><a href="#?page=2"> &gt; </a></div></div></div>
+    </div> -->
+</form>
+<script>
+jQuery( "#datepickerd" ).datepicker({
+	dateFormat:'yy-mm-dd', 
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w"
+    }
+});
+</script>

@@ -1,0 +1,26 @@
+ <td id="${ord.orderId}_status">#if($ord.orderStatusCN) $!ord.orderStatusCN #end</td>
+<td id="${ord.orderId}_operat">
+#if($ord.freeze=='OF001')
+#else
+	#if($ord.riskStatus =='OR101')
+		<a class="mar_right_5"  onclick="cancelOrder('$ord.orderId','');" href="#">Cancel Order</a><br>
+	#elseif($ord.disputeStatus=='OD001'||$ord.disputeStatus=='OD002'||$ord.disputeStatus=='OD003')
+	#elseif($ord.refundStatus.startsWith('OR'))
+		#if($ord.refundStatus=='OR214')
+			<li><a href="javascript:;;" target="_blank"><input type="button" value="Write a feedback" class="btn padding_5 mar_right_10 bold"></a></li>
+		#end
+	#elseif($ord.orderStatus=='OA001'||$ord.orderStatus=='OA003')
+		<a class="mar_right_10" href="$link.setPage('order,PayOrder.html')?orderId=$!ord.orderId" target="_blank">Complete your payment</a><br>
+		<a class="mar_right_10" onclick="cancelOrder('$ord.orderId','');" href="#">Cancel Order</a><br>
+	#elseif($ord.orderStatus=='OC101')
+		<a class="mar_right_10" href="#"  onclick="refundOrder('$ord.orderId','')">Refund</a><br>
+		<a class="mar_right_5" data-toggle="modal" role="button" href="#" onclick="javascript:;;">Write a feedback</a><br>
+	#elseif($ord.orderStatus=='OS002'||$ord.orderStatus=='OS003'||$ord.orderStatus=='OS004')
+		<a class="mar_right_5"  onclick="refundOrder('$ord.orderId','');">Refund</a><br>
+	#elseif($ord.orderStatus=='OS005')
+		<a class="mar_right_5"  onclick="completeOrder('$ord.orderId','');" href="#">Confirm receipt</a><br>
+		<a class="mar_right_5"  onclick="refundOrder('$ord.orderId','');" href="#">Refund</a><br>
+	#end
+#end
+	<a href="javascript:;;" onclick="reAddToCart('$ord.orderId');">Re-add to cart</a>
+</td>

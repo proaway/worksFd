@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertDepartmentBean" parameterClass="com.fd.fashion.seller.bean.DepartmentBean">
+        <![CDATA[
+insert into T_SYS_DEPARTMENT
+  (DEPARTMENT_NAME, CREATE_TIME, CREATOR, MEMO)
+values
+  (#departmentName#, #createTime#, #creator#, #memo#)
+        ]]>
+        <selectKey keyProperty="departmentId" resultClass="long">
+            <![CDATA[select @@identity as departmentId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateDepartmentBean" parameterClass="com.fd.fashion.seller.bean.DepartmentBean">
+        <![CDATA[
+update T_SYS_DEPARTMENT 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="departmentId" prepend="," removeFirstPrepend="true">
+                <![CDATA[DEPARTMENT_ID = #departmentId#]]>
+            </isNotNull>
+            <isNotNull property="departmentName" prepend="," removeFirstPrepend="true">
+                <![CDATA[DEPARTMENT_NAME = #departmentName#]]>
+            </isNotNull>
+            <isNotNull property="createTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_TIME = #createTime#]]>
+            </isNotNull>
+            <isNotNull property="creator" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATOR = #creator#]]>
+            </isNotNull>
+            <isNotNull property="memo" prepend="," removeFirstPrepend="true">
+                <![CDATA[MEMO = #memo#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where DEPARTMENT_ID = #departmentId#
+        ]]>
+    </update>
+
+    <sql id="getDepartmentBeanCondition">
+         <isNotNull property="departmentId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[DEPARTMENT_ID = #departmentId#]]>
+         </isNotNull>
+         <isNotNull property="departmentName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[DEPARTMENT_NAME = #departmentName#]]>
+         </isNotNull>
+         <isNotNull property="createTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATE_TIME = #createTime#]]>
+         </isNotNull>
+         <isNotNull property="creator" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATOR = #creator#]]>
+         </isNotNull>
+         <isNotNull property="memo" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MEMO = #memo#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getDepartmentBeanCount" parameterClass="com.fd.fashion.seller.bean.DepartmentBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_SYS_DEPARTMENT 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getDepartmentBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getDepartmentBean" parameterClass="com.fd.fashion.seller.bean.DepartmentBean"
+        resultClass="com.fd.fashion.seller.bean.DepartmentBean">
+        <![CDATA[
+select 
+	DEPARTMENT_ID	as departmentId,
+	DEPARTMENT_NAME	as departmentName,
+	CREATE_TIME	as createTime,
+	CREATOR	as creator,
+	MEMO	as memo
+from T_SYS_DEPARTMENT 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getDepartmentBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteDepartmentBean" parameterClass="com.fd.fashion.seller.bean.DepartmentBean">
+        <![CDATA[
+delete from T_SYS_DEPARTMENT where DEPARTMENT_ID=#departmentId#
+        ]]>
+    </delete>
+
+</sqlMap>

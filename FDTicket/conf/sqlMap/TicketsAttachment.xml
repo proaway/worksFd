@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertTicketsAttachment" parameterClass="com.fd.fashion.ticket.bean.TicketsAttachment">
+        <![CDATA[
+insert into t_tickets_attachment
+  (TICKETS_INFO_ID, URL)
+values
+  (#ticketsInfoId#, #attachUrl#)
+        ]]>
+        <selectKey keyProperty="attachmentId" resultClass="long">
+            <![CDATA[select @@identity as attachmentId ]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateTicketsAttachment" parameterClass="com.fd.fashion.ticket.bean.TicketsAttachment">
+        <![CDATA[
+update t_tickets_attachment 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="ticketsInfoId" prepend="," removeFirstPrepend="true">
+                <![CDATA[TICKETS_INFO_ID = #ticketsInfoId#]]>
+            </isNotNull>
+            <isNotNull property="attachUrl" prepend="," removeFirstPrepend="true">
+                <![CDATA[URL = #attachUrl#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ATTACHMENT_ID = #attachmentId#
+        ]]>
+    </update>
+
+    <sql id="getTicketsAttachmentCondition">
+         <isNotNull property="attachmentId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ATTACHMENT_ID = #attachmentId#]]>
+         </isNotNull>
+         <isNotNull property="ticketsInfoId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TICKETS_INFO_ID = #ticketsInfoId#]]>
+         </isNotNull>
+          <isNotNull property="attachUrl" prepend="and" removeFirstPrepend="true">
+             <![CDATA[URL = #attachUrl#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getTicketsAttachmentCount" parameterClass="com.fd.fashion.ticket.bean.TicketsAttachment"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from t_tickets_attachment 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getTicketsAttachmentCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getTicketsAttachment" parameterClass="com.fd.fashion.ticket.bean.TicketsAttachment"
+        resultClass="com.fd.fashion.ticket.bean.TicketsAttachment">
+        <![CDATA[
+select 
+	ATTACHMENT_ID	as attachmentId,
+	TICKETS_INFO_ID	as ticketsInfoId,
+	URL	as attachUrl
+from t_tickets_attachment 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getTicketsAttachmentCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteTicketsAttachment" parameterClass="com.fd.fashion.ticket.bean.TicketsAttachment">
+        <![CDATA[
+delete from t_tickets_attachment where ATTACHMENT_ID=#attachmentId#
+        ]]>
+    </delete>
+
+</sqlMap>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertBuyerProductListBean" parameterClass="com.fd.fashion.product.bean.BuyerProductListBean">
+        <![CDATA[
+insert into t_buyer_productlist
+  (BUYER_ID, PRODUCT_ID, CREATE_TIME,DEL_DATE,STATE)
+values
+  (#buyerId#, #productId#, #createTime#,#delDate#,#state#)
+        ]]>
+        <selectKey keyProperty="listId" resultClass="long">
+            <![CDATA[select @@identity as listId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateBuyerProductListBean" parameterClass="com.fd.fashion.product.bean.BuyerProductListBean">
+        <![CDATA[
+update t_buyer_productlist 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="listId" prepend="," removeFirstPrepend="true">
+                <![CDATA[LIST_ID = #listId#]]>
+            </isNotNull>
+            <isNotNull property="buyerId" prepend="," removeFirstPrepend="true">
+                <![CDATA[BUYER_ID = #buyerId#]]>
+            </isNotNull>
+            <isNotNull property="productId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="createTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_TIME = #createTime#]]>
+            </isNotNull>
+             <isNotNull property="delDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[DEL_DATE = #delDate#]]>
+            </isNotNull>
+             <isNotNull property="state" prepend="," removeFirstPrepend="true">
+                <![CDATA[STATE = #state#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where LIST_ID = #listId#
+        ]]>
+    </update>
+
+    <sql id="getBuyerProductListBeanCondition">
+            <isNotNull property="listId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[LIST_ID = #listId#]]>
+            </isNotNull>
+            <isNotNull property="buyerId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[BUYER_ID = #buyerId#]]>
+            </isNotNull>
+            <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="createTime" prepend="and" removeFirstPrepend="true">
+                <![CDATA[CREATE_TIME = #createTime#]]>
+            </isNotNull>
+             <isNotNull property="delDate" prepend="and" removeFirstPrepend="true">
+                <![CDATA[DEL_DATE = #delDate#]]>
+            </isNotNull>
+             <isNotNull property="state" prepend="and" removeFirstPrepend="true">
+                <![CDATA[STATE = #state#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getBuyerProductListBeanCount" parameterClass="com.fd.fashion.product.bean.BuyerProductListBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from t_buyer_productlist 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getBuyerProductListBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getBuyerProductListBean" parameterClass="com.fd.fashion.product.bean.BuyerProductListBean"
+        resultClass="com.fd.fashion.product.bean.BuyerProductListBean">
+        <![CDATA[
+select 
+	LIST_ID	as listId,
+	BUYER_ID	as buyerId,
+	PRODUCT_ID	as productId,
+	CREATE_TIME	as createTime,
+	DEL_DATE		as delDate,
+	STATE		as state
+from t_buyer_productlist 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getBuyerProductListBeanCondition"/>        </dynamic>
+    </select>
+
+    <delete id="deleteBuyerProductListBean" parameterClass="com.fd.fashion.product.bean.BuyerProductListBean">
+        <![CDATA[
+delete from t_buyer_productlist where LIST_ID=#listId#
+        ]]>
+    </delete>
+</sqlMap>

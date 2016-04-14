@@ -1,0 +1,1122 @@
+
+<div id="content" style="width: 100%;">
+
+	<div id="tabbox" style="float: left; width: 990px;">
+		<ul class="tabs" id="tabs">
+			<li class="active_tab" onclick="nTabs(this,0);" id="Specification">
+				Product Details
+			</li>
+<span class="hide">
+			<li class="normal_tab" onclick="nTabs(this,1);" id="Reviews">
+				Reviews(325)
+			</li> 
+ 			<li class="normal_tab" onclick="nTabs(this,2);">
+				Questions & Answers
+			</li> 
+</span>
+			<li class="normal_tab" onclick="nTabs(this,3);">
+				Package List
+			</li>
+			<li class="normal_tab" onclick="nTabs(this,4);">
+				Shipping & payments
+			</li>
+		</ul>
+		<ul id="tab_conbox">
+			<li id="tabs_con0" class="tab_pad">
+
+				<!-- --------------- S sidebar --------------- -->
+				<div id="hpSidebar">
+
+				</div>
+				<!-- --------------- E sidebar --------------- -->
+
+				<p>
+					$!specificationsContent
+				</p>
+				<br />
+
+#if($productVo.product.sizeTemplateId && $productVo.product.sizeTemplateId>0)
+				<p>
+				<div id="size">
+					<div class="size_div_tit">
+						Preppy Look Comfort Fit Washed Blazer(in:CM)
+					</div>
+					<div class="size_div">
+						<table cellspacing="0" cellpadding="0" border="0"
+							style="width: 100%;">
+							<tbody>
+								#foreach($sizeAttr in $sizeAttrList)
+								<tr class="size_div_tab_tit">
+									#foreach($attr in $sizeAttr)
+									<td>
+										$attr
+									</td>
+									#end
+								</tr>
+								#end
+							</tbody>
+						</table>
+					</div>
+				</div>
+#end
+				#if($imageUrl)
+				<img src="$!imageUrl" width="750" height="745" id="size_table_image" />
+				#end
+				</p>
+				<div class="clear"></div>
+
+<span class="hide">
+				<div class="clear"></div>
+				<div class="red_height28" style="margin-top: 40px;">
+					<strong class="marl10">Reviews</strong>
+				</div>
+
+				<div class="Rating">
+					<div class="Average_div">
+						<em><span class="Average_span">Average Rating:</span> </em>
+						<div class="star_div">
+							<div class="star_display_8"></div>
+						</div>
+					</div>
+
+
+				</div>
+				<div class="clearit"></div>
+				<div class="rating_gray_score_t" style="width: 100%;">
+					<table width="100%" border="0" height="60px">
+						<tr>
+							<td width="400">
+								<span class="fLeft">Item as described:</span>
+								<div class="star_display_7"
+									style="float: left; margin-left: 46px; margin-top: 3px;"></div>
+							</td>
+							<td>
+								<span class="fLeft">Price & quality:</span>
+								<div class="star_display_9"
+									style="float: left; margin-left: 80px; margin-top: 3px;"></div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="fLeft">Delivery time & charges:</span>
+								<div class="star_display_8"
+									style="float: left; margin-left: 15px; margin-top: 3px;"></div>
+							</td>
+							<td>
+								<span class="fLeft">Communication & Service:</span>
+								<div class="star_display_7"
+									style="float: left; margin-left: 15px; margin-top: 3px;"></div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="clearit"></div>
+				<br />
+
+				<ul style="display: block; width: 100%;">
+					<li class="Rating_box bg_eeeeee" style="padding-top: 10px;">
+						<div class="Rating_left">
+							<img src="http://images.madeinchina.com/user-pic-none.gif"
+								width="100" alt="" title="">
+							<br />
+							<span><strong>Buyer Name</strong> </span>
+						</div>
+						<div class="Rating_right">
+							<div class="fLeft lineh30">
+								<strong>Average:</strong>
+							</div>
+							<div class="fLeft marl10 mart8">
+								<div class="star_display_7"></div>
+							</div>
+							<div class="fLeft lineh30 marl20">
+								2009-01-05 09:14:17
+								<span class="marl10">From <strong>USA</strong> </span>
+							</div>
+							<div class="clear"></div>
+							<p class="mart10">
+								I have to say this charger is really a great choice. High
+								efficiency and reliability. Don't worry about the overcharge.
+								Very safe and works well. A small item with high power. And for
+								the price, I think it's so reasonable.
+							</p>
+						</div>
+						<div class="clear"></div>
+					</li>
+					<li class="Rating_box" style="padding-top: 10px;">
+						<div class="Rating_left">
+							<img src="http://images.madeinchina.com/user-pic-none.gif"
+								width="100" alt="" title="">
+							<br />
+							<span><strong>Buyer Name</strong> </span>
+						</div>
+						<div class="Rating_right">
+							<div class="fLeft lineh30">
+								<strong>Average:</strong>
+							</div>
+							<div class="fLeft marl10 mart8">
+								<div class="star_display_7"></div>
+							</div>
+							<div class="fLeft lineh30 marl20">
+								2009-01-05 09:14:17
+								<span class="marl10">From <strong>USA</strong> </span>
+							</div>
+							<div class="clear"></div>
+							<p class="mart10">
+								I have to say this charger is really a great choice. High
+								efficiency and reliability. Don't worry about the overcharge.
+								Very safe and works well. A small item with high power. And for
+								the price, I think it's so reasonable.
+							</p>
+						</div>
+						<div class="clear"></div>
+					</li>
+					<li class="Rating_box bg_eeeeee" style="padding-top: 10px;">
+						<div class="Rating_left">
+							<img src="http://images.madeinchina.com/user-pic-none.gif"
+								width="100" alt="" title="">
+							<br />
+							<span><strong>Buyer Name</strong> </span>
+						</div>
+						<div class="Rating_right">
+							<div class="fLeft lineh30">
+								<strong>Average:</strong>
+							</div>
+							<div class="fLeft marl10 mart8">
+								<div class="star_display_7"></div>
+							</div>
+							<div class="fLeft lineh30 marl20">
+								2009-01-05 09:14:17
+								<span class="marl10">From <strong>USA</strong> </span>
+							</div>
+							<div class="clear"></div>
+							<p class="mart10">
+								I have to say this charger is really a great choice. High
+								efficiency and reliability. Don't worry about the overcharge.
+								Very safe and works well. A small item with high power. And for
+								the price, I think it's so reasonable.
+							</p>
+						</div>
+						<div class="clear"></div>
+					</li>
+					<li class="Rating_box" style="padding-top: 10px;">
+						<div class="Rating_left">
+							<img src="http://images.madeinchina.com/user-pic-none.gif"
+								width="100" alt="" title="">
+							<br />
+							<span><strong>Buyer Name</strong> </span>
+						</div>
+						<div class="Rating_right">
+							<div class="fLeft lineh30">
+								<strong>Average:</strong>
+							</div>
+							<div class="fLeft marl10 mart8">
+								<div class="star_display_7"></div>
+							</div>
+							<div class="fLeft lineh30 marl20">
+								2009-01-05 09:14:17
+								<span class="marl10">From <strong>USA</strong> </span>
+							</div>
+							<div class="clear"></div>
+							<p class="mart10">
+								I have to say this charger is really a great choice. High
+								efficiency and reliability. Don't worry about the overcharge.
+								Very safe and works well. A small item with high power. And for
+								the price, I think it's so reasonable.
+							</p>
+						</div>
+						<div class="clear"></div>
+					</li>
+					
+					
+					<li class="Rating_box bg_eeeeee" style="padding-top: 10px;">
+						<div class="Rating_left">
+							<img src="http://images.madeinchina.com/user-pic-none.gif"
+								width="100" alt="" title="">
+							<br />
+							<span><strong>Buyer Name</strong> </span>
+						</div>
+						<div class="Rating_right">
+							<div class="fLeft lineh30">
+								<strong>Average:</strong>
+							</div>
+							<div class="fLeft marl10 mart8">
+								<div class="star_display_7"></div>
+							</div>
+							<div class="fLeft lineh30 marl20">
+								2009-01-05 09:14:17
+								<span class="marl10">From <strong>USA</strong> </span>
+							</div>
+							<div class="clear"></div>
+							<p class="mart10">
+								I have to say this charger is really a great choice. High
+								efficiency and reliability. Don't worry about the overcharge.
+								Very safe and works well. A small item with high power. And for
+								the price, I think it's so reasonable.
+							</p>
+						</div>
+						<div class="clear"></div>
+					</li>
+					<div class="clear"></div>
+				</ul>
+
+				<div class="gray_height35">
+					<a class="gray_height35 curpointer fLeft"
+						onclick="location.href='#Reviews';nTabs(this,1);document.getElementById('Reviews').className = 'active_tab';document.getElementById('Specification').className = 'normal_tab'; this.className='gray_height35 mart10 curpointer';"><b>View
+							more reviews ></b> </a>
+				</div>
+</span>
+			</li>
+
+			<li class="none tab_pad" id="tabs_con1">
+				<div class="Rating">
+					<div class="Average_div">
+						<span class="Average_span">Average Rating:</span>
+						<div class="star_div">
+							<div class="star_display_8"></div>
+						</div>
+					</div>
+				</div>
+				<div class="clearit"></div>
+				<div class="rating_gray_score_t" style="width: 100%;">
+					<table width="100%" border="0" height="60px">
+						<tr>
+							<td width="430">
+								<span class="fLeft">Item as described:</span>
+								<div class="star_display_7"
+									style="float: left; margin-left: 46px; margin-top: 3px;"></div>
+							</td>
+							<td>
+								<span class="fLeft">Price & quality:</span>
+								<div class="star_display_9"
+									style="float: left; margin-left: 80px; margin-top: 3px;"></div>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="fLeft">Delivery time & charges:</span>
+								<div class="star_display_8"
+									style="float: left; margin-left: 15px; margin-top: 3px;"></div>
+							</td>
+							<td>
+								<span class="fLeft">Communication & Service:</span>
+								<div class="star_display_7"
+									style="float: left; margin-left: 15px; margin-top: 3px;"></div>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div class="clearit"></div>
+				<br />
+				<p>
+					<strong>Summry from the buyers</strong>
+				</p>
+				<p>
+					What what what?! The US version of this phone will only have a dual
+					core processor?! I want the quad core! I will have to wait until I
+					can get the whole package otherwise this is a deal breaker for me!
+					:o( If anybody knows how to get the quad core phone please please
+					let me know!
+				</p>
+				<div class="Rating_graybox" style="width: 990px;">
+					<strong>Sort By Country:</strong>&nbsp;&nbsp;
+					<select>
+						<option selected="selected">
+							All
+						</option>
+						<option>
+							FRANCE
+						</option>
+						<option>
+							USA
+						</option>
+						<option>
+							UK
+						</option>
+					</select>
+				</div>
+
+				<ul class="mart5 padleft"
+					style="display: block; width: 100%; padding-left: 0px;">
+					<li class="Rating_box" style="padding-top: 10px;">
+						<div class="Rating_left">
+							<img src="http://images.madeinchina.com/user-pic-none.gif"
+								width="100" alt="" title="">
+							<br />
+							<span><strong>Buyer Name</strong> </span>
+						</div>
+						<div class="Rating_right">
+							<div class="fLeft lineh30">
+								<strong>Average:</strong>
+							</div>
+							<div class="fLeft marl10 mart8">
+								<div class="star_display_7"></div>
+							</div>
+							<div class="fLeft lineh30 marl20">
+								2009-01-05 09:14:17
+								<span class="marl10">From <strong>USA</strong> </span>
+							</div>
+							<div class="clear"></div>
+							<p class="mart10">
+								I have to say this charger is really a great choice. High
+								efficiency and reliability. Don't worry about the overcharge.
+								Very safe and works well. A small item with high power. And for
+								the price, I think it's so reasonable.
+							</p>
+						</div>
+						<div class="clear"></div>
+					</li>
+					<li class="Rating_box" style="padding-top: 10px;">
+						<div class="Rating_left">
+							<img src="http://images.madeinchina.com/user-pic-none.gif"
+								width="100" alt="" title="">
+							<br />
+							<span><strong>Buyer Name</strong> </span>
+						</div>
+						<div class="Rating_right">
+							<div class="fLeft lineh30">
+								<strong>Average:</strong>
+							</div>
+							<div class="fLeft marl10 mart8">
+								<div class="star_display_7"></div>
+							</div>
+							<div class="fLeft lineh30 marl20">
+								2009-01-05 09:14:17
+								<span class="marl10">From <strong>USA</strong> </span>
+							</div>
+							<div class="clear"></div>
+							<p class="mart10">
+								I have to say this charger is really a great choice. High
+								efficiency and reliability. Don't worry about the overcharge.
+								Very safe and works well. A small item with high power. And for
+								the price, I think it's so reasonable.
+							</p>
+						</div>
+						<div class="clear"></div>
+					</li>
+					<li class="Rating_box" style="padding-top: 10px;">
+						<div class="Rating_left">
+							<img src="http://images.madeinchina.com/user-pic-none.gif"
+								width="100" alt="" title="">
+							<br />
+							<span><strong>Buyer Name</strong> </span>
+						</div>
+						<div class="Rating_right">
+							<div class="fLeft lineh30">
+								<strong>Average:</strong>
+							</div>
+							<div class="fLeft marl10 mart8">
+								<div class="star_display_7"></div>
+							</div>
+							<div class="fLeft lineh30 marl20">
+								2009-01-05 09:14:17
+								<span class="marl10">From <strong>USA</strong> </span>
+							</div>
+							<div class="clear"></div>
+							<p class="mart10">
+								I have to say this charger is really a great choice. High
+								efficiency and reliability. Don't worry about the overcharge.
+								Very safe and works well. A small item with high power. And for
+								the price, I think it's so reasonable.
+							</p>
+						</div>
+						<div class="clear"></div>
+					</li>
+					<li class="Rating_box" style="padding-top: 10px;">
+						<div class="Rating_left">
+							<img src="http://images.madeinchina.com/user-pic-none.gif"
+								width="100" alt="" title="">
+							<br />
+							<span><strong>Buyer Name</strong> </span>
+						</div>
+						<div class="Rating_right">
+							<div class="fLeft lineh30">
+								<strong>Average:</strong>
+							</div>
+							<div class="fLeft marl10 mart8">
+								<div class="star_display_7"></div>
+							</div>
+							<div class="fLeft lineh30 marl20">
+								2009-01-05 09:14:17
+								<span class="marl10">From <strong>USA</strong> </span>
+							</div>
+							<div class="clear"></div>
+							<p class="mart10">
+								I have to say this charger is really a great choice. High
+								efficiency and reliability. Don't worry about the overcharge.
+								Very safe and works well. A small item with high power. And for
+								the price, I think it's so reasonable.
+							</p>
+						</div>
+						<div class="clear"></div>
+					</li>
+					<li class="Rating_box"
+						style="padding-top: 10px; border-bottom: none;">
+						<div class="Rating_left">
+							<img src="http://images.madeinchina.com/user-pic-none.gif"
+								width="100" alt="" title="">
+							<br />
+							<span><strong>Buyer Name</strong> </span>
+						</div>
+						<div class="Rating_right">
+							<div class="fLeft lineh30">
+								<strong>Average:</strong>
+							</div>
+							<div class="fLeft marl10 mart8">
+								<div class="star_display_7"></div>
+							</div>
+							<div class="fLeft lineh30 marl20">
+								2009-01-05 09:14:17
+								<span class="marl10">From <strong>USA</strong> </span>
+							</div>
+							<div class="clear"></div>
+							<p class="mart10">
+								I have to say this charger is really a great choice. High
+								efficiency and reliability. Don't worry about the overcharge.
+								Very safe and works well. A small item with high power. And for
+								the price, I think it's so reasonable.
+							</p>
+						</div>
+						<div class="clear"></div>
+					</li>
+					<div class="clear"></div>
+					<div class="list-page">
+						<div class="global-page">
+							Records:2 Pages: 1 &nbsp;&nbsp;&nbsp;
+							<a class="global-page-previous" href="#">first</a>
+							<a class="global-page-previous" href="#"><img
+									src="/static/prototype/product_fashion/images/ico-previous.gif"
+									width="8" height="7" vspace="6" align="absmiddle" /> prev</a>
+							<a href="#">1</a>
+							<span class="select">2</span><a href="#">3</a>
+							<a href="#">4</a>
+							<a href="#">5</a>
+							<a href="#">6</a>
+							<a href="#">7</a>
+							<a href="#">8</a>
+							<span class="global-page-break">...</span><a href="#">49</a>
+							<a href="#">50</a>
+							<a class="global-page-next" href="#">next <img
+									src="/static/prototype/product_fashion/images/ico-next.gif"
+									width="8" height="7" vspace="6" align="absmiddle" /> </a>
+							<a class="global-page-next" href="#">last</a>
+							<input name="textfield" type="text" class="input_go"
+								id="textfield" onclick="this.value='';" value="Page"
+								style="width: 35px;" />
+							<input type="submit" name="button" id="button" value="Go"
+								class="input_btn_protal_short" />
+						</div>
+					</div>
+				</ul>
+			</li>
+			
+			<li class="none tab_padt" id="tabs_con2">
+				<ul style="display: block; width: 100%;">
+					<li class="qa_box">
+						<div class="qa_left">
+							<strong>Q:</strong>
+						</div>
+						<div class="qa_right">
+							<div class="fLeft">
+								<strong>What is the cost of shipping 5 of these dresses
+									and am I required to pay import tax and VAT?</strong>
+							</div>
+							<div class="clear"></div>
+							<p class="mart10">
+								One of the feedback commets from another UK buyer said that she
+								had to pay extra money for tax and VAT I would like to clarify
+								this as this would put the price of the dress up. Also would
+								purchasing 5 dresses entail a bulk discount?
+							</p>
+							<div class="fLeft lineh30 ccc">
+								2012-09-24 09:14:17
+								<span class="marl10">by &nbsp;<strong
+									style="color: #000;">Buyer Name</strong> </span>
+							</div>
+						</div>
+						<div class="clear"></div>
+						<span
+							style="height: 8px; width: 18px; margin-left: 80px; margin-bottom: -1px; float: left;">
+							<img src="/static/prototype/product_fashion/images/q_a_ico.gif"
+								width="18" height="8" /> </span>
+						<div class="clear"></div>
+					</li>
+					<li class="qa_box_a">
+						<div class="qa_left">
+							<strong>A:</strong>
+						</div>
+						<div class="qa_right">
+							<p class="mart10">
+								Thank you for your inquiry. Yes you may need to pay Tax when you
+								receive it. But we also provide a discount if you purchase it in
+								bulk. please feel free to come to our Live Chat by clicking the
+								button "Live Chat" on the top of our web page. Our operator will
+								help you with the tax and discount issue.
+							</p>
+							<div class="fLeft lineh30 ccc">
+								2012-09-24 09:14:17
+								<span class="marl10">by &nbsp;<img
+										src="/static/prototype/product_fashion/images/MIC_Smile.gif"
+										width="65" height="10" style="margin-top: 11px;" /> </span>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</li>
+				</ul>
+				<ul style="display: block; width: 100%;">
+					<li class="qa_box">
+						<div class="qa_left">
+							<strong>Q:</strong>
+						</div>
+						<div class="qa_right">
+							<div class="fLeft">
+								<strong>I note that your measurement guide advisess to
+									measure hollow to floor in bare feet.</strong>
+							</div>
+							<div class="clear"></div>
+							<p class="mart10">
+								If I wear the dress with high heels, will the dress not be too
+								short?
+							</p>
+							<div class="fLeft lineh30 ccc">
+								2012-09-24 09:14:17
+								<span class="marl10">by &nbsp;<strong
+									style="color: #000;">Buyer Name</strong> </span>
+							</div>
+						</div>
+						<div class="clear"></div>
+						<span
+							style="height: 8px; width: 18px; margin-left: 80px; margin-bottom: -1px; float: left;">
+							<img src="/static/prototype/product_fashion/images/q_a_ico.gif"
+								width="18" height="8" /> </span>
+						<div class="clear"></div>
+					</li>
+					<li class="qa_box_a">
+						<div class="qa_left">
+							<strong>A:</strong>
+						</div>
+						<div class="qa_right">
+							<p class="mart10">
+								Thank you for your inquiry. Yes you may need to pay Tax when you
+								receive it. But we also provide a discount if you purchase it in
+								bulk. please feel free to come to our Live Chat by clicking the
+								button "Live Chat" on the top of our web page. Our operator will
+								help you with the tax and discount issue.
+							</p>
+							<div class="fLeft lineh30 ccc">
+								2012-09-24 09:14:17
+								<span class="marl10">by &nbsp;<img
+										src="/static/prototype/product_fashion/images/MIC_Smile.gif"
+										width="65" height="10" style="margin-top: 11px;" /> </span>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</li>
+				</ul>
+				<ul style="display: block; width: 100%;">
+					<li class="qa_box">
+						<div class="qa_left">
+							<strong>Q:</strong>
+						</div>
+						<div class="qa_right">
+							<div class="fLeft">
+								<strong>I note that your measurement guide advisess to
+									measure hollow to floor in bare feet.</strong>
+							</div>
+							<div class="clear"></div>
+							<p class="mart10">
+								If I wear the dress with high heels, will the dress not be too
+								short?
+							</p>
+							<div class="fLeft lineh30 ccc">
+								2012-09-24 09:14:17
+								<span class="marl10">by &nbsp;<strong
+									style="color: #000;">Buyer Name</strong> </span>
+							</div>
+						</div>
+						<div class="clear"></div>
+						<span
+							style="height: 8px; width: 18px; margin-left: 80px; margin-bottom: -1px; float: left;">
+							<img src="/static/prototype/product_fashion/images/q_a_ico.gif"
+								width="18" height="8" /> </span>
+						<div class="clear"></div>
+					</li>
+					<li class="qa_box_a">
+						<div class="qa_left">
+							<strong>A:</strong>
+						</div>
+						<div class="qa_right">
+							<p class="mart10">
+								Thank you for your inquiry. Yes you may need to pay Tax when you
+								receive it. But we also provide a discount if you purchase it in
+								bulk. please feel free to come to our Live Chat by clicking the
+								button "Live Chat" on the top of our web page. Our operator will
+								help you with the tax and discount issue.
+							</p>
+							<div class="fLeft lineh30 ccc">
+								2012-09-24 09:14:17
+								<span class="marl10">by &nbsp;<img
+										src="/static/prototype/product_fashion/images/MIC_Smile.gif"
+										width="65" height="10" style="margin-top: 11px;" /> </span>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</li>
+				</ul>
+				<ul style="display: block; width: 100%;">
+					<li class="qa_box">
+						<div class="qa_left">
+							<strong>Q:</strong>
+						</div>
+						<div class="qa_right">
+							<div class="fLeft">
+								<strong>I note that your measurement guide advisess to
+									measure hollow to floor in bare feet.</strong>
+							</div>
+							<div class="clear"></div>
+							<p class="mart10">
+								If I wear the dress with high heels, will the dress not be too
+								short?
+							</p>
+							<div class="fLeft lineh30 ccc">
+								2012-09-24 09:14:17
+								<span class="marl10">by &nbsp;<strong
+									style="color: #000;">Buyer Name</strong> </span>
+							</div>
+						</div>
+						<div class="clear"></div>
+						<span
+							style="height: 8px; width: 18px; margin-left: 80px; margin-bottom: -1px; float: left;">
+							<img src="/static/prototype/product_fashion/images/q_a_ico.gif"
+								width="18" height="8" /> </span>
+						<div class="clear"></div>
+					</li>
+					<li class="qa_box_a">
+						<div class="qa_left">
+							<strong>A:</strong>
+						</div>
+						<div class="qa_right">
+							<p class="mart10">
+								Thank you for your inquiry. Yes you may need to pay Tax when you
+								receive it. But we also provide a discount if you purchase it in
+								bulk. please feel free to come to our Live Chat by clicking the
+								button "Live Chat" on the top of our web page. Our operator will
+								help you with the tax and discount issue.
+							</p>
+							<div class="fLeft lineh30 ccc">
+								2012-09-24 09:14:17
+								<span class="marl10">by &nbsp;<img
+										src="/static/prototype/product_fashion/images/MIC_Smile.gif"
+										width="65" height="10" style="margin-top: 11px;" /> </span>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</li>
+				</ul>
+				<ul style="display: block; width: 100%;">
+					<li class="qa_box">
+						<div class="qa_left">
+							<strong>Q:</strong>
+						</div>
+						<div class="qa_right">
+							<div class="fLeft">
+								<strong>I note that your measurement guide advisess to
+									measure hollow to floor in bare feet.</strong>
+							</div>
+							<div class="clear"></div>
+							<p class="mart10">
+								If I wear the dress with high heels, will the dress not be too
+								short?
+							</p>
+							<div class="fLeft lineh30 ccc">
+								2012-09-24 09:14:17
+								<span class="marl10">by &nbsp;<strong
+									style="color: #000;">Buyer Name</strong> </span>
+							</div>
+						</div>
+						<div class="clear"></div>
+						<span
+							style="height: 8px; width: 18px; margin-left: 80px; margin-bottom: -1px; float: left;">
+							<img src="/static/prototype/product_fashion/images/q_a_ico.gif"
+								width="18" height="8" /> </span>
+						<div class="clear"></div>
+					</li>
+					<li class="qa_box_a">
+						<div class="qa_left">
+							<strong>A:</strong>
+						</div>
+						<div class="qa_right">
+							<p class="mart10">
+								Thank you for your inquiry. Yes you may need to pay Tax when you
+								receive it. But we also provide a discount if you purchase it in
+								bulk. please feel free to come to our Live Chat by clicking the
+								button "Live Chat" on the top of our web page. Our operator will
+								help you with the tax and discount issue.
+							</p>
+							<div class="fLeft lineh30 ccc">
+								2012-09-24 09:14:17
+								<span class="marl10">by &nbsp;<img
+										src="/static/prototype/product_fashion/images/MIC_Smile.gif"
+										width="65" height="10" style="margin-top: 11px;" /> </span>
+							</div>
+						</div>
+						<div class="clear"></div>
+					</li>
+				</ul>
+			</li> 
+
+			<li class="none tab_padt" id="tabs_con3">
+				<p  style="padding: 20px 20px;">$!productVo.product.packageInformation
+	            </p>
+			</li>
+
+			<li class="none tab_padt" id="tabs_con4">
+				<div style="padding: 20px 0px; border-bottom: dashed 1px #CCC;">
+					<span style="font-size: 16px; color: #999; font-weight: bold;">Shipping
+						and handling</span>
+						<div style="line-height:22px; margin-top:12px; margin-bottom:8px;">
+						Item location: $!productVo.product.origin
+						<br />
+						Shipping to: <span id="shipcountry"> #if($!buyerCountry) $buyerCountry #else US #end</span>
+					</div>
+
+					<div style="background: #ebf2fa; padding: 20px; margin-top: 22px;">
+
+						<table>
+							<tr>
+								<td height="25" valign="middle"
+									style="font-size: 12px; width: 55px;">
+									<b style="margin-top: 6px; float: left;">Quantity:</b>
+								</td>
+								<td valign="middle" class="foot_simple"
+									style="padding-left: 5px; padding-top: 6px;">
+									<input type="text" size="6" value="1" style="font-size: 15px;" name="shipQua" id="shipQua"/>
+								</td>
+								<td width="30px"></td>
+								<td height="25" valign="middle"
+									style="font-size: 12px; width: 99px;">
+									<b style="margin-top: 6px; float: left;"><strong>Change
+											Country:</strong>&nbsp;&nbsp;</b>
+								</td>
+								<td valign="middle" class="foot_simple"
+									style="padding-left: 5px; padding-top: 6px;;">
+									<select id="regionId" name="regionId" onchange="jQuery('#shipcountry').html(this.value);">
+									#foreach($country in $countries)
+										<option value="$country.getRegionId()">
+											$country.regionName
+										</option>
+									#end
+									</select>
+								</td>
+								<td width="30px"></td>
+
+								<td>
+									<input type="button" name="" onclick="changeCountry();"
+										value="Get Shipping Cost" class="btn_Rates" />
+								</td>
+							</tr>
+						</table>
+						<table width="800px" style="margin-top: 20px;" class="hide"><tr><td>
+<b>Sorry, logistics can not reach your country</b>
+						</td></tr></table>
+						<table width="800px" style="margin-top: 20px;" id="tbShippingInfo">
+                	<tr style="font-size:14px; color:#999;">
+                    	<td><b>Shipping Method</b></td>
+                        <td><b>Estimated Shipping Time</b></td>
+                        <td><b>Shipping Cost</b></td>
+                    </tr>
+					<tbody id="ship_to">
+					</tbody>
+						</table>
+					</div>
+					<img src="/static/prototype/product_fashion/images/when-will.png"
+						width="707" height="137"
+						style="margin-top: 20px; margin-left: 20px;" />
+				</div>
+
+				<div style="padding: 20px; margin-top: 0;">
+					<span style="font-size: 16px; color: #999; font-weight: bold;">Payment
+						details</span>
+					<div
+						style="line-height: 22px; margin-top: 12px; margin-bottom: 8px;">
+						<dd class="iconDesc">
+							<p>
+								Credit Cards we accept:
+							</p>
+							<ul>
+								<li
+									style="width: 35px; height: 22px; margin: 0 11px 5px 0; background-position: 0 0;"></li>
+								<li
+									style="width: 35px; height: 22px; margin: 0 11px 5px 0; background-position: 0 -22px;"></li>
+								<li
+									style="width: 35px; height: 22px; margin: 0 11px 5px 0; background-position: 0 -44px;"></li>
+								<li
+									style="width: 35px; height: 22px; margin: 0 11px 5px 0; background-position: 0 -66px;"></li>
+								<li
+									style="width: 35px; height: 22px; margin: 0 11px 5px 0; background-position: 0 -88px;"></li>
+								<li
+									style="width: 35px; height: 22px; margin: 0 0 5px 0; background-position: 0 -110px;"></li>
+								<li
+									style="width: 35px; height: 22px; margin: 0 11px 5px 11px; background-position: -35px 0;"></li>
+								<li
+									style="width: 35px; height: 22px; margin: 0 11px 5px 0; background-position: -35px -22px;"></li>
+								<li
+									style="width: 35px; height: 22px; margin: 0 11px 5px 0; background-position: -35px -44px;"></li>
+								<li
+									style="width: 35px; height: 22px; margin: 0 11px 5px 0; background-position: -35px -66px;"></li>
+								<li
+									style="width: 35px; height: 22px; margin: 0 11px 5px 0; background-position: -35px -88px;"></li>
+							</ul>
+						</dd>
+
+						<dd class="iconDesc">
+							<p>
+								Payment Services:
+							</p>
+							<ul>
+								<li
+									style="width: 82px; height: 36px; margin: 0 11px 5px 0; background-position: 0 -132px;"></li>
+								<li
+									style="width: 82px; height: 36px; margin: 0 11px 5px 0; background-position: 0 -168px;"></li>
+								<li
+									style="width: 82px; height: 36px; margin: 0 0 5px 0; background-position: 0 -204px;"></li>
+								<li
+									style="width: 82px; height: 36px; margin: 0 11px 5px 11px; background-position: 0 -240px;"></li>
+								<li
+									style="width: 82px; height: 36px; margin: 0 11px 5px 0; background-position: 0 -276px;"></li>
+								<li
+									style="width: 82px; height: 36px; margin: 0 0 5px 0; background-position: 0 -312px;"></li>
+								<li
+									style="width: 82px; height: 36px; margin: 0 11px 5px 11px; background-position: 0 -348px;"></li>
+								<li
+									style="width: 82px; height: 36px; margin: 0 11px 5px 0; background-position: 0 -384px;"></li>
+							</ul>
+						</dd>
+
+					</div>
+				</div>
+
+			</li>
+
+		</ul>
+	</div>
+	<br class="clearfloat" />
+	<!-- --------------- S add to cart --------------- -->
+	<script type="text/javascript">
+	function showLayer() {
+		var dialogBox2 = new Dialog($(blockLayer), {
+			"width" : "650px",
+			"title" : "Added Successful",
+			'modal' : true,
+			"dTopNum" : "200px"
+		});
+		document.getElementById("blockLayer").style.display = "block";
+	}
+</script>
+	<style>
+.boxy-modal-blackout {
+	position: absolute;
+	left: 0;
+	top: 0;
+	border: none;
+	background: #FFF;
+	filter: alpha(opacity =     70);
+	opacity: 0.7;
+}
+</style>
+	<div style="width: 650px; display: none;" id="blockLayer">
+		<table border="0" cellspacing="0" cellpadding="0"
+			style="border-bottom: dashed 1px #CCC; margin-top: 16px;" width="630">
+			<tr>
+				<td rowspan="2" style="width: 80px;"></td>
+				<td rowspan="2" style="padding-right: 16px; text-align: right;">
+					<img src="/static/prototype/product_fashion/images/green_32px.gif"
+						width="32" height="32" alt="payment successful"
+						title="payment successful" style="margin-top: 10px;" />
+				</td>
+				<td>
+					<p style="font-size: 16px; color: #333; line-height: 30px;">
+						A new item has been added to your Shopping Cart.
+						<br />
+						3 items in your Cart. Total:USD $ 201.09
+					</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding-top: 30px; padding-bottom: 16px;">
+					<span style="margin-right: 30px;"><input name=""
+							type="submit" class="btn_successful" id="" onclick=""
+							value="View Cart & Check Out" /> </span>
+					<span style="line-height: 36px;"><a
+						href="http://www.shopmadeinchina.com/static/help-whoselsale/leave_message.shtml"
+						style="text-decoration: underline; font-size: 14px;">Continue
+							To Shopping</a> </span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" style="height: 20px;"></td>
+			</tr>
+		</table>
+		<br class="clearfloat" />
+		<p style="line-height: 40px; color: #666; font-size: 14px;">
+			Customers Who Bought Item Also Bought:
+		</p>
+		<br class="clearfloat" />
+		<div class="freeshipping">
+			<ul style="margin-left: 20px;">
+				<li>
+					<div>
+						<a
+							href="http://www.shopmadeinchina.com/wholesale-catelog/Eye-Shadow_013005005.shtml"
+							target="_blank" class="moveimg" title="Eyeshadow Palette"><img
+								src="http://images.madeinchina.com/seller/product/BD3C03FEBC0F79CCE040007F0100638F/557/9799557_1.m.jpg"
+								width="130" height="130" title="Eyeshadow Palette"
+								alt="Eyeshadow Palette" border="0" /> </a>
+					</div>
+					<p class="freename">
+						<a
+							href="http://www.shopmadeinchina.com/wholesale-catelog/Eye-Shadow_013005005.shtml"
+							target="_blank" title="Eyeshadow Palette">Eyeshadow Palette</a>
+					</p>
+					<p class="price">
+						<span class="listprice_all">USD <span class="listprice_big">199</span><span
+							class="listprice_small">.99</span> </span>
+					</p>
+				</li>
+				<li>
+					<div>
+						<a
+							href="http://www.shopmadeinchina.com/wholesale-catelog/Mascara_013005010.shtml"
+							target="_blank" class="moveimg"><img
+								src="http://images.madeinchina.com/seller/product/BD5216C7C9615C3FE040007F010038B1/214/10639214_8.m.jpg"
+								width="130" height="130" title="Mascara" border="0" /> </a>
+					</div>
+					<p class="freename">
+						<a
+							href="http://www.shopmadeinchina.com/wholesale-catelog/Mascara_013005010.shtml"
+							target="_blank">Mascara</a>
+					</p>
+					<p class="price">
+						<span class="listprice_all">USD <span class="listprice_big">199</span><span
+							class="listprice_small">.99</span> </span>
+					</p>
+				</li>
+				<li>
+					<div>
+						<a
+							href="http://www.shopmadeinchina.com/wholesale-catelog/Makeup-Brushes_013005009.shtml"
+							target="_blank" class="moveimg"><img
+								src="http://images.madeinchina.com/seller/product/67FCF4D9E7B33F5AE040007F01005E93/696/9826696_6.m.jpg"
+								width="130" height="130" title="Makeup Brushies" border="0" />
+						</a>
+					</div>
+					<p class="freename">
+						<a
+							href="http://www.shopmadeinchina.com/wholesale-catelog/Makeup-Brushes_013005009.shtml"
+							target="_blank">Makeup Brushies</a>
+					</p>
+					<p class="price">
+						<span class="listprice_all">USD <span class="listprice_big">199</span><span
+							class="listprice_small">.99</span> </span>
+					</p>
+				</li>
+				<li>
+					<div>
+						<a
+							href="http://www.shopmadeinchina.com/wholesale-catelog-p2/Lip-Gloss_013005008.shtml&isList=0"
+							target="_blank" class="moveimg"><img
+								src="http://images.madeinchina.com/seller/product/BD5216C7C9615C3FE040007F010038B1/214/10639214_8.m.jpg"
+								width="130" height="130" border="0" title="Lip Gloss" /> </a>
+					</div>
+					<p class="freename">
+						<a
+							href="http://www.shopmadeinchina.com/wholesale-catelog-p2/Lip-Gloss_013005008.shtml&isList=0"
+							target="_blank">Lip Gloss</a>
+					</p>
+					<p class="price">
+						USD 147.55 ~ 170.25 / Lot
+					</p>
+				</li>
+			</ul>
+		</div>
+		<br class="clearfloat" />
+	</div>
+
+
+
+	<!-- --------------- E add to cart --------------- -->
+
+</div>
+<script language="javascript" type="text/javascript"
+	src="/static/prototype/product_fashion/inc/cookie.js"></script>
+<script type="text/javascript">
+##===========ajax  取指定数量分类下热销产品=============
+function getCatHotProducts(){
+	var actionUrl = "$link.setPage('product,CatHotProduct.html')";
+	var params = "productId=$!productVo.product.productId&catId=$!productVo.product.customCatId";
+	jQuery.ajax({
+       	url:actionUrl,
+       	type:"post",
+       	data:params,
+       	success:function(response){
+			jQuery("#hpSidebar").html(response) ;	
+       	},
+       	error:function(){
+       	}
+  		 });
+}
+getCatHotProducts();
+##==================== end =======================
+function changeCountry() {
+	var country = jQuery("#regionId").val();
+	var quantity = jQuery("#shipQua").val();
+	jQuery.ajax({
+    	url:"$link.setAction("cart.GetProdShippingCost")",
+    	type:"post",
+    	async:false,
+    	data:{country:country, quantity:quantity, length:$!productVo.product.length, width:$!productVo.product.width, height:$!productVo.product.height, weight:$!productVo.product.weight},
+    	dataType:"json",
+    	success:function(data){
+			setCountryShipping(data);
+		}
+	 });
+}
+function setCountryShipping(data) {
+	if (data.length == 0) {
+		jQuery("table#tbShippingInfo").hide();
+		jQuery("table#tbShippingInfo").prev().show();
+	} else {
+		jQuery("table#tbShippingInfo").show();
+		jQuery("table#tbShippingInfo").prev().hide();
+	}
+	var tbody = jQuery("tbody#ship_to");
+	tbody.empty();
+	var minidx = 0;
+	var minAmount = -1;
+	for(var i=0; i<data.length; i++) {
+		var shipping = data[i];
+		if (shipping.shippingAmount>=0) {
+			var tr;
+			if (shipping.shippingAmount==0) {
+				tr = jQuery('<tr style="color:#060;"></tr>');
+			} else {
+				tr = jQuery('<tr style="line-height:30px;"></tr>');
+			}
+			tr.append('<td>'+shipping.shippingCompany+'</td>');
+			tr.append('<td>('+shipping.transportDays+' business days)</td>');
+			
+			if (shipping.shippingAmount==0) {
+				tr.append('<td>FREE</td>');
+			} else {
+				tr.append('<td>USD $'+shipping.shippingAmount+'</td>');
+			}
+			tbody.append(tr);
+		}
+	}
+}
+#if($buyerCountry)
+jQuery("#regionId").val('$buyerCountry');
+#else
+jQuery("#regionId").val('US');
+#end
+jQuery("document").ready(function(){changeCountry(); jQuery("#shipcountry").html(jQuery("#regionId").val())});
+</script>

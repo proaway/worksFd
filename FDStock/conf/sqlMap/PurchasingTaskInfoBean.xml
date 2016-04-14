@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+	<insert id="insertPurchasingTaskInfoBean" parameterClass="com.fd.fashion.stock.bean.PurchasingTaskInfoBean">
+        <![CDATA[
+insert into t_purchasing_task_info
+  (INFO_ID,	TASK_ID,PROFF_NO,BUY_PRICE,BUY_COUNT,SHIPPING_PRICE,SHIPPING_TYPE,SHIPPING_NO,BUY_TIME,
+	PRODUCT_NAME,SKU)values 
+ (#purchTaskInfoId#,#taskId#,#proffNo#,#buyPrice#,#buyCount#,#shippingPrice#,#shippingType#,#shippingNo#,#buyTime#,
+	#productName#,#sku#)
+        ]]>
+		<selectKey keyProperty="purchTaskInfoId" resultClass="long">
+            <![CDATA[select @@identity as purchTaskInfoId]]>
+		</selectKey>
+	</insert>
+
+	<update id="updatePurchasingTaskInfoBean" parameterClass="com.fd.fashion.stock.bean.PurchasingTaskInfoBean">
+        <![CDATA[
+update t_purchasing_task_info 
+        ]]>
+		<dynamic prepend="set">
+			<isNotNull property="productId" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[INFO_ID = #purchTaskInfoId#]]>
+			</isNotNull>
+			<isNotNull property="taskId" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[TASK_ID = #taskId#]]>
+			</isNotNull>
+			<isNotNull property="proffNo" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[PROFF_NO = #proffNo#]]>
+			</isNotNull>
+			<isNotNull property="buyPrice" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[BUY_PRICE = #buyPrice#]]>
+			</isNotNull>
+			<isNotNull property="buyCount" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[BUY_COUNT = #buyCount#]]>
+			</isNotNull>
+			<isNotNull property="shippingPrice" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[SHIPPING_PRICE = #shippingPrice#]]>
+			</isNotNull>
+			<isNotNull property="shippingType" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[SHIPPING_TYPE = #shippingType#]]>
+			</isNotNull>
+			<isNotNull property="shippingNo" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[SHIPPING_NO = #shippingNo#]]>
+			</isNotNull>
+			<isNotNull property="buyTime" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[BUY_TIME = #buyTime#]]>
+			</isNotNull>
+			<isNotNull property="productName" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[PRODUCT_NAME = #productName#]]>
+			</isNotNull>
+			<isNotNull property="sku" prepend="," removeFirstPrepend="true">
+                <![CDATA[SKU = #sku#]]>
+			</isNotNull>
+		</dynamic>
+        <![CDATA[
+where INFO_ID = #purchTaskInfoId#
+        ]]>
+	</update>
+
+	<sql id="getPurchasingTaskInfoBeanCondition">
+		<isNotNull property="purchTaskInfoId" prepend=","
+			removeFirstPrepend="true">
+                <![CDATA[INFO_ID = #purchTaskInfoId#]]>
+		</isNotNull>
+		<isNotNull property="taskId" prepend="," removeFirstPrepend="true">
+                <![CDATA[TASK_ID = #taskId#]]>
+		</isNotNull>
+		<isNotNull property="proffNo" prepend=","
+			removeFirstPrepend="true">
+                <![CDATA[PROFF_NO = #proffNo#]]>
+		</isNotNull>
+		<isNotNull property="buyPrice" prepend=","
+			removeFirstPrepend="true">
+                <![CDATA[BUY_PRICE = #buyPrice#]]>
+		</isNotNull>
+		<isNotNull property="buyCount" prepend=","
+			removeFirstPrepend="true">
+                <![CDATA[BUY_COUNT = #buyCount#]]>
+		</isNotNull>
+		<isNotNull property="shippingPrice" prepend=","
+			removeFirstPrepend="true">
+                <![CDATA[SHIPPING_PRICE = #shippingPrice#]]>
+		</isNotNull>
+		<isNotNull property="shippingType" prepend=","
+			removeFirstPrepend="true">
+                <![CDATA[SHIPPING_TYPE = #shippingType#]]>
+		</isNotNull>
+		<isNotNull property="shippingNo" prepend=","
+			removeFirstPrepend="true">
+                <![CDATA[SHIPPING_NO = #shippingNo#]]>
+		</isNotNull>
+		<isNotNull property="buyTime" prepend=","
+			removeFirstPrepend="true">
+                <![CDATA[BUY_TIME = #buyTime#]]>
+		</isNotNull>
+		<isNotNull property="productName" prepend=","
+			removeFirstPrepend="true">
+                <![CDATA[PRODUCT_NAME = #productName#]]>
+		</isNotNull>
+		<isNotNull property="sku" prepend="," removeFirstPrepend="true">
+                <![CDATA[SKU = #sku#]]>
+		</isNotNull>
+	</sql>
+
+	<select id="getPurchasingTaskInfoBeanCount" parameterClass="com.fd.fashion.stock.bean.PurchasingTaskInfoBean"
+		resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from t_purchasing_task_info 
+        ]]>
+		<dynamic prepend="where">
+			<include refid="getPurchasingTaskInfoBeanCondition" />
+		</dynamic>
+	</select>
+
+	<select id="getPurchasingTaskInfoBean" parameterClass="com.fd.fashion.stock.bean.PurchasingTaskInfoBean"
+		resultClass="com.fd.fashion.stock.bean.PurchasingTaskInfoBean">
+        <![CDATA[
+select 
+	INFO_ID as purchTaskinfoId,
+	TASK_ID as taskId,
+	PROFF_NO as proffNo,
+	BUY_PRICE as buyPrice,
+	BUY_COUNT as buyCount,
+	SHIPPING_PRICE as shippingPrice,
+	SHIPPING_TYPE as shippingType,
+	SHIPPING_NO as shippingNo,
+	BUY_TIME as buyTime,
+	PRODUCT_NAME as productName,
+	SKU as sku
+from t_purchasing_task_info 
+        ]]>
+		<dynamic prepend="where">
+			<include refid="getPurchasingTaskInfoBeanCondition" />
+		</dynamic>
+	</select>
+
+	<delete id="deletePurchasingTaskInfoBean" parameterClass="com.fd.fashion.stock.bean.PurchasingTaskInfoBean">
+        <![CDATA[
+delete from t_purchasing_task_info where INFO_ID = #purchTaskInfoId#
+        ]]>
+	</delete>
+
+</sqlMap>

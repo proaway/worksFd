@@ -1,0 +1,200 @@
+  	<br class="clear" />
+  	<h4 class="mar_top_15 mar_bottom_20">模板设置</h4>
+<form name="listForm" id="listForm" method="get" action="$link.setPage('cms,TemplateList.html')" >  
+    <div class="search_form mar_bottom_10">
+        <ul class="inline">
+            <li><label class="left mar_top_5">模板名称：</label><input type="text" name="templateName" value="$!templateName" class="input-medium left" placeholder="模板名称" /></li>
+        <li><input class="btn btn-warning bold left mar_top_0" type="submit" value="查 询" onclick="fromsubmit('listForm')"/>
+			<a onclick="javascript:document.getElementById('more_search').style.display='block';document.getElementById('block_more_search').style.display='none';document.getElementById('hide_more_search').style.display='block';setCookie('advSearch',1,30);" class="btn btn-link left" id="block_more_search" href="javascript:;">高级查询<span class="icon-chevron-down"></span></a>
+			<a onclick="javascript:document.getElementById('more_search').style.display='none';document.getElementById('block_more_search').style.display='block';document.getElementById('hide_more_search').style.display='none';setCookie('advSearch',0,30);" class="btn btn-link left hide" id="hide_more_search" href="javascript:;">收起<span class="icon-chevron-up"></span></a>
+		</li><script>jQuery("document").ready(function(){if(getCookie("advSearch")==1){jQuery("a#block_more_search").click();}});</script>
+        </ul>
+        <br class="clear" />
+        <ul class="inline alert blue pad_left_5 pad_right_5 pad_top_15 hide" id="more_search">
+            <li><label class="left mar_top_5">模板编号：</label>
+              <input type="text" value="$!templateId" name="templateId" class="input-medium left" placeholder="模板编号" />
+            </li>
+            <li><label class="left mar_top_5">类型：</label>
+              <select id="" name="templateType" class="left">
+                <option value="">全部</option>
+                <option value="1" #if($!templateType == 1) selected #end>首页</option>
+                <option value="2" #if($!templateType == 2) selected #end>频道</option>
+                <option value="3" #if($!templateType == 3) selected #end>活动</option>
+                <option value="4" #if($!templateType == 4) selected #end>文章</option>
+                <option value="5" #if($!templateType == 5) selected #end>邮件</option>
+              </select>
+            </li>
+            <li><label class="left mar_top_5">语言：</label>
+              <select id="" name="languageId" class="left">
+                <option value="">全部</option>
+                <option value="0" #if($!languageId == 0) selected #end>英语</option>
+              </select>
+            </li>
+            <li><label class="left mar_top_5">创建时间：</label>
+            <input type="text" name="createTimeStart" value="$!createTimeStart" id="datepickera" class="input-small mar_right_10 left" />
+            <label class="left mar_top_5">到</label><input type="text" name="createTimeEnd" value="$!createTimeEnd" id="datepickerb" class="input-small mar_left_10 mar_right_5 left" /></li>
+            <li><label class="left mar_top_5">创建者：</label>
+              <input type="text" class="input-medium left" placeholder="创建者" name="createUser" value="$!createUser"/>
+            </li>
+            <li><input type="button" class="btn btn-success left" value="应用" onclick="fromsubmit('listForm')"/></li><br class="clear" />
+        </ul>
+    </div>
+    
+    <table border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-striped table-hover center_t font12 tl_mt3_mb3 mar_bottom_0">
+  <tr class="info bold">
+            <td><label class="checkbox left"><input type="checkbox" id="select_all" name="chk_all" value="size_templet_name">全选</label><label>编号</label></td>
+    <td><label>模板名称</label></td>
+    <td><label>文件名</label></td>
+    <td><label>类型</label></td>
+    <td><label>语言</label></td>
+    <td><label>栏目</label></td>
+    <td><label>创建时间</label></td>
+    <td><label>创建者</label></td>
+    <td><label>状态</label></td>
+    <td><label>操作</label></td>
+    </tr>
+    #foreach($template in $cmsTemplateList)
+	<tr>
+		<td><label class="checkbox"><input type="checkbox" name="chk_list" value="$!template.templateId">$!template.templateId</label></td>
+		<td><label>$!template.templateName</label></td>
+		<td><label>$!template.OperateUser</label></td>
+		<td><label>#if($!template.templateType==1)
+						首页
+					#elseif($!template.templateType==2)
+						频道
+					#elseif($!template.templateType==3)
+						活动
+					#elseif($!template.templateType==4)
+						文章
+					#elseif($!template.templateType==5)
+						邮件
+					#end
+			</label></td>
+		<td><label>#if($!template.languageId == 0)英语#elseif($!template.languageId==1)中文#end</label></td>
+		<td><label>$!template.blockNum</label></td>
+		<td><label class="font10"><span>$!StringUtil.getDateString($!template.createTime,'yyyy-MM-dd hh:mm:ss')</span></label></td>
+		<td><label>$!template.createUser</label></td>
+		<td><label>#if($!template.status == 1)启用#elseif($!template.status == 2) 禁用 #end
+			</label></td>
+		<td><a href="javascript:;;" onclick="editTemplate('$!template.templateId');" class="" >修改</a>
+		<a href="$CmsUtil.getTemplateUrl($!template.fileUrl)" role="button" class="mar_left_10" data-toggle="modal">预览</a>
+		<a href="$CmsUtil.getTemplateUrl($!template.fileUrl)" role="button" class="mar_left_10" data-toggle="modal">导出模板文件</a></td>
+	</tr>
+	#end
+       
+    <table class="table font14" style="margin-top:0px;">
+  <tr class="success">
+            <td><label class="checkbox left mar_top_5"><input type="checkbox" id="select_all" name="chk_all" value="size_templet_name">全选</label>
+            <a href="javascript:changeTemplateType(1);" role="button" class="btn btn-info btn-small font12 left mar_left_15" ><span class="white">启 用</span></a>
+            <a href="javascript:changeTemplateType(2);" role="button" class="btn btn-warning btn-small font12 left mar_left_15" ><span class="white">禁 用</span></a>
+            <a href="javascript:changeTemplateType(0);" role="button" class="btn btn-danger btn-small font12 left mar_left_15"><span class="white">删 除</span></a>
+            <a href="#add_template" role="button" class="btn btn-success btn-small font12 left mar_left_15" data-toggle="modal"><span class="white">新 增</span></a></td>
+      </tr>
+    </table>
+	#parse("/screens/Nap.html")
+</form>
+<form name="addTemplate" id="addTemplate" method="post" action="$link.setAction('cms.AddTemplate')" enctype="multipart/form-data" >    
+<div id="add_template" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h5 id="myModalLabel">新增模板</h5>
+        </div>
+        <div class="modal-body">
+        	<table border="0" cellspacing="0" cellpadding="0" class="mar_left_20">
+              <tr>
+                <td class="v_top"><label class="mar_right_10 right mar_top_5">模板名称：</label><span class="required mar_right_5 right mar_top_5">*</span></td>
+                <td>
+                    <input type="text" name="templateName" class="input-medium" placeholder="最大输入25个字符" />
+                </td>
+              </tr>
+              <tr>
+                <td class="v_top"><label class="mar_right_10 right mar_top_5">模板文件：</label><span class="required mar_right_5 right mar_top_5">*</span></td>
+                <td>
+                    <input class="input-file" id="fileurl" name="fileurl" type="file">
+                </td>
+              </tr>
+              <tr>
+                <td class="v_top"><label class="mar_right_10 right mar_top_10">模板类型：</label><span class="required mar_right_5 right mar_top_10">*</span></td>
+                <td>
+                    <select name="templateType" class="left oi_status_max_w mar_top_5">
+                              <option value="1">首页</option> 
+                              <option value="2">频道</option>
+                              <option value="3">活动</option>
+                              <option value="4">文章</option>
+                              <option value="5">邮件</option>
+                            </select>
+                </td>
+              </tr>
+              <tr>
+                <td class="v_top"><label class="mar_right_10 right mar_top_5">语言：</label><span class="required mar_right_5 right mar_top_5">*</span></td>
+                <td>
+                    <select name="languageId" class="left oi_status_max_w">
+                              <option value="0">英文</option>
+                              <option value="1">中文</option>
+                            </select>
+                </td>
+              </tr>
+              <tr>
+                <td class="v_top"><label class="mar_right_10 right mar_top_5">备注：</label></td>
+                <td>
+                    <textarea rows="3" name="memo" class="input-xlarge left" placeholder="Message" style="resize: none;"></textarea>
+                </td>
+              </tr>
+            </table>
+        </div>
+        <div class="modal-footer">
+        <input type="button" class="btn" data-dismiss="modal" aria-hidden="true" value="取消"/>
+        <input type="button" class="btn btn-primary" data-dismiss="modal" value="确定" onclick="fromsubmit('addTemplate')"/>
+        </div>
+    </div><!-- E add_template -->
+</form>   
+
+ <script language="javascript" type="text/javascript"
+	src="/static/prototype/shopmic-manage/js/jquery-ui-1.10.0.custom.min.js"></script>
+<script language="javascript" type="text/javascript"
+	src="/static/prototype/shopmic-manage/js/datepicker.js"></script>
+
+<script type="text/javascript">
+jQuery("input[name=chk_all]").click(function(){
+	 if(jQuery(this).attr("checked") == 'checked'){
+   	jQuery("input[name='chk_list']").attr("checked","checked");
+	 }else{
+	 	jQuery("input[name='chk_list']").removeAttr("checked")
+	 }
+});
+
+function fromsubmit(formId){
+	jQuery("#"+formId).submit();
+}
+
+function editTemplate(templateId){
+	var div = jQuery("#edit_template");
+	if (div.length == 0) {
+		div = jQuery("<div id='edit_template'></div>");
+		jQuery("body").append(div);
+	}
+	div.empty();
+	div.load("$link.setPage('cms,EditTemplate.html')?templateId=" + templateId);
+}
+
+function changeTemplateType(status){
+	var templateIds = '';
+	jQuery('input[name="chk_list"]:checked').each(function(){
+		templateIds += jQuery(this).attr("value") + ","
+	});
+	var param = "templateIds="+templateIds+"&status="+status;
+	jQuery.ajax({
+		url:"$link.setAction('cms.ChangeTemplateType')",
+		type:"post",
+		data:param,
+		success:function(data){
+			jQuery('input[name="chk_list"]:checked').removeAttr("checked");
+			if (data>0) {
+				location.reload();
+			} else {
+				alert('操作失败!');	
+			}
+		}
+	 });	
+}
+</script>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertWesternUnionBean" parameterClass="com.fd.payment.bean.WesternUnionBean">
+        <![CDATA[
+insert into T_WESTERN_UNION
+  (FIRST_NAME, LAST_NAME, COUNTRY, PHONE_NO, MTCN_CODE)
+values
+  (#firstName#, #lastName#, #country#, #phoneNo#, #mtcnCode#)
+        ]]>
+        <selectKey keyProperty="id" resultClass="long">
+            <![CDATA[select @@identity as id]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateWesternUnionBean" parameterClass="com.fd.payment.bean.WesternUnionBean">
+        <![CDATA[
+update T_WESTERN_UNION 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="id" prepend="," removeFirstPrepend="true">
+                <![CDATA[ID = #id#]]>
+            </isNotNull>
+            <isNotNull property="firstName" prepend="," removeFirstPrepend="true">
+                <![CDATA[FIRST_NAME = #firstName#]]>
+            </isNotNull>
+            <isNotNull property="lastName" prepend="," removeFirstPrepend="true">
+                <![CDATA[LAST_NAME = #lastName#]]>
+            </isNotNull>
+            <isNotNull property="country" prepend="," removeFirstPrepend="true">
+                <![CDATA[COUNTRY = #country#]]>
+            </isNotNull>
+            <isNotNull property="phoneNo" prepend="," removeFirstPrepend="true">
+                <![CDATA[PHONE_NO = #phoneNo#]]>
+            </isNotNull>
+            <isNotNull property="mtcnCode" prepend="," removeFirstPrepend="true">
+                <![CDATA[MTCN_CODE = #mtcnCode#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ID = #id#
+        ]]>
+    </update>
+
+    <sql id="getWesternUnionBeanCondition">
+         <isNotNull property="id" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ID = #id#]]>
+         </isNotNull>
+         <isNotNull property="firstName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[FIRST_NAME = #firstName#]]>
+         </isNotNull>
+         <isNotNull property="lastName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LAST_NAME = #lastName#]]>
+         </isNotNull>
+         <isNotNull property="country" prepend="and" removeFirstPrepend="true">
+             <![CDATA[COUNTRY = #country#]]>
+         </isNotNull>
+         <isNotNull property="phoneNo" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PHONE_NO = #phoneNo#]]>
+         </isNotNull>
+         <isNotNull property="mtcnCode" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MTCN_CODE = #mtcnCode#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getWesternUnionBeanCount" parameterClass="com.fd.payment.bean.WesternUnionBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_WESTERN_UNION 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getWesternUnionBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getWesternUnionBean" parameterClass="com.fd.payment.bean.WesternUnionBean"
+        resultClass="com.fd.payment.bean.WesternUnionBean">
+        <![CDATA[
+select 
+	ID	as id,
+	FIRST_NAME	as firstName,
+	LAST_NAME	as lastName,
+	COUNTRY	as country,
+	PHONE_NO	as phoneNo,
+	MTCN_CODE	as mtcnCode
+from T_WESTERN_UNION 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getWesternUnionBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteWesternUnionBean" parameterClass="com.fd.payment.bean.WesternUnionBean">
+        <![CDATA[
+delete from T_WESTERN_UNION where ID=#id#
+        ]]>
+    </delete>
+
+</sqlMap>

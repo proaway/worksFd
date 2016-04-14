@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMapConfig      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+	<settings cacheModelsEnabled="false" 
+		enhancementEnabled="true"
+		lazyLoadingEnabled="true" 
+		errorTracingEnabled="true"
+		maxRequests="32"
+		maxSessions="10"
+		maxTransactions="5"
+		useStatementNamespaces="true" />
+	<sqlMap resource="sqlMap/IpaddressBean.xml" />
+	<sqlMap resource="sqlMap/SearchClickBean.xml" />
+	<sqlMap resource="sqlMap/VisitAdclickBean.xml" />
+	<sqlMap resource="sqlMap/VisitAdwordBean.xml" />
+	<sqlMap resource="sqlMap/VisitDailystatBean.xml" />
+	<sqlMap resource="sqlMap/VisitLoginBean.xml" />
+	<sqlMap resource="sqlMap/VisitOpenBean.xml" />
+	<sqlMap resource="sqlMap/VisitOrderBean.xml" />
+	<sqlMap resource="sqlMap/VisitOutsideBean.xml" />
+	<sqlMap resource="sqlMap/VisitProdshowBean.xml" />
+	<sqlMap resource="sqlMap/VisitProductBean.xml" />
+	<sqlMap resource="sqlMap/VisitRegisterBean.xml" />
+	<sqlMap resource="sqlMap/VisitSearchBean.xml" />
+	<sqlMap resource="sqlMap/VisitSessionBean.xml" />
+</sqlMapConfig>

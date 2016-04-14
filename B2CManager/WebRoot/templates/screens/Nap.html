@@ -1,0 +1,61 @@
+<script type="text/javascript"> 
+/**
+*翻页脚本
+*@param pageIndex 页号
+*@param frm 翻页的表单
+*/
+function TurnPage(pageIndex,frm){
+ numStr  = /^(\d*)?$/;  
+ if(frm==null || frm==''){
+  	frm=document.getElementById('listForm');
+ }else{
+  	frm=document.getElementById(frm);
+ }
+  
+ if(frm!=null && frm.pageIndex!=null){ 
+   if (pageIndex!="goto"){
+    frm.pageIndex.value = pageIndex;
+   }
+   if(numStr.exec(frm.pageIndex.value)!=null && frm.pageIndex.value>0){
+    frm.submit();
+   }else{
+    alert('\u9875\u7801\u8f93\u5165\u9519\u8bef\uff0c\u8bf7\u91cd\u65b0\u8f93\u5165!'); //alert("页码输入错误，请重新输入！)"
+   }
+ }
+ }
+ </script>
+
+<div class="pagination pagination-right">
+    <span style="display:block; margin-bottom:5px;">
+		总条数：<strong class="red mar_right_15">$!pageInfo.recordCount</strong> 
+		总页数：<strong class="red">$!pageInfo.pageCount</strong>
+		<input type="hidden" id="pageIndex" name="pageIndex" value="$pageInfo.pageIndex"/>
+	</span>
+    <ul>
+			<!--<a href="javascript:();">«</a>-->
+	 #if($!pageInfo.pageIndex && $!pageInfo.prePageNo)
+    		#if($!pageInfo.pageIndex == $!pageInfo.prePageNo||$!pageInfo.prePageNo == 0)
+            <li class="disabled"><a href="javascript:();">&lt;&lt;</a> </li>
+              #else
+                <li><a href="javascript:TurnPage('$pageInfo.prePageNo','listForm')">&lt;&lt;</a></li>
+             #end 
+	 #end        
+		##for 循环
+        #if($!pageInfo.rangeMin && $!pageInfo.rangeMax)
+          #foreach($!i in [$!pageInfo.rangeMin ..$!pageInfo.rangeMax] )
+            #if($!i==$!pageInfo.pageIndex)   
+            ##不加链接  
+            <li class="active"><a href="javascript:();">$!i</a></li>
+            #else
+            ##加上链接
+            <li><a href="javascript:TurnPage('$!i','listForm')">$!i</a></li>
+            #end
+          #end
+        #end 
+       #if($pageInfo.pageIndex==$pageInfo.nextPageNo||$pageInfo.nextPageNo==0)   
+          <li class="disabled"> <a href="javascript:();">&gt;&gt;</a></li>
+       #else
+         <li><a href="javascript:TurnPage('$pageInfo.nextPageNo','listForm')">&gt;&gt;</a></li>
+       #end 
+    </ul>
+</div>

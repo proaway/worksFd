@@ -1,0 +1,356 @@
+<script>
+var actionUrl = "$link.setAction('order.AjaxOrderInfoAction')";
+var count=0;
+	
+jQuery(function(){
+	jQuery("#orderNumber").focus();
+});
+
+</script>
+
+<script language="javascript" type="text/javascript">  
+	function checkOrderNum(evt){
+		var k=window.event?evt.keyCode:evt.which;
+		var buttonFlag = "0";
+		if(k==13){
+    		var myDate=new Date();
+			var scanState = jQuery("#scanState").val();
+			if(scanState==1){
+            	checkOrderNo(myDate,buttonFlag);
+			}else if(scanState==2){
+				clearOrderMessage();
+			}else if(scanState==3){
+				queryOrder();
+			}
+		}
+	}
+	
+	function checkOrderNo(myDate,buttonFlag){
+		var orderNo = jQuery('#orderNumber').val();
+		if(orderNo==""){
+			jQuery("#errorInfo").show().html("<font color='red'>订单号不能为空</font>");
+			jQuery("#orderNumber").val("").focus();
+			return false;
+		}
+    	jQuery.getJSON(
+    		actionUrl,
+    		{orderNumber:orderNo,flag:'0'},
+    		function(data){
+    			if(data!=null){
+    				jQuery("#errorInfo").hide();
+    				jQuery("#totalWeight").focus();
+    				if(buttonFlag=="0"){
+    					if(count>0){
+                			var preDiv = jQuery("tr[id='"+count+"']").find("label[id='scanDate_"+count+"']").html();
+                			if(preDiv!="" && preDiv.trim()=="已扫入"){
+                			}else{
+								jQuery("tr[id='"+count+"']").remove();
+                				count = count-1;
+								jQuery("#totalWeight").val("");
+    							jQuery("#trackingNumber").val("");
+							}
+                		}
+    					createRow(data);	
+    				}
+    			}else{
+					jQuery("#errorInfo").show().html("<font color='red'>订单号无效</font>");
+    				jQuery("#orderNumber").val("").focus();
+    				if(buttonFlag=="1"){
+						jQuery("#totalWeight").val("");
+    					jQuery("#trackingNumber").val("");
+    				}
+    			}
+    		});
+	}
+	
+	function scanTrackingNo(){
+		var scanState = jQuery("#scanState").val();
+	    // 检查orderNo有效性
+		if(jQuery('#orderNumber').val()==""){
+			jQuery('#trackingNumber').val("");
+			jQuery("#errorInfo").show().html("<font color='red'>订单号不能为空</font>");
+			jQuery('#orderNumber').focus();
+			return;
+		}
+		if(jQuery('#trackingNumber').val()==""){
+			jQuery("#errorInfo").show().html("<font color='red'>订单号不能为空</font>");
+			jQuery('#trackingNumber').focus();
+			return;
+		}
+		var myDate=new Date();
+		var buttonFlag="1";
+		if(scanState==1){
+			//先判断条件是否成立再执行扫单操作
+			var weight = jQuery("#totalWeight").val();
+    		if(weight=="" ||isNaN(weight.trim())){
+    			jQuery("#trackingNumber").val("");
+    			jQuery("#totalWeight").val("").focus();
+    			jQuery("#errorInfo").show().html("<font color='red'>重量值错误</font>");
+    			return false;
+    		}
+			 // check in 数据处理
+			jQuery("tr[id='"+count+"']").find("label[name='traderNo']").html(jQuery("#trackingNumber").val());
+    		jQuery("#trackingNumber").val(jQuery("#trackingNumber").val()+',');
+			jQuery("#errorInfo").show().html("<font color='red'>正在扫描</font>");
+			jQuery("tr[id='"+count+"']").find("label[id='scanDate_"+count+"']").html(myDate.toLocaleString());
+    		var str=jQuery("#trackingNumber").val();
+    		var array=str.split(",");
+			var wg =  jQuery("tr[id='"+count+"']").find("label[name='weight']").html();
+			var weight = jQuery("#totalWeight").val();
+			if(Math.abs(parseFloat(wg)-weight)>0.25){
+				jQuery("#errorInfo").show().html("<font color='red'>重量误差过大，无法执行录入操作</font>");
+				jQuery.getJSON(
+            		actionUrl,
+            		{orderNumber:jQuery('#orderNumber').val(),flag:'5'},
+            		function(data){
+            			if(data==null){
+                            jQuery("tr[id='"+count+"']").find("label[id='scanDate_"+count+"']").html("暂时无法操作该条数据");
+            			}else{
+							 jQuery("tr[id='"+count+"']").find("label[id='scanDate_"+count+"']").html("问题订单(重量不符)");
+						}
+						jQuery("tr[id='"+count+"']").addClass("red");
+						jQuery("#errorInfo").hide();
+						jQuery('#orderNumber').val("").focus();
+						jQuery('#totalWeight').val("");
+						jQuery('#trackingNumber').val("");
+            	});
+			}
+    		if(array.length>=3){
+    		    // 判断是否该提交数据
+    			if(array[array.length-2]==array[array.length-3]){
+            		trackingNoCheckIn(myDate,buttonFlag);
+    			}
+    		}
+		}
+	}
+		
+		
+	// 有TrackingNo的CheckIn
+	function trackingNoCheckIn(myDate,buttonFlag) {
+		jQuery.getJSON(
+    		actionUrl,
+    		{orderNumber:jQuery('#orderNumber').val(),shippingType:jQuery('#shippingType').val(),trackingNumber:jQuery('trackingNumber').val(),flag:'1'},
+    		function(data){
+    			if(data!=null){
+					jQuery("#errorInfo").hide();
+					jQuery("tr[id='"+count+"']").find("label[name='statusName']").html(data.orderStatusName);
+					jQuery("tr[id='"+count+"']").find("label[name='traderNo']").html(data.trackNo);
+					jQuery("#errorInfo").hide();
+					jQuery("tr[id='"+count+"']").find("label[id='scanDate_"+count+"']").html("已扫入");
+    				jQuery('#orderNumber').focus();
+    			}else{
+					jQuery("#errorInfo").show().html("<font color='red'>更新订单状态失败</font>");
+					return fasle;
+				}
+			});
+	}
+	
+</script>
+  	<br class="clear">
+  	<h4 class="mar_top_15 mar_bottom_20">扫描订单</h4>
+    
+  	<div class="search_form alert alert-info mar_bottom_10">
+        <ul class="inline mar_top_10">
+            <li><label class="left mar_top_5">扫描状态：</label><select class="left oi_status_max_w" name="scanState" id="scanState" onchange="showCondition();">
+                  <option value="1" selected >订单扫描录入</option>
+                  <option value="2">清除历史录入</option>
+                  <option value="3">查询订单状态</option>
+                </select></li>
+            <li id="ship"><label class="left mar_top_5">运输方式：</label><select class="left width_100px oi_status_max_w" name="shipingType" id="shipingType">
+				  #set($index=1)
+				  #foreach($detail in $shippingInfo.details)
+					<option value="$detail.detailId" #if($index==1) selected  #end>$detail.shippingCompany</option>
+						#set($index = $index+1)
+				  #end
+                </select>
+			</li>
+            <li>
+                <label class="left mar_top_5">订单号：</label>
+				<input type="text" placeholder="订单号" class="input-medium left" name="orderNumber" id="orderNumber" onkeydown="return checkOrderNum(event);">
+            </li>
+			<li id="weig">
+                <label class="left mar_top_5">订单重量：</label>
+				<input type="text" class="input-medium left" placeholder="订单重量" id="totalWeight" name="totalWeight" onkeydown="if(event.keyCode==13) checkWeight();">
+            </li>
+            <li id="trad">
+                <label class="left mar_top_5">物流单号：</label>
+				<input type="text" placeholder="物流单号" class="input-medium left" name="trackingNumber" id="trackingNumber" onkeydown="if(event.keyCode==13) scanTrackingNo();">
+            </li>
+            <li><a class="btn  left" onclick="javascript:scanSubmit();">提交</a></li>
+			 <li>
+                <label class="left mar_top_5" id="errorInfo"></label>
+            </li>
+        </ul>
+        <br class="clear">
+    </div>
+    
+<table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-striped table-hover center_t font12 tl_mt3_mb3"  id="ordersList">
+    <tbody>
+    	<tr class="success bold" id="titleDiv">
+            <td><label>订单号</label></td>
+            <td><label>物流单号</label></td>
+            <td><label>订单状态</label></td>
+            <td><label>订单金额（$）</label></td>
+            <td><label>商品数量</label></td>
+            <td><label>订单重量（kg）</label></td>
+            <td><label>买家名称</label></td>
+            <td width="280px"><label>货运地址</label></td>
+            <td><label>扫单录入时间</label></td>
+    	</tr>
+    </tbody>
+</table>
+  
+ <script>
+ //创建一个tr
+	function createRow(data){
+		count=count+1;
+		url = "$link.setPage('order,OrderDetail.html')?orderId="+data.orderNo;
+    	var str="<tr id='"+count+"' name='"+data.orderNo+"' trName='orderLine'>";
+		str = str + "<td><a class='' target='_blank' href='"+url+"'>"+data.orderNo+"</a></td>";
+		str = str + "<td><label name='traderNo'>"+data.trackNo+"</label></td><td><label name='statusName'>"+data.orderStatusName+"</label></td>";
+		str = str + "<td><label>"+data.totalCost+"</label></td>";
+		str = str + "<td><label>"+data.totalCount+"</label></td><td><label name='weight'>"+data.totalWeight+"</label></td><td><label>"+data.buyerName+"</label></td>";
+		str = str + "<td><label class='left_t'>"+data.shippingAddress+"</label></td>";
+		if(data.shipppingDate==null | data.shippingDate==""){
+			str = str + "<td class='font10'><label id='scanDate_"+count+"'></label></td>";
+		}else{
+			str = str + "<td class='font10'><label id='scanDate_"+count+"'>"+data.shippingDate+"</label></td>";
+		}
+		
+		str = str + "</tr>";
+    	jQuery("#ordersList").append(str);
+	}
+	
+	//判断某个对象值不为空
+	function isNotNull(obj){
+		if(jQuery("#obj").val()!=""){
+			return true;
+		}else{
+			return false;
+		}	
+	}
+	
+	
+	function checkWeight(){
+		var orderNo = jQuery('#orderNumber').val();
+		if(orderNo==""){
+			jQuery("#errorInfo").show().html("<font color='red'>订单号不能为空</font>");
+			jQuery("#orderNumber").val("").focus();
+			return false;
+		}
+		var weight = jQuery("#totalWeight").val();
+		if(weight=="" ||isNaN(weight.trim())){
+			jQuery("#trackingNumber").val("");
+			jQuery("#totalWeight").val("").focus();
+			jQuery("#errorInfo").show().html("<font color='red'>重量值错误</font>");
+			return false;
+		}
+		jQuery("#trackingNumber").focus();
+		jQuery("#errorInfo").hide();
+	}
+	
+	function showCondition(){
+		var scanState = jQuery("#scanState").val();
+		jQuery("#errorInfo").hide();
+		if(scanState==1){
+			jQuery("tr[trName='orderLine']").remove();
+			jQuery("li[id='ship']").show();
+			jQuery("li[id='weig']").show();
+			jQuery("li[id='trad']").show();
+		}else{
+			if(scanState==3){
+				jQuery("tr[trName='orderLine']").remove();
+			}
+			jQuery("li[id='ship']").hide();
+			jQuery("li[id='weig']").hide();
+			jQuery("li[id='trad']").hide();
+		}
+		jQuery("#orderNumber").val("").focus();
+	}
+	
+	function clearOrderMessage(){
+		var orderNo = jQuery('#orderNumber').val();
+		if(orderNo==""){
+			jQuery("#errorInfo").show().html("<font color='red'>订单号不能为空</font>");
+			jQuery("#orderNumber").val("").focus();
+			return false;
+		}
+		if(jQuery("tr[name='"+orderNo.trim()+"']").html()!=null || jQuery("tr[name='"+orderNo.trim()+"']").length>0){
+			jQuery("tr[name='"+orderNo.trim()+"']").remove();
+		}else{
+			jQuery("#errorInfo").show().html("<font color='red'>订单号无效</font>");
+		}
+		
+		jQuery("#orderNumber").val("").focus();
+		
+	}
+	
+	function queryOrder(){
+		var orderNo = jQuery('#orderNumber').val();
+		if(orderNo==""){
+			jQuery("#errorInfo").show().html("<font color='red'>订单号不能为空</font>");
+			jQuery("#orderNumber").val("").focus();
+			return false;
+		}
+		jQuery.getJSON(
+    		actionUrl,
+    		{orderNumber:orderNo,flag:'0'},
+    		function(data){
+    			if(data!=null){
+    				jQuery("#errorInfo").hide();
+    				createRow(data);	
+				}else{
+					jQuery("#errorInfo").show().html("<font color='red'>订单号无效</font>");
+					jQuery("#orderNumber").val("").focus();
+				}
+			});
+		
+	}
+	
+	function scanSubmit(){
+		var orderNo = jQuery('#orderNumber').val();
+		if(orderNo==""){
+			jQuery("#errorInfo").show().html("<font color='red'>订单号不能为空</font>");
+			jQuery("#orderNumber").val("").focus();
+			return false;
+		}
+		var scanState = jQuery("#scanState").val();
+		if(scanState==1){
+        	var str=jQuery("#trackingNumber").val();
+			var weight = jQuery("#totalWeight").val(); 
+			if(str=="" && weight==""){
+				var myDate=new Date();
+				checkOrderNo(myDate,"0");
+			}else if(weight!="" && str!=""){
+				var array=str.split(",");
+				if(array.length>=3){
+        		    // 判断是否该提交数据
+        			if(array[array.length-2]==array[array.length-3]){
+                		trackingNoCheckIn(myDate,"1");
+        			}
+        		}else{
+					scanTrackingNo();
+				}	
+			}else if(weight!=""){
+				if(checkWeight()){
+					var array=str.split(",");
+    				if(array.length>=3){
+            		    // 判断是否该提交数据
+            			if(array[array.length-2]==array[array.length-3]){
+                    		trackingNoCheckIn(myDate,"1");
+            			}
+            		}else{
+    					scanTrackingNo();
+    				}
+				}
+			}else{
+				checkWeight();
+			}
+		}else if(scanState==2){
+			clearOrderMessage();
+		}else if(scanState==3){
+			queryOrder();
+		}
+	}
+	
+ </script> 

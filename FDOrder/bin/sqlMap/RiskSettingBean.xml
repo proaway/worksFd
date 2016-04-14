@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertRiskSettingBean" parameterClass="com.fd.fashion.order.bean.RiskSettingBean">
+        <![CDATA[
+insert into T_RISK_SETTING
+  (TITLE, BUY_CASE, IS_BUY_CASE, IP_FROM, IP_TO, IS_IP, BUY_ID, IS_BUY_ID, REGISTER_COUNTRY, IS_REGISTER_COUNTRY, SHIPPING_COUNTRY, IS_SHIPPING_COUNTRY, AMOUNT_RANGE, AMOUNT, IS_AMOUNT, ORDER_CAT, IS_ORDER_CAT, RISK_BUYER, IS_RISK_BUYER, IS_MULTI_CARD, IS_MULTI_BUYER, PAYMENT, IS_PAYMENT, IS_ADDRESS, SHIP_ADD_SIMILAR, IS_SHIP_ADD_SIMILAR, BILL_ADD_SIMILAR, IS_BILL_ADD_SIMILAR, PAY_ACCOUNT, IS_PAY_ACCOUNT, REMIND_CONDITION, CREATE_DATE, CREATOR, STATE)
+values
+  (#title#, #buyCase#, #isBuyCase#, #ipFrom#, #ipTo#, #isIp#, #buyId#, #isBuyId#, #registerCountry#, #isRegisterCountry#, #shippingCountry#, #isShippingCountry#, #amountRange#, #amount#, #isAmount#, #orderCat#, #isOrderCat#, #riskBuyer#, #isRiskBuyer#, #isMultiCard#, #isMultiBuyer#, #payment#, #isPayment#, #isAddress#, #shipAddSimilar#, #isShipAddSimilar#, #billAddSimilar#, #isBillAddSimilar#, #payAccount#, #isPayAccount#, #remindCondition#, #createDate#, #creator#, #state#)
+        ]]>
+        <selectKey keyProperty="id" resultClass="long">
+            <![CDATA[select @@identity as id]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateRiskSettingBean" parameterClass="com.fd.fashion.order.bean.RiskSettingBean">
+        <![CDATA[
+update T_RISK_SETTING 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="id" prepend="," removeFirstPrepend="true">
+                <![CDATA[ID = #id#]]>
+            </isNotNull>
+            <isNotNull property="title" prepend="," removeFirstPrepend="true">
+                <![CDATA[TITLE = #title#]]>
+            </isNotNull>
+            <isNotNull property="buyCase" prepend="," removeFirstPrepend="true">
+                <![CDATA[BUY_CASE = #buyCase#]]>
+            </isNotNull>
+            <isNotNull property="isBuyCase" prepend="," removeFirstPrepend="true">
+                <![CDATA[IS_BUY_CASE = #isBuyCase#]]>
+            </isNotNull>
+            <isNotNull property="ipFrom" prepend="," removeFirstPrepend="true">
+                <![CDATA[IP_FROM = #ipFrom#]]>
+            </isNotNull>
+            <isNotNull property="ipTo" prepend="," removeFirstPrepend="true">
+                <![CDATA[IP_TO = #ipTo#]]>
+            </isNotNull>
+            <isNotNull property="isIp" prepend="," removeFirstPrepend="true">
+                <![CDATA[IS_IP = #isIp#]]>
+            </isNotNull>
+            <isNotNull property="buyId" prepend="," removeFirstPrepend="true">
+                <![CDATA[BUY_ID = #buyId#]]>
+            </isNotNull>
+            <isNotNull property="isBuyId" prepend="," removeFirstPrepend="true">
+                <![CDATA[IS_BUY_ID = #isBuyId#]]>
+            </isNotNull>
+            <isNotNull property="registerCountry" prepend="," removeFirstPrepend="true">
+                <![CDATA[REGISTER_COUNTRY = #registerCountry#]]>
+            </isNotNull>
+            <isNotNull property="isRegisterCountry" prepend="," removeFirstPrepend="true">
+                <![CDATA[IS_REGISTER_COUNTRY = #isRegisterCountry#]]>
+            </isNotNull>
+            <isNotNull property="shippingCountry" prepend="," removeFirstPrepend="true">
+                <![CDATA[SHIPPING_COUNTRY = #shippingCountry#]]>
+            </isNotNull>
+            <isNotNull property="isShippingCountry" prepend="," removeFirstPrepend="true">
+                <![CDATA[IS_SHIPPING_COUNTRY = #isShippingCountry#]]>
+            </isNotNull>
+            <isNotNull property="amountRange" prepend="," removeFirstPrepend="true">
+                <![CDATA[AMOUNT_RANGE = #amountRange#]]>
+            </isNotNull>
+            <isNotNull property="amount" prepend="," removeFirstPrepend="true">
+                <![CDATA[AMOUNT = #amount#]]>
+            </isNotNull>
+            <isNotNull property="isAmount" prepend="," removeFirstPrepend="true">
+                <![CDATA[IS_AMOUNT = #isAmount#]]>
+            </isNotNull>
+            <isNotNull property="orderCat" prepend="," removeFirstPrepend="true">
+                <![CDATA[ORDER_CAT = #orderCat#]]>
+            </isNotNull>
+            <isNotNull property="isOrderCat" prepend="," removeFirstPrepend="true">
+                <![CDATA[IS_ORDER_CAT = #isOrderCat#]]>
+            </isNotNull>
+            <isNotNull property="riskBuyer" prepend="," removeFirstPrepend="true">
+                <![CDATA[RISK_BUYER = #riskBuyer#]]>
+            </isNotNull>
+            <isNotNull property="isRiskBuyer" prepend="," removeFirstPrepend="true">
+                <![CDATA[IS_RISK_BUYER = #isRiskBuyer#]]>
+            </isNotNull>
+            <isNotNull property="isMultiCard" prepend="," removeFirstPrepend="true">
+                <![CDATA[IS_MULTI_CARD = #isMultiCard#]]>
+            </isNotNull>
+            <isNotNull property="isMultiBuyer" prepend="," removeFirstPrepend="true">
+                <![CDATA[IS_MULTI_BUYER = #isMultiBuyer#]]>
+            </isNotNull>
+            <isNotNull property="payment" prepend="," removeFirstPrepend="true">
+                <![CDATA[PAYMENT = #payment#]]>
+            </isNotNull>
+            <isNotNull property="isPayment" prepend="," removeFirstPrepend="true">
+                <![CDATA[IS_PAYMENT = #isPayment#]]>
+            </isNotNull>
+            <isNotNull property="isAddress" prepend="," removeFirstPrepend="true">
+                <![CDATA[IS_ADDRESS = #isAddress#]]>
+            </isNotNull>
+            <isNotNull property="shipAddSimilar" prepend="," removeFirstPrepend="true">
+                <![CDATA[SHIP_ADD_SIMILAR = #shipAddSimilar#]]>
+            </isNotNull>
+            <isNotNull property="isShipAddSimilar" prepend="," removeFirstPrepend="true">
+                <![CDATA[IS_SHIP_ADD_SIMILAR = #isShipAddSimilar#]]>
+            </isNotNull>
+            <isNotNull property="billAddSimilar" prepend="," removeFirstPrepend="true">
+                <![CDATA[BILL_ADD_SIMILAR = #billAddSimilar#]]>
+            </isNotNull>
+            <isNotNull property="isBillAddSimilar" prepend="," removeFirstPrepend="true">
+                <![CDATA[IS_BILL_ADD_SIMILAR = #isBillAddSimilar#]]>
+            </isNotNull>
+            <isNotNull property="payAccount" prepend="," removeFirstPrepend="true">
+                <![CDATA[PAY_ACCOUNT = #payAccount#]]>
+            </isNotNull>
+            <isNotNull property="isPayAccount" prepend="," removeFirstPrepend="true">
+                <![CDATA[IS_PAY_ACCOUNT = #isPayAccount#]]>
+            </isNotNull>
+            <isNotNull property="remindCondition" prepend="," removeFirstPrepend="true">
+                <![CDATA[REMIND_CONDITION = #remindCondition#]]>
+            </isNotNull>
+            <isNotNull property="createDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_DATE = #createDate#]]>
+            </isNotNull>
+            <isNotNull property="creator" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATOR = #creator#]]>
+            </isNotNull>
+            <isNotNull property="state" prepend="," removeFirstPrepend="true">
+                <![CDATA[STATE = #state#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ID = #id#
+        ]]>
+    </update>
+
+    <sql id="getRiskSettingBeanCondition">
+        <isNotNull property="id" prepend="and" removeFirstPrepend="true">
+            <![CDATA[ID = #id#]]>
+        </isNotNull>
+        <isNotNull property="title" prepend="and" removeFirstPrepend="true">
+            <![CDATA[TITLE = #title#]]>
+        </isNotNull>
+        <isNotNull property="buyCase" prepend="and" removeFirstPrepend="true">
+            <![CDATA[BUY_CASE = #buyCase#]]>
+        </isNotNull>
+        <isNotNull property="isBuyCase" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IS_BUY_CASE = #isBuyCase#]]>
+        </isNotNull>
+        <isNotNull property="ipFrom" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IP_FROM = #ipFrom#]]>
+        </isNotNull>
+        <isNotNull property="ipTo" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IP_TO = #ipTo#]]>
+        </isNotNull>
+        <isNotNull property="isIp" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IS_IP = #isIp#]]>
+        </isNotNull>
+        <isNotNull property="buyId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[BUY_ID = #buyId#]]>
+        </isNotNull>
+        <isNotNull property="isBuyId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IS_BUY_ID = #isBuyId#]]>
+        </isNotNull>
+        <isNotNull property="registerCountry" prepend="and" removeFirstPrepend="true">
+            <![CDATA[REGISTER_COUNTRY = #registerCountry#]]>
+        </isNotNull>
+        <isNotNull property="isRegisterCountry" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IS_REGISTER_COUNTRY = #isRegisterCountry#]]>
+        </isNotNull>
+        <isNotNull property="shippingCountry" prepend="and" removeFirstPrepend="true">
+            <![CDATA[SHIPPING_COUNTRY = #shippingCountry#]]>
+        </isNotNull>
+        <isNotNull property="isShippingCountry" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IS_SHIPPING_COUNTRY = #isShippingCountry#]]>
+        </isNotNull>
+        <isNotNull property="amountRange" prepend="and" removeFirstPrepend="true">
+            <![CDATA[AMOUNT_RANGE = #amountRange#]]>
+        </isNotNull>
+        <isNotNull property="amount" prepend="and" removeFirstPrepend="true">
+            <![CDATA[AMOUNT = #amount#]]>
+        </isNotNull>
+        <isNotNull property="isAmount" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IS_AMOUNT = #isAmount#]]>
+        </isNotNull>
+        <isNotNull property="orderCat" prepend="and" removeFirstPrepend="true">
+            <![CDATA[ORDER_CAT = #orderCat#]]>
+        </isNotNull>
+        <isNotNull property="isOrderCat" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IS_ORDER_CAT = #isOrderCat#]]>
+        </isNotNull>
+        <isNotNull property="riskBuyer" prepend="and" removeFirstPrepend="true">
+            <![CDATA[RISK_BUYER = #riskBuyer#]]>
+        </isNotNull>
+        <isNotNull property="isRiskBuyer" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IS_RISK_BUYER = #isRiskBuyer#]]>
+        </isNotNull>
+        <isNotNull property="isMultiCard" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IS_MULTI_CARD = #isMultiCard#]]>
+        </isNotNull>
+        <isNotNull property="isMultiBuyer" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IS_MULTI_BUYER = #isMultiBuyer#]]>
+        </isNotNull>
+        <isNotNull property="payment" prepend="and" removeFirstPrepend="true">
+            <![CDATA[PAYMENT = #payment#]]>
+        </isNotNull>
+        <isNotNull property="isPayment" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IS_PAYMENT = #isPayment#]]>
+        </isNotNull>
+        <isNotNull property="isAddress" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IS_ADDRESS = #isAddress#]]>
+        </isNotNull>
+        <isNotNull property="shipAddSimilar" prepend="and" removeFirstPrepend="true">
+            <![CDATA[SHIP_ADD_SIMILAR = #shipAddSimilar#]]>
+        </isNotNull>
+        <isNotNull property="isShipAddSimilar" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IS_SHIP_ADD_SIMILAR = #isShipAddSimilar#]]>
+        </isNotNull>
+        <isNotNull property="billAddSimilar" prepend="and" removeFirstPrepend="true">
+            <![CDATA[BILL_ADD_SIMILAR = #billAddSimilar#]]>
+        </isNotNull>
+        <isNotNull property="isBillAddSimilar" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IS_BILL_ADD_SIMILAR = #isBillAddSimilar#]]>
+        </isNotNull>
+        <isNotNull property="payAccount" prepend="and" removeFirstPrepend="true">
+            <![CDATA[PAY_ACCOUNT = #payAccount#]]>
+        </isNotNull>
+        <isNotNull property="isPayAccount" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IS_PAY_ACCOUNT = #isPayAccount#]]>
+        </isNotNull>
+        <isNotNull property="remindCondition" prepend="and" removeFirstPrepend="true">
+            <![CDATA[REMIND_CONDITION = #remindCondition#]]>
+        </isNotNull>
+        <isNotNull property="createDate" prepend="and" removeFirstPrepend="true">
+            <![CDATA[CREATE_DATE = #createDate#]]>
+        </isNotNull>
+        <isNotNull property="creator" prepend="and" removeFirstPrepend="true">
+            <![CDATA[CREATOR = #creator#]]>
+        </isNotNull>
+        <isNotNull property="state" prepend="and" removeFirstPrepend="true">
+            <![CDATA[STATE = #state#]]>
+        </isNotNull>
+    </sql>
+
+    <select id="getRiskSettingBeanCount" parameterClass="com.fd.fashion.order.bean.RiskSettingBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_RISK_SETTING 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getRiskSettingBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getRiskSettingBean" parameterClass="com.fd.fashion.order.bean.RiskSettingBean"
+        resultClass="com.fd.fashion.order.bean.RiskSettingBean">
+        <![CDATA[
+select 
+	ID	as id,
+	TITLE	as title,
+	BUY_CASE	as buyCase,
+	IS_BUY_CASE	as isBuyCase,
+	IP_FROM	as ipFrom,
+	IP_TO	as ipTo,
+	IS_IP	as isIp,
+	BUY_ID	as buyId,
+	IS_BUY_ID	as isBuyId,
+	REGISTER_COUNTRY	as registerCountry,
+	IS_REGISTER_COUNTRY	as isRegisterCountry,
+	SHIPPING_COUNTRY	as shippingCountry,
+	IS_SHIPPING_COUNTRY	as isShippingCountry,
+	AMOUNT_RANGE	as amountRange,
+	AMOUNT	as amount,
+	IS_AMOUNT	as isAmount,
+	ORDER_CAT	as orderCat,
+	IS_ORDER_CAT	as isOrderCat,
+	RISK_BUYER	as riskBuyer,
+	IS_RISK_BUYER	as isRiskBuyer,
+	IS_MULTI_CARD	as isMultiCard,
+	IS_MULTI_BUYER	as isMultiBuyer,
+	PAYMENT	as payment,
+	IS_PAYMENT	as isPayment,
+	IS_ADDRESS	as isAddress,
+	SHIP_ADD_SIMILAR	as shipAddSimilar,
+	IS_SHIP_ADD_SIMILAR	as isShipAddSimilar,
+	BILL_ADD_SIMILAR	as billAddSimilar,
+	IS_BILL_ADD_SIMILAR	as isBillAddSimilar,
+	PAY_ACCOUNT	as payAccount,
+	IS_PAY_ACCOUNT	as isPayAccount,
+	REMIND_CONDITION	as remindCondition,
+	CREATE_DATE	as createDate,
+	CREATOR	as creator,
+	STATE	as state
+from T_RISK_SETTING 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getRiskSettingBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteRiskSettingBean" parameterClass="com.fd.fashion.order.bean.RiskSettingBean">
+        <![CDATA[
+delete from T_RISK_SETTING where ID=#id#
+        ]]>
+    </delete>
+</sqlMap>

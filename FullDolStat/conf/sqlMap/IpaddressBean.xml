@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertIpaddressBean" parameterClass="com.fd.statistics.bean.IpaddressBean">
+        <![CDATA[
+insert into T_IPADDRESS
+  (IPSTART, IPEND, COUNTRY, ISSPIDER)
+values
+  (#ipstart#, #ipend#, #country#, #isspider#)
+        ]]>
+        <selectKey keyProperty="id" resultClass="long">
+            <![CDATA[select @@identity as id]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateIpaddressBean" parameterClass="com.fd.statistics.bean.IpaddressBean">
+        <![CDATA[
+update T_IPADDRESS 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="id" prepend="," removeFirstPrepend="true">
+                <![CDATA[ID = #id#]]>
+            </isNotNull>
+            <isNotNull property="ipstart" prepend="," removeFirstPrepend="true">
+                <![CDATA[IPSTART = #ipstart#]]>
+            </isNotNull>
+            <isNotNull property="ipend" prepend="," removeFirstPrepend="true">
+                <![CDATA[IPEND = #ipend#]]>
+            </isNotNull>
+            <isNotNull property="country" prepend="," removeFirstPrepend="true">
+                <![CDATA[COUNTRY = #country#]]>
+            </isNotNull>
+            <isNotNull property="isspider" prepend="," removeFirstPrepend="true">
+                <![CDATA[ISSPIDER = #isspider#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ID = #id#
+        ]]>
+    </update>
+
+    <sql id="getIpaddressBeanCondition">
+         <isNotNull property="id" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ID = #id#]]>
+         </isNotNull>
+         <isNotNull property="ipstart" prepend="and" removeFirstPrepend="true">
+             <![CDATA[#ipstart# >= IPSTART  && #ipstart# <= IPEND ]]>
+         </isNotNull>
+         <isNotNull property="ipend" prepend="and" removeFirstPrepend="true">
+             <![CDATA[IPEND = #ipend#]]>
+         </isNotNull>
+         <isNotNull property="country" prepend="and" removeFirstPrepend="true">
+             <![CDATA[COUNTRY = #country#]]>
+         </isNotNull>
+         <isNotNull property="isspider" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ISSPIDER = #isspider#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getIpaddressBeanCount" parameterClass="com.fd.statistics.bean.IpaddressBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_IPADDRESS 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getIpaddressBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getIpaddressBean" parameterClass="com.fd.statistics.bean.IpaddressBean"
+        resultClass="com.fd.statistics.bean.IpaddressBean">
+        <![CDATA[
+select 
+	ID	as id,
+	IPSTART	as ipstart,
+	IPEND	as ipend,
+	COUNTRY	as country,
+	ISSPIDER	as isspider
+from T_IPADDRESS 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getIpaddressBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteIpaddressBean" parameterClass="com.fd.statistics.bean.IpaddressBean">
+        <![CDATA[
+delete from T_IPADDRESS where ID=#id#
+        ]]>
+    </delete>
+
+</sqlMap>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertRolePrivsBean" parameterClass="com.fd.fashion.seller.bean.RolePrivsBean">
+        <![CDATA[
+insert into T_SYS_ROLE_PRIVS
+  (ROLE_ID, MODULES_ID)
+values
+  (#roleId#, #modulesId#)
+        ]]>
+    </insert>
+
+    <update id="updateRolePrivsBean" parameterClass="com.fd.fashion.seller.bean.RolePrivsBean">
+        <![CDATA[
+update T_SYS_ROLE_PRIVS 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="roleId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ROLE_ID = #roleId#]]>
+            </isNotNull>
+            <isNotNull property="modulesId" prepend="," removeFirstPrepend="true">
+                <![CDATA[MODULES_ID = #modulesId#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ROLE_ID = #roleId#
+        ]]>
+    </update>
+
+    <sql id="getRolePrivsBeanCondition">
+         <isNotNull property="roleId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ROLE_ID = #roleId#]]>
+         </isNotNull>
+         <isNotNull property="modulesId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MODULES_ID = #modulesId#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getRolePrivsBeanCount" parameterClass="com.fd.fashion.seller.bean.RolePrivsBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_SYS_ROLE_PRIVS 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getRolePrivsBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getRolePrivsBean" parameterClass="com.fd.fashion.seller.bean.RolePrivsBean"
+        resultClass="com.fd.fashion.seller.bean.RolePrivsBean">
+        <![CDATA[
+select 
+	ROLE_ID	as roleId,
+	MODULES_ID	as modulesId
+from T_SYS_ROLE_PRIVS 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getRolePrivsBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteRolePrivsBean" parameterClass="com.fd.fashion.seller.bean.RolePrivsBean">
+        <![CDATA[
+delete from T_SYS_ROLE_PRIVS where ROLE_ID=#roleId#
+        ]]>
+    </delete>
+
+</sqlMap>

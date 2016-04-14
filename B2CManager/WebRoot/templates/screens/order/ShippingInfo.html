@@ -1,0 +1,102 @@
+##发货信息
+<div style="width: 990px; margin-left: -495px; display: block;" aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal hide fade" id="start_send">
+      <div class="modal-header">
+      <input  type="button" class="close" data-dismiss="modal" aria-hidden="true" value="×" onclick="searchWaitSendOrder();">
+      <h5 id="myModalLabel">开始发货</h5>
+      </div>
+      <div class="modal-body">
+        
+       <table cellspacing="0" cellpadding="0" border="0" class="mar_left_20">
+          <tbody>
+          <tr>
+            <td class="v_top right_t"><label class="mar_right_10 mar_top_5">输入运输方式：</label></td>
+            <td><input type="text" class="input-large" placeholder="输入运输方式" id="shippingType" name="shippingType"></td>
+          </tr>
+          <tr>
+            <td class="v_top right_t"><label class="mar_right_10 mar_top_5">输入物流跟踪号：</label></td>
+            <td>
+                <input type="text" class="input-large" placeholder="输入货运单号" id="trackingNo" name="trackingNo">
+            </td>
+          </tr>
+          <tr>
+            <td class="v_top right_t"><label class="mar_right_10 mar_top_5">填写备注：</label></td>
+          	<td><textarea rows="3" class="input-xxlarge mar_top_10" placeholder="填写备注" style="resize: none;" id="remark" name="remark"></textarea></td>
+          </tr>
+          <tr>
+          	<td></td>
+            <td><input type="button" class="btn btn-primary" onclick="doshipment();" value="确定"/></td>
+          </tr>
+        </tbody></table>
+        <input type="hidden" id="shipOrderId" name="orderId" value="$orderId"/>
+        <br class="clear">
+        <div class="panel">
+            <div style="height:36px;" class="title">
+                <h5 class="mar_left_15 lineh_36">物流跟踪号</h5>
+            </div>
+            <div style="padding-bottom:0px;" class="content">
+                <table cellspacing="0" cellpadding="0" border="0" style="margin-bottom:0px;" class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>物流跟踪号</th>
+                            <th>物流跟踪号</th>
+                            <th>添加时间</th>
+                            <th width="340px">备注</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderShippings">
+                  #foreach($shipping in $orderShippings)
+                  <tr>
+                  	<td id="type">$DictUtil.getShippingCompany($shipping.shippingType)</td>
+                  	<td id="tracking">$shipping.trackingNo</td>
+                    <td id="date">$StringUtil.getDateTimeString($shipping.shippingDate)</td>
+                    <td id="remark">$!shipping.remark</td>
+                  </tr>
+                  #end
+                 
+                  </tbody>
+                </table>
+            </div><!-- E panel content -->
+        </div><!-- E panel -->
+        <br class="clear">
+      </div>
+
+      <div class="modal-footer">
+      <input type="button" class="btn btn-info" data-dismiss="modal" aria-hidden="true" value="关闭" onclick="searchWaitSendOrder();">
+      <!--<button data-dismiss="modal" class="btn btn-primary">确定更改</button>-->
+      </div>
+  </div>
+<script>
+jQuery('#start_send').modal({
+	show:true
+})
+
+function doshipment(){
+	var orderId = jQuery("#start_send").find("#shipOrderId").val();
+	var shippingType = jQuery("#start_send").find("#shippingType").val();
+	var trackingNo = jQuery("#trackingNo").val();
+	var remark = jQuery("#remark").val();
+	var url = "$link.setAction('shipping.ShipmentAction')";
+	jQuery.getJSON(url, {orderId:orderId,shippingType:shippingType,trackingNo:trackingNo,remark:remark}, function(data) {
+		if (data.status != "0") {
+			if (jQuery("*").find("#shippingDate_$orderId").length>0) {
+				jQuery("*").find("#shippingDate_$orderId").html(data.shippingDate);
+			}
+			if (jQuery("*").find("#shippingType_$orderId").length>0) {
+				jQuery("*").find("#shippingType_$orderId").html(data.shippingType);
+			}
+			var tr = jQuery("<tr></tr>");
+			tr.append('<td id="type">'+shippingType+'</td>');
+			tr.append('<td id="tracking">'+trackingNo+'</td>');
+			tr.append('<td id="date">'+data.shippingDate+'</td>');
+			tr.append('<td id="remark">'+remark+'</td>');
+			jQuery("tbody#orderShippings").prepend(tr);
+			jQuery("#start_send").find("#shippingType").val("");
+			jQuery("#trackingNo").val("");
+			jQuery("#remark").val("");
+		}else{
+			alert("填写发货信息失败!");
+		}
+	});
+}
+
+</script>

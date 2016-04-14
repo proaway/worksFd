@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+	<insert id="insertPurchasingTaskAttBean" parameterClass="com.fd.fashion.stock.bean.PurchasingTaskAttBean">
+        <![CDATA[
+insert into t_purchasing_task_attachment
+  (TASK_ID,URL)values   (#taskId#,#url#)
+        ]]>
+		<selectKey keyProperty="productId" resultClass="long">
+            <![CDATA[select @@identity as productId]]>
+		</selectKey>
+	</insert>
+
+	<update id="updatePurchasingTaskAttBean" parameterClass="com.fd.fashion.stock.bean.PurchasingTaskAttBean">
+        <![CDATA[
+update t_purchasing_task_attachment 
+        ]]>
+		<dynamic prepend="set">
+			<isNotNull property="taskId" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[TASK_ID = #taskId#]]>
+			</isNotNull>
+			<isNotNull property="url" prepend="," removeFirstPrepend="true">
+                <![CDATA[URL = #url#]]>
+			</isNotNull>
+		</dynamic>
+        <![CDATA[
+where TASK_ID = #taskId#
+		and URL = #url#
+        ]]>
+	</update>
+
+	<sql id="getPurchasingTaskAttBeanCondition">
+		<isNotNull property="taskId" prepend="and"
+			removeFirstPrepend="true">
+                <![CDATA[TASK_ID = #taskId#]]>
+		</isNotNull>
+		<isNotNull property="url" prepend="and" removeFirstPrepend="true">
+                <![CDATA[URL = #url#]]>
+		</isNotNull>
+	</sql>
+
+	<select id="getPurchasingTaskAttBeanCount" parameterClass="com.fd.fashion.stock.bean.PurchasingTaskAttBean"
+		resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from t_purchasing_task_attachment 
+        ]]>
+		<dynamic prepend="where">
+			<include refid="getPurchasingTaskAttBeanCondition" />
+		</dynamic>
+	</select>
+
+	<select id="getPurchasingTaskAttBean" parameterClass="com.fd.fashion.stock.bean.PurchasingTaskAttBean"
+		resultClass="com.fd.fashion.stock.bean.PurchasingTaskAttBean">
+        <![CDATA[
+select 
+	TASK_ID as taskId,
+	URL as url
+from t_purchasing_task_attachment 
+        ]]>
+		<dynamic prepend="where">
+			<include refid="getPurchasingTaskAttBeanCondition" />
+		</dynamic>
+	</select>
+
+	<delete id="deletePurchasingTaskAttBean" parameterClass="com.fd.fashion.stock.bean.PurchasingTaskAttBean">
+        <![CDATA[
+delete from t_purchasing_task_attachment where TASK_ID = #taskId# and URL = #url#
+        ]]>
+	</delete>
+
+</sqlMap>

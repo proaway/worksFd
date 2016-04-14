@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertRolesBean" parameterClass="com.fd.fashion.seller.bean.RolesBean">
+        <![CDATA[
+insert into T_SYS_ROLES
+  (ROLE_NAME, ROLE_DESC, STATUS, CREATE_BY, CREATE_TIME, LAST_UPDATE_BY, LAST_UPDATE_TIME)
+values
+  (#roleName#, #roleDesc#, #status#, #createBy#, #createTime#, #lastUpdateBy#, #lastUpdateTime#)
+        ]]>
+        <selectKey keyProperty="roleId" resultClass="long">
+            <![CDATA[select @@identity as roleId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateRolesBean" parameterClass="com.fd.fashion.seller.bean.RolesBean">
+        <![CDATA[
+update T_SYS_ROLES 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="roleName" prepend="," removeFirstPrepend="true">
+                <![CDATA[ROLE_NAME = #roleName#]]>
+            </isNotNull>
+            <isNotNull property="roleDesc" prepend="," removeFirstPrepend="true">
+                <![CDATA[ROLE_DESC = #roleDesc#]]>
+            </isNotNull>
+            <isNotNull property="status" prepend="," removeFirstPrepend="true">
+                <![CDATA[STATUS = #status#]]>
+            </isNotNull>
+            <isNotNull property="createBy" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_BY = #createBy#]]>
+            </isNotNull>
+            <isNotNull property="createTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_TIME = #createTime#]]>
+            </isNotNull>
+            <isNotNull property="lastUpdateBy" prepend="," removeFirstPrepend="true">
+                <![CDATA[LAST_UPDATE_BY = #lastUpdateBy#]]>
+            </isNotNull>
+            <isNotNull property="lastUpdateTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[LAST_UPDATE_TIME = #lastUpdateTime#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ROLE_ID = #roleId#
+        ]]>
+    </update>
+
+    <sql id="getRolesBeanCondition">
+         <isNotNull property="roleId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ROLE_ID = #roleId#]]>
+         </isNotNull>
+         <isNotNull property="roleName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ROLE_NAME = #roleName#]]>
+         </isNotNull>
+         <isNotNull property="roleDesc" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ROLE_DESC = #roleDesc#]]>
+         </isNotNull>
+         <isNotNull property="status" prepend="and" removeFirstPrepend="true">
+             <![CDATA[STATUS = #status#]]>
+         </isNotNull>
+         <isNotNull property="createBy" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATE_BY = #createBy#]]>
+         </isNotNull>
+         <isNotNull property="createTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATE_TIME = #createTime#]]>
+         </isNotNull>
+         <isNotNull property="lastUpdateBy" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LAST_UPDATE_BY = #lastUpdateBy#]]>
+         </isNotNull>
+         <isNotNull property="lastUpdateTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LAST_UPDATE_TIME = #lastUpdateTime#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getRolesBeanCount" parameterClass="com.fd.fashion.seller.bean.RolesBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_SYS_ROLES 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getRolesBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getRolesBean" parameterClass="com.fd.fashion.seller.bean.RolesBean"
+        resultClass="com.fd.fashion.seller.bean.RolesBean">
+        <![CDATA[
+select 
+	ROLE_ID	as roleId,
+	ROLE_NAME	as roleName,
+	ROLE_DESC	as roleDesc,
+	STATUS	as status,
+	CREATE_BY	as createBy,
+	CREATE_TIME	as createTime,
+	LAST_UPDATE_BY	as lastUpdateBy,
+	LAST_UPDATE_TIME	as lastUpdateTime
+from T_SYS_ROLES 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getRolesBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteRolesBean" parameterClass="com.fd.fashion.seller.bean.RolesBean">
+        <![CDATA[
+delete from T_SYS_ROLES where ROLE_ID=#roleId#
+        ]]>
+    </delete>
+
+</sqlMap>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertVisitOpenBean" parameterClass="com.fd.statistics.bean.VisitOpenBean">
+        <![CDATA[
+insert into T_VISIT_OPEN
+  (VISIT_ID, OPEN_TIME, OPEN_FROM, OPEN_URL, QUERY_STR, REFERER, URL_MD5)
+values
+  (#visitId#, #openTime#, #openFrom#, #openUrl#, #queryStr#, #referer#, #urlMd5#)
+        ]]>
+        <selectKey keyProperty="openId" resultClass="long">
+            <![CDATA[select @@identity as openId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateVisitOpenBean" parameterClass="com.fd.statistics.bean.VisitOpenBean">
+        <![CDATA[
+update T_VISIT_OPEN 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="openId" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPEN_ID = #openId#]]>
+            </isNotNull>
+            <isNotNull property="visitId" prepend="," removeFirstPrepend="true">
+                <![CDATA[VISIT_ID = #visitId#]]>
+            </isNotNull>
+            <isNotNull property="openTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPEN_TIME = #openTime#]]>
+            </isNotNull>
+            <isNotNull property="openFrom" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPEN_FROM = #openFrom#]]>
+            </isNotNull>
+            <isNotNull property="openUrl" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPEN_URL = #openUrl#]]>
+            </isNotNull>
+            <isNotNull property="queryStr" prepend="," removeFirstPrepend="true">
+                <![CDATA[QUERY_STR = #queryStr#]]>
+            </isNotNull>
+            <isNotNull property="referer" prepend="," removeFirstPrepend="true">
+                <![CDATA[REFERER = #referer#]]>
+            </isNotNull>
+            <isNotNull property="urlMd5" prepend="," removeFirstPrepend="true">
+                <![CDATA[URL_MD5 = #urlMd5#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where OPEN_ID = #openId#
+        ]]>
+    </update>
+
+    <sql id="getVisitOpenBeanCondition">
+         <isNotNull property="openId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[OPEN_ID = #openId#]]>
+         </isNotNull>
+         <isNotNull property="visitId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VISIT_ID = #visitId#]]>
+         </isNotNull>
+         <isNotNull property="openTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[OPEN_TIME = #openTime#]]>
+         </isNotNull>
+         <isNotNull property="openFrom" prepend="and" removeFirstPrepend="true">
+             <![CDATA[OPEN_FROM = #openFrom#]]>
+         </isNotNull>
+         <isNotNull property="openUrl" prepend="and" removeFirstPrepend="true">
+             <![CDATA[OPEN_URL = #openUrl#]]>
+         </isNotNull>
+         <isNotNull property="queryStr" prepend="and" removeFirstPrepend="true">
+             <![CDATA[QUERY_STR = #queryStr#]]>
+         </isNotNull>
+         <isNotNull property="referer" prepend="and" removeFirstPrepend="true">
+             <![CDATA[REFERER = #referer#]]>
+         </isNotNull>
+         <isNotNull property="urlMd5" prepend="and" removeFirstPrepend="true">
+             <![CDATA[URL_MD5 = #urlMd5#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getVisitOpenBeanCount" parameterClass="com.fd.statistics.bean.VisitOpenBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_VISIT_OPEN 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitOpenBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getVisitOpenBean" parameterClass="com.fd.statistics.bean.VisitOpenBean"
+        resultClass="com.fd.statistics.bean.VisitOpenBean">
+        <![CDATA[
+select 
+	OPEN_ID	as openId,
+	VISIT_ID	as visitId,
+	OPEN_TIME	as openTime,
+	OPEN_FROM	as openFrom,
+	OPEN_URL	as openUrl,
+	QUERY_STR	as queryStr,
+	REFERER	as referer,
+	URL_MD5	as urlMd5
+from T_VISIT_OPEN 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitOpenBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteVisitOpenBean" parameterClass="com.fd.statistics.bean.VisitOpenBean">
+        <![CDATA[
+delete from T_VISIT_OPEN where OPEN_ID=#openId#
+        ]]>
+    </delete>
+
+</sqlMap>

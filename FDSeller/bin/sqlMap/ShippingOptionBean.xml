@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertShippingOptionBean" parameterClass="com.fd.fashion.seller.bean.ShippingOptionBean">
+        <![CDATA[
+insert into T_SHIPPING_OPTION
+  (DETAIL_ID, WEIGHT_PRICE, RE_WEIGHT_PRICE, TRANSPORT_DAYS, SHIPPING_COUNTRY, SHIPPING_TYPE, DISCOUNT_RATE)
+values
+  (#detailId#, #weightPrice#, #reWeightPrice#, #transportDays#, #shippingCountry#, #shippingType#, #discountRate#)
+        ]]>
+        <selectKey keyProperty="optionId" resultClass="long">
+            <![CDATA[select @@identity as optionId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateShippingOptionBean" parameterClass="com.fd.fashion.seller.bean.ShippingOptionBean">
+        <![CDATA[
+update T_SHIPPING_OPTION 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="optionId" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPTION_ID = #optionId#]]>
+            </isNotNull>
+            <isNotNull property="detailId" prepend="," removeFirstPrepend="true">
+                <![CDATA[DETAIL_ID = #detailId#]]>
+            </isNotNull>
+            <isNotNull property="weightPrice" prepend="," removeFirstPrepend="true">
+                <![CDATA[WEIGHT_PRICE = #weightPrice#]]>
+            </isNotNull>
+            <isNotNull property="reWeightPrice" prepend="," removeFirstPrepend="true">
+                <![CDATA[RE_WEIGHT_PRICE = #reWeightPrice#]]>
+            </isNotNull>
+            <isNotNull property="transportDays" prepend="," removeFirstPrepend="true">
+                <![CDATA[TRANSPORT_DAYS = #transportDays#]]>
+            </isNotNull>
+            <isNotNull property="shippingCountry" prepend="," removeFirstPrepend="true">
+                <![CDATA[SHIPPING_COUNTRY = #shippingCountry#]]>
+            </isNotNull>
+            <isNotNull property="shippingType" prepend="," removeFirstPrepend="true">
+                <![CDATA[SHIPPING_TYPE = #shippingType#]]>
+            </isNotNull>
+            <isNotNull property="discountRate" prepend="," removeFirstPrepend="true">
+                <![CDATA[DISCOUNT_RATE = #discountRate#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where OPTION_ID = #optionId#
+        ]]>
+    </update>
+
+    <sql id="getShippingOptionBeanCondition">
+            <isNotNull property="optionId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[OPTION_ID = #optionId#]]>
+            </isNotNull>
+            <isNotNull property="detailId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[DETAIL_ID = #detailId#]]>
+            </isNotNull>
+            <isNotNull property="weightPrice" prepend="and" removeFirstPrepend="true">
+                <![CDATA[WEIGHT_PRICE = #weightPrice#]]>
+            </isNotNull>
+            <isNotNull property="reWeightPrice" prepend="and" removeFirstPrepend="true">
+                <![CDATA[RE_WEIGHT_PRICE = #reWeightPrice#]]>
+            </isNotNull>
+            <isNotNull property="transportDays" prepend="and" removeFirstPrepend="true">
+                <![CDATA[TRANSPORT_DAYS = #transportDays#]]>
+            </isNotNull>
+            <isNotNull property="shippingCountry" prepend="and" removeFirstPrepend="true">
+                <![CDATA[SHIPPING_COUNTRY = #shippingCountry#]]>
+            </isNotNull>
+            <isNotNull property="shippingType" prepend="and" removeFirstPrepend="true">
+                <![CDATA[SHIPPING_TYPE = #shippingType#]]>
+            </isNotNull>
+            <isNotNull property="discountRate" prepend="and" removeFirstPrepend="true">
+                <![CDATA[DISCOUNT_RATE = #discountRate#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getShippingOptionBeanCount" parameterClass="com.fd.fashion.seller.bean.ShippingOptionBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_SHIPPING_OPTION 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getShippingOptionBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getShippingOptionBean" parameterClass="com.fd.fashion.seller.bean.ShippingOptionBean"
+        resultClass="com.fd.fashion.seller.bean.ShippingOptionBean">
+        <![CDATA[
+select 
+	OPTION_ID	as optionId,
+	DETAIL_ID	as detailId,
+	WEIGHT_PRICE	as weightPrice,
+	RE_WEIGHT_PRICE	as reWeightPrice,
+	TRANSPORT_DAYS	as transportDays,
+	SHIPPING_COUNTRY	as shippingCountry,
+	SHIPPING_TYPE	as shippingType,
+	DISCOUNT_RATE	as discountRate
+from T_SHIPPING_OPTION 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getShippingOptionBeanCondition"/>        </dynamic>
+    </select>
+
+    <delete id="deleteShippingOptionBean" parameterClass="com.fd.fashion.seller.bean.ShippingOptionBean">
+        <![CDATA[
+delete from T_SHIPPING_OPTION where DETAIL_ID=#detailId#
+        ]]>
+    </delete>
+</sqlMap>

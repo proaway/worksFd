@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertVisitAdwordBean" parameterClass="com.fd.statistics.bean.VisitAdwordBean">
+        <![CDATA[
+insert into T_VISIT_ADWORD
+  (VISIT_ID, UTM_SOURCE, UTM_MEDIUM, UTM_TERM, UTM_CONTENT, UTM_CAMPAIGN, LANDING_PAGE, REFERER, SRCKEY, CLICK_TIME)
+values
+  (#visitId#, #utmSource#, #utmMedium#, #utmTerm#, #utmContent#, #utmCampaign#, #landingPage#, #referer#, #srckey#, #clickTime#)
+        ]]>
+        <selectKey keyProperty="clickId" resultClass="long">
+            <![CDATA[select @@identity as clickId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateVisitAdwordBean" parameterClass="com.fd.statistics.bean.VisitAdwordBean">
+        <![CDATA[
+update T_VISIT_ADWORD 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="clickId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CLICK_ID = #clickId#]]>
+            </isNotNull>
+            <isNotNull property="visitId" prepend="," removeFirstPrepend="true">
+                <![CDATA[VISIT_ID = #visitId#]]>
+            </isNotNull>
+            <isNotNull property="utmSource" prepend="," removeFirstPrepend="true">
+                <![CDATA[UTM_SOURCE = #utmSource#]]>
+            </isNotNull>
+            <isNotNull property="utmMedium" prepend="," removeFirstPrepend="true">
+                <![CDATA[UTM_MEDIUM = #utmMedium#]]>
+            </isNotNull>
+            <isNotNull property="utmTerm" prepend="," removeFirstPrepend="true">
+                <![CDATA[UTM_TERM = #utmTerm#]]>
+            </isNotNull>
+            <isNotNull property="utmContent" prepend="," removeFirstPrepend="true">
+                <![CDATA[UTM_CONTENT = #utmContent#]]>
+            </isNotNull>
+            <isNotNull property="utmCampaign" prepend="," removeFirstPrepend="true">
+                <![CDATA[UTM_CAMPAIGN = #utmCampaign#]]>
+            </isNotNull>
+            <isNotNull property="landingPage" prepend="," removeFirstPrepend="true">
+                <![CDATA[LANDING_PAGE = #landingPage#]]>
+            </isNotNull>
+            <isNotNull property="referer" prepend="," removeFirstPrepend="true">
+                <![CDATA[REFERER = #referer#]]>
+            </isNotNull>
+            <isNotNull property="srckey" prepend="," removeFirstPrepend="true">
+                <![CDATA[SRCKEY = #srckey#]]>
+            </isNotNull>
+            <isNotNull property="clickTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[CLICK_TIME = #clickTime#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where CLICK_ID = #clickId#
+        ]]>
+    </update>
+
+    <sql id="getVisitAdwordBeanCondition">
+         <isNotNull property="clickId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CLICK_ID = #clickId#]]>
+         </isNotNull>
+         <isNotNull property="visitId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VISIT_ID = #visitId#]]>
+         </isNotNull>
+         <isNotNull property="utmSource" prepend="and" removeFirstPrepend="true">
+             <![CDATA[UTM_SOURCE = #utmSource#]]>
+         </isNotNull>
+         <isNotNull property="utmMedium" prepend="and" removeFirstPrepend="true">
+             <![CDATA[UTM_MEDIUM = #utmMedium#]]>
+         </isNotNull>
+         <isNotNull property="utmTerm" prepend="and" removeFirstPrepend="true">
+             <![CDATA[UTM_TERM = #utmTerm#]]>
+         </isNotNull>
+         <isNotNull property="utmContent" prepend="and" removeFirstPrepend="true">
+             <![CDATA[UTM_CONTENT = #utmContent#]]>
+         </isNotNull>
+         <isNotNull property="utmCampaign" prepend="and" removeFirstPrepend="true">
+             <![CDATA[UTM_CAMPAIGN = #utmCampaign#]]>
+         </isNotNull>
+         <isNotNull property="landingPage" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LANDING_PAGE = #landingPage#]]>
+         </isNotNull>
+         <isNotNull property="referer" prepend="and" removeFirstPrepend="true">
+             <![CDATA[REFERER = #referer#]]>
+         </isNotNull>
+         <isNotNull property="srckey" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SRCKEY = #srckey#]]>
+         </isNotNull>
+         <isNotNull property="clickTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CLICK_TIME = #clickTime#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getVisitAdwordBeanCount" parameterClass="com.fd.statistics.bean.VisitAdwordBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_VISIT_ADWORD 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitAdwordBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getVisitAdwordBean" parameterClass="com.fd.statistics.bean.VisitAdwordBean"
+        resultClass="com.fd.statistics.bean.VisitAdwordBean">
+        <![CDATA[
+select 
+	CLICK_ID	as clickId,
+	VISIT_ID	as visitId,
+	UTM_SOURCE	as utmSource,
+	UTM_MEDIUM	as utmMedium,
+	UTM_TERM	as utmTerm,
+	UTM_CONTENT	as utmContent,
+	UTM_CAMPAIGN	as utmCampaign,
+	LANDING_PAGE	as landingPage,
+	REFERER	as referer,
+	SRCKEY	as srckey,
+	CLICK_TIME	as clickTime
+from T_VISIT_ADWORD 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitAdwordBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteVisitAdwordBean" parameterClass="com.fd.statistics.bean.VisitAdwordBean">
+        <![CDATA[
+delete from T_VISIT_ADWORD where CLICK_ID=#clickId#
+        ]]>
+    </delete>
+
+</sqlMap>

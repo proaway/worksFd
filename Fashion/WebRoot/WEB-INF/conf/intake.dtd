@@ -1,0 +1,45 @@
+<!-- 
+    Intake XML input constraints DTD 
+    $Id: intake.dtd,v 1.1 2013/03/13 04:17:00 longli Exp $
+-->
+
+<!ELEMENT input-data (group+)>
+<!ATTLIST input-data
+  basePackage CDATA #IMPLIED
+  groupPrefix CDATA #IMPLIED
+>
+
+<!ELEMENT group (field+)>
+<!ATTLIST group
+  key CDATA #REQUIRED
+  name CDATA #REQUIRED
+  mapToObject CDATA #IMPLIED
+  pool-capacity CDATA #IMPLIED
+>
+
+<!ELEMENT field (rule*,required-message?)>
+<!ATTLIST field
+  key CDATA #REQUIRED
+  name CDATA #REQUIRED
+  displayName CDATA #IMPLIED
+  displaySize CDATA #IMPLIED
+  type ( boolean | BigDecimal | int  | float | FileItem
+       | String | DateString  | StringKey | NumberKey
+       | ComboKey | double | short | long ) "String"
+  multiValued ( true | false ) "false"
+  mapToObject CDATA #IMPLIED
+  mapToProperty CDATA #IMPLIED
+  validator CDATA #IMPLIED
+  defaultValue CDATA #IMPLIED
+  emptyValue CDATA #IMPLIED
+>
+
+                  
+<!ELEMENT rule (#PCDATA)>
+<!ATTLIST rule 
+  name CDATA #REQUIRED
+  value CDATA #REQUIRED
+>
+
+<!ELEMENT required-message (#PCDATA)>
+

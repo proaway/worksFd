@@ -1,0 +1,269 @@
+$page.setTitle("类目管理")
+  	<br class="clear" />
+  	<h4 class="mar_top_15">产品类目管理</h4>
+    <br class="clear" />
+    <button class="btn left mar_right_15">类目总数：<b class="red">$!catCount</b></button>
+    <button class="btn left mar_right_15">产品总数：<b class="red">$!productCount</b></button>
+    <br class="clear" />
+    <table border="0" cellspacing="0" cellpadding="0" class="table mar_top_15" style="margin-bottom:0px;">
+      <tr class="info">
+		<td align="left"><form method="get">
+		<input type="text" placeholder="输入您要查找的目录" class="span4 mar_top_10" name="condition" id="condition"/>
+        <button class="btn font_w_b" type="button" onclick="searchCategory();">查找目录</button></form>
+		</td>
+        <td><button class="btn btn-primary right mar_right_10 mar_top_5" type="button" onclick="showNewCategory()">添加类目</button><a href="javascript:importSysCategories();" class="right mar_right_20 mar_top_10">导入系统标准类目</a></td>
+      </tr>
+    </table>
+    <table border="0" cellspacing="0" cellpadding="0" class="table table-hover mar_bottom_5 border_none">
+      <tr class="warning">
+        <td width="330px"><label class="checkbox left mar_top_5"><input type="checkbox" id="select_all" value="category_name"></label><label class="mar_top_5">分类名称</label></td>
+        <td><label class="mar_top_5">分类ID</label></td>
+        <td><label class="mar_top_5">包含产品数</label></td>
+        <td><label class="mar_top_5">添加日期</label></td>
+        <td><label class="mar_top_5">添加人</label></td>
+        <td><label class="mar_top_5">等级</label></td>
+        <td><label class="mar_top_5">操作</label></td>
+      </tr>
+#foreach($cat in $cats)
+      <tr id="$cat.catId" cat>
+        <td><span class="left icon-plus mar_right_5 mar_top_3 width_14px" onclick="changeExpan(this)"></span>
+			<label class="checkbox bold left"><input type="checkbox" id="" value="c_name"><span catName title="$cat.catNameCn">$cat.catName</span></label>
+		</td>
+        <td class="pmp_info"><label catId>$cat.catId</label></td>
+        <td class="pmp_info"><label prodCount>$!cat.productCount</label></td>
+        <td><label cTime>$!StringUtil.getDateTimeString($cat.createTime)</label></td>
+        <td><label c>$!cat.creator</label></td>
+        <td><label>一级分类</label></td>
+        <td><a class="mar_right_15" href="javascript:modifyCat('$cat.catId');">修改</a><a class="mar_right_15" href="javascript:;">子类</a><a href="javascript:deleteCat('$cat.catId');">删除</a></td>
+      </tr>
+#end
+    </table>
+    <div class="border_top mar_top_15"><button class="btn btn-primary right mar_right_10 mar_top_15" onclick="showNewCategory()">添加类目</button></div>
+    <div id="add_category" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h5 id="myModalLabel">添加类目</h5>
+        </div>
+        <div class="modal-body">
+            <form id="catForm" action="$link.setAction('category.AjaxAddCategory')"><input type="hidden" name="act" value="0"/>
+            <table border="0" cellspacing="0" cellpadding="0" class="property_tab">
+              <tr id="chooseCat">
+                <td>上级分类：</td>
+                <td><script language="javascript" src="/static/prototype/shopmic-manage/js/customcatselector.js"></script> 
+				<input type="hidden" name="customCatId" id="customCatId" value="$!searchVo.catId" verify="id"/>
+				<input type="hidden" name="catId"/>
+			<script>var CustomCatSelector = new CustomCategorySelector(3, "customCatId");</script>
+			<select class="left mar_right_10 width_110px" id="customCatId1" onblur='getNewSubCatId()'>
+					<option value="000">一级分类</option>
+			</select> 
+			<select class="left mar_right_10 width_110px" id="customCatId2" onblur='getNewSubCatId()'>
+					<option value="000000">二级分类</option>
+			</select> 
+			<select class="left mar_right_10 width_110px" id="customCatId3" onblur='getNewSubCatId()'>
+					<option value="000000000">三级分类</option>
+			</select> 
+				</td>
+              </tr>
+              <tr>
+                <td>分类ID：</td>
+                <td id="newCatId"></td>
+              </tr>
+              <tr>
+                <td>类目名称英文：</td>
+                <td><input placeholder="类目名称英文" class="input-xlarge mar_top_10" type="text" name="catName"></td>
+              </tr>
+              <tr>
+                <td>类目名称中文：</td>
+                <td><input placeholder="类目名称中文" class="input-xlarge mar_top_10" type="text" name="catNameCn"></td>
+              </tr>
+            </table>
+            </form>
+        </div>
+        <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+        <button class="btn btn-primary" onclick="addCategory()">保存</button>
+        </div>
+    </div><!-- E add_category -->  
+<script>
+function deleteCat(catId) {
+	jQuery.getJSON("$link.setAction('category.AjaxDelCategory')?catId=" + catId, 
+		function(data){
+			if(data.status==1) {
+				CustomCatSelector.deleteCat(catId);
+				jQuery("tr[id='"+catId+"']").remove();
+				alert("删除成功");
+			} else if(data.status==0) {
+				alert("删除失败");
+			}
+		});
+}
+function modifyCat(catId) {
+	var tr = jQuery("tr[id='"+catId+"']");
+	jQuery("#chooseCat").hide();
+	jQuery("#newCatId").html(catId);
+	jQuery("[name='catId']").val(catId);
+	jQuery("input[name='act']").val(1);
+	jQuery("[name='catName']").val(tr.find(":checkbox").parent().text());
+	jQuery("[name='catNameCn']").val(tr.find(":checkbox").next().attr("title"));
+	jQuery("#add_category").modal("show");
+}
+function showNewCategory() {
+	jQuery("input[name='act']").val(0);
+	jQuery("#chooseCat").show();
+	jQuery("[name='catName']").val("");
+	jQuery("[name='catNameCn']").val("");
+	jQuery("#add_category").modal("show");
+	getNewSubCatId();
+}
+function getNewSubCatId() {
+	var catId=""
+	for(var i=3; i>=1; i--){
+		var cid = jQuery("#customCatId"+i).val();
+		if (parseFloat(cid) > 0) {
+			catId = cid
+			break;
+		}
+	}
+	getNewCatId(catId);
+}
+function addCategory(){
+	jQuery.getJSON("$link.setAction('category.AjaxAddCategory')",
+		form2JSON("catForm"),
+		function(data){
+			if (data.status==1) {
+				CustomCatSelector.appendCat(data.cat);
+				updateList(data.cat);
+				alert("保存成功");
+				jQuery("#add_category").modal("hide")
+			} else {
+				alert("保存失败");
+			}
+		});
+}
+function updateList(cat) {
+	var act = jQuery("input[name='act']").val();
+	if (act=='0') { // new
+		var tr = jQuery("tr[id^='"+cat.parentId+"']").last();
+		if (tr.length == 0) {
+			tr = jQuery("tr[cat]").last();
+			var appendTr = tr.clone();
+			appendTr.attr("id", cat.catId);
+			appendTr.find("span[catName]").attr("title", cat.catNameCn);
+			appendTr.find("span[catName]").html(cat.catName);
+			appendTr.find("label[catId]").html(cat.catId);
+			appendTr.find("label[prodCount]").html(0);
+			appendTr.find("label[cTime]").html(formatJSONDate(cat.createTime.time));
+			appendTr.find("label[c]").html(cat.creator);
+			appendTr.find("a:contains('修改')").attr("href", "javascript:modifyCat('"+cat.catId+"');");
+			appendTr.find("a:contains('删除')").attr("href", "javascript:deleteCat('"+cat.catId+"');");
+			tr.after(appendTr);
+		} else {
+    		if (tr.attr("id").length == cat.catId.length) {
+    			var appendTr = createCategoryRow(cat);
+    			tr.after(appendTr);
+    		}
+		}
+	} else { // update
+		var tr = jQuery("tr[id='"+cat.catId+"']");
+		tr.find("span[title]").attr("title", decodeHtmlUnicode(cat.catNameCn));
+		tr.find("span[title]").html(cat.catName);
+	}
+}
+function getNewCatId(catId) {
+	jQuery.ajax({
+    	url:"$link.setAction('category.AjaxGetNewCatId')?catId=" + catId,
+    	type:"post",
+    	async:false,
+    	data:"",
+    	dataType:"text",
+    	success:function(data){
+			jQuery("td#newCatId").html(data);
+			jQuery("[name='catId']").val(data);
+		}
+	 });
+}
+
+var categoryMap={};
+function changeExpan(o) {
+	var span = jQuery(o);
+	var tr = span.parents("tr");
+	var catId = tr.attr("id");
+	var i = span.attr("class").indexOf("icon-minus");
+	if(i>-1) {
+		span.removeClass("icon-minus");
+		span.addClass("icon-plus");
+		jQuery("tr[parentId^='"+catId+"']").hide()
+	} else {
+		span.removeClass("icon-plus");
+		span.addClass("icon-minus");
+		if (categoryMap[catId] == null) {
+			jQuery.getJSON("/manager/action/category.AjaxGetCustomCats?catId="+catId, function(data) {
+				if (data.length==0){
+					tr.find("span").removeClass("icon-minus");
+				}
+        		for(var i=0; i<data.length; i++) {
+					var cat = data[i];
+					var appendTr = createCategoryRow(cat);
+					tr.after(appendTr);
+					tr = appendTr;
+				}
+				categoryMap[catId] = data;
+        	});
+		} else {
+			//jQuery("tr[parentId='"+catId+"']").show();
+			showbyParentId(catId)
+		}
+	}
+}
+function createCategoryRow(cat) {
+	var space = " mar_left_20";
+	var level = "二";
+	if (cat.catLevel == 3) {
+		space = " mar_left_40";
+		level = "三";
+	}
+	if (cat.catLevel == 4) {
+		space = " mar_left_60";
+		level = "四";
+	}
+	var flag = "icon-plus";
+	if (cat.isleaf == 1) {
+		flag = "";
+	}
+	
+	var dateStr = formatJSONDate(cat.createTime.time);
+	
+	var appendTr = jQuery("<tr id='"+cat.catId+"' parentId='"+cat.parentId+"'></tr>");
+	appendTr.append('<td><span class="left '+flag+' mar_right_5 mar_top_3 width_14px'+space+'" onclick="changeExpan(this)"></span><label class="checkbox left"><input type="checkbox" id="" value="c_name"><span title="'+cat.catNameCn+'">'+cat.catName+'</span></label></td>');
+	appendTr.append('<td class="pmp_info"><label>'+cat.catId+'</label></td>');
+	appendTr.append('<td class="pmp_info"><label>'+cat.productCount+'</label></td>');
+	appendTr.append('<td><label>'+dateStr+'</label></td>');
+	appendTr.append('<td><label>'+cat.creator+'</label></td>');
+	appendTr.append('<td><label>'+level+'级分类</label></td>');
+	appendTr.append('<td><a class="mar_right_15" href="javascript:modifyCat(\''+cat.catId+'\');">修改</a><a class="mar_right_15" href="javascript:;">子类</a><a href="javascript:deleteCat(\''+cat.catId+'\');">删除</a></td>');
+	return appendTr;
+}
+
+function showbyParentId(parentId) {
+	jQuery("tr[parentId='"+parentId+"']").show();
+	for(var i=0; i<jQuery("tr[parentId='"+parentId+"']").length; i++) {
+		var tr = jQuery("tr[parentId='"+parentId+"']")[i];
+		if(jQuery(tr).find("span").attr("class").indexOf("icon-minus")>0) {
+			showbyParentId(jQuery(tr).attr("id"));
+		}
+	}
+}
+function importSysCategories() {
+	if (!confirm("所有自定义类目将被清空，确定继续吗?")) {
+		return;
+	}
+	jQuery.getJSON("$link.setAction('category.AjaxImportSysCategories')", function(data){
+		if (data.status == 1) {
+			alert("导入成功");
+			window.location.reload();
+		} else {
+			alert("导入失败");
+		}
+	});
+}
+</script>

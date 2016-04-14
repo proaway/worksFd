@@ -1,0 +1,599 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>$page.title </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="<!--MICCMS:Meta-Description-->" />
+  <meta name="keywords" content="<!--MICCMS:Meta-Keywords-->" />
+  <meta name="author" content="" />
+  <link rel="shortcut icon" href="/static/web/images/logo-ico.ico" type="image/ico" />
+  <link rel="stylesheet" type="text/css" href="/static/prototype/shopmic-manage/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="/static/prototype/shopmic-manage/css/bootstrap-responsive.min.css" />
+  <link rel="stylesheet" type="text/css" href="/static/prototype/shopmic-manage/css/whole.css" />
+  <link rel="stylesheet" type="text/css" href="/static/prototype/shopmic-manage/css/shopmic_m.css" />
+  <link rel="stylesheet" type="text/css" href="/static/prototype/shopmic-manage/css/jquery-ui-1.10.0.custom.css" />
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/jquery-1.7.2.min.js"></script>
+  <script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/jquery-ui-1.10.0.custom.min.js"></script>
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/bootstrap.min.js"></script>
+		<script language="javascript" src="/static/prototype/shopmic-manage/js/catconfig.js"></script>
+##		<script language="javascript" src="$content.getURI('js/catconfig.js')"></script>
+##		<script language="javascript" src="$content.getURI('js/prodstandard.js')"></script>
+		<script language="javascript" src="/static/prototype/shopmic-manage/js/prodstandard.js"></script>
+		<script language="javascript" src="/static/prototype/shopmic-manage/js/catattr.js"></script>
+##		<script language="javascript" src="$content.getURI('js/catattr.js')"></script>
+        <script language="javascript" src="/static/prototype/shopmic-manage/js/jsonconvert.js"></script>
+  <script charset="utf-8" src="/static/plugins/kindeditor/kindeditor.js"></script>
+  <script charset="utf-8" src="/static/plugins/kindeditor/lang/zh_CN.js"></script>
+		<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/inc/tips/tips.css" />
+		<script language="javascript" src="/static/prototype/product_fashion/inc/tips/tips.js"></script>
+  <script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/verifyutil.js"></script>
+  <link rel="stylesheet" type="text/css" href="/static/prototype/shopmic-manage/css/showLoading.css"/>
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/jquery.showLoading.min.js"></script>
+<script>
+var callbacks = jQuery.Callbacks();
+var productConfig, productAttrs
+#if($productConfig)
+	productConfig = $productConfig;
+#end
+#if($productAttrs)
+	productAttrs = $productAttrs;
+#end
+</script>
+<SCRIPT>
+## 产品提交校验
+var ProductVerify = new VerifyUtil();
+var productNameParam = {id:"productName", isNotNull:true, maxLength:200, invalidReg:/[^\w\.\/ \-\'&,]/ig, errmsg:"产品名称错误，只能由数字、字母、下划线、空格、撇号组成，不超过200字符。"};
+var skuParam = {id:"sku", isNotNull:true, maxLength:200, invalidReg:/[^\w\-]/ig, errmsg:"SKU错误，由数字,字母,中横线,下划线组成，不超过50字符。"};
+ProductVerify.addParam(productNameParam);
+ProductVerify.addParam(skuParam);
+ProductVerify.addParam({id:"keyword", maxLength:200, errmsg:"关键词错误，长度不超过200字符。"});
+ProductVerify.addParam({id:"barcode", maxLength:50, isInt:true, errmsg:"条形码错误，只能输入数字，长度不超过50字符。"});
+ProductVerify.addParam({id:"brand", maxLength:50, errmsg:"品牌名称错误，长度不超过50字符。"});
+ProductVerify.addParam({id:"customCatId", focusId:"customCatId1", isNotNull:true, errmsg:"请选择自定义分类"});
+ProductVerify.addParam({id:"origin", maxLength:50, invalidReg:/[^\w\.\/ \-\']/ig, errmsg:"源产地错误，长度不能超过50字符。"});
+ProductVerify.addParam({id:"description", isNotNull:true, maxLength:200, errmsg:"简短描述错误，长度不能超过200字符。"});
+ProductVerify.addParam({id:"stockDays", isNotNull:true, isInt:true, errmsg:"备货天数错误，请填写备货时间，只能是数字。"});
+ProductVerify.addParam({id:"specSpan", fn:verifySpecification, errmsg:"请填写详细描述。"});
+ProductVerify.addParam({id:"retailPrice", isNotNull:true, isNum:true, errmsg:"请正确填写销售价格。"});
+ProductVerify.addParam({id:"stock", isNotNull:true, isInt:true, errmsg:"请正确填写库存。"});
+ProductVerify.addParam({id:"imageInfo_imageZone", isNotNull:true, fn:verifyImages, errmsg:"请选择或上传产品图片。"});
+ProductVerify.addParam({id:"weight", isNotNull:true, isNum:true, errmsg:"请正确填写产品重量。"});
+ProductVerify.addParam({id:"length", isNotNull:true, isInt:true, errmsg:"请正确填写产品包装长度。"});
+ProductVerify.addParam({id:"width", isNotNull:true, isInt:true, errmsg:"请正确填写产品包装宽度。"});
+ProductVerify.addParam({id:"height", isNotNull:true, isInt:true, errmsg:"请正确填写产品包装高度。"});
+ProductVerify.addParam({id:"packageInformation", isNotNull:true, maxLength:500, errmsg:"请填写包裹信息，长度不超过500字符。"});
+ProductVerify.addParam({id:"standardTb", fn:verifySubSku, errmsg:"规格SKU号不可重复。"});
+
+// 保持草稿校验
+var DraftVerify = new VerifyUtil();
+DraftVerify.addParam(productNameParam);
+DraftVerify.addParam(skuParam);
+##新增产品时，需要校验产品名称和sku重复
+#if(!$product.product.productId)
+var productNameRepeatParam = {id:"productName", fn:verifyProductNameRepeat, errmsg:"产品名称已存在，请更换。"};
+var skuRepeatParam = {id:"sku", fn:verifySkuRepeat, errmsg:"SKU已存在，请更换。"};
+ProductVerify.addParam(productNameRepeatParam);
+ProductVerify.addParam(skuRepeatParam);
+DraftVerify.addParam(productNameRepeatParam);
+DraftVerify.addParam(skuRepeatParam);
+#end
+
+// 详细描述
+function verifySpecification() {
+	var specification = editor.html();
+	return specification.length>0;
+}
+
+//判断图片是否符合要求
+function verifyImages(){
+	return jQuery("#productImageView").find("li").length > 0
+}
+// 产品主sku
+function verifySkuRepeat() {
+	return !isAlreadyProduct(2);
+}
+// 产品名称
+function verifyProductNameRepeat() {
+	return !isAlreadyProduct(1);
+}
+// 规格sku重复判断
+function verifySubSku() {
+	var configSkus = jQuery("[id^='configSku_']");
+	if (configSkus.length>0) {
+		var skuMap = {};
+		var skuCount = 0;
+		var mapCount = 0;
+		for(var i=0; i<configSkus.length; i++) {
+			var sku = jQuery.trim(configSkus[i].value);
+			skuCount++;
+			if (skuMap[sku] == null) {
+				skuMap[sku] = 1;
+				mapCount++;
+			}
+		}
+		return mapCount==skuCount;
+	}
+	return true;
+}
+
+//选择销售方式 
+function checkRdMode(num){
+	if(num == 1){
+		hideOtextOptions('mode_content');
+		hideOtextOptions('packageErrDiv');
+		jQuery("#packingFlag").val("1");
+		ProductVerify.removeParam("quantity");
+	}else{
+		ProductVerify.addParam({id:"quantity", isNotNull:true, isInt:true, errmsg:"请填写每包数量，只能填数字。"});
+		showOtextOptions('mode_content');
+		var obj = jQuery("#quantity").val();
+		if(obj.trim() == ""){
+			showOtextOptions('packageErrDiv');
+			jQuery("#packingFlag").val("0");	
+		}else{
+			hideOtextOptions('packageErrDiv');
+			jQuery("#packingFlag").val("1");
+		}
+	}
+}
+
+/////////////////////////////////////////////
+
+function textleft(obj, objleft, num) {
+	var leftValue = objleft + "left";
+	var otext = obj;
+	var otextleft = document.getElementById(leftValue);
+	var maxLength = num;
+	var str = otext.value;
+	if (str.length > num) {
+		otextleft.innerHTML = 0;
+		otext.value = str.substring(0, num);
+             // window.alert('超过了指定的字数');
+		document.getElementById("span_"+obj).innerHTML = "<div id='FriendlyTips' style='display:'><span></span><div class='alert'>\u4ea7\u54c1\u89c4\u683c\u592a\u957f\u4e86,\u6700\u591a500\u4e2a\u5b57\u7b26\uff01</div></div>";
+	} else {
+		otextleft.innerHTML = maxLength - str.length;
+	     //document.getElementById("disputeMessageover").innerHTML = str.length;
+	}
+}
+
+
+String.prototype.trim = function () {
+    //用正则表达式将前后空格用空字符串替代
+	return this.replace(/(^\s*)|(\s*$)/g, "");
+};
+//返回字符串长度，区分全角半角
+function returnLen(strObj) {
+	var len = 0;
+	for (p = 0; p < strObj.length; p++) {
+		if (strObj.charCodeAt(p) > 256) {
+			len += 2;
+		} else {
+			len++;
+		}
+	}
+	return len;
+}
+
+/**
+ * onblur事件调用的方法
+ */
+ 
+ //检验产品名称
+function checkProductName() {
+	var obj = jQuery("#productName").val();
+		if (obj.trim() == "") {
+			showOtextOptions('span_productName_empty');
+			jQuery("#productNameFlag").val("0");
+			jQuery("#productName")[0].focus();
+		}
+		isAlreadyProduct(1);
+		
+		if (!testObj(obj.trim())) {
+			showOtextOptions('span_productName_spell');
+			jQuery("#productNameFlag").val("0");
+			jQuery("#productName")[0].focus();
+		}
+		jQuery("#productNameFlag").val("1");
+	}
+
+	//检验关键词
+	function checkKeyword() {
+		var obj = jQuery("#keyword").val();
+		if(obj.trim()!=""){
+			var keywords = obj.trim().split(",");
+			if(keywords.length>=10 ){
+				showOtextOptions('keywordMsg');
+				jQuery("#keywordFlag").val("0");
+				jQuery("#keyword")[0].focus();
+			}
+		}
+		jQuery("#keywordFlag").val("1");
+	}
+	
+	//检验sku
+	function checkSku(){
+		var obj = jQuery("#sku").val();
+		if(obj.trim() == ""){
+			showOtextOptions('sku_empty');
+			jQuery("#skuFlag").val("0");
+			jQuery("#sku")[0].focus();
+		}
+		isAlreadyProduct(2);
+
+		if(!testObj(obj.trim())){
+			showOtextOptions('sku_spell');
+			jQuery("#skuFlag").val("0");
+			jQuery("#sku")[0].focus();
+		}
+		jQuery("#skuFlag").val("1");
+	}
+	
+	//检验简短描述
+	function checkDescription(){
+		var obj = jQuery("#description").val();
+		if(obj.trim() == ""){
+			showOtextOptions('descriptionMsg');
+			jQuery("#description")[0].focus();
+			jQuery("#descriptionFlag").val("0");
+		}
+		jQuery("#descriptionFlag").val("1");
+	}
+	
+	//检测详细描述
+	function checkDetail(){
+    	var content = jQuery("#specifications").val();
+    	if(returnLen(content)< 1 || content.trim()=='请用英文填写产品详细描述以便买家能更好的了解您的产品。'){
+    		showOtextOptions('specificationsErrDiv');
+			jQuery("#specificationsFlag").val("0");
+			return ;
+    	}
+		jQuery("#specificationsFlag").val("1");
+    }
+	
+	//更改产品单位
+	function changePackage(){
+		var obj = jQuery("#packing").val();
+		jQuery("#salePackageDiv").html(obj.trim());
+		jQuery("#quantityPackageDiv").html(obj.trim());
+	}
+	
+
+	//判断输入的是否是数字和小数点
+	function checkNumber(id){
+        var obj = jQuery("#"+id).val();
+        if(isNaN(obj.trim())){
+           // alert("请输入数字或数字与小数点组合的数字！");
+		   showOtextOptions(id+'ErrDiv');
+		   jQuery("#"+id+"Flag").val("0");	
+		   jQuery("#"+id)[0].focus();
+        }else{
+		  // alert("是数字和数点");
+		  hideOtextOptions(id+'ErrDiv');
+		  jQuery("#"+id+"Flag").val("1");	
+        }
+    } 
+
+function showOtextOptions(id) {
+    // alert("#" + id);
+	jQuery("#" + id).css("display", "block");
+}
+
+function hideOtextOptions(id) {
+	jQuery("#" + id).css("display", "none");
+}
+
+
+//判断文本框值是否为空
+function isValueEmpty(id){
+	var obj = jQuery("#"+id).val();
+	if(obj.trim() == ""){
+		showOtextOptions(id+'Empty');
+		jQuery("#"+id)[0].focus();
+		jQuery("#"+id+"Flag").val("0");
+		return true;
+	}
+	jQuery("#"+id+"Flag").val("1");
+	return false;
+}
+
+//判断配置属性
+function isSubConfig(){
+	hideOtextOptions('retailPriceEmpty');hideOtextOptions('retailPriceErrDiv');
+	if (jQuery("input#configPrice").length>0) { // 有规格
+		var len = jQuery("input#configPrice").length;
+		for(var i=0; i<len; i++) {
+			var configPrice = jQuery("input#configPrice")[i];
+			if (configPrice.value=="" ||returnLen(configPrice.value.trim()) < 0 ||isNaN(configPrice.value.trim())) {
+				jQuery("#configErrTr").show();
+				return false;
+			}
+			var configStock = jQuery("input#configStock")[i];
+			if (configStock.value=="" ||returnLen(configStock.value.trim()) < 0 ||isNaN(configStock.value.trim())) {
+				jQuery("#configErrTr").show();
+				return false;
+			}
+			var configSku = jQuery("input#configSku")[i];
+			if (configSku.value=="" ||returnLen(configSku.value.trim()) < 0) {
+				jQuery("#configErrTr").show();
+				return false;
+			}
+		}
+	}else{
+		var retailPriceFlag = jQuery("#retailPriceFlag").val();
+		if(retailPriceFlag == "0"){
+    		if(isValueEmpty('retailPrice')) {
+				return false;
+			}
+    		if(checkNumber('retailPrice')) {
+				return false;
+			}
+		}
+		var stockFlag = jQuery("#stockFlag").val();
+		if(stockFlag=="0"){
+    		if(isValueEmpty('stock')) {
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+
+function isHaveImageSize(){
+	//jQuery("body").showLoading();
+	jQuery.ajax({
+        	url:"$link.setAction('product.SellerImageSizeAction')",
+        	type:"post",
+        	success:function(data){
+				//jQuery("body").hideLoading();
+				if(data == 0){
+					showOtextOptions('imageSizeErrDiv');
+					jQuery("#imageInfo_selectImage").attr("disabled","");
+					return;
+				}else{
+					hideOtextOptions('imageSizeErrDiv');
+					jQuery("#imageInfo_selectImage").removeAttr("disabled");
+				}
+			},
+			error:function(){
+				//jQuery("body").hideLoading();
+			}
+    	 });	
+}
+
+//判断是否是数字字母下划线中横线
+function testObj(obj){
+	var reg =  /[a-zA-Z0-9_-]{1,}$/;
+	return reg.test(obj);
+}
+
+//检测产品售价
+function checkPrice(){
+	hideOtextOptions('retailPriceEmpty');hideOtextOptions('retailPriceErrDiv');
+	var price = jQuery("input#retailPrice").val();
+	if(price.trim()==""){
+		showOtextOptions('retailPriceEmpty');
+		return true;
+	}
+	if(isNaN(price.trim())){
+		showOtextOptions('retailPriceErrDiv');
+		return true;
+	}
+	return false;
+}
+
+//判断产品名称或者sku是否已经存在
+function isAlreadyProduct(obj){
+	var param = "";
+	if(obj==1){
+		param = "flag=1&productName="+jQuery("#productName").val();
+	}else{
+		param = "flag=2&sku="+jQuery("#sku").val();
+	}
+	var hasSame = false;
+	//jQuery("body").showLoading();
+	jQuery.ajax({
+		url:"$link.setAction('product.AjaxHadSamePropertyAction')",
+        	type:"POST",
+			data:param,
+			async:false,
+        	success:function(response){
+				//jQuery("body").hideLoading();
+				if(response=="null" || response=="") {
+					if(obj==1){
+						hideOtextOptions('span_productName_already');
+					}else{
+						hideOtextOptions('sku_ready');
+					}
+				}else{
+					if(obj==1){
+						showOtextOptions('span_productName_already');
+            			jQuery("#productNameFlag").val("0");
+						jQuery("#productName").focus();
+					}else{
+						showOtextOptions('sku_ready');
+            			jQuery("#skuFlag").val("0");
+						jQuery("#sku").focus();
+					}
+					hasSame = true;
+				}
+            },
+			error:function(){
+				//jQuery("body").hideLoading();
+			}
+   	});
+	return hasSame;
+}
+</SCRIPT>
+<script>
+function onSubmit(){
+	jQuery("[name='productStatus']").val(1);
+	return ProductVerify.verified();
+}
+function saveDraft() {
+	jQuery("[name='productStatus']").val(2);
+	return DraftVerify.verified();
+}
+
+jQuery.holdReady(true);
+</script>
+</head>
+<body>
+  <div id="header">
+	$navigation.setTemplate('Head.html')
+  </div><!-- E header -->
+  
+  <div id="container">
+<div id="cd"  >
+	$navigation.setTemplate('product,CategorySelector.html')
+</div>
+<div id="pd" class="hide">
+	<br class="clear" />
+#if(!$product.product.productId)
+<h4 class="mar_top_15">产品上传</h4>
+#else
+<h4 class="mar_top_15">产品更新</h4>
+#end  	
+    <div class="alert alert-info" style="margin-top:15px; font-size:14px; margin-bottom:5px;">
+    <!--<button type="button" class="close" data-dismiss="alert">&times;</button>-->
+    <b>温馨提示：</b><br />请确保发布的产品符合产品发布规则。标有 “*” 的信息为必先信息，请用英文认真填写。
+    </div><!-- E alert info -->
+    <a href="/static/prototype/shopmic-manage/help.shtml" target="_blank">&lt;&lt;帮助与规则</a>
+    <form action="$link.setAction('product.ProductUploadAction')" method="post" id="uploadForm">   
+		<input type="hidden" name="productStatus" value=""/>
+    <div class="alert alert-success mar_top_15 font14 mar_bottom_5">
+		<input type='hidden' name='catId' id='catId' value=""/>
+      <label id="choose_category" class="left mar_top_5 mar_right_20">您当前选择的目录是： <b id="selectedCatName"></b></label>
+      <a id="selectCat" href="javascript:resetCat();" class="btn btn-success left" role="button" data-toggle="modal"><span class="white">更改分类</span></a><br class="clear" />
+    </div>
+  
+    <div class="accordion mar_top_15" id="accordion1">
+        <div class="accordion-group">
+			$screen_placeholder
+        </div><!-- E 1 -->
+        <div class="accordion-group">
+  			$navigation.setTemplate('product,ProductAttr.html')
+        </div><!-- E 2 -->
+        <div class="accordion-group">
+        	$navigation.setTemplate('product,ProductStandard.html')
+        </div><!-- E 3 -->
+        <div class="accordion-group">
+ 			$navigation.setTemplate('product,ProductImageInfo.html')
+        </div><!-- E 4 -->
+        <div class="accordion-group">
+			$navigation.setTemplate('product,ProductPackageInfo.html')
+        </div><!-- E 5 -->
+##        <div class="accordion-group">
+##			$navigation.setTemplate('product,ProductShippingInfo.html')
+##        </div><!-- E 6 -->
+     ##   <div class="accordion-group">
+	##		$navigation.setTemplate('product,ProductPromotion.html')
+     ##   </div><!-- E 7 -->
+    </div><!-- E all div -->
+    <div style="text-align:center;" class="mar_top_20">
+        <table border="0" cellspacing="0" cellpadding="0" width="100%">
+          <tr>
+            <td width="250">&nbsp;</td>
+            <td><button class="btn btn-large btn-info font_w_b" type="button" onclick="javascript:window.open(href='/static/prototype/shopmic-manage/product_preview.shtml');">预览</button></td>
+            <td><button class="btn btn-large btn-primary font_w_b" type="submit" onclick="return onSubmit();">提交发布</button></td>
+            <td><button class="btn btn-large font_w_b" type="submit" onclick="return saveDraft()">保存草稿</button></td>
+            <td width="300"></td>
+          </tr>
+        </table>
+    </div><!-- E button -->
+    </form>  
+    
+  </div><!-- E container -->
+</div>
+  <br class="clear" />
+  <div style="width:100%; height:30px; margin-top:50px; background:url(/static/prototype/shopmic-manage/img/footer.jpg) repeat-x; clear:both;"></div>
+## 选择产品弹出层
+$navigation.setTemplate('product/ProductSelector.html')
+<!-- S javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript">
+
+//显示提示信息
+function showMsg(msg) {
+    $('#msg').html(msg);
+    $('#msg').css("display", "");
+    setTimeout('hiddenMsg()', 2000);
+}
+
+//隐藏提示信息
+function hiddenMsg() {
+    $('#msg').css("display", "none");
+}
+</script>
+<script type="text/javascript">
+jQuery(function () {
+    // Datepicker
+    jQuery.datepicker.regional['zh-CN'] = {  
+        clearText: '清除',  
+        clearStatus: '清除已选日期',  
+        closeText: '关闭',  
+        closeStatus: '不改变当前选择',  
+        prevText: '<上月',  
+        prevStatus: '显示上月',  
+        prevBigText: '<<',  
+        prevBigStatus: '显示上一年',  
+        nextText: '下月>',  
+        nextStatus: '显示下月',  
+        nextBigText: '>>',  
+        nextBigStatus: '显示下一年',  
+        currentText: '今天',  
+        currentStatus: '显示本月',  
+        monthNames: ['一月','二月','三月','四月','五月','六月', '七月','八月','九月','十月','十一月','十二月'],  
+        monthNamesShort: ['一','二','三','四','五','六', '七','八','九','十','十一','十二'],  
+        monthStatus: '选择月份',  
+        yearStatus: '选择年份',  
+        weekHeader: '周',  
+        weekStatus: '年内周次',  
+        dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],  
+        dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],  
+        dayNamesMin: ['日','一','二','三','四','五','六'],  
+        dayStatus: '设置 DD 为一周起始',  
+        dateStatus: '选择 m月 d日, DD',  
+        dateFormat: 'yy-mm-dd',  
+        firstDay: 1,  
+        initStatus: '请选择日期',  
+        isRTL: false};  
+        jQuery.datepicker.setDefaults(jQuery.datepicker.regional['zh-CN']);  
+
+    });
+jQuery("#discount_datepickera").datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#discount_datepickerb" ).datepicker( "option", "minDate", selectedDate );
+    }
+});
+
+
+jQuery( "#discount_datepickerb" ).datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#discount_datepickera" ).datepicker( "option", "maxDate", selectedDate );
+    }
+});
+
+jQuery( "#promotion_datepickera" ).datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#promotion_datepickerb" ).datepicker( "option", "minDate", selectedDate );
+    }
+});
+
+jQuery( "#promotion_datepickerb" ).datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#promotion_datepickera" ).datepicker( "option", "maxDate", selectedDate );
+    }
+});
+jQuery("body").showLoading();
+</script>
+<script>
+isHaveImageSize();
+</script>
+</body>
+</html>

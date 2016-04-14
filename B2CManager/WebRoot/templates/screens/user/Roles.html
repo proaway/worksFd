@@ -1,0 +1,203 @@
+<script language="javascript" src="/static/prototype/shopmic-manage/js/dict.js"></script>
+ <link rel="stylesheet" href="/static/prototype/shopmic-manage/js/ztree/demo.css" type="text/css">
+	<link rel="stylesheet" href="/static/prototype/shopmic-manage/js/ztree/zTreeStyle.css" type="text/css">
+	<script type="text/javascript" src="/static/prototype/shopmic-manage/js/ztree/jquery.ztree.core-3.5.min.js"></script>
+	<script type="text/javascript" src="/static/prototype/shopmic-manage/js/ztree/jquery.ztree.excheck-3.5.min.js"></script>
+	<script language="javascript" src="/static/prototype/shopmic-manage/js/unicodeconvert.js"></script>
+<form action="$link.setPage('user,Roles.html')" method="post" name="listForm" id="listForm">
+<br class="clear">
+<h4 class="mar_top_15 mar_bottom_20">角色管理</h4>
+<input type="hidden" id="loginRole" name="loginRole" value="$userBean.roleId"/>
+<div class="search_form mar_bottom_10">
+    <ul class="inline">
+    	<li>
+            <label class="left mar_top_5">角色名称：</label>
+          <input type="text" placeholder="角色名称" class="input-medium left mar_left_5" name="roleName" id="roleName" value="$!cond.roleName">
+        </li>
+    	<li>
+            <label class="left mar_top_5">角色ID：</label>
+          <input type="text" placeholder="角色ID" class="input-medium left mar_left_5" name="roleId" id="roleId" value="$!cond.roleId">
+        </li>
+        <li>
+            <label class="left mar_top_5">状态：</label>
+            <select class="left oi_status_max_w" name="status" id="status">
+              <option value="">所有状态</option>
+                #foreach($o in $DictUtil.vaildStatus)
+                	<option value="$o.name" #if($o.name==$cond.status)selected#end>$o.value</option>
+                #end
+            </select>
+    </li>
+      <li><input type="submit" class="btn left" value="查询"><input type="button" class="btn left mar_left_10" value="导出"></li>
+    </ul>
+    <br class="clear">
+</div>
+
+<table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-striped table-hover center_t font12 tl_mt3_mb3 mar_bottom_0" id="roleListDiv">
+  <tbody><tr class="info bold">
+<td>
+	<label class="checkbox left">
+		<input type="checkbox" name="checkbox" value="checkbox" onclick="selectChk('roleId', this.checked);">全选
+	</label>
+	<label>角色名称</label>
+</td>
+<td><label>角色描述</label></td>
+<td><label>状态</label></td>
+<td><label>操作</label></td>
+</tr>
+#foreach($role in $roles)
+ <tr id="role_$role.roleId">
+<td><label class="checkbox"><input type="checkbox" name="roleIds" id="roleId" value="$role.roleId">$!role.roleName</td>
+<td><label>$!role.roleDesc</label></td>
+<td id="rolestatus_$role.roleId"><label>#if($!role.status=="1")<span class="label label-success">#else <span class="label label-important"> #end$DictUtil.getVaildStatus($!role.status)</label></td>
+<td id="oper_$role.roleId">#if($role.roleId=="1") #else<a href="javascript:viewRole($role.roleId)" role="button" class="mar_left_10">查看</a><a href="javascript:editRole($role.roleId)" role="button" class="mar_left_10">修改</a><span id="opertor"> #if($!role.status=="1")<a href="javascript:changeVaild($role.roleId,0)" role="button" class="mar_left_10" >禁用</a>#else<a href="javascript:changeVaild($role.roleId,1)" role="button" class="mar_left_10" >启用</a>#end#end</span></td>
+</tr>
+#end
+</tbody></table>
+
+<table style="margin-top:0px;" class="table font14">
+    <tbody>
+    	<tr class="success">
+            <td>
+    			<input class="btn btn-success btn-small font12 left mar_left_15"  data-toggle="modal" type="button" value="新增" onclick="editRole()">
+    	<!--
+    			<input class="btn btn-danger btn-small font12 left mar_left_15"  data-toggle="modal" type="button" value="禁用"  onclick="vaildRole(0)">
+    		
+    			<input class="btn btn-info btn-small font12 left mar_left_15"  data-toggle="modal" type="button" value="启用" onclick="vaildRole(1)">
+				-->
+			</td>
+      </tr>
+    </tbody>
+</table>
+<div class="areaFuc minWidth" >
+    <div class="pageNum">
+	#parse("/screens/Nap.html")
+    </div>
+</div>
+</form>
+<script>
+function vaildRole(vaild) {
+	var url = "$link.setAction('user.Ajaxvaildrole')?" + form2URLbySelector("#roleId:checked");
+	jQuery.getJSON(url, {vaild:vaild}, function(data){
+		if (data.status) {
+    		jQuery("#roleId:checked").each(function(i,o){
+    			jQuery("#rolestatus_"+o.value).html(getVaildStatus(vaild));
+				if(vaild==0){
+					jQuery("#oper_"+o.value).find("span[id='opertor']").html("<a href='javascript:changeVaild("+o.value+",1)' role='button' class='mar_left_10' >启用</a>");
+				}else{
+					jQuery("#oper_"+o.value).find("span[id='opertor']").html("<a href='javascript:changeVaild("+o.value+",0)' role='button' class='mar_left_10' >禁用</a>");
+				}
+    		});
+			jQuery("input[type='checkbox']").removeAttr("checked");
+			alert('操作成功');
+		} else {
+			alert('操作失败');
+		}
+	});
+}
+function selectChk(id, checked) {
+	var chks = jQuery("*").find("#" + id);
+	for(i=0; i<chks.length; i++) {chks[i].checked=checked;}
+}
+function viewRole(roleId) {
+	tipsWindown("查看角色详细信息","url:get?$link.setPage('user,ViewRoleDetail.html')?roleId=" + (roleId==null?"":roleId) + "&" + Math.random(),"450","400","true","","true","text","关闭");
+}
+function editRole(roleId, edit) {
+	tipsWindown("编辑角色","url:get?$link.setPage('user,ViewRoleDetail.html')?edit=1&roleId=" + (roleId==null?"":roleId) + "&" + Math.random(),"600","600","true","","true","text");
+}
+function addRole(role) {
+	if (role == null) {
+		return;
+	}
+	var row = jQuery("#role_" + role.roleId);
+	if (row.length == 0) {
+    	var rowHead = "<tr id='role_" + role.roleId + "'>";
+    	rowHead += "</tr>";
+    	jQuery("#roleListDiv").append(rowHead);
+		row = jQuery("#role_" + role.roleId);
+	}
+	var rowContent = "<td><label class='checkbox'><input type='checkbox' name='roleIds' id='roleId' value='"+role.roleId+"'/>";
+	rowContent += role.roleName+"</td>";
+	rowContent += "<td ><label>"+role.roleDesc+"</label></td>";
+	rowContent += "<td id='rolestatus_"+role.roleId+"'>";
+	if(role.status=="1"){
+        rowContent += "<label><span class='label label-success'>"+getVaildStatus(role.status)+"</span></label></td>";
+	}else{
+		rowContent += "<label><span class='label label-important'>"+getVaildStatus(role.status)+"</span></label></td>";
+	}
+	rowContent += "<td id='oper_"+role.roleId+"'>";
+	if(role.roleId=="1"){
+	}else{
+		rowContent +="<a href='javascript:viewRole("+role.roleId+");' role='button' class='mar_left_10' >查看</a>  <a href='javascript:editRole("+role.roleId+");' role='button' class='mar_left_10'>修改</a>";
+		if(role.status=="1"){
+			rowContent += "<a href='javascript:changeVaild("+role.roleId+",0)' role='button' class='mar_left_10' >禁用</a>";
+		}else{
+			rowContent += "<a href='javascript:changeVaild("+role.roleId+",1)' role='button' class='mar_left_10' >启用</a>";
+		}
+	}
+	rowContent += "</td>";
+	row.html(rowContent);
+}
+</script>
+<script >
+function changeVaild(roleId,flag){
+	//jQuery("#role_"+roleId).find("input[type='checkbox']").attr("checked","true");
+	//vaildRole(flag);
+	var roleLoginId = jQuery("#loginRole").val();
+	if(roleLoginId==roleId){
+		alert("该角色的用户正在使用中，无法操作该角色！！");
+		return ;
+	}
+	if(flag==0){
+		if(confirm("确定要禁用此角色吗？(提示:禁用此角色将会同时禁用所有为该角色的用户)")){
+			jQuery("body").showLoading();
+        	var url = '$link.setAction("user.AjaxVaildRoleAction")';
+        	jQuery.getJSON(url, {roleId:roleId,actionFlag:0}, function(data) {
+				jQuery("body").hideLoading();
+        		if(data.status) {
+        			jQuery("#rolestatus_"+roleId).html("<span class='label label-important'>禁用</span>");
+    				jQuery("#oper_"+roleId).find("span[id='opertor']").html("<a href='javascript:changeVaild("+roleId+",1)' role='button' class='mar_left_10' >启用</a>");
+        		}else{
+        			alert("操作失败");
+        		}
+        	});
+    	}
+	}else{
+		if(confirm("确定要启用此角色吗？")){
+			jQuery("body").showLoading();
+			var url = '$link.setAction("user.AjaxVaildRoleAction")';
+        	jQuery.getJSON(url, {roleId:roleId,actionFlag:1}, function(data) {
+				jQuery("body").hideLoading();
+        		if(data.status) {
+                    jQuery("#rolestatus_"+roleId).html("<span class='label label-success'>启用</span>");
+        			jQuery("#oper_"+roleId).find("span[id='opertor']").html("<a href='javascript:changeVaild("+roleId+",0)' role='button' class='mar_left_10' >禁用</a>");
+        			userThisRole(roleId);
+				}else{
+        			alert("操作失败");
+        		}
+        	});
+    	}
+	}
+}	
+
+
+function userThisRole(roleId){
+	var div = jQuery("#showVaildDiv");
+	if (div.length == 0) {
+		div = jQuery("<div id='showVaildDiv'></div>");
+		jQuery("body").append(div);
+	}
+	div.empty();
+	div.load("$link.setPage('user,ChooseUserByRole.html')?roleId=" + roleId);
+	
+}
+
+function editRoleTHis(roleId){
+	var div = jQuery("#showRoleEdit");
+	if (div.length == 0) {
+		div = jQuery("<div id='showRoleEdit'></div>");
+		jQuery("body").append(div);
+	}
+	div.empty();
+	div.load("$link.setPage('user,ViewHistRole.html')?roleId=" + roleId);
+}
+</script>

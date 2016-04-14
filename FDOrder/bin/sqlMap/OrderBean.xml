@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+	<insert id="insertOrderBean" parameterClass="com.fd.fashion.order.bean.OrderBean">
+        <![CDATA[
+insert into T_ORDER
+  (ORDER_ID, BUYER_ID, USER_ID, TOTAL, CREATE_DATE, PAYMENT_TYPE, ORDER_ADDRESS_ID, IP_ADDRESS, FD_DISPUTE_STATUS, DISPUTE_STATUS, FREEZE, RISK_STATUS, ORDER_STATUS, REFUND_STATUS, SHIPPING_TYPE, PAYMENT_INFO_ID, COUPON_CODE, COUPON_AMOUNT, ADJUST_AMOUNT, TXN_ID, REFUND_AMOUNT, SHIPPING_TOTAL, ITEM_TOTAL, MAX_STOCK_DAYS, SHIPPING_COUNTRY,BAD_ORDER)
+values
+  (#orderId#, #buyerId#, #userId#, #total#, #createDate#, #paymentType#, #orderAddressId#, #ipAddress#, #fdDisputeStatus#, #disputeStatus#, #freeze#, #riskStatus#, #orderStatus#, #refundStatus#, #shippingType#, #paymentInfoId#, #couponCode#, #couponAmount#, #adjustAmount#, #txnId#, #refundAmount#, #shippingTotal#, #itemTotal#, #maxStockDays#, #shippingCountry#,#badOrder#)
+        ]]>
+	</insert>
+
+	<update id="updateOrderBean" parameterClass="com.fd.fashion.order.bean.OrderBean">
+        <![CDATA[
+update T_ORDER 
+        ]]>
+		<dynamic prepend="set">
+			<isNotNull property="buyerId" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[BUYER_ID = #buyerId#]]>
+			</isNotNull>
+			<isNotNull property="userId" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[USER_ID = #userId#]]>
+			</isNotNull>
+			<isNotNull property="total" prepend="," removeFirstPrepend="true">
+                <![CDATA[TOTAL = #total#]]>
+			</isNotNull>
+			<isNotNull property="createDate" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[CREATE_DATE = #createDate#]]>
+			</isNotNull>
+			<isNotNull property="paymentType" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[PAYMENT_TYPE = #paymentType#]]>
+			</isNotNull>
+			<isNotNull property="orderAddressId" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[ORDER_ADDRESS_ID = #orderAddressId#]]>
+			</isNotNull>
+			<isNotNull property="ipAddress" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[IP_ADDRESS = #ipAddress#]]>
+			</isNotNull>
+			<isNotNull property="fdDisputeStatus" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[FD_DISPUTE_STATUS = #fdDisputeStatus#]]>
+			</isNotNull>
+			<isNotNull property="disputeStatus" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[DISPUTE_STATUS = #disputeStatus#]]>
+			</isNotNull>
+			<isNotNull property="freeze" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[FREEZE = #freeze#]]>
+			</isNotNull>
+			<isNotNull property="riskStatus" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[RISK_STATUS = #riskStatus#]]>
+			</isNotNull>
+			<isNotNull property="orderStatus" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[ORDER_STATUS = #orderStatus#]]>
+			</isNotNull>
+			<isNotNull property="refundStatus" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[REFUND_STATUS = #refundStatus#]]>
+			</isNotNull>
+			<isNotNull property="shippingType" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[SHIPPING_TYPE = #shippingType#]]>
+			</isNotNull>
+			<isNotNull property="paymentInfoId" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[PAYMENT_INFO_ID = #paymentInfoId#]]>
+			</isNotNull>
+			<isNotNull property="couponCode" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[COUPON_CODE = #couponCode#]]>
+			</isNotNull>
+			<isNotNull property="couponAmount" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[COUPON_AMOUNT = #couponAmount#]]>
+			</isNotNull>
+			<isNotNull property="adjustAmount" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[ADJUST_AMOUNT = #adjustAmount#]]>
+			</isNotNull>
+			<isNotNull property="txnId" prepend="," removeFirstPrepend="true">
+                <![CDATA[TXN_ID = #txnId#]]>
+			</isNotNull>
+			<isNotNull property="refundAmount" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[REFUND_AMOUNT = #refundAmount#]]>
+			</isNotNull>
+			<isNotNull property="shippingTotal" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[SHIPPING_TOTAL = #shippingTotal#]]>
+			</isNotNull>
+			<isNotNull property="itemTotal" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[ITEM_TOTAL = #itemTotal#]]>
+			</isNotNull>
+			<isNotNull property="maxStockDays" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[MAX_STOCK_DAYS = #maxStockDays#]]>
+			</isNotNull>
+			<isNotNull property="shippingCountry" prepend=","
+				removeFirstPrepend="true">
+              	<![CDATA[SHIPPING_COUNTRY = #shippingCountry#]]>
+			</isNotNull>
+			<isNotNull  property="badOrder" prepend=","
+				removeFirstPrepend="true">
+				<![CDATA[ BAD_ORDER  = #badOrder# ]]>
+			</isNotNull>
+		</dynamic>
+        <![CDATA[
+where ORDER_ID = #orderId#
+        ]]>
+		<dynamic>
+			<isNotNull property="oldOrderStatus">
+				<iterate property="oldOrderStatus" open="(" close=")" conjunction="or" prepend="and">
+					<![CDATA[ ORDER_STATUS=#oldOrderStatus[]#]]>
+				</iterate>
+			</isNotNull>
+		</dynamic>
+	</update>
+
+	<sql id="getOrderBeanCondition">
+		<isNotNull property="orderId" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[ORDER_ID = #orderId#]]>
+		</isNotNull>
+		<isNotNull property="buyerId" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[BUYER_ID = #buyerId#]]>
+		</isNotNull>
+		<isNotNull property="userId" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[USER_ID = #userId#]]>
+		</isNotNull>
+		<isNotNull property="total" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[TOTAL = #total#]]>
+		</isNotNull>
+		<isNotNull property="createDate" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[CREAT_DATE = #createDate#]]>
+		</isNotNull>
+		<isNotNull property="paymentType" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[PAYMENT_TYPE = #paymentType#]]>
+		</isNotNull>
+		<isNotNull property="orderAddressId" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[ORDER_ADDRESS_ID = #orderAddressId#]]>
+		</isNotNull>
+		<isNotNull property="ipAddress" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[IP_ADDRESS = #ipAddress#]]>
+		</isNotNull>
+		<isNotNull property="fdDisputeStatus" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[FD_DISPUTE_STATUS = #fdDisputeStatus#]]>
+		</isNotNull>
+		<isNotNull property="disputeStatus" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[DISPUTE_STATUS = #disputeStatus#]]>
+		</isNotNull>
+		<isNotNull property="freeze" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[FREEZE = #freeze#]]>
+		</isNotNull>
+		<isNotNull property="riskStatus" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[RISK_STATUS = #riskStatus#]]>
+		</isNotNull>
+		<isNotNull property="orderStatus" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[ORDER_STATUS = #orderStatus#]]>
+		</isNotNull>
+		<isNotNull property="refundStatus" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[REFUND_STATUS = #refundStatus#]]>
+		</isNotNull>
+		<isNotNull property="shippingType" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[SHIPPING_TYPE = #shippingType#]]>
+		</isNotNull>
+		<isNotNull property="paymentInfoId" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[PAYMENT_INFO_ID = #paymentInfoId#]]>
+		</isNotNull>
+		<isNotNull property="couponCode" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[COUPON_CODE = #couponCode#]]>
+		</isNotNull>
+		<isNotNull property="couponAmount" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[COUPON_AMOUNT = #couponAmount#]]>
+		</isNotNull>
+		<isNotNull property="adjustAmount" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[ADJUST_AMOUNT = #adjustAmount#]]>
+		</isNotNull>
+		<isNotNull property="txnId" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[TXN_ID = #txnId#]]>
+		</isNotNull>
+		<isNotNull property="refundAmount" prepend="and"
+			removeFirstPrepend="true">
+            <![CDATA[REFUND_AMOUNT = #refundAmount#]]>
+		</isNotNull>
+		<isNotNull property="shippingTotal" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[SHIPPINT_TOTAL = #shippingTotal#]]>
+		</isNotNull>
+		<isNotNull property="itemTotal" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[ITEM_TOTAL = #itemTotal#]]>
+		</isNotNull>
+		<isNotNull property="maxStockDays" prepend="and"
+			removeFirstPrepend="true">
+               <![CDATA[MAX_STOCK_DAYS = #maxStockDays#]]>
+		</isNotNull>
+		<isNotNull property="shippingCountry" prepend="and"
+				removeFirstPrepend="true">
+              <![CDATA[SHIPPING_COUNTRY = #shippingCountry#]]>
+		</isNotNull>
+		<isNotNull  property="badOrder" prepend="and"
+				removeFirstPrepend="true">
+				<![CDATA[ BAD_ORDER  = #badOrder# ]]>
+			</isNotNull>
+	</sql>
+
+	<select id="getOrderBeanCount" parameterClass="com.fd.fashion.order.bean.OrderBean"
+		resultClass="int">
+        <![CDATA[
+		select 
+			count(0)
+		from T_ORDER 
+        ]]>
+		<dynamic prepend="where">
+			<include refid="getOrderBeanCondition" />
+		</dynamic>
+	</select>
+
+	<select id="getOrderBean" parameterClass="com.fd.fashion.order.bean.OrderBean"
+		resultClass="com.fd.fashion.order.bean.OrderBean">
+        <![CDATA[
+select 
+	ORDER_ID	as orderId,
+	BUYER_ID	as buyerId,
+	USER_ID	as userId,
+	TOTAL	as total,
+	CREATE_DATE	as createDate,
+	PAYMENT_TYPE	as paymentType,
+	ORDER_ADDRESS_ID	as orderAddressId,
+	IP_ADDRESS	as ipAddress,
+	FD_DISPUTE_STATUS	as fdDisputeStatus,
+	DISPUTE_STATUS	as disputeStatus,
+	FREEZE	as freeze,
+	RISK_STATUS	as riskStatus,
+	ORDER_STATUS	as orderStatus,
+	REFUND_STATUS	as refundStatus,
+	SHIPPING_TYPE	as shippingType,
+	PAYMENT_INFO_ID	as paymentInfoId,
+	COUPON_CODE	as couponCode,
+	COUPON_AMOUNT	as couponAmount,
+	ADJUST_AMOUNT	as adjustAmount,
+	TXN_ID	as txnId,
+	REFUND_AMOUNT	as refundAmount,
+	SHIPPING_TOTAL as shippingTotal,
+	ITEM_TOTAL as itemTotal,
+	MAX_STOCK_DAYS as maxStockDays,
+	SHIPPING_COUNTRY as shippingCountry,
+	BAD_ORDER   as badOrder
+from T_ORDER 
+        ]]>
+		<dynamic prepend="where">
+			<include refid="getOrderBeanCondition" />
+		</dynamic>
+<![CDATA[
+order by CREATE_DATE desc
+]]>
+	</select>
+
+	<delete id="deleteOrderBean" parameterClass="com.fd.fashion.order.bean.OrderBean">
+        <![CDATA[
+delete from T_ORDER where ORDER_ID=#orderId#
+        ]]>
+	</delete>
+	
+	<sql id="searchOrderListCondition">
+		<isNotNull property="userId" prepend="and"
+			removeFirstPrepend="true">
+			<![CDATA[USER_ID = #userId#]]>
+		</isNotNull>
+		<isNotNull property="orderId" prepend="and"
+			removeFirstPrepend="true">
+			<![CDATA[t.ORDER_ID = #orderId#]]>
+		</isNotNull>
+		<isNotNull property="startCreateDate" prepend="and">
+			<![CDATA[ t.CREATE_DATE >= #startCreateDate# ]]>
+		</isNotNull>
+		<isNotNull property="endCreateDate" prepend="and">
+			<![CDATA[ t.CREATE_DATE <= ADDDATE(#endCreateDate#,1) ]]>
+		</isNotNull> 
+		<isNotNull property="startShippingDate" prepend="and">
+			<![CDATA[ tos.SHIPPING_DATE >= #startShippingDate# ]]>
+		</isNotNull>
+		<isNotNull property="endShippingDate" prepend="and">
+			<![CDATA[ tos.SHIPPING_DATE <= ADDDATE(#endShippingDate#,1) ]]>
+		</isNotNull> 
+		<isNotNull property="startPaymentDate" prepend="and">
+			<![CDATA[ topi.PAY_TIME >= #startPaymentDate# ]]>
+		</isNotNull>
+		<isNotNull property="endPaymentDate" prepend="and">
+			<![CDATA[ topi.PAY_TIME <= ADDDATE(#endPaymentDate#,1) ]]>
+		</isNotNull> 
+		<isNotNull property="fdDisputeStatus" prepend="and"
+			removeFirstPrepend="true">
+			<![CDATA[FD_DISPUTE_STATUS = #fdDisputeStatus#]]>
+		</isNotNull>
+		<isNotNull property="disputeStatus" prepend="and"
+			removeFirstPrepend="true">
+			<![CDATA[ DISPUTE_STATUS IN  ]]>
+			<iterate property="disputeStatus" conjunction="," open="(" close=")">
+				<![CDATA[ #disputeStatus[]# ]]>
+			</iterate>
+		</isNotNull>
+		<isNotNull property="freeze" prepend="and"
+			removeFirstPrepend="true">
+			<![CDATA[FREEZE = #freeze#]]>
+		</isNotNull>
+		<isNotNull property="riskStatus" prepend="and"
+			removeFirstPrepend="true">
+			<![CDATA[RISK_STATUS = #riskStatus#]]>
+		</isNotNull>
+		<isNotNull property="orderStatus" prepend="and"
+			removeFirstPrepend="true">
+			<![CDATA[ORDER_STATUS = #orderStatus#]]>
+		</isNotNull>
+		<isNotNull property="refundStatus" prepend="and"
+			removeFirstPrepend="true">
+			<![CDATA[ REFUND_STATUS IN  ]]>
+			<iterate property="refundStatus" conjunction="," open="(" close=")">
+				<![CDATA[ #refundStatus[]# ]]>
+			</iterate>
+		</isNotNull>
+		<isNotNull property="statusList" prepend="and">
+			<![CDATA[ t.ORDER_STATUS IN  ]]>
+			<iterate property="statusList" conjunction="," open="(" close=")">
+				<![CDATA[ #statusList[]# ]]>
+			</iterate>
+		</isNotNull>
+		<isNotNull property="shippingType" prepend="and" removeFirstPrepend="true">
+			<isNotEqual property="shippingType"  compareValue="COSTOMER">
+				<![CDATA[t.SHIPPING_TYPE = #shippingType#]]>
+			</isNotEqual>
+			<isEqual property="shippingType"  compareValue="COSTOMER">
+				<![CDATA[t.SHIPPING_TYPE not in ('CPAM','CPAP','HKPAM','HKPAP','UPS','TNT','FEDEX,EMS') ]]>
+			</isEqual>
+		</isNotNull>
+		<isNotNull property="maxStockDays" prepend="and"
+			removeFirstPrepend="true">
+			<![CDATA[MAX_STOCK_DAYS <= #maxStockDays#]]>
+		</isNotNull>
+		<isNotNull property="paymentType" prepend="and"
+			removeFirstPrepend="true">
+			<![CDATA[topi.PAYMENT_TYPE = #paymentType#]]>
+		</isNotNull>
+		<isNotNull property="shippingCountry" prepend="and"
+			removeFirstPrepend="true">
+			<![CDATA[SHIPPING_COUNTRY = #shippingCountry#]]>
+		</isNotNull>
+	</sql>
+
+	<select id="getOrderListCount" parameterClass="com.fd.fashion.order.vo.SearchOrderVo"
+		 resultClass="com.fd.fashion.order.vo.SearchOrderVo">
+	    <![CDATA[
+	    SELECT  
+			count(0) as orderCount,
+			sum(tt.total) as orderPriceTotal
+	    FROM
+	    	(
+ 			SELECT
+				t.ORDER_ID AS orderId,
+				BUYER_ID AS buyerId,
+				USER_ID AS userId,
+				TOTAL AS total,
+				t.CREATE_DATE AS createDate,
+				FD_DISPUTE_STATUS AS fdDisputeStatus,
+				DISPUTE_STATUS AS disputeStatus,
+				FREEZE AS freeze,
+				BAD_ORDER  AS badOrder,
+				RISK_STATUS AS riskStatus,
+				t.ORDER_STATUS AS orderStatus,
+				REFUND_STATUS AS refundStatus,
+				t.SHIPPING_TYPE AS shippingType,
+				topi.PAY_TIME AS paymentDate,
+				topi.PAYMENT_TYPE AS paymentType,
+				MAX_STOCK_DAYS as maxStockDays,
+				SHIPPING_COUNTRY as shippingCountry
+				FROM
+					t_order t
+					JOIN t_orderstatus_info toi ON t.ORDER_ID = toi.ORDER_ID
+					LEFT JOIN t_order_paymentinfo topi ON topi.ORDER_ID = t.ORDER_ID
+					LEFT JOIN t_order_shipping tos ON tos.ORDER_ID = t.ORDER_ID
+				WHERE
+					toi.ORDER_INFO_ID IN (
+						SELECT
+							max(tosii.ORDER_INFO_ID)
+						FROM
+							t_orderstatus_info tosii,
+							t_order o
+						WHERE
+							tosii.order_id = o.ORDER_ID
+						GROUP BY
+							o.order_id
+						)
+		]]>
+		<dynamic>
+			<include refid="searchOrderListCondition" />
+		</dynamic>
+		<![CDATA[
+				group by t.ORDER_ID) tt
+	    ]]>
+	</select>
+	
+	<select id="getOrderList" parameterClass="com.fd.fashion.order.vo.SearchOrderVo"
+		 resultClass="com.fd.fashion.order.vo.OrderVo">
+	    <![CDATA[
+	    	 	SELECT
+				t.ORDER_ID AS orderId,
+				BUYER_ID AS buyerId,
+				USER_ID AS userId,
+				TOTAL AS total,
+				ADJUST_AMOUNT as adjustAmount,
+				t.CREATE_DATE AS createDate,
+				FD_DISPUTE_STATUS AS fdDisputeStatus,
+				DISPUTE_STATUS AS disputeStatus,
+				FREEZE AS freeze,
+				BAD_ORDER  AS badOrder,
+				RISK_STATUS AS riskStatus,
+				t.ORDER_STATUS AS orderStatus,
+				REFUND_STATUS AS refundStatus,
+				t.SHIPPING_TYPE AS shippingType,
+				topi.PAY_TIME AS paymentDate,
+				topi.PAYMENT_TYPE AS paymentType,
+				MAX_STOCK_DAYS as maxStockDays,
+				SHIPPING_COUNTRY as shippingCountry,
+				tos.SHIPPING_DATE as shippingDate,
+				coupon_amount as couponAmount,
+				ORDER_ADDRESS_ID as orderAddressId
+				FROM
+					t_order t
+					JOIN t_orderstatus_info toi ON t.ORDER_ID = toi.ORDER_ID
+					LEFT JOIN t_order_paymentinfo topi ON topi.ORDER_ID = t.ORDER_ID
+					LEFT JOIN t_order_shipping tos ON tos.ORDER_ID = t.ORDER_ID
+				WHERE
+					toi.ORDER_INFO_ID IN (
+						SELECT
+							max(tosii.ORDER_INFO_ID)
+						FROM
+							t_orderstatus_info tosii,
+							t_order o
+						WHERE
+							tosii.order_id = o.ORDER_ID
+						GROUP BY
+							o.order_id
+						)
+		]]>
+		<dynamic>
+			<include refid="searchOrderListCondition" />
+		</dynamic>
+		<![CDATA[
+				group by t.ORDER_ID
+				order by t.CREATE_DATE desc
+	    ]]>
+	    <dynamic>
+			<isNotNull property="pageInfo">
+				<![CDATA[
+			limit #pageInfo.beginRowNum#,#pageInfo.endRowNum#
+            ]]>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+	<select id="getOrderCountByStatus" parameterClass="com.fd.fashion.order.vo.SearchOrderVo"
+		 resultClass="com.fd.fashion.order.vo.SearchOrderVo">
+	    <![CDATA[
+			SELECT
+				count(case WHEN tt.orderStatus in ('OA001','OA003') then 1 end) as waitPaymentcCount,
+				count(case WHEN tt.orderStatus in ('OS001') then 1 end) as waitDeliveryCount,
+				count(case WHEN tt.disputeStatus <> '' then 1 end) as issueCount,
+				count(case WHEN tt.maxStockDays <= 1 then 1 end) as isStockCount
+			FROM
+				(
+					SELECT
+						t.ORDER_ID AS orderId,
+						BUYER_ID AS buyerId,
+						USER_ID AS userId,
+						TOTAL AS total,
+						t.CREATE_DATE AS createDate,
+						FD_DISPUTE_STATUS AS fdDisputeStatus,
+						DISPUTE_STATUS AS disputeStatus,
+						FREEZE AS freeze,
+						RISK_STATUS AS riskStatus,
+						t.ORDER_STATUS AS orderStatus,
+						REFUND_STATUS AS refundStatus,
+						t.SHIPPING_TYPE AS shippingType,
+						topi.PAY_TIME AS paymentDate,
+						t.ORDER_STATUS as os,
+						t.MAX_STOCK_DAYS as maxStockDays
+						
+					FROM
+						t_order t
+					JOIN t_orderstatus_info toi ON t.ORDER_ID = toi.ORDER_ID
+		
+					LEFT JOIN t_order_paymentinfo topi ON topi.ORDER_ID = t.ORDER_ID
+					LEFT JOIN t_order_shipping tos ON tos.ORDER_ID = t.ORDER_ID
+					where
+						toi.ORDER_INFO_ID IN (
+						SELECT
+							max(tosii.ORDER_INFO_ID)
+						FROM
+							t_orderstatus_info tosii,
+							t_order ttt
+						WHERE
+							tosii.order_id = ttt.ORDER_ID
+						GROUP BY
+							ttt.order_id
+						)
+					GROUP BY
+						t.ORDER_ID
+			) tt
+	    ]]>
+	</select>
+	
+	<select id="getBuyerOrderHis"  parameterClass="java.util.HashMap" resultClass="com.fd.fashion.order.vo.OrderVo">
+		 <![CDATA[
+		 	SELECT
+				t.ORDER_ID as orderId,
+				t.CREATE_DATE as createDate,
+				t.ORDER_ADDRESS_ID as orderAddressId,
+				tosi.ORDER_STATUS as orderStatus,
+				tcos.STATUS_CN as orderStatusCN,
+				max(tosi.CREATE_TIME)
+			FROM
+				t_order t,
+				t_orderstatus_info tosi,
+				tc_order_status tcos
+			WHERE
+				t.ORDER_ID = tosi.ORDER_ID
+			AND tosi.ORDER_STATUS = tcos.STATUS_CODE
+			AND t.BUYER_ID = #buyerId#
+			AND tosi.ORDER_INFO_ID IN (
+				SELECT
+					max(tosii.ORDER_INFO_ID)
+				FROM
+					t_orderstatus_info tosii,
+					t_order tt
+				WHERE
+					tosii.order_id = tt.ORDER_ID
+				GROUP BY
+					tt.order_id 
+			)
+			GROUP BY
+				t.ORDER_ID
+			ORDER BY
+				t.CREATE_DATE DESC
+			
+		  ]]>
+		  <dynamic>
+			<isNotNull property="num">
+				<![CDATA[
+			limit #num#
+            ]]>
+			</isNotNull>
+		</dynamic>
+	</select>
+	
+	<select id="getPrintOrderListCount" parameterClass="com.fd.fashion.order.vo.OrderScanVo" resultClass="java.lang.Integer">
+		<![CDATA[
+SELECT 
+COUNT(0)
+from t_order o 
+LEFT JOIN t_order_paymentinfo  p on p.ORDER_ID = o.ORDER_ID
+LEFT JOIN t_order_shipping s on s.ORDER_ID = o.ORDER_ID
+where o.FREEZE is null and o.ORDER_STATUS in('OS001','OS002','OS003')
+and o.DISPUTE_STATUS is null and o.FD_DISPUTE_STATUS  is null
+and o.REFUND_STATUS is null and o.RISK_STATUS is null
+and o.BAD_ORDER is NULL  
+and o.ORDER_ID not in(SELECT ps.ORDER_ID  from t_order_product ps where ps.stock_out is not null and ps.order_id = o.ORDER_ID)
+		]]>
+		<dynamic>
+				<isNotNull property="orderStatus" prepend="and" removeFirstPrepend="true">
+					 <![CDATA[o.ORDER_STATUS = #orderStatus# ]]>
+		         </isNotNull>
+		         <isNull property="orderStatus" prepend="and" removeFirstPrepend="true">
+		         	<![CDATA[ o.ORDER_STATUS in('OS001','OS002','OS003') ]]>
+		         </isNull>
+				<isNotNull property="paymentType" prepend="and"
+					removeFirstPrepend="true">
+		             <![CDATA[o.PAYMENT_TYPE = #paymentType#]]>
+				</isNotNull>
+				<isNotNull property="shippingType" prepend="and"
+					removeFirstPrepend="true">
+		             <![CDATA[o.SHIPPING_TYPE = #shippingType#]]>
+				</isNotNull>
+				<isNotNull property="orderNo" prepend="and"
+					removeFirstPrepend="true">
+		             <![CDATA[o.ORDER_ID = #orderNo#]]>
+				</isNotNull>	
+				<isNotNull property="shippingCountry" prepend="and"
+					removeFirstPrepend="true">
+		             <![CDATA[o.SHIPPING_COUNTRY = #shippingCountry#]]>
+				</isNotNull>
+				<isNotNull property="buyerName" prepend="and" removeFirstPrepend="true">
+	                <![CDATA[o.USER_ID like '%$buyerName$%']]>
+	            </isNotNull>	
+            	<isNotNull property="paymentTimeStart" prepend="and">
+					<![CDATA[ p.PAY_TIME >= #paymentTimeStart# ]]>
+				</isNotNull>
+				<isNotNull property="paymentTimeEnd" prepend="and">
+					<![CDATA[ p.PAY_TIME <= ADDDATE(#paymentTimeEnd#,1) ]]>
+				</isNotNull>
+			</dynamic>
+	</select>
+	
+	<select id="getPrintOrderList" parameterClass="com.fd.fashion.order.vo.OrderScanVo" resultClass="com.fd.fashion.order.vo.OrderScanVo">
+		<![CDATA[
+			SELECT 
+	o.ORDER_ID as orderNo,
+	o.ORDER_STATUS as orderStatus,
+	o.PAYMENT_TYPE as paymentType,
+  o.SHIPPING_TYPE as shippingType,
+	o.TOTAL as totalCost,
+	o.USER_ID   as buyerName,
+	o.SHIPPING_COUNTRY  as shippingCountry,
+	p.PAY_TIME as paymentTime
+ from t_order o 
+LEFT JOIN t_order_paymentinfo  p on p.ORDER_ID = o.ORDER_ID
+LEFT JOIN t_order_shipping s on s.ORDER_ID = o.ORDER_ID
+where o.FREEZE is null 
+and o.DISPUTE_STATUS is null and o.FD_DISPUTE_STATUS  is null
+and o.REFUND_STATUS is null and o.RISK_STATUS is null
+and o.BAD_ORDER is NULL  
+and o.ORDER_ID not in(SELECT ps.ORDER_ID  from t_order_product ps where ps.stock_out is not null and ps.order_id = o.ORDER_ID)
+
+            ]]>
+             <dynamic>
+				<isNotNull property="orderStatus" prepend="and" removeFirstPrepend="true">
+					 <![CDATA[o.ORDER_STATUS = #orderStatus# ]]>
+		         </isNotNull>
+		         <isNull property="orderStatus" prepend="and" removeFirstPrepend="true">
+		         	<![CDATA[ o.ORDER_STATUS in('OS001','OS002','OS003') ]]>
+		         </isNull>
+				<isNotNull property="paymentType" prepend="and"
+					removeFirstPrepend="true">
+		             <![CDATA[o.PAYMENT_TYPE = #paymentType#]]>
+				</isNotNull>
+				<isNotNull property="shippingType" prepend="and"
+					removeFirstPrepend="true">
+		             <![CDATA[o.SHIPPING_TYPE = #shippingType#]]>
+				</isNotNull>
+				<isNotNull property="orderNo" prepend="and"
+					removeFirstPrepend="true">
+		             <![CDATA[o.ORDER_ID = #orderNo#]]>
+				</isNotNull>	
+				<isNotNull property="shippingCountry" prepend="and"
+					removeFirstPrepend="true">
+		             <![CDATA[o.SHIPPING_COUNTRY = #shippingCountry#]]>
+				</isNotNull>
+				<isNotNull property="buyerName" prepend="and" removeFirstPrepend="true">
+	                <![CDATA[o.USER_ID like '%$buyerName$%']]>
+	            </isNotNull>	
+            	<isNotNull property="paymentTimeStart" prepend="and">
+					<![CDATA[ p.PAY_TIME >= #paymentTimeStart# ]]>
+				</isNotNull>
+				<isNotNull property="paymentTimeEnd" prepend="and">
+					<![CDATA[ p.PAY_TIME <= ADDDATE(#paymentTimeEnd#,1) ]]>
+				</isNotNull>
+			</dynamic>
+			<![CDATA[
+				order by p.PAY_TIME desc
+		    ]]>
+		    <dynamic>
+				<isNotNull property="pageInfo">
+					<![CDATA[
+				limit #pageInfo.beginRowNum#,#pageInfo.endRowNum#
+	            ]]>
+				</isNotNull>
+			</dynamic>
+	</select>
+	
+</sqlMap>

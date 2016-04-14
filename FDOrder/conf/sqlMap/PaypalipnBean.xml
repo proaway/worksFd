@@ -1,0 +1,418 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertPaypalipnBean" parameterClass="com.fd.payment.bean.PaypalipnBean">
+        <![CDATA[
+insert into T_PAYPALIPN
+  (ADDRESS_CITY, ADDRESS_COUNTRY, ADDRESS_COUNTRY_CODE, ADDRESS_NAME, ADDRESS_STATE, ADDRESS_STATUS, ADDRESS_STREET, ADDRESS_ZIP, BUSINESS, CHARSET, CMD, CUSTOM, FIRST_NAME, HANDLING_AMOUNT, ITEM_NAME, ITEM_NUMBER, LAST_NAME, MC_CURRENCY, MC_FEE, MC_GROSS, NOTIFY_VERSION, PAYER_EMAIL, PAYER_ID, PAYER_STATUS, PAYMENT_DATE, PAYMENT_FEE, PAYMENT_GROSS, PAYMENT_STATUS, PAYMENT_TYPE, PENDING_REASON, PROTECTION_ELIGIBILITY, QUANTITY, RECEIVER_EMAIL, RECEIVER_ID, RESIDENCE_COUNTRY, SHIPPING, TAX, TEST_IPN, TRANSACTION_SUBJECT, TXN_ID, TXN_TYPE, VERIFY_SIGN, IPN_DATE, CASE_ID, CASE_TYPE, CASE_CREATION_DATE, REASON_CODE, INVOICE, VERIFY_IPN, PARENT_TXN_ID)
+values
+  (#addressCity#, #addressCountry#, #addressCountryCode#, #addressName#, #addressState#, #addressStatus#, #addressStreet#, #addressZip#, #business#, #charset#, #cmd#, #custom#, #firstName#, #handlingAmount#, #itemName#, #itemNumber#, #lastName#, #mcCurrency#, #mcFee#, #mcGross#, #notifyVersion#, #payerEmail#, #payerId#, #payerStatus#, #paymentDate#, #paymentFee#, #paymentGross#, #paymentStatus#, #paymentType#, #pendingReason#, #protectionEligibility#, #quantity#, #receiverEmail#, #receiverId#, #residenceCountry#, #shipping#, #tax#, #testIpn#, #transactionSubject#, #txnId#, #txnType#, #verifySign#, #ipnDate#, #caseId#, #caseType#, #caseCreationDate#, #reasonCode#, #invoice#, #verifyIpn#, #parentTxnId#)
+        ]]>
+        <selectKey keyProperty="id" resultClass="long">
+            <![CDATA[select @@identity as id]]>
+        </selectKey>
+    </insert>
+
+    <update id="updatePaypalipnBean" parameterClass="com.fd.payment.bean.PaypalipnBean">
+        <![CDATA[
+update T_PAYPALIPN 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="id" prepend="," removeFirstPrepend="true">
+                <![CDATA[ID = #id#]]>
+            </isNotNull>
+            <isNotNull property="addressCity" prepend="," removeFirstPrepend="true">
+                <![CDATA[ADDRESS_CITY = #addressCity#]]>
+            </isNotNull>
+            <isNotNull property="addressCountry" prepend="," removeFirstPrepend="true">
+                <![CDATA[ADDRESS_COUNTRY = #addressCountry#]]>
+            </isNotNull>
+            <isNotNull property="addressCountryCode" prepend="," removeFirstPrepend="true">
+                <![CDATA[ADDRESS_COUNTRY_CODE = #addressCountryCode#]]>
+            </isNotNull>
+            <isNotNull property="addressName" prepend="," removeFirstPrepend="true">
+                <![CDATA[ADDRESS_NAME = #addressName#]]>
+            </isNotNull>
+            <isNotNull property="addressState" prepend="," removeFirstPrepend="true">
+                <![CDATA[ADDRESS_STATE = #addressState#]]>
+            </isNotNull>
+            <isNotNull property="addressStatus" prepend="," removeFirstPrepend="true">
+                <![CDATA[ADDRESS_STATUS = #addressStatus#]]>
+            </isNotNull>
+            <isNotNull property="addressStreet" prepend="," removeFirstPrepend="true">
+                <![CDATA[ADDRESS_STREET = #addressStreet#]]>
+            </isNotNull>
+            <isNotNull property="addressZip" prepend="," removeFirstPrepend="true">
+                <![CDATA[ADDRESS_ZIP = #addressZip#]]>
+            </isNotNull>
+            <isNotNull property="business" prepend="," removeFirstPrepend="true">
+                <![CDATA[BUSINESS = #business#]]>
+            </isNotNull>
+            <isNotNull property="charset" prepend="," removeFirstPrepend="true">
+                <![CDATA[CHARSET = #charset#]]>
+            </isNotNull>
+            <isNotNull property="cmd" prepend="," removeFirstPrepend="true">
+                <![CDATA[CMD = #cmd#]]>
+            </isNotNull>
+            <isNotNull property="custom" prepend="," removeFirstPrepend="true">
+                <![CDATA[CUSTOM = #custom#]]>
+            </isNotNull>
+            <isNotNull property="firstName" prepend="," removeFirstPrepend="true">
+                <![CDATA[FIRST_NAME = #firstName#]]>
+            </isNotNull>
+            <isNotNull property="handlingAmount" prepend="," removeFirstPrepend="true">
+                <![CDATA[HANDLING_AMOUNT = #handlingAmount#]]>
+            </isNotNull>
+            <isNotNull property="itemName" prepend="," removeFirstPrepend="true">
+                <![CDATA[ITEM_NAME = #itemName#]]>
+            </isNotNull>
+            <isNotNull property="itemNumber" prepend="," removeFirstPrepend="true">
+                <![CDATA[ITEM_NUMBER = #itemNumber#]]>
+            </isNotNull>
+            <isNotNull property="lastName" prepend="," removeFirstPrepend="true">
+                <![CDATA[LAST_NAME = #lastName#]]>
+            </isNotNull>
+            <isNotNull property="mcCurrency" prepend="," removeFirstPrepend="true">
+                <![CDATA[MC_CURRENCY = #mcCurrency#]]>
+            </isNotNull>
+            <isNotNull property="mcFee" prepend="," removeFirstPrepend="true">
+                <![CDATA[MC_FEE = #mcFee#]]>
+            </isNotNull>
+            <isNotNull property="mcGross" prepend="," removeFirstPrepend="true">
+                <![CDATA[MC_GROSS = #mcGross#]]>
+            </isNotNull>
+            <isNotNull property="notifyVersion" prepend="," removeFirstPrepend="true">
+                <![CDATA[NOTIFY_VERSION = #notifyVersion#]]>
+            </isNotNull>
+            <isNotNull property="payerEmail" prepend="," removeFirstPrepend="true">
+                <![CDATA[PAYER_EMAIL = #payerEmail#]]>
+            </isNotNull>
+            <isNotNull property="payerId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PAYER_ID = #payerId#]]>
+            </isNotNull>
+            <isNotNull property="payerStatus" prepend="," removeFirstPrepend="true">
+                <![CDATA[PAYER_STATUS = #payerStatus#]]>
+            </isNotNull>
+            <isNotNull property="paymentDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[PAYMENT_DATE = #paymentDate#]]>
+            </isNotNull>
+            <isNotNull property="paymentFee" prepend="," removeFirstPrepend="true">
+                <![CDATA[PAYMENT_FEE = #paymentFee#]]>
+            </isNotNull>
+            <isNotNull property="paymentGross" prepend="," removeFirstPrepend="true">
+                <![CDATA[PAYMENT_GROSS = #paymentGross#]]>
+            </isNotNull>
+            <isNotNull property="paymentStatus" prepend="," removeFirstPrepend="true">
+                <![CDATA[PAYMENT_STATUS = #paymentStatus#]]>
+            </isNotNull>
+            <isNotNull property="paymentType" prepend="," removeFirstPrepend="true">
+                <![CDATA[PAYMENT_TYPE = #paymentType#]]>
+            </isNotNull>
+            <isNotNull property="pendingReason" prepend="," removeFirstPrepend="true">
+                <![CDATA[PENDING_REASON = #pendingReason#]]>
+            </isNotNull>
+            <isNotNull property="protectionEligibility" prepend="," removeFirstPrepend="true">
+                <![CDATA[PROTECTION_ELIGIBILITY = #protectionEligibility#]]>
+            </isNotNull>
+            <isNotNull property="quantity" prepend="," removeFirstPrepend="true">
+                <![CDATA[QUANTITY = #quantity#]]>
+            </isNotNull>
+            <isNotNull property="receiverEmail" prepend="," removeFirstPrepend="true">
+                <![CDATA[RECEIVER_EMAIL = #receiverEmail#]]>
+            </isNotNull>
+            <isNotNull property="receiverId" prepend="," removeFirstPrepend="true">
+                <![CDATA[RECEIVER_ID = #receiverId#]]>
+            </isNotNull>
+            <isNotNull property="residenceCountry" prepend="," removeFirstPrepend="true">
+                <![CDATA[RESIDENCE_COUNTRY = #residenceCountry#]]>
+            </isNotNull>
+            <isNotNull property="shipping" prepend="," removeFirstPrepend="true">
+                <![CDATA[SHIPPING = #shipping#]]>
+            </isNotNull>
+            <isNotNull property="tax" prepend="," removeFirstPrepend="true">
+                <![CDATA[TAX = #tax#]]>
+            </isNotNull>
+            <isNotNull property="testIpn" prepend="," removeFirstPrepend="true">
+                <![CDATA[TEST_IPN = #testIpn#]]>
+            </isNotNull>
+            <isNotNull property="transactionSubject" prepend="," removeFirstPrepend="true">
+                <![CDATA[TRANSACTION_SUBJECT = #transactionSubject#]]>
+            </isNotNull>
+            <isNotNull property="txnId" prepend="," removeFirstPrepend="true">
+                <![CDATA[TXN_ID = #txnId#]]>
+            </isNotNull>
+            <isNotNull property="txnType" prepend="," removeFirstPrepend="true">
+                <![CDATA[TXN_TYPE = #txnType#]]>
+            </isNotNull>
+            <isNotNull property="verifySign" prepend="," removeFirstPrepend="true">
+                <![CDATA[VERIFY_SIGN = #verifySign#]]>
+            </isNotNull>
+            <isNotNull property="ipnDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[IPN_DATE = #ipnDate#]]>
+            </isNotNull>
+            <isNotNull property="caseId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CASE_ID = #caseId#]]>
+            </isNotNull>
+            <isNotNull property="caseType" prepend="," removeFirstPrepend="true">
+                <![CDATA[CASE_TYPE = #caseType#]]>
+            </isNotNull>
+            <isNotNull property="caseCreationDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[CASE_CREATION_DATE = #caseCreationDate#]]>
+            </isNotNull>
+            <isNotNull property="reasonCode" prepend="," removeFirstPrepend="true">
+                <![CDATA[REASON_CODE = #reasonCode#]]>
+            </isNotNull>
+            <isNotNull property="invoice" prepend="," removeFirstPrepend="true">
+                <![CDATA[INVOICE = #invoice#]]>
+            </isNotNull>
+            <isNotNull property="verifyIpn" prepend="," removeFirstPrepend="true">
+                <![CDATA[VERIFY_IPN = #verifyIpn#]]>
+            </isNotNull>
+            <isNotNull property="parentTxnId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PARENT_TXN_ID = #parentTxnId#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ID = #id#
+        ]]>
+    </update>
+
+    <sql id="getPaypalipnBeanCondition">
+         <isNotNull property="id" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ID = #id#]]>
+         </isNotNull>
+         <isNotNull property="addressCity" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ADDRESS_CITY = #addressCity#]]>
+         </isNotNull>
+         <isNotNull property="addressCountry" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ADDRESS_COUNTRY = #addressCountry#]]>
+         </isNotNull>
+         <isNotNull property="addressCountryCode" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ADDRESS_COUNTRY_CODE = #addressCountryCode#]]>
+         </isNotNull>
+         <isNotNull property="addressName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ADDRESS_NAME = #addressName#]]>
+         </isNotNull>
+         <isNotNull property="addressState" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ADDRESS_STATE = #addressState#]]>
+         </isNotNull>
+         <isNotNull property="addressStatus" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ADDRESS_STATUS = #addressStatus#]]>
+         </isNotNull>
+         <isNotNull property="addressStreet" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ADDRESS_STREET = #addressStreet#]]>
+         </isNotNull>
+         <isNotNull property="addressZip" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ADDRESS_ZIP = #addressZip#]]>
+         </isNotNull>
+         <isNotNull property="business" prepend="and" removeFirstPrepend="true">
+             <![CDATA[BUSINESS = #business#]]>
+         </isNotNull>
+         <isNotNull property="charset" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CHARSET = #charset#]]>
+         </isNotNull>
+         <isNotNull property="cmd" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CMD = #cmd#]]>
+         </isNotNull>
+         <isNotNull property="custom" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CUSTOM = #custom#]]>
+         </isNotNull>
+         <isNotNull property="firstName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[FIRST_NAME = #firstName#]]>
+         </isNotNull>
+         <isNotNull property="handlingAmount" prepend="and" removeFirstPrepend="true">
+             <![CDATA[HANDLING_AMOUNT = #handlingAmount#]]>
+         </isNotNull>
+         <isNotNull property="itemName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ITEM_NAME = #itemName#]]>
+         </isNotNull>
+         <isNotNull property="itemNumber" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ITEM_NUMBER = #itemNumber#]]>
+         </isNotNull>
+         <isNotNull property="lastName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LAST_NAME = #lastName#]]>
+         </isNotNull>
+         <isNotNull property="mcCurrency" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MC_CURRENCY = #mcCurrency#]]>
+         </isNotNull>
+         <isNotNull property="mcFee" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MC_FEE = #mcFee#]]>
+         </isNotNull>
+         <isNotNull property="mcGross" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MC_GROSS = #mcGross#]]>
+         </isNotNull>
+         <isNotNull property="notifyVersion" prepend="and" removeFirstPrepend="true">
+             <![CDATA[NOTIFY_VERSION = #notifyVersion#]]>
+         </isNotNull>
+         <isNotNull property="payerEmail" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PAYER_EMAIL = #payerEmail#]]>
+         </isNotNull>
+         <isNotNull property="payerId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PAYER_ID = #payerId#]]>
+         </isNotNull>
+         <isNotNull property="payerStatus" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PAYER_STATUS = #payerStatus#]]>
+         </isNotNull>
+         <isNotNull property="paymentDate" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PAYMENT_DATE = #paymentDate#]]>
+         </isNotNull>
+         <isNotNull property="paymentFee" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PAYMENT_FEE = #paymentFee#]]>
+         </isNotNull>
+         <isNotNull property="paymentGross" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PAYMENT_GROSS = #paymentGross#]]>
+         </isNotNull>
+         <isNotNull property="paymentStatus" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PAYMENT_STATUS = #paymentStatus#]]>
+         </isNotNull>
+         <isNotNull property="paymentType" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PAYMENT_TYPE = #paymentType#]]>
+         </isNotNull>
+         <isNotNull property="pendingReason" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PENDING_REASON = #pendingReason#]]>
+         </isNotNull>
+         <isNotNull property="protectionEligibility" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PROTECTION_ELIGIBILITY = #protectionEligibility#]]>
+         </isNotNull>
+         <isNotNull property="quantity" prepend="and" removeFirstPrepend="true">
+             <![CDATA[QUANTITY = #quantity#]]>
+         </isNotNull>
+         <isNotNull property="receiverEmail" prepend="and" removeFirstPrepend="true">
+             <![CDATA[RECEIVER_EMAIL = #receiverEmail#]]>
+         </isNotNull>
+         <isNotNull property="receiverId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[RECEIVER_ID = #receiverId#]]>
+         </isNotNull>
+         <isNotNull property="residenceCountry" prepend="and" removeFirstPrepend="true">
+             <![CDATA[RESIDENCE_COUNTRY = #residenceCountry#]]>
+         </isNotNull>
+         <isNotNull property="shipping" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SHIPPING = #shipping#]]>
+         </isNotNull>
+         <isNotNull property="tax" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TAX = #tax#]]>
+         </isNotNull>
+         <isNotNull property="testIpn" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TEST_IPN = #testIpn#]]>
+         </isNotNull>
+         <isNotNull property="transactionSubject" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TRANSACTION_SUBJECT = #transactionSubject#]]>
+         </isNotNull>
+         <isNotNull property="txnId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TXN_ID = #txnId#]]>
+         </isNotNull>
+         <isNotNull property="txnType" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TXN_TYPE = #txnType#]]>
+         </isNotNull>
+         <isNotNull property="verifySign" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VERIFY_SIGN = #verifySign#]]>
+         </isNotNull>
+         <isNotNull property="ipnDate" prepend="and" removeFirstPrepend="true">
+             <![CDATA[IPN_DATE = #ipnDate#]]>
+         </isNotNull>
+         <isNotNull property="caseId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CASE_ID = #caseId#]]>
+         </isNotNull>
+         <isNotNull property="caseType" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CASE_TYPE = #caseType#]]>
+         </isNotNull>
+         <isNotNull property="caseCreationDate" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CASE_CREATION_DATE = #caseCreationDate#]]>
+         </isNotNull>
+         <isNotNull property="reasonCode" prepend="and" removeFirstPrepend="true">
+             <![CDATA[REASON_CODE = #reasonCode#]]>
+         </isNotNull>
+         <isNotNull property="invoice" prepend="and" removeFirstPrepend="true">
+             <![CDATA[INVOICE = #invoice#]]>
+         </isNotNull>
+         <isNotNull property="verifyIpn" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VERIFY_IPN = #verifyIpn#]]>
+         </isNotNull>
+         <isNotNull property="parentTxnId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PARENT_TXN_ID = #parentTxnId#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getPaypalipnBeanCount" parameterClass="com.fd.payment.bean.PaypalipnBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_PAYPALIPN 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getPaypalipnBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getPaypalipnBean" parameterClass="com.fd.payment.bean.PaypalipnBean"
+        resultClass="com.fd.payment.bean.PaypalipnBean">
+        <![CDATA[
+select 
+	ID	as id,
+	ADDRESS_CITY	as addressCity,
+	ADDRESS_COUNTRY	as addressCountry,
+	ADDRESS_COUNTRY_CODE	as addressCountryCode,
+	ADDRESS_NAME	as addressName,
+	ADDRESS_STATE	as addressState,
+	ADDRESS_STATUS	as addressStatus,
+	ADDRESS_STREET	as addressStreet,
+	ADDRESS_ZIP	as addressZip,
+	BUSINESS	as business,
+	CHARSET	as charset,
+	CMD	as cmd,
+	CUSTOM	as custom,
+	FIRST_NAME	as firstName,
+	HANDLING_AMOUNT	as handlingAmount,
+	ITEM_NAME	as itemName,
+	ITEM_NUMBER	as itemNumber,
+	LAST_NAME	as lastName,
+	MC_CURRENCY	as mcCurrency,
+	MC_FEE	as mcFee,
+	MC_GROSS	as mcGross,
+	NOTIFY_VERSION	as notifyVersion,
+	PAYER_EMAIL	as payerEmail,
+	PAYER_ID	as payerId,
+	PAYER_STATUS	as payerStatus,
+	PAYMENT_DATE	as paymentDate,
+	PAYMENT_FEE	as paymentFee,
+	PAYMENT_GROSS	as paymentGross,
+	PAYMENT_STATUS	as paymentStatus,
+	PAYMENT_TYPE	as paymentType,
+	PENDING_REASON	as pendingReason,
+	PROTECTION_ELIGIBILITY	as protectionEligibility,
+	QUANTITY	as quantity,
+	RECEIVER_EMAIL	as receiverEmail,
+	RECEIVER_ID	as receiverId,
+	RESIDENCE_COUNTRY	as residenceCountry,
+	SHIPPING	as shipping,
+	TAX	as tax,
+	TEST_IPN	as testIpn,
+	TRANSACTION_SUBJECT	as transactionSubject,
+	TXN_ID	as txnId,
+	TXN_TYPE	as txnType,
+	VERIFY_SIGN	as verifySign,
+	IPN_DATE	as ipnDate,
+	CASE_ID	as caseId,
+	CASE_TYPE	as caseType,
+	CASE_CREATION_DATE	as caseCreationDate,
+	REASON_CODE	as reasonCode,
+	INVOICE	as invoice,
+	VERIFY_IPN	as verifyIpn,
+	PARENT_TXN_ID	as parentTxnId
+from T_PAYPALIPN 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getPaypalipnBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deletePaypalipnBean" parameterClass="com.fd.payment.bean.PaypalipnBean">
+        <![CDATA[
+delete from T_PAYPALIPN where ID=#id#
+        ]]>
+    </delete>
+
+</sqlMap>

@@ -1,0 +1,42 @@
+
+<div class="pagination pagination-right">
+    <span style="display:block; margin-bottom:5px;">
+		总条数：<strong class="red mar_right_15">$!pageInfo.recordCount</strong> 
+		总页数：<strong class="red">$!pageInfo.pageCount</strong>
+		<input type="hidden" id="pageIndex" name="pageIndex" value="$pageInfo.pageIndex"/>
+		<input type="hidden" name="smtType" id="smtType" value="1" />
+	</span>
+    <ul>
+			<!--<a href="javascript:();">«</a>-->
+	 #if($!pageInfo.pageIndex && $!pageInfo.prePageNo)
+    		#if($!pageInfo.pageIndex == $!pageInfo.prePageNo||$!pageInfo.prePageNo == 0)
+            <li class="disabled"><a href="javascript:();">&lt;&lt;</a> </li>
+              #else
+                <li><a href="javascript:TurnPage('$pageInfo.prePageNo','')">&lt;&lt;</a></li>
+             #end 
+	 #end        
+		##for 循环
+        #if($!pageInfo.rangeMin && $!pageInfo.rangeMax)
+          #foreach($!i in [$!pageInfo.rangeMin ..$!pageInfo.rangeMax] )
+            #if($!i==$!pageInfo.pageIndex)   
+            ##不加链接  
+            <li class="active"><a href="javascript:();">$!i</a></li>
+            #else
+            ##加上链接
+            <li><a href="javascript:TurnPage('$!i','')">$!i</a></li>
+            #end
+          #end
+        #end 
+        <!-- <li class="active"><a href="javascript:();">1</a></li>
+        <li><a href="javascript:();">2</a></li>
+        <li><a href="javascript:();">3</a></li>
+        <li><a href="javascript:();">4</a></li>
+        <li><a href="javascript:();">5</a></li>-->
+       #if($pageInfo.pageIndex==$pageInfo.nextPageNo||$pageInfo.nextPageNo==0)   
+          <li class="disabled"> <a href="javascript:();">&gt;&gt;</a></li>
+       #else
+         <li><a href="javascript:TurnPage('$pageInfo.nextPageNo','')">&gt;&gt;</a></li>
+       #end 
+		<!--<li><a href="javascript:();">»</a></li>-->
+    </ul>
+</div>

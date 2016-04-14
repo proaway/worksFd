@@ -1,0 +1,58 @@
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal hide fade" id="contact_buyer">
+<div class="modal-header">
+<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+<h5 id="myModalLabel">联系买家</h5>
+</div>
+<div class="modal-body">
+<table cellspacing="0" cellpadding="0" border="0" class="mar_left_20">
+  <tbody><tr>
+<td width="110px" class="v_top right_t"><label class="mar_right_10">买家昵称：</label></td>
+<td><label class="bold">$userId</label></td>
+  </tr>
+ <!--
+  <tr>
+<td class="v_top right_t"><label class="mar_right_10">联系方式：</label></td>
+<td>
+	<label class="checkbox left"><input type="checkbox" checked="checked" value="站内信">站内信</label>
+    <label class="checkbox left mar_left_20"><input type="checkbox" value="邮件">邮件</label>
+</td>
+  </tr>-->
+  <tr>
+<td class="v_top right_t"><label class="mar_right_10">内容：</label></td>
+<td><textarea rows="3" class="input-xlarge" placeholder="Message" style="resize: none;" id="mailContent"></textarea></td>
+  </tr>
+  <tr>
+<td class="v_top right_t"><label class="mar_right_10">选择发信邮箱：</label></td>
+<td>
+	<label class="radio"><input type="radio" checked="checked" name="send_email" value="testEmail@teste.com">testEmail@teste.com</label>
+	<!--<label class="radio"><input type="radio" name="send_email" value="testEmail@teste.com">testEmail@teste.com</label>-->
+</td>
+  </tr>
+</tbody></table>
+</div>
+<div class="modal-footer">
+<button aria-hidden="true" data-dismiss="modal" class="btn">取消</button>
+<button type="button" class="btn btn-primary" onclick="sendMailToBuyer();" >发送</button>
+</div>
+</div><!-- E contact_buyer -->
+<script>
+jQuery('#contact_buyer').modal({
+	show:true
+})
+
+function sendMailToBuyer(){
+	jQuery("body").showLoading();
+	var orderId = "$!orderId";
+	var buyerId = "$!buyerId";
+	var content = jQuery("#mailContent").val();
+	var url = '$link.setAction("order.AjaxSendMailToBuyer")';
+	jQuery.getJSON(url, {orderId:orderId,buyerId:buyerId,content:content}, function(data) {
+		jQuery("body").hideLoading();
+		if (data == "1") {
+			alert('发送成功!')
+			jQuery("#mailContent").val("");
+			jQuery("#contact_buyer").modal("hide");
+		}
+	});
+}
+</script>

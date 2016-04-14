@@ -1,0 +1,271 @@
+$page.setTitle("Order Detail")
+<form id="detailForm" name="detailForm" method="post">
+<table cellspacing="0" cellpadding="0" border="0" class="od_ul_to_tab">
+  <tbody><tr>
+	<td width="120px" class="text_right">Order Number: </td>
+	<td width="480px"><label>$orderInfo.orderId</label></td>
+	<td rowspan="9" class="pad_left_10" width="180px">
+		<input type="hidden" value="$orderInfo.orderId" id="orderId" name="orderId"/>
+    	<ul>
+        	<li>
+		<a herf="javascript:;;" ><input type="button" value="Re-add to Cart" class="btn btn-info padding_5 mar_right_10" onclick="reAddToCart('$orderInfo.orderId');"></a></li>
+		#if($orderInfo.freeze =='OF001')
+		#elseif($orderInfo.riskStatus =='OR101')
+			<li><a class="display_block mar_top_10" href="javascript:;" onclick="cancelOrder('$orderInfo.orderId','detail');">Cancel Order</a></li>
+		#elseif($orderInfo.disputeStatus=='OD001'||$orderInfo.disputeStatus=='OD002'||$orderInfo.disputeStatus=='OD003'||$orderInfo.orderStatus=='OR214')
+			<li><a href="javascript:;;" target="_blank"><input type="button" value="Write a feedback" class="btn padding_5 mar_right_10 bold"></a></li>
+		#elseif($orderInfo.refundStatus.startsWith('OR'))
+			#if($orderInfo.refundStatus=='OR214')
+				<li><a href="javascript:;;" target="_blank"><input type="button" value="Write a feedback" class="btn padding_5 mar_right_10 bold"></a></li>
+			#end
+		#elseif($orderInfo.orderStatus=='OA001'||$orderInfo.orderStatus=='OA003')
+			<li><a href="$link.setPage('order,PayOrder.html')?orderId=$!orderInfo.orderId" target="_blank"><input type="button" value="Complete Your Payment" class="btn padding_5 mar_right_10 bold"/></a></li>
+			<li><a class="display_block mar_top_10" href="javascript:;" onclick="cancelOrder('$orderInfo.orderId','detail');">Cancel Order</a></li>
+		#elseif($orderInfo.orderStatus=='OC101')
+			<li><a href="javascript:;;" target="_blank"><input type="button" value="Write a feedback" class="btn padding_5 mar_right_10 bold"></a></li>
+            <li><a class="display_block mar_top_10" href="javascript:;" onclick="refundOrder('$orderInfo.orderId','detail')">Refund</a></li>
+		#elseif($orderInfo.orderStatus=='OS002'||$orderInfo.orderStatus=='OS003'||$orderInfo.orderStatus=='OS004')
+			<li><a class="display_block mar_top_10" href="javascript:;" onclick="refundOrder('$orderInfo.orderId','detail')">Refund</a></li>
+		#elseif($orderInfo.orderStatus=='OS005')
+			<li><a href="javascript:completeOrder('$orderInfo.orderId','detail');;" target="_blank"><input type="button" value="Confirm receipt" class="btn padding_5 mar_right_10 bold"></a></li>
+			<li><a class="display_block mar_top_10" href="javascript:;" onclick="refundOrder('$orderInfo.orderId','detail')">Refund</a></li>
+		#end
+        </ul>
+    </td>
+  </tr>
+  <tr>
+    <td class="text_right">Order Date: </td>
+    <td><label>#if($orderInfo.createDate)$!StringUtil.getDateString($!orderInfo.createDate,'yyyy-MM-dd HH:mm:ss')#else --- #end</label></td>
+  </tr>
+  <tr>
+    <td class="text_right">Order Status: </td>
+    <td><label><b>$!currentStatus.orderStatusCn</b></label></td>
+  </tr>
+  #if($orderAddressInfo)
+  <tr>
+    <td class="text_right">Shipped to: </td>
+    <td><label>$orderAddressInfo.addressline1  $!orderAddressInfo.addressLine2 <br /> #if($!orderAddressInfo.phone) ,phone: $!orderAddressInfo.phone #end</label></td>
+  </tr>
+  #end
+  #if($orderInfo.shippingType)	
+  <tr>
+    <td class="text_right">Shipping Method: </td>
+    <td><label> $orderInfo.shippingType
+        </label>
+	</td>
+  </tr>
+  #end
+  #if($paymentInfo.billAddress)
+  <tr>
+    <td class="text_right">Bill to: </td>
+    <td><label>$paymentInfo.billAddress</label></td>
+  </tr>
+  #end
+  #if($!paymentInfo.paymentType)
+  <tr>
+    <td class="text_right">Payment Method: </td>
+    <td><label>$!paymentInfo.paymentType</label></td>
+  </tr>
+  #end
+</tbody></table>
+ <!--       
+<div class="step_show_div">
+      <table cellspacing="0" cellpadding="0" border="0">
+        <tbody><tr>
+          <td colspan="4">
+              <!--<div class="step_show_bg_1"></div>-->
+			<!--    #if($ostatus && $ostatus.startsWith('OA'))
+                  <div class="step_show_bg_1"></div>
+    			#elseif($ostatus &&$ostatus=='OS005')
+    				<div class="step_show_bg_3"></div>
+    			#elseif($ostatus && $ostatus.startsWith('OS'))
+    				<div class="step_show_bg_2"></div>
+    			#elseif($ostatus && $ostatus.startsWith('OC'))
+    				<div class="step_show_bg_4"></div>
+    			#end
+          </td>
+        </tr>
+        <tr>
+		  <td class="step_show_char">#if($orderInfo.createDate)$!StringUtil.getDateString($!orderInfo.createDate,'yyyy-MM-dd HH:mm:ss')#end</td>
+          <td class="step_show_char">#if($secondDate)$!StringUtil.getDateString($secondDate,'yyyy-MM-dd HH:mm:ss')#end</td>
+          <td class="step_show_char">#if($thirdDate)$!StringUtil.getDateString($thirdDate,'yyyy-MM-dd HH:mm:ss')#end</td>
+          <td>#if($fourDate)$!StringUtil.getDateString($fourDate,'yyyy-MM-dd HH:mm:ss')#end</td>
+        </tr>
+      </tbody></table>
+    </div><!--E step show-- --> 
+	<div class="step_show_div">
+      <table cellspacing="0" cellpadding="0" border="0">
+        <tbody><tr>
+          <td colspan="4">
+              <div class="step_show_1"></div>
+			  #if($goMap.get("sendDate"))
+              <div class="step_show_2_2"></div>
+			  #else
+				#if($goMap.get("fourStatus")=="OC201")
+					<div class="step_show_4_3"></div>
+				#else
+					<div class="step_show_2_1"></div>
+				#end
+			  #end
+              #if($goMap.get("thirdDate"))
+              <div class="step_show_3_2"></div>
+			  #else
+				#if($goMap.get("fourStatus")=="OC201")
+					#if($goMap.get("sendDate"))
+						<div class="step_show_4_3"></div>
+    				#else
+    				#end
+				#else
+					<div class="step_show_3_1"></div>
+				#end
+			  #end
+               #if($goMap.get("fourDate"))
+    				#if($goMap.get("fourStatus")=="OC101")
+    					<div class="step_show_4_2"></div>
+    				#else
+    					#if($goMap.get("thirdDate"))
+        					<div class="step_show_4_3"></div>
+        				#else
+        				#end
+    				#end
+			  #else
+					<div class="step_show_4_1"></div>
+			  #end
+          </td>
+        </tr>
+        <tr>
+          <td class="step_show_char">$!StringUtil.getDateString($!orderInfo.createDate,'yyyy-MM-dd HH:mm:ss')</td>
+          #if($goMap.get("sendDate"))<td class="step_show_char">$goMap.get("sendDate")</td>#end
+          #if($goMap.get("thirdDate"))<td class="step_show_char">$goMap.get("thirdDate")</td>#end
+          #if($goMap.get("fourDate"))<td>$goMap.get("fourDate")</td>#else <td>&nbsp;</td>#end
+        </tr>
+      </tbody></table>
+    </div>
+	
+    <br class="clearfloat">
+    
+    <div class="cart_right_top">
+                      <div class="cart_right_top_tit">
+                      	<table cellspacing="0" cellpadding="0" border="0" width="750" class="mar_left_15">
+  <tbody><tr>
+    <td width="150">Processing time</td>
+    <td>Processing information</td>
+    <td width="160">Operator</td>
+  </tr>
+</tbody></table>
+                      </div>
+                      <table cellspacing="0" cellpadding="0" border="0" width="750" class="mar_left_15 mar_bottom_10 line-height25">
+  <tbody>
+	 #if($orderStatuList)
+		#foreach($orderStatu in $orderStatuList)
+         	<tr>
+            <td width="150">#if($orderStatu.createTime)$!StringUtil.getDateString($!orderStatu.createTime,'yyyy-MM-dd HH:mm:ss')#else --- #end</td>
+            <td>$!{orderStatu.orderStatusCn} #if($orderStatu.memo && $orderStatu.memo!=""),$orderStatu.memo #end</td>
+            <td width="160">$!orderStatu.operator</td>
+          </tr>
+	  #end
+	#end
+
+</tbody></table>
+
+                  </div>
+                  
+       <br class="clearfloat">           
+    <!-- --------------- S Order Details --------------- -->
+      <table cellspacing="0" cellpadding="0" class="confirm_tab mar-top10">
+          <tbody><tr class="confirm_tab_tit2">
+            <td width="90"></td>
+            <td style="min-width:290px;width:290px;">Item</td>
+            <td width="10"></td>
+            <td style="min-width:160px; width:160px;" class="center">Price</td>
+            <td width="10"></td>
+            <td width="100" class="center">Quantity</td>
+            <td style="min-width:120px; text-align:center;">Amount</td>
+          </tr>
+		  #set($index=1)
+	  #if($orderProductList)
+		#foreach($productVo in $orderProductList)
+          <tr class="confirm_tab_order_bo">
+            <td width="90" style="padding:10px 0px;">
+				<a title="$!productVo.productName" target="_blank" 
+#if($productVo.snapshot)
+	href="$RewriteUtil.getSnapshotUrl($productVo.snapshot)"
+#else
+	href="$RewriteUtil.getProductUrl($productVo.productName, $productVo.productId)"
+#end	
+					>
+					<img width="50" height="50" class="pd_img" alt="$!productVo.productName" src="$!productVo.imageUrl">
+				</a>
+		    </td>
+            <td>
+            	<table cellspacing="0" cellpadding="0" border="0" width="100%">
+                  <tbody>
+				  <tr>
+                      <td><a title="" target="_blank" 
+#if($productVo.snapshot)
+	href="$RewriteUtil.getSnapshotUrl($productVo.snapshot)"
+#else
+	href="$RewriteUtil.getProductUrl($productVo.productName, $productVo.productId)"
+#end					
+						>$productVo.productName</a></td>
+                  </tr>
+				  #if($productVo.config)
+        				#if($!productVo.config.get('mainTitle'))
+							 <tr>
+                                  <td><span class="font11">$!productVo.config.get('mainTitle').getValue():</span><span class="font11 font_black ml6">$!productVo.config.get('mainValue').getValue()</span></td>
+                              </tr>
+        				#end
+        				#if($!productVo.config.get('subTitle'))
+							<tr>
+                                  <td><span class="font11">$!productVo.config.get('subTitle').getValue():</span><span class="font11 font_black ml6">$!productVo.config.get('subValue').getValue()</span></td>
+                              </tr>
+        				#end
+        				
+        			#end
+              </tbody></table>
+             </td>
+            <td width="20"></td>
+            <td style="vertical-align:middle;" class="center">
+					#if($productVo.discount && $productVo.discount>0)
+						<span class="confirm_tab_order_price"> USD $ $cnu.cullNum($productVo.itemCost) / $productVo.packing</span><br><br>
+					#end
+					USD<span class="font_red ml6">$</span><span><b class="font_red">$cnu.cullNum($productVo.itemPrice)</b></span><span class="font11"> / $productVo.packing</span>
+			</td>
+            <td width="20"></td>
+            <td class="center" style="vertical-align:middle;">$productVo.quantity</td>
+			#if($index==1)
+            <td rowspan="$orderProductList.size()" class="confirm_order_bo_amount_td">
+                <span style="color:#666;">USD</span><span class="font_red ml6">$</span>
+    			<span><b class="font_red">$!cnu.cullNum($!orderInfo.itemTotal)</b></span>
+			</td>
+			#end
+			#set($index = $index + 1)
+          </tr>
+		  #end
+	  #end
+      </tbody></table>
+    <!-- --------------- E Order Details --------------- -->
+    <br class="clearfloat">
+    <!-- --------------- S content bottom --------------- -->
+      <table cellspacing="0" cellpadding="0" class="confirm_content_bottom_tab">
+          <tbody><tr><td>Subtotal ( ${orderProductList.size()} items ) :USD $  <span class="font_red">$!orderInfo.itemTotal</span></td></tr>
+          <tr><td>(+) Shipping Charges :USD $  <span class="font_red"> #if($!orderInfo.shippingTotal && $!orderInfo.shippingTotal>0) $cnu.cullNum($!orderInfo.shippingTotal) #else 0.0 #end</span></td></tr>
+          <tr><td class="font_red">(-) Discount :USD $  <span class="font_red">$cnu.cullNum($!orderInfo.couponAmount)</span></td></tr>
+		 #if($orderInfo.adjustAmount)
+			<tr>
+    		  #if( $orderInfo.adjustAmount>0)
+    				<td>(+) 
+    		  #else
+    				<td class="font_red">(-) 
+    		  #end
+				      AdjustAmount :USD $  <span class="font_red">$ #if($orderInfo.adjustAmount) $cnu.cullNum($!orderInfo.adjustAmount)#else 0.0 #end</span>
+					</td>
+			</tr>
+		  #end
+          <tr><td height="40" style="font-weight:bold; font-size:16px;">Grand Total: <span class="font_red">USD  $ $totalPrice</span></td></tr>
+      </tbody></table>
+    <!-- --------------- E content bottom --------------- -->
+    <br class="clearfloat">
+    <!-- --------------- E content --------------- -->
+    <br class="clearfloat">
+</form>

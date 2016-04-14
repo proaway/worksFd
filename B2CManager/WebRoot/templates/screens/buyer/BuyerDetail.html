@@ -1,0 +1,353 @@
+$page.setTitle("买家详情")
+<br class="clear" />
+<h2 class="mar_bottom_5 text-center border_bottom pad_bottom_5 mar_bottom_20">买家详情</h2>
+
+<h4>买家详细信息：</h4>
+<ul class="inline mar_top_20">
+	<li><label>状态：</label></li>
+    <li><label class="green" id="emailActiveDiv">#if($buyerInfo.buyer.emailActive==1)已激活#else 未激活 #end</label></li>
+    <li><label class="red" id="freezeActiveDiv">#if($buyerInfo.buyer.freeze==1)冻结 #else 正常 #end</label></li>
+    <li id="freezeChange">
+		#if($buyerInfo.buyer.freeze==0)
+		<input type="button" class="btn btn-small" value="冻结该用户" onclick="actionBuyer(2);" id="freezeButton">
+		#else 
+		<input type="button" class="btn btn-small" value="解冻" onclick="actionBuyer(3);" id="freezeButton"> 
+		#end
+	</li>
+    <li><input type="button" value="修改密码" class="btn btn-small" onclick="changePass($buyerInfo.buyer.buyerId,'$buyerInfo.buyer.userId','$buyerInfo.buyer.email');"></li>
+    <li class="right">
+		<label class="right mar_top_3">$buyerInfo.buyer.country</label>
+		<img style="width:50px; height:50px;" src="$RewriteUtil.getCountryImg(${buyerInfo.buyer.country})" class="right mar_right_15" />
+		<div class="right center_t mar_top_f5 width_100px">
+            <label class="font12 mar_bottom_0"><span id="thisTime" >10:25</span></label>
+            <label class="font12 mar_top_0"><span  id="thisDate" >04月23日 周二</span></label>
+		</div>
+	</li>
+</ul>
+<table class="mar_top_20">
+	<tbody><tr>
+    	<td width="150px" class="v_top pad_top_10">
+        	<img style="width:120px; height:120px;" alt="$!buyerInfo.buyer.userId" title="$!buyerInfo.buyer.imageUrl" src="$!{buyerInfo.buyer.imageUrl}" class="img-polaroid img-rounded " />
+            <label class="mar_top_5 mar_left_5">级别：初次购买</label>
+        </td>
+        <td class="v_top">
+        	<ul class="unstyled">
+            	<li class="clear"><h3 class="left cursor_auto">$buyerInfo.buyer.firstName $buyerInfo.buyer.lastName</h3><label class="left lineh_44 mar_left_15">|</label><label class="left lineh_44 mar_left_15 green">#if($buyerInfo.buyer.sex == 0) 女 #end#if($buyerInfo.buyer.sex == 1) 男 #end</label>
+					<label class="left lineh_44 mar_left_15">|</label>
+					<label class="left lineh_44 mar_left_15 green">
+						#if($!buyerInfo.buyer.buyerType=="1") Consumer #end 
+						#if($!buyerInfo.buyer.buyerType=="2") Wholesaler #end 
+						#if($!buyerInfo.buyer.buyerType=="3") Offline Retailer #end 
+						#if($!buyerInfo.buyer.buyerType=="4") Online Retailer #end 
+						#if($!buyerInfo.buyer.buyerType=="5") Dropshipper #end 
+						#if($!buyerInfo.buyer.buyerType=="6") Auction Seller #end 
+						#if($!buyerInfo.buyer.buyerType=="7") Others #end 
+					</label>
+				</li>
+                <li class="clear"><label class="left">地址：</label><label class="left mar_left_15 green">$!buyerInfo.buyer.country</label></li>
+                <li class="clear"><label class="left">公司：</label><label class="left mar_left_15 green">$!buyerInfo.buyer.company</label></li>
+                <li class="clear"><label class="left">电话：</label><label class="left mar_left_15">010-1234567-121</label></li>
+                <li class="clear"><label class="left">手机：</label><label class="left mar_left_15">010-1234567-121</label></li>
+                <li class="clear"><label class="left">邮箱：</label><label class="left mar_left_15">$buyerInfo.buyer.email</label>#if($buyerInfo.buyer.emailActive==1)<label class="left mar_left_5 green">（已验证）</label>#else<label class="left mar_left_5 red">（未验证）</label><input type="button" class="btn btn-mini bold btn-success" value="发邮件" onclick="sendActiveEmail($buyerInfo.buyer.buyerId)">#end</li>
+            </ul>
+        </td>
+    </tr>
+</tbody></table>
+<table width="100%" class="mar_top_25 lineh_26">
+	<tbody><tr>
+    	<td width="50%" class="v_top">
+        	<div class="alert alert-success black height_260px">
+                <table cellspacing="0" cellpadding="0" border="0">
+                  <tbody><tr>
+                    <td class="right_t"><label>支付方式：</label></td>
+                    <td>
+						<label class="blue left">
+							#if($paymentTypeList)
+								#foreach($pay in $paymentTypeList)
+									${pay.name}/
+								#end
+							#end
+						</label>
+						#if($buyerMap)
+    						<label class="left mar_left_40">下单周期：</label>
+    						<label class="blue left">$!{buyerMap.get("recycleOrderDay")}天</label></td>
+    					#end
+                  </tr>
+                  <tr>
+                    <td class="right_t"><label>支付订单：</label></td>
+                    <td><label class="blue left">$!buyerInfo.paymentOrderCount</label><label class="left mar_left_40">总金额：</label><label class="blue left">$ $cu.cullNum($!{buyerInfo.paymentOrderTotal},2)</label><label class="left mar_left_40">平均金额：</label><label class="blue left">$ $cu.cullNum($!buyerInfo.paymentOrderAverage,2)</label></td>
+                  </tr>
+                  <tr>
+                    <td class="right_t"><label>退款订单：</label></td>
+                    <td>
+						<label class="blue left">$!buyerInfo.refundOrderCount</label>
+						<label class="left mar_left_40">总金额：</label>
+						<label class="blue left">$$!buyerInfo.refundOrderTotal</label></td>
+                  </tr>
+                  <tr>
+                    <td class="right_t"><label>未付款：</label></td>
+                    <td>
+						<label class="blue left">$!buyerInfo.waitForPayOrderCount</label>
+						<label class="left mar_left_40">总金额：</label>
+						<label class="blue left">$$!buyerInfo.waitForPayOrderTotal</label>
+					</td>
+                  </tr>
+				  #if($buyerMap)
+                  <tr>
+                    <td class="right_t"><label>初次下单时间：</label></td>
+                    <td>
+						<label class="blue left">$!buyerMap.get("firstDate")（北京时间）</label>
+						<label class="left font10">[IP：$!buyerMap.get("firstIp")]</label>
+					</td>
+                  </tr>
+                  <tr>
+                    <td class="right_t"><label>最近下单时间：</label></td>
+                    <td>
+						<label class="blue left">$!buyerMap.get("lastDate")（北京时间）</label>
+						<label class="left font10">[IP：$!buyerMap.get("lastIp")]</label>
+					</td>
+                  </tr>
+				  #end
+                </tbody></table>
+            </div>
+        </td>
+        <td width="15px">&nbsp;</td>
+        <td class="v_top">
+        	<div class="alert alert-success black height_260px">
+                <table cellspacing="0" cellpadding="0" border="0">
+                  <tbody><tr>
+                    <td class="right_t"><label>注册时间：</label></td>
+                    <td><label class="blue left">#if($!buyerInfo.buyer.regDate)$!StringUtil.getDateString($!buyerInfo.buyer.regDate,'yyyy-MM-dd HH:mm:ss')（北京时间）#end</label></td>
+                  </tr>
+                  <tr>
+                    <td class="right_t"><label>注册IP：</label></td>
+                    <td><label class="blue left mar_left_20">$registIp</label></td>
+                  </tr>
+                  <tr>
+                    <td class="right_t"><label>注册来源：</label></td>
+                    <td><label class="blue left">google.com/EDM/SNS/直接访问</label></td>
+                  </tr>
+                  <tr>
+                    <td class="right_t"><label>最后登录时间：</label></td>
+                    <td><label class="blue left">2013-3-28 19:22:19（北京时间）</label></td>
+                  </tr>
+                  <tr>
+                    <td class="right_t"><label>登录IP：</label></td>
+                    <td><label class="blue left">192.168.0.0.1（参考国家 美国）</label></td>
+                  </tr>
+                  <tr>
+                    <td class="right_t"><label>登录来源：</label></td>
+                    <td><label class="blue left">google.com/EDM/SNS/直接访问</label></td>
+                  </tr>
+                </tbody></table>
+            </div>
+        </td>
+    </tr>
+</tbody></table>
+<table width="100%" class="">
+	<tbody><tr>
+    	<td width="50%" class="v_top">
+			
+        	<div class="alert alert-success black height_110px">
+            	<h5>货运地址（默认）：</h5>
+                <p class="mar_top_15">
+					<label class="left">
+						$!defaultAddr.addressLine1 $!defaultAddr.addressLine2<br />#if($!defaultAddr.phone) Phonenumber: $!defaultAddr.phone #end</label>
+						#if($!defaultAddr)<label class="right font12 green">2013-04-25 13:52:22</label></p><br class="clear">#end
+               #if($bookCount) <a style="color:#F63;" data-toggle="modal" class="right" role="button" href="#used_address">买家的地址：$!{bookCount}个<span class="icon-chevron-down"></span></a><br class="clear" />#end
+            </div>
+			
+        </td>
+        <td width="15px">&nbsp;</td>
+        <td class="v_top">
+        	<div class="alert alert-success black height_110px">
+            	<h5>账单地址：</h5>
+                <p class="mar_top_15"><label class="left">17, Palmerston Crescent, London, N13 4UE, the United Kingdom</label><label class="right font12 green">2013-04-25 13:52:22</label></p><br class="clear" />
+                <a style="color:#F63;" href="javascript:();" class="right">曾使用的地址：0个</a><br class="clear" />
+            </div>
+        </td>
+    </tr>
+</tbody></table>
+<div style="width: 790px; max-width: 790px; margin-left: -395px;" aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal hide fade" id="used_address">
+    <div class="modal-header">
+    <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+    <h5 id="myModalLabel">买家地址</h5>
+    </div>
+	#if($!books)
+    <div class="modal-body">
+		#foreach($book in $books)
+    	<p class="mar_top_15"><label class="left">$!book.addressLine1 $!book.addressLine2</label><label class="right font12 green">2013-04-25 13:52:22</label></p><br class="clear">
+		#end
+	</div>
+	#end
+    <div class="modal-footer">
+    <button aria-hidden="true" data-dismiss="modal" class="btn">关闭</button>
+    </div>
+</div><!-- E used_address -->
+<script>
+function actionBuyer(flag){
+	var str = "";
+	if(confirm("确定要执行此操作吗？")){
+		jQuery("body").showLoading();
+		jQuery.get(
+		"$link.setAction('buyer.AjaxUpdateBuyerStatusAction')?ids=$buyerId&flag="+flag,
+    		function(data){
+				jQuery("body").hideLoading();
+				if(flag==3){
+    				if(data=="0"){
+						jQuery("#freezeActiveDiv").html("冻结");
+						jQuery("li[id='freezeChange']").html("<input type='button' class='btn btn-small' value='解冻' onclick='actionBuyer(3);'> ");
+    					alert("解冻失败!");
+        			} else {
+						jQuery("#freezeActiveDiv").html("正常");
+						jQuery("li[id='freezeChange']").html("<input type='button' class='btn btn-small' value='冻结该用户' onclick='actionBuyer(2);'> ");
+						alert("解冻成功");
+        			}
+				}else{
+					if(data=="0"){
+						jQuery("#freezeActiveDiv").html("正常");
+						jQuery("li[id='freezeChange']").html("<input type='button' class='btn btn-small' value='冻结该用户' onclick='actionBuyer(2);'> ");
+    					alert("冻结失败!");
+        			} else {
+						jQuery("#freezeActiveDiv").html("冻结");
+						jQuery("li[id='freezeChange']").html("<input type='button' class='btn btn-small' value='解冻' onclick='actionBuyer(3);'>");
+						alert("买家被冻结");
+        			}
+				}
+		});
+	}
+}
+</script>
+
+<script>
+
+//修改密码
+function changePass(buyerId,userId,email) {
+	var div = jQuery("#buyerInfoDiv");
+	if (div.length == 0) {
+		div = jQuery("<div id='buyerInfoDiv'></div>");
+		jQuery("body").append(div);
+	}
+	div.empty();
+	div.load("$link.setPage('buyer,ChangePassword.html')?buyerId=" + buyerId+"&userId="+userId+"&email="+email);
+}
+
+//发送邮件
+function sendActiveEmail(buyerId) {
+	jQuery("body").showLoading();
+	jQuery.getJSON(
+		"$link.setAction('buyer.AjaxSendActiveEmailAction')",
+		{buyerId:buyerId},
+		function(data){
+			jQuery("body").hideLoading();
+			if(data=="1"){
+				alert("Send email success");
+			}else{
+				alert("发送失败");
+			}
+		});
+}
+
+</script>
+#if($regionInfo && $regionInfo.timeZone)
+<script>
+var offset = ${regionInfo.timeZone};
+function calcTime() {
+	d = new Date();
+	var year = d.getYear();
+	var month = d.getMonth()+1;
+	var date = d.getDate();
+	var hours = d.getHours();
+	var day = d.getDay();
+	if(offset>0){
+    	if(hours+offset<23){
+    		hours = hours+offset;
+    	}else {
+			hours = hours+offset-24;
+			if(date == getDateNum(month)){
+				date =  getDateNum(month);
+				month = month+1;
+				if(month>12){
+					month = 1;
+					year = year+1;
+				}
+			}else{
+				date = date+1;
+			}
+		}
+	}else{
+		if(hours+offset>0){
+    		hours = hours+offset;
+    	}else if(date==1){
+    		if(month==1){
+    			year = year-1;
+    			month = 12;
+    			date = 31;
+				hours = 24+hours+offset;
+    		}else{
+    			month = month-1;
+    			date = getDateNum(month);
+				hours = 24+hours+offset;
+    		}
+    	}else{
+			date = date-1;
+			hours = 24+hours+offset;
+		}
+		if(hours>23){
+			hours = 24-hours;
+			var da = getDateNum(month);
+    		if(date==da){
+    			if(month==12){
+    				year = year+1;
+    				month = 1;
+    			}else{
+    				month = month+1;
+    			}
+    			date = 1;
+    		}else{
+    			date = date+1;
+    		}
+		}
+	}
+	
+	var time = hours+":"+d.getMinutes()+":"+d.getSeconds();
+	var dateStr = month+"月"+date+"日 ";
+	var dd = new Date();
+	dd.setYear(year);
+	dd.setMonth(month);
+	dd.setDate(date);
+	if((dd.getDay()-1+7)%7==0){
+		dateStr = dateStr+" 周日";
+	}else if((dd.getDay()-1+7)%7==1){
+		dateStr = dateStr+" 周一";
+	}else if((dd.getDay()-1+7)%7==2){
+		dateStr = dateStr+" 周二";
+	}else if((dd.getDay()-1+7)%7==3){
+		dateStr = dateStr+" 周三";
+	}else if((dd.getDay()-1+7)%7==4){
+		dateStr = dateStr+" 周四";
+	}else if((dd.getDay()-1+7)%7==5){
+		dateStr = dateStr+" 周五";
+	}else if((dd.getDay()-1+7)%7==6){
+		dateStr = dateStr+" 周六";
+	}
+	jQuery("#thisTime").empty();
+	jQuery("#thisTime").append(time);
+	jQuery("#thisDate").empty();
+	jQuery("#thisDate").append(dateStr);
+	setTimeout("calcTime();", 1000); 
+}
+calcTime();
+
+function getDateNum(month){
+	if(month==2){
+		date = (years%4==0 && years%100!=0)||(years%400==0)?29:28;
+	}else if(month==3||month==5||month==7||month==8||month==10||month==12){
+		date = 31;
+	}else{
+		date = 30;
+	}
+	return date;
+}
+</script>
+#end

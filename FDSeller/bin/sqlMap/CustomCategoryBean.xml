@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertCustomCategoryBean" parameterClass="com.fd.fashion.seller.bean.CustomCategoryBean">
+        <![CDATA[
+insert into TC_CUSTOM_CATEGORY
+  (CAT_ID, PARENT_ID, CAT_CODE, CAT_NAME, CAT_NAME_CN, CAT_LEVEL, ISLEAF, CREATOR, UPDATE_TIME, OPERATOR, CREATE_TIME)
+values
+  (#catId#, #parentId#, #catCode#, #catName#, #catNameCn#, #catLevel#, #isleaf#, #creator#, #updateTime#, #operator#, #createTime#)
+        ]]>
+    </insert>
+
+    <update id="updateCustomCategoryBean" parameterClass="com.fd.fashion.seller.bean.CustomCategoryBean">
+        <![CDATA[
+update TC_CUSTOM_CATEGORY 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="catId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CAT_ID = #catId#]]>
+            </isNotNull>
+            <isNotNull property="parentId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PARENT_ID = #parentId#]]>
+            </isNotNull>
+            <isNotNull property="catCode" prepend="," removeFirstPrepend="true">
+                <![CDATA[CAT_CODE = #catCode#]]>
+            </isNotNull>
+            <isNotNull property="catName" prepend="," removeFirstPrepend="true">
+                <![CDATA[CAT_NAME = #catName#]]>
+            </isNotNull>
+            <isNotNull property="catNameCn" prepend="," removeFirstPrepend="true">
+                <![CDATA[CAT_NAME_CN = #catNameCn#]]>
+            </isNotNull>
+            <isNotNull property="catLevel" prepend="," removeFirstPrepend="true">
+                <![CDATA[CAT_LEVEL = #catLevel#]]>
+            </isNotNull>
+            <isNotNull property="isleaf" prepend="," removeFirstPrepend="true">
+                <![CDATA[ISLEAF = #isleaf#]]>
+            </isNotNull>
+            <isNotNull property="creator" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATOR = #creator#]]>
+            </isNotNull>
+            <isNotNull property="updateTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[UPDATE_TIME = #updateTime#]]>
+            </isNotNull>
+            <isNotNull property="operator" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPERATOR = #operator#]]>
+            </isNotNull>
+            <isNotNull property="createTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_TIME = #createTime#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where CAT_ID = #catId#
+        ]]>
+    </update>
+
+    <sql id="getCustomCategoryBeanCondition">
+            <isNotNull property="catId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[CAT_ID = #catId#]]>
+            </isNotNull>
+            <isNotNull property="parentId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[PARENT_ID = #parentId#]]>
+            </isNotNull>
+            <isNotNull property="catCode" prepend="and" removeFirstPrepend="true">
+                <![CDATA[CAT_CODE = #catCode#]]>
+            </isNotNull>
+            <isNotNull property="catName" prepend="and" removeFirstPrepend="true">
+                <![CDATA[CAT_NAME = #catName#]]>
+            </isNotNull>
+            <isNotNull property="catNameCn" prepend="and" removeFirstPrepend="true">
+                <![CDATA[CAT_NAME_CN = #catNameCn#]]>
+            </isNotNull>
+            <isNotNull property="catLevel" prepend="and" removeFirstPrepend="true">
+                <![CDATA[CAT_LEVEL = #catLevel#]]>
+            </isNotNull>
+            <isNotNull property="isleaf" prepend="and" removeFirstPrepend="true">
+                <![CDATA[ISLEAF = #isleaf#]]>
+            </isNotNull>
+            <isNotNull property="creator" prepend="and" removeFirstPrepend="true">
+                <![CDATA[CREATOR = #creator#]]>
+            </isNotNull>
+            <isNotNull property="updateTime" prepend="and" removeFirstPrepend="true">
+                <![CDATA[UPDATE_TIME = #updateTime#]]>
+            </isNotNull>
+            <isNotNull property="operator" prepend="and" removeFirstPrepend="true">
+                <![CDATA[OPERATOR = #operator#]]>
+            </isNotNull>
+            <isNotNull property="createTime" prepend="and" removeFirstPrepend="true">
+                <![CDATA[CREATE_TIME = #createTime#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getCustomCategoryBeanCount" parameterClass="com.fd.fashion.seller.bean.CustomCategoryBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from TC_CUSTOM_CATEGORY 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getCustomCategoryBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getCustomCategoryBean" parameterClass="com.fd.fashion.seller.bean.CustomCategoryBean"
+        resultClass="com.fd.fashion.seller.bean.CustomCategoryBean">
+        <![CDATA[
+select 
+	CAT_ID	as catId,
+	PARENT_ID	as parentId,
+	CAT_CODE	as catCode,
+	CAT_NAME	as catName,
+	CAT_NAME_CN	as catNameCn,
+	CAT_LEVEL	as catLevel,
+	ISLEAF	as isleaf,
+	CREATOR	as creator,
+	UPDATE_TIME	as updateTime,
+	OPERATOR	as operator,
+	CREATE_TIME	as createTime
+from TC_CUSTOM_CATEGORY 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getCustomCategoryBeanCondition"/>
+        </dynamic>
+<![CDATA[
+order by CAT_ID
+]]>
+    </select>
+
+    <delete id="deleteCustomCategoryBean" parameterClass="com.fd.fashion.seller.bean.CustomCategoryBean">
+        <![CDATA[
+delete from TC_CUSTOM_CATEGORY where CAT_ID like '$catId$%'
+        ]]>
+    </delete>
+    
+    <delete id="deleteAllCustomCats">
+        <![CDATA[
+delete from tc_custom_category
+        ]]>
+    </delete>
+    
+    <insert id="importSysCategories" parameterClass="string">
+        <![CDATA[
+insert into tc_custom_category(CAT_ID,PARENT_ID,CAT_CODE,CAT_NAME,CAT_NAME_CN,CAT_LEVEL,ISLEAF,CREATOR,UPDATE_TIME,OPERATOR,CREATE_TIME)
+SELECT 	c.CAT_ID, c.PARENT_ID, c.CAT_ID, c.CAT_NAME, c.CAT_NAME_CN, c.CAT_LEVEL, c.ISLEAF, '$value$', NOW(), '$value$', NOW()
+from tc_category c
+        ]]>
+    </insert>
+</sqlMap>

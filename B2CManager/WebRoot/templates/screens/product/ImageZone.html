@@ -1,0 +1,471 @@
+$page.setTitle("图片空间")
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/jquery-ui-1.10.0.custom.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/prototype/shopmic-manage/css/jquery-ui-1.10.0.custom.css" />
+<script language="javascript" src="/static/prototype/shopmic-manage/js/datepicker.js"></script>
+<form method="get" id="listForm" name="listForm" onsubmit="return searchImage();">
+	<input name="orderStatus" type="hidden" value="$!imageCondition.orderByStatus"/>
+	##<input type="hidden" name="pageIndex" value="$!pageInfo.pageIndex"/>
+	<input type="hidden" name="catId" value="$!imageCondition.catId"/>
+	<input type="hidden" name="operator" value="$!imageCondition.operator"/>
+	<br class="clear">
+<h4 class="mar_top_15 left" style="width:110px;">图片空间</h4>
+<h5 class="mar_top_15 left" style="width:80px;">已用空间：</h5>
+<div class="progress left mar_top_15" style="width:800px;">
+	<div class="bar bar-info" style=" min-width:80px;width: ${usedBarSize}%;">${usedSize}MB/${maxSize}MB</div>
+</div>
+
+<table border="0" cellspacing="0" cellpadding="0" width="100%" class="table">
+  <tr class="info">
+	<td>
+    	<ul class="inline mar_top_5 black">
+            <li><input placeholder="" name="keyword" class="input-xlarge mar_top_5" type="text" id="keyword" value="$!imageCondition.params.keyword"></li>
+            <li><input type="submit" class="btn btn-primary"  value="搜索"/></li>
+            <li><input type="button" id="upload" class="btn btn-primary" value="上传图片"/></li>
+        </ul>
+		</td>
+	</tr>
+</table>
+<div style="width:18%; float:left;">
+	<table border="0" cellspacing="0" cellpadding="0"
+		class="table mar_bottom_5">
+		<tr class="info">
+			<td>
+			<input type="button" class="btn left" type="button" data-toggle="modal" data-target="#add_img_category" value="新建分组"/>
+          <div id="add_img_category" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="margin-top:120px;">
+              <div class="modal-header">
+              <input type="button" class="close" data-dismiss="modal" aria-hidden="true" value="×"/>
+              <h5 id="myModalLabel">新建分组</h5>
+              </div>
+              <div class="modal-body">
+                  <label class="control-label mar_top_5 mar_right_10 left mar_left_80" for="newCatName">分组名称：</label>
+                  <input type="text" placeholder="分组名称" class="" id="newCatName"/>
+              </div>
+              <div class="modal-footer">
+              <input type="button" class="btn" data-dismiss="modal" aria-hidden="true" value="取消"/>
+              <input type="button" class="btn btn-primary" data-dismiss="modal" onclick="addnewCat();" value="确定添加">
+              </div>
+          </div><!-- E add_img_category -->
+			</td>
+
+		</tr>
+	</table>
+
+	<div style="height:550px; overflow:auto;" >
+		<p class="mar_top_10">
+			<a href="$link.setPage('product,ImageZone.html')"><span
+				class="left icon-chevron-right mar_right_5 mar_left_10 mar_top_3 width_14px"></span><label
+				class="bold" id="cat0">全部</label>
+			</a>
+		</p>
+		<p class="mar_top_10">
+			<a href="$link.setPage('product,ImageZone.html')?catId=0"><span
+				class="left icon-chevron-right mar_right_5 mar_left_10 mar_top_3 width_14px"></span><label
+				class="bold" id="cat0">未分组</label>
+			</a>
+		</p>
+		<div id="imageCats">
+		#foreach($imageCat in $imageCatList)
+		<p class="mar_top_10">
+			<a href="$link.setPage('product,ImageZone.html')?catId=$!imageCat.catId"><span
+				class="left icon-chevron-right mar_right_5 mar_left_10 mar_top_3 width_14px"></span><label
+				class="bold" id="cat$!imageCat.catId">$!imageCat.catName</label>
+			</a>
+		</p>
+		#end
+		</div>
+
+	</div>
+</div>
+<!-- E left -->
+    <div id="MyTree" class="tree">
+    <div class = "tree-folder" style="display:none;">
+    <div class="tree-folder-header">
+    <i class="icon-folder-close"></i>
+    <div class="tree-folder-name"></div>
+    </div>
+    <div class="tree-folder-content"></div>
+    <div class="tree-loader" style="display:none"></div>
+    </div>
+    <div class="tree-item" style="display:none;">
+    <i class="tree-dot"></i>
+    <div class="tree-item-name"></div>
+    </div>
+    </div>
+    
+<div style="width:80%; float:right;">
+	<table border="0" cellpadding="0" cellspacing="0">
+		<tbody>
+			<tr>
+				<td><select class="mar_right_15" id="operator">
+						<option value="0">所有人上传</option>
+						<option>Yoki</option>
+						<option>Jacob</option>
+						<option>Robert</option>
+						<option>Kristen</option>
+				</select>
+				</td>
+				<td><input placeholder="日期" value="$!imageCondition.params.startDate" name="datepickera" id="datepickera" class="input-medium mar_right_10 left" type="text">
+					<label class="left mar_top_5">到</label>
+					<input placeholder="日期" value="$!imageCondition.params.endDate" name="datepickerb" id="datepickerb" class="input-medium mar_left_10 mar_right_20 left" type="text">
+				</td>
+				<td><input type="submit" class="btn btn-info mar_top_f10" value="筛选"/>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<table cellspacing="0" cellpadding="0" border="0" class="mar_top_5">
+    	<tbody><tr>
+        	<td><label>当前分组：</label></td>
+            <td>
+            <label class="bold left" id="ic_label" value="$!imgCat.catId">#if($imgCat) #if($imgCat!=0)$imgCat.catName #else 未分组  #end #else 所有图片     #end</label>
+            <label class="left" id="ic_count">($!pageInfo.recordCount)</label>
+            <input type="text" style="display:none;" class="input-medium" id="ic_text" value="$!imgCat.catName" ></td>
+            <td #if(!$imgCat || $imgCat == 0) style="display: none;" #end id="change"><input type="button" onclick="changeCatName();" class="btn btn-link left mar_top_f5 mar_left_20" id="ic_edit" value="修改分组名称"/>
+            <input type="button" class="btn left btn-link mar_top_f5" id="ic_del" onclick="modifyImageCat(2);" value="删除分组"/>
+            <input type="button" class="btn btn-info left mar_top_f10 mar_left_10 hide" id="ic_save" onclick="modifyImageCat(1);" value="保存"/>
+            <input type="button" onclick="cancel();" class="btn left mar_top_f10 mar_left_10 hide" id="ic_exit" value="取消"/></td>
+        </tr>    
+    </tbody></table>
+	<table class="table mar_top_5" border="0" cellpadding="0"
+		cellspacing="0">
+		<tbody>
+			<tr class="success">
+				<td><label class="checkbox"><input value="select"
+						id="chk_all" type="checkbox" />全选 </label>
+				</td>
+				<td><label onclick="orderByImager(1)">图片名称<span class="icon-arrow-up"></span> </label>
+				</td>
+				<td><label onclick="orderByImager(2)">图片大小<span class="icon-arrow-down"></span> </label>
+				</td> 
+				<td><label onclick="orderByImager(3)">更新时间<span class="icon-arrow-down"></span> </label>
+				</td> 
+
+			</tr>
+		</tbody>
+	</table>
+	<div id="images">
+	<ul class="inline images_space_content" >
+		#foreach($image in $images)
+		<li id="imgLi"><label class="checkbox left"> <input class="hide"
+				value="$image.imageId" type="checkbox" name="chk_list" onclick="updateSelectImgCount();" /> </label> <a
+			href="javascript:;;" class="right hide" value="$image.imageId"
+			name="delImage"> <span class="left icon-remove mar_top_5 clear"></span>
+		</a> <a href="$RewriteUtil.getImageUrl($image.imageUrl)" target="_blank"> <img src="$RewriteUtil.getImageUrl($image.imageUrl)"
+				class="img-polaroid clear" /> </a> <span
+			class="left #if($image.isused == 1) icon-ok-circle #end clear mar_top_3"></span>
+			<span class="help-block left">$image.imageName</span></li> 
+		#end
+			
+	</ul>
+		#parse("/screens/Nap.html")
+	</div>
+	<label class="left mar_top_5">已选择：</label>
+	<label class="left font14blue mar_top_5 mar_right_10" id="selectImgCount">0</label>
+	<input type="button" class="btn btn-warning left mar_left_10 mar_right_20" onclick="deleteImages()" value="删除"/>
+	<label class="left mar_top_5 mar_right_5 mar_left_20">移动到</label>
+	<select class="left input-medium" id="moveCat">
+	#foreach($imageCat in $imageCatList)
+      <option value="$!imageCat.catId">$!imageCat.catName</option>
+     #end
+    </select><input type="button" class="btn btn-info left mar_left_10" onclick="moveToCat();" value="确定"/>
+	 <br class="clear">
+<!-- 	<div class="pagination pagination-right mar_top_f10">
+		<ul>
+			<li class="disabled"><a href="javascript:();">«</a>
+			</li>
+			<li class="active"><a href="javascript:();">1</a>
+			</li>
+			<li><a href="javascript:();">2</a>
+			</li>
+			<li><a href="javascript:();">3</a>
+			</li>
+			<li><a href="javascript:();">4</a>
+			</li>
+			<li><a href="javascript:();">5</a>
+			</li>
+			<li><a href="javascript:();">»</a>
+			</li>
+		</ul>
+	</div> -->
+
+	<!-- E page -->
+
+</div>
+<!-- E right -->
+<br class="clear">
+</form>
+<script>
+jQuery(document).ready(function(){
+	jQuery("li#imgLi").hover(
+		function(){
+			jQuery(this).find("[name='chk_list']").show();
+			jQuery(this).find("[name='delImage']").show();
+		},
+		function(){
+			if(!jQuery(this).find("[name='chk_list']")[0].checked) {
+				jQuery(this).find("[name='chk_list']").hide();
+			}
+			jQuery(this).find("[name='delImage']").hide();
+		}
+	);
+	jQuery("input[name='chk_list']:checked").show();
+});
+
+KindEditor.ready(function(K) {
+	var editor = K.editor({
+		allowUpload : true,
+		uploadJson : '$link.setAction('product.ProductUploadImage')',
+		afterUpload : function(){updateImageList('All');}
+	});
+	K('#upload').click(function() {
+		editor.loadPlugin('multiimage', function() {
+			editor.plugin.multiImageDialog({
+				clickFn : function(urlList) {
+					editor.hideDialog();
+					location = "$link.setPage('product,ImageZone.html')?catId=0";
+				}
+			});
+		});
+	});
+});
+
+jQuery("#chk_all").click(function(){
+	 if(jQuery(this).attr("checked") == 'checked'){
+     	jQuery("input[name='chk_list']").attr("checked","checked");
+		jQuery("input[name='chk_list']").show();
+	 }else{
+	 	jQuery("input[name='chk_list']").removeAttr("checked")
+		jQuery("input[name='chk_list']").hide();
+	 }
+	 updateSelectImgCount();
+});
+
+jQuery('a[name="delImage"]').click(function() {
+	var imageId = jQuery(this).attr("value");
+	var choice=confirm("您确认要删除吗？", function() { }, null);
+
+	if(choice){
+       	jQuery.ajax({
+        	url:"$link.setAction('product.DeleteImageAction')",
+        	type:"post",
+        	data:"imageId="+imageId,
+        	success:function(data){
+				if(data != 0){
+					jQuery("a[value='"+data+"']").parent().remove();
+				}
+				updateSelectImgCount()
+			}
+    	 });	
+  	}
+  
+ });
+ 
+ function getImagesByCat(catId){
+	if(catId==0){
+		jQuery("#change").hide();
+	}else{
+		jQuery("#change").show();
+	}
+	jQuery("#images").html(data);
+	jQuery("#ic_label").text(jQuery("#cat"+catId).text());
+	jQuery("#ic_label").attr("value",catId);
+	jQuery("#ic_text").val(jQuery("#cat"+catId).text());
+	updateSelectImgCount();
+}
+ 
+function deleteImages(){
+	var images = '';
+	jQuery('input[name="chk_list"]:checked').each(function(){
+    	images += jQuery(this).attr("value") + ","
+	});
+	var choice=confirm("您确认要删除吗？", function() { }, null);
+
+	if(choice){
+       	jQuery.ajax({
+        	url:"$link.setAction('product.DeleteImageAction')",
+        	type:"post",
+        	data:"imageId="+images,
+        	success:function(data){
+				var ids = data.split(",")
+				for(var i=0;i<ids.length;i++){
+					jQuery("input[value='"+ids[i]+"']").parent().parent().remove();
+				}
+				updateSelectImgCount();
+			}
+    	 });	
+  	}
+}
+
+function updateSelectImgCount(){
+	var num = jQuery('input[name="chk_list"]:checked').length;
+	jQuery("#selectImgCount").text(num);
+}
+
+function orderByImager(n){
+	jQuery("input[name='orderStatus']").val(n);
+	jQuery("#listForm")[0].submit();
+}
+
+function addnewCat(){
+	var name = jQuery("#newCatName").val();
+	name = name.trim();
+	jQuery("#newCatName").val(name);
+	if (name == "") {
+		return;
+	}
+	jQuery.getJSON(
+    	"$link.setPage('product,AddImageCat.html')", {catName: encodeURIComponent(name)},
+    	function(imageCat){
+			var data = '<p class="mar_top_10">';
+			data += '<a href="$link.setPage('product,ImageZone.html')?catId='+imageCat.catId+'">';
+			data += '<span class="left icon-chevron-right mar_right_5 mar_left_10 mar_top_3 width_14px"></span>';
+			data += '<label class="bold" id="cat'+imageCat.catId+'">'+imageCat.catName+'</label>';
+			data += '</a>';
+			data += '</p>';
+			jQuery("#imageCats").append(data);
+			jQuery("#moveCat").append('<option value="'+imageCat.catId+'">'+imageCat.catName+'</option>');
+			updateSelectImgCount();
+	 });	
+}
+
+function modifyImageCat(status){
+	##1修改保存  2删除
+	var name = jQuery("#ic_text").val();
+	var id = jQuery("#ic_label").attr("value");
+	if(status == 2){
+		if (!confirm("确定要删除?")) {
+			return;
+		}
+	}
+	jQuery.ajax({
+    	url:"$link.setAction('product.ModifyImageCat')",
+    	type:"post",
+    	data:"catName="+name+"&status="+status+"&catId="+id,
+    	success:function(data){
+			if (status == 1) {
+        		jQuery("#cat"+id).text(name);
+        		jQuery("#ic_label").text(name);
+        		jQuery("#ic_label").attr("value",id);
+        		cancel();
+				jQuery("#imageCats").prepend(data);
+			} else {
+				window.location = "$link.setPage('product,ImageZone.html')";
+			}
+		}
+	 });	
+}
+
+function cancel(){
+	javascript:document.getElementById('ic_label').style.display='block';
+	document.getElementById('ic_text').style.display='none';
+	document.getElementById('ic_edit').style.display='block';
+	document.getElementById('ic_save').style.display='none';
+	document.getElementById('ic_exit').style.display='none';
+	document.getElementById('ic_del').style.display='block';
+}
+
+
+function moveToCat(){
+	var images = '';
+	jQuery('input[name="chk_list"]:checked').each(function(){
+    	images += jQuery(this).attr("value") + ","
+	});
+	var catId = jQuery("#moveCat").val();
+	jQuery.ajax({
+    	url:"$link.setAction('product.MoveImageToCatAction')",
+    	type:"post",
+    	data:"imageId="+images+"&catId="+catId,
+    	success:function(data){
+			var ids = data.split(",")
+			for(var i=0;i<ids.length;i++){
+				if (ids[i] !="") {
+					jQuery("input[value='"+ids[i]+"']").parent().parent().remove();
+				}
+			}
+			alert("转移成功!");
+			updateSelectImgCount();
+		}
+	 });	
+}
+
+jQuery(function () {
+    // Datepicker
+    jQuery.datepicker.regional['zh-CN'] = {  
+        clearText: '清除',  
+        clearStatus: '清除已选日期',  
+        closeText: '关闭',  
+        closeStatus: '不改变当前选择',  
+        prevText: '<上月',  
+        prevStatus: '显示上月',  
+        prevBigText: '<<',  
+        prevBigStatus: '显示上一年',  
+        nextText: '下月>',  
+        nextStatus: '显示下月',  
+        nextBigText: '>>',  
+        nextBigStatus: '显示下一年',  
+        currentText: '今天',  
+        currentStatus: '显示本月',  
+        monthNames: ['一月','二月','三月','四月','五月','六月', '七月','八月','九月','十月','十一月','十二月'],  
+        monthNamesShort: ['一','二','三','四','五','六', '七','八','九','十','十一','十二'],  
+        monthStatus: '选择月份',  
+        yearStatus: '选择年份',  
+        weekHeader: '周',  
+        weekStatus: '年内周次',  
+        dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],  
+        dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],  
+        dayNamesMin: ['日','一','二','三','四','五','六'],  
+        dayStatus: '设置 DD 为一周起始',  
+        dateStatus: '选择 m月 d日, DD',  
+        dateFormat: 'yy-mm-dd',  
+        firstDay: 1,  
+        initStatus: '请选择日期',  
+        isRTL: false};  
+        jQuery.datepicker.setDefaults(jQuery.datepicker.regional['zh-CN']);  
+
+});
+
+jQuery('#datepickera').datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#datepickerb" ).datepicker( "option", "minDate", selectedDate );
+    }
+});
+
+
+jQuery( "#datepickerb" ).datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#datepickera" ).datepicker( "option", "maxDate", selectedDate );
+    }
+});
+
+function searchImage() {
+	var keyword = jQuery("#keyword").val().trim();
+	if (keyword != "") {
+		jQuery("#keyword").val(encodeURIComponent(keyword));
+	}
+}
+function changeCatName(){
+	jQuery("#ic_label").hide();
+	jQuery("#ic_edit").hide();
+	jQuery("#ic_count").hide();
+	jQuery("#ic_del").hide();
+	jQuery("#ic_text").show();
+	jQuery("#ic_save").show();
+	jQuery("#ic_exit").show();
+
+}
+
+function cancel(){
+	jQuery("#ic_label").show();
+	jQuery("#ic_edit").show();
+	jQuery("#ic_count").show();
+	jQuery("#ic_del").show();
+	
+	jQuery("#ic_text").hide();
+	jQuery("#ic_save").hide();
+	jQuery("#ic_exit").hide();
+
+}
+</script>
+

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertVisitSearchBean" parameterClass="com.fd.statistics.bean.VisitSearchBean">
+        <![CDATA[
+insert into T_VISIT_SEARCH
+  (VISIT_ID, KEYWORD, CATEGORY, PAGE_SIZE, PAGE_INDEX, RESULT_COUNT, SEARCH_TIME, ONLY_WHOLESALE, ONLY_DISCOUNT, QUERYSTR)
+values
+  (#visitId#, #keyword#, #category#, #pageSize#, #pageIndex#, #resultCount#, #searchTime#, #onlyWholesale#, #onlyDiscount#, #querystr#)
+        ]]>
+        <selectKey keyProperty="resultId" resultClass="long">
+            <![CDATA[select @@identity as resultId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateVisitSearchBean" parameterClass="com.fd.statistics.bean.VisitSearchBean">
+        <![CDATA[
+update T_VISIT_SEARCH 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="resultId" prepend="," removeFirstPrepend="true">
+                <![CDATA[RESULT_ID = #resultId#]]>
+            </isNotNull>
+            <isNotNull property="visitId" prepend="," removeFirstPrepend="true">
+                <![CDATA[VISIT_ID = #visitId#]]>
+            </isNotNull>
+            <isNotNull property="keyword" prepend="," removeFirstPrepend="true">
+                <![CDATA[KEYWORD = #keyword#]]>
+            </isNotNull>
+            <isNotNull property="category" prepend="," removeFirstPrepend="true">
+                <![CDATA[CATEGORY = #category#]]>
+            </isNotNull>
+            <isNotNull property="pageSize" prepend="," removeFirstPrepend="true">
+                <![CDATA[PAGE_SIZE = #pageSize#]]>
+            </isNotNull>
+            <isNotNull property="pageIndex" prepend="," removeFirstPrepend="true">
+                <![CDATA[PAGE_INDEX = #pageIndex#]]>
+            </isNotNull>
+            <isNotNull property="resultCount" prepend="," removeFirstPrepend="true">
+                <![CDATA[RESULT_COUNT = #resultCount#]]>
+            </isNotNull>
+            <isNotNull property="searchTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[SEARCH_TIME = #searchTime#]]>
+            </isNotNull>
+            <isNotNull property="onlyWholesale" prepend="," removeFirstPrepend="true">
+                <![CDATA[ONLY_WHOLESALE = #onlyWholesale#]]>
+            </isNotNull>
+            <isNotNull property="onlyDiscount" prepend="," removeFirstPrepend="true">
+                <![CDATA[ONLY_DISCOUNT = #onlyDiscount#]]>
+            </isNotNull>
+            <isNotNull property="querystr" prepend="," removeFirstPrepend="true">
+                <![CDATA[QUERYSTR = #querystr#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where RESULT_ID = #resultId#
+        ]]>
+    </update>
+
+    <sql id="getVisitSearchBeanCondition">
+         <isNotNull property="resultId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[RESULT_ID = #resultId#]]>
+         </isNotNull>
+         <isNotNull property="visitId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VISIT_ID = #visitId#]]>
+         </isNotNull>
+         <isNotNull property="keyword" prepend="and" removeFirstPrepend="true">
+             <![CDATA[KEYWORD = #keyword#]]>
+         </isNotNull>
+         <isNotNull property="category" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CATEGORY = #category#]]>
+         </isNotNull>
+         <isNotNull property="pageSize" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PAGE_SIZE = #pageSize#]]>
+         </isNotNull>
+         <isNotNull property="pageIndex" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PAGE_INDEX = #pageIndex#]]>
+         </isNotNull>
+         <isNotNull property="resultCount" prepend="and" removeFirstPrepend="true">
+             <![CDATA[RESULT_COUNT = #resultCount#]]>
+         </isNotNull>
+         <isNotNull property="searchTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SEARCH_TIME = #searchTime#]]>
+         </isNotNull>
+         <isNotNull property="onlyWholesale" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ONLY_WHOLESALE = #onlyWholesale#]]>
+         </isNotNull>
+         <isNotNull property="onlyDiscount" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ONLY_DISCOUNT = #onlyDiscount#]]>
+         </isNotNull>
+         <isNotNull property="querystr" prepend="and" removeFirstPrepend="true">
+             <![CDATA[QUERYSTR = #querystr#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getVisitSearchBeanCount" parameterClass="com.fd.statistics.bean.VisitSearchBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_VISIT_SEARCH 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitSearchBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getVisitSearchBean" parameterClass="com.fd.statistics.bean.VisitSearchBean"
+        resultClass="com.fd.statistics.bean.VisitSearchBean">
+        <![CDATA[
+select 
+	RESULT_ID	as resultId,
+	VISIT_ID	as visitId,
+	KEYWORD	as keyword,
+	CATEGORY	as category,
+	PAGE_SIZE	as pageSize,
+	PAGE_INDEX	as pageIndex,
+	RESULT_COUNT	as resultCount,
+	SEARCH_TIME	as searchTime,
+	ONLY_WHOLESALE	as onlyWholesale,
+	ONLY_DISCOUNT	as onlyDiscount,
+	QUERYSTR	as querystr
+from T_VISIT_SEARCH 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitSearchBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteVisitSearchBean" parameterClass="com.fd.statistics.bean.VisitSearchBean">
+        <![CDATA[
+delete from T_VISIT_SEARCH where RESULT_ID=#resultId#
+        ]]>
+    </delete>
+
+</sqlMap>

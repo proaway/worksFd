@@ -1,0 +1,44 @@
+           <div class="accordion-heading upload_tit">
+                <a class="accordion-toggle font_s_14">6. 物流信息</a>
+            </div>
+            <div class="accordion-body collapse in">
+                <div class="accordion-inner">
+                    <table border="0" cellspacing="0" cellpadding="0" width="100%" class="upload_tab">
+                      <tr>
+                        <td class="td_70"><label class="right mar_top_5"><span
+							class="required">*</span>运费模板：</label></td>
+                        <td>
+                          <label class="radio left">
+                          <input type="radio" name="shippingType" id="rd_fee1" value="0" checked="checked" onclick="document.getElementById('fee_templet').style.display='none';">默认运费模板
+                          </label><span class="help-block left mar_left_10">系统默认运费模板，为<span class="black">全球免运费模板</span>，谨慎选择。</span>
+                          <br class="clear" />
+                          <label class="radio left">
+                          <input type="radio" name="shippingType" id="rd_fee2" value="1" onclick="document.getElementById('fee_templet').style.display='block';">自定义模板
+                          </label><span class="help-block left mar_left_10">您可以选择自定义的运费模板 <a href="$link.setPage('shipping,ShippingTemplates.html')" target="_blank">（查看自定义运费模板）</a> 。</span>
+                          <br class="clear" />
+                          <div class="hide" id="fee_templet">
+                          <select class="span4" name="shippingSelect">
+							#foreach($shippingInfo in $shippingInfos)
+								<option value="$shippingInfo.shippingInfoId">$shippingInfo.name</option>
+							#end
+                            </select><span class="help-block"><span class="red">请选择一个自定义运费模板，如还未创建请点击“<a href="$link.setPage('shipping,ShippingTemplates.html')" target="_blank">创建自定义运费模板</a>”，创建完后<a href="javascript:;" onclick="reloadShppingInfo()">刷新模版列表</a></span></span>
+                          </div>   
+                          <br class="clear" />
+                        </td>
+                      </tr>
+                    </table>
+                </div>
+            </div>
+<script>
+function reloadShppingInfo() {
+	jQuery("body").showLoading();
+	jQuery.getJSON("$link.setAction('shipping.AjaxGetShippingInfo')", function(data) {
+		jQuery("body").hideLoading();
+		jQuery("select[name='shippingSelect']").empty();
+		for(var i=0; i<data.length; i++) {
+			var shippingInfo = data[i];
+			jQuery("select[name='shippingSelect']").append('<option value="'+shippingInfo.shippingInfoId+'">'+shippingInfo.name+'</option>');
+		}
+	});
+}
+</script>

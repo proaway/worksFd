@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertAttributeBean" parameterClass="com.fd.fashion.dict.bean.AttributeBean">
+        <![CDATA[
+insert into TC_ATTRIBUTE
+  (ATTR_ID, PARENT_ID, VALUE, VALUE_CN, NOTE_TYPE)
+values
+  (#attrId#, #parentId#, #value#, #valueCn#, #noteType#)
+        ]]>
+    </insert>
+
+    <update id="updateAttributeBean" parameterClass="com.fd.fashion.dict.bean.AttributeBean">
+        <![CDATA[
+update TC_ATTRIBUTE 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="attrId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ATTR_ID = #attrId#]]>
+            </isNotNull>
+            <isNotNull property="parentId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PARENT_ID = #parentId#]]>
+            </isNotNull>
+            <isNotNull property="value" prepend="," removeFirstPrepend="true">
+                <![CDATA[VALUE = #value#]]>
+            </isNotNull>
+            <isNotNull property="valueCn" prepend="," removeFirstPrepend="true">
+                <![CDATA[VALUE_CN = #valueCn#]]>
+            </isNotNull>
+            <isNotNull property="noteType" prepend="," removeFirstPrepend="true">
+                <![CDATA[NOTE_TYPE = #noteType#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ATTR_ID = #attrId#
+        ]]>
+    </update>
+
+    <sql id="getAttributeBeanCondition">
+            <isNotNull property="attrId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[ATTR_ID = #attrId#]]>
+            </isNotNull>
+            <isNotNull property="parentId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[PARENT_ID = #parentId#]]>
+            </isNotNull>
+            <isNotNull property="value" prepend="and" removeFirstPrepend="true">
+                <![CDATA[VALUE = #value#]]>
+            </isNotNull>
+            <isNotNull property="valueCn" prepend="and" removeFirstPrepend="true">
+                <![CDATA[VALUE_CN = #valueCn#]]>
+            </isNotNull>
+            <isNotNull property="noteType" prepend="and" removeFirstPrepend="true">
+                <![CDATA[NOTE_TYPE = #noteType#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getAttributeBeanCount" parameterClass="com.fd.fashion.dict.bean.AttributeBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from TC_ATTRIBUTE 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getAttributeBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getAttributeBean" parameterClass="com.fd.fashion.dict.bean.AttributeBean"
+        resultClass="com.fd.fashion.dict.bean.AttributeBean">
+        <![CDATA[
+select 
+	ATTR_ID	as attrId,
+	PARENT_ID	as parentId,
+	VALUE	as value,
+	VALUE_CN	as valueCn,
+	NOTE_TYPE	as noteType
+from TC_ATTRIBUTE 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getAttributeBeanCondition"/>
+        </dynamic>
+        <![CDATA[
+order by IDX
+        ]]>
+    </select>
+
+    <delete id="deleteAttributeBean" parameterClass="com.fd.fashion.dict.bean.AttributeBean">
+        <![CDATA[
+delete from TC_ATTRIBUTE where ATTR_ID=#attrId#
+        ]]>
+    </delete>
+</sqlMap>

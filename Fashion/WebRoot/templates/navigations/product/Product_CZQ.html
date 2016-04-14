@@ -1,0 +1,124 @@
+<table width="450px" height="auto" class="mart10"
+	style="border: 1px solid #CCC; float: left; background-color: #f4f2f3; background-color: #f9f8f8;">
+	<tr>
+		<td height="10px" colspan="2"></td>
+	</tr>
+#if($productConfigs)
+#if($productConfigs.mainShow)
+	<tr id="mainShowTr">
+			<td width="70px">
+				<b style="margin-top: 6px; margin-left: 12px; float: left;">$productConfigs.mainShow.titleAttr.value :</b>
+			</td>
+			<td valign="middle"  id="choose_${configShow.titileAttr.value}" class="sizeChoose">
+				<ul name="$productConfigs.mainShow.titleAttr.value">
+				</ul>
+			</td>
+	</tr>
+#end
+#if($productConfigs.subShow)
+	<tr id="subShowTr">
+			<td width="70px">
+				<b style="margin-top: 6px; margin-left: 12px; float: left;">$productConfigs.subShow.titleAttr.value :</b>
+			</td>
+			<td valign="middle"  id="choose_${configShow.titileAttr.value}" class="sizeChoose">
+				<ul name="$productConfigs.subShow.titleAttr.value">
+				</ul>
+			</td>
+	</tr>
+#end
+#end
+	<tr>
+		<td colspan="2" style="text-align: right;" height="17">
+			<a
+				style="width: 60px; height: 17px; float: right; margin-right: 25px; background: url(/static/prototype/product_fashion/images/size_chart.gif) no-repeat; font-size: 10px; color: #000; text-align: center;"
+				href="#size_table_image">size chart</a>
+		</td>
+	</tr>
+	<tr>
+		<td height="25" valign="middle" class="padl5" style="font-size: 12px;">
+			<b style="margin-top: 6px; margin-left: 7px; float: left;">Quantity:</b>
+		</td>
+		<td valign="middle" class="foot_simple"
+			style="padding-left: 5px; padding-top: 3px;">
+			<input type="text" size="6" value="1" style="font-size: 16px;" />
+		</td>
+	</tr>
+	<tr>
+		<td height="25" valign="middle" class="padl5" style="font-size: 12px;">
+			<b style="margin-top: 6px; margin-left: 7px; float: left;">STOCK</b>
+		</td>
+		<td valign="middle" class="foot_simple"
+			style="padding-left: 5px; padding-top: 3px;">
+			<span id="stockNumber">$stockNumber</span>
+		</td>
+	</tr>
+	<tr style="border-bottom: 1px solid #CCC;" height="15px">
+		<td colspan="2"></td>
+	</tr>
+	<tr>
+		<td valign="middle"
+			style="padding-top: 10px; padding-left: 10px; padding-bottom: 10px;"
+			colspan="2">
+			<div style="float: left; width: 430px;display:none;" id="addCartDiv">
+				<a href="javascript:;" onclick="addToFavorite()"
+					style="float: left; margin-right: 16px; margin-top: 10px;"><img
+						src="/static/prototype/product_fashion/images/heart_ico.gif"
+						alt="Add to My Favorite" title="Add to My Favorite" width="15"
+						height="15" class="featured_detail_iconimg1" />Add to My Favorite</a>
+				<input type="button" name=""
+					onclick="javascript:window.open('/static/prototype/product_fashion/cart.shtml');"
+					value="Add To Cart" class="btn_addToCart" />
+			</div>
+			<div style="float: left; margin-top: 5px; width: 430px;display:none;" id="outStockDiv">
+				<a href="javascript:;" onclick="addToFavorite()"
+					style="float: left; margin-right: 16px; margin-top: 10px;"><img
+						src="/static/prototype/product_fashion/images/heart_ico.gif"
+						alt="Add to My Favorite" title="Add to My Favorite" width="15"
+						height="15" class="featured_detail_iconimg1" />Add to My Favorite</a>
+				<b style="float: left; font-size: 20px; color: #900;">Out Of
+					Stock</b>
+				<input type="button" name="" onclick="addStockNotice($productVo.productId);" value="In Stock Notice" 
+					class="btn_noPro" />
+			</div>
+		</td>
+	</tr>
+</table>
+<script>
+#if(${stockNumber}>0)
+	jQuery("#addCartDiv").show();
+#else
+	jQuery("#outStockDiv").show();
+#end
+#if($productConfigs)
+var productConfig = $JSONUtil.obj2JSON($productConfigs);
+new ProductConfig($productVo.product.productId, productConfig);
+#end
+</script>
+
+<script>
+function addStockNotice(productId){
+		var mainId = jQuery("#mainShowTr").find("li[class='choose']").attr("mainId");
+		var subId = jQuery("#subShowTr").find("li[class='choose']").attr("subId");
+		if(mainId== "" || mainId==null){
+			alert("please choose the color");
+			return ;
+		}
+		if(subId== ""||subId==null){
+			alert("please choose the size");
+			return ;
+		}
+		var id = "standard_"+mainId+"_"+subId;
+		var configId = jQuery("#"+id).val();
+		var url="/fashion/action/product.AjaxAddStockNotice";
+		jQuery.getJSON(url, {productId:productId,productConfigId:configId}, function(data) {
+			if (data != null && data.length>0) {
+				alert("add sucess");
+			}
+		});
+	}
+function addToFavorite() {
+	testLogin(function(){
+		alert("add to my favorite!");
+	});
+}
+</script>

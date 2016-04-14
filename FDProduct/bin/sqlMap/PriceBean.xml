@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertPriceBean" parameterClass="com.fd.fashion.product.bean.PriceBean">
+        <![CDATA[
+insert into T_PRICE
+  (PRODUCT_ID, PRICE, WHOLESALE_COUNT, WHOLESALE_DISCOUNT, DISCOUNT_START_DATE, DISCOUNT_END_DATE, DISCOUNT)
+values
+  (#productId#, #price#, #wholesaleCount#, #wholesaleDiscount#, #discountStartDate#, #discountEndDate#, #discount#)
+        ]]>
+        <selectKey keyProperty="productId" resultClass="long">
+            <![CDATA[select @@identity as productId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updatePriceBean" parameterClass="com.fd.fashion.product.bean.PriceBean">
+        <![CDATA[
+update T_PRICE 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="productId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="price" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRICE = #price#]]>
+            </isNotNull>
+            <isNotNull property="wholesaleCount" prepend="," removeFirstPrepend="true">
+                <![CDATA[WHOLESALE_COUNT = #wholesaleCount#]]>
+            </isNotNull>
+            <isNotNull property="wholesaleDiscount" prepend="," removeFirstPrepend="true">
+                <![CDATA[WHOLESALE_DISCOUNT = #wholesaleDiscount#]]>
+            </isNotNull>
+            <isNotNull property="discountStartDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[DISCOUNT_START_DATE = #discountStartDate#]]>
+            </isNotNull>
+            <isNotNull property="discountEndDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[DISCOUNT_END_DATE = #discountEndDate#]]>
+            </isNotNull>
+            <isNotNull property="discount" prepend="," removeFirstPrepend="true">
+                <![CDATA[DISCOUNT = #discount#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where PRODUCT_ID = #productId#
+        ]]>
+    </update>
+
+    <sql id="getPriceBeanCondition">
+            <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="price" prepend="and" removeFirstPrepend="true">
+                <![CDATA[PRICE = #price#]]>
+            </isNotNull>
+            <isNotNull property="wholesaleCount" prepend="and" removeFirstPrepend="true">
+                <![CDATA[WHOLESALE_COUNT = #wholesaleCount#]]>
+            </isNotNull>
+            <isNotNull property="wholesaleDiscount" prepend="and" removeFirstPrepend="true">
+                <![CDATA[WHOLESALE_DISCOUNT = #wholesaleDiscount#]]>
+            </isNotNull>
+            <isNotNull property="discountStartDate" prepend="and" removeFirstPrepend="true">
+                <![CDATA[DISCOUNT_START_DATE = #discountStartDate#]]>
+            </isNotNull>
+            <isNotNull property="discountEndDate" prepend="and" removeFirstPrepend="true">
+                <![CDATA[DISCOUNT_END_DATE = #discountEndDate#]]>
+            </isNotNull>
+            <isNotNull property="discount" prepend="and" removeFirstPrepend="true">
+                <![CDATA[DISCOUNT = #discount#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getPriceBeanCount" parameterClass="com.fd.fashion.product.bean.PriceBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_PRICE 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getPriceBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getPriceBean" parameterClass="com.fd.fashion.product.bean.PriceBean"
+        resultClass="com.fd.fashion.product.bean.PriceBean">
+        <![CDATA[
+select 
+	PRODUCT_ID	as productId,
+	PRICE	as price,
+	WHOLESALE_COUNT	as wholesaleCount,
+	WHOLESALE_DISCOUNT	as wholesaleDiscount,
+	DISCOUNT_START_DATE	as discountStartDate,
+	DISCOUNT_END_DATE	as discountEndDate,
+	DISCOUNT	as discount
+from T_PRICE 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getPriceBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deletePriceBean" parameterClass="com.fd.fashion.product.bean.PriceBean">
+        <![CDATA[
+delete from T_PRICE where PRODUCT_ID=#productId#
+        ]]>
+    </delete>
+</sqlMap>

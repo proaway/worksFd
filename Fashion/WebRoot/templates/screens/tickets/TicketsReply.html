@@ -1,0 +1,145 @@
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<title>
+<!--MICCMS:Title-->
+my tickets</title>
+<meta content="<!--MICCMS:Meta-Description-->" name="description">
+<meta content="<!--MICCMS:Meta-Keywords-->" name="keywords">
+<link type="image/ico" href="/static/web/images/logo-ico.ico" rel="shortcut icon">
+  <link href="/static/prototype/product_fashion/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+  <link href="/static/prototype/product_fashion/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
+  <link href="/static/prototype/product_fashion/css/jquery-ui-1.10.0.custom.css" type="text/css" rel="stylesheet">
+  <link href="/static/prototype/product_fashion/css/whole_m.css" type="text/css" rel="stylesheet">
+  <link href="/static/prototype/product_fashion/css/shopmic_m.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+  <div id="">
+  	<br class="clear">
+    <div style="width:860; max-width:860px; margin:0px auto; margin-bottom:100px;">
+        <div style="background:#fff; border:#CCC 1px solid;" class="alert black pad_bottom_20 pad_top_20 font12">
+			<form action="$link.setPage('tickets,TicketsReply.html')" name="actionForm" id="actionForm" method="post" enctype="multipart/form-data">
+        	<input type="hidden" id="actionFlag" name="actionFlag" value="" />
+        	<input type="hidden" id="ticketsId" name="ticketsId" value="$ticketsId" />
+            <table class="table border_none table-condensed">
+              <tbody><tr>
+                <td width="150px" class="v_top"><b class="right">Subject：</b></td>
+                <td><b class="green">$!ticketVo.ticket.title</b></td>
+              </tr>
+              <tr>
+                <td class="v_top"><b class="right">Question classification：</b></td>
+                <td><p>#if($ticketVo.ticket.questionType == 2) Transaction—Inquiries about recent orders  #elseif($ticketVo.ticket.questionType == 1) Account – Can’t sign in  #elseif($ticketVo.ticket.questionType == 3) Order Dispute  #elseif($ticketVo.ticket.questionType == 4) Report functional error  #elseif($ticketVo.ticket.questionType == 5) Report unfair or suspicious behavior #else Others  #end</p></td>
+              </tr>
+              <tr>
+                <td class="v_top"><b class="right">Sender：</b></td>
+                <td><b class="gray">#if($!ticketVo.ticket.identity==1) $!ticketVo.ticket.ticketsSystem  #else $!ticketVo.ticket.buyerName #end</b></td>
+              </tr>
+              <tr>
+                <td class="v_top"><b class="right">Post time：</b></td>
+                <td><p>#if($!ticketVo.ticket.sendTime)$!StringUtil.getDateTimeString($!ticketVo.ticket.sendTime)#end</p></td>
+              </tr>
+              <tr>
+                <td class="v_top"><b class="right">Text：</b></td>
+                <td><p>$!ticketInfoVo.ticketInfo.message</p></td>
+              </tr>
+           #if($flag)   
+	<tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">Attachment：</label></td>
+    <td>
+		<input type="file" id="fileOldName" class="input-file left mar_left_10" name="fileOldName">
+		<input type="button" class="btn left mar_left_10" value="Upload" onclick="uploadAttach();">
+        <br class="clear"><span class="help-block red hide">Here can only upload pictures, jpg/gif file within 200KB.</span>
+		<ul class="unstyled" name="pic" id="pic">
+			#if($attaList)
+				#set($index = 1)
+				#foreach($att in $attaList)
+					<li><label>
+							#if($att.attachExt.toLowerCase()=="jpg"||$att.attachExt.toLowerCase()=="jpeg" ||$att.attachExt.toLowerCase()=="gif" ||$att.attachExt.toLowerCase()=="bmp"||$att.attachExt.toLowerCase()=="png")
+								<img src="$att.attachPath" alt="$att.attachName" title="img_$att.attachName"/>
+							#else
+								$att.attachName
+							#end
+						</label>
+						<input type="hidden" id="url_$index" name="url" value="$att.attachment.attachUrl"/>
+					</li>
+					#set($index = $index+1)
+				#end
+			#end
+		</ul>
+		<br class="clear">
+	</td>
+  </tr>
+              <tr>
+                <td class="v_top"><b class="right">Reply：</b></td>
+                <td><textarea style="resize: none;ime-mode:disabled;" placeholder="" class="span7 left" rows="3" id="messContent" name="messContent" value="$!messContent"></textarea>
+                	<br class="clear">
+                    <input type="button" class="btn right mar_right_20 btn-small" value="Send" onclick="doSubmit();" #if($!ticketInfoVo.ticketInfo.identity==2) disabled  #end>
+                </td>
+              </tr>#end
+            </tbody></table> </form>
+			<div id="ticketInfoDiv"></div>
+        </div>
+    </div>
+
+  </div><!-- E container -->
+  <br class="clear"> 
+  
+<!-- S javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/static/prototype/shopmic-manage/js/jquery-1.7.2.min.js" type="text/javascript" language="javascript"></script>
+<script src="/static/prototype/shopmic-manage/js/bootstrap.min.js" type="text/javascript" language="javascript"></script>
+<script src="/static/prototype/shopmic-manage/js/jquery-ui-1.10.0.custom.min.js" type="text/javascript" language="javascript"></script>
+<script src="/static/prototype/shopmic-manage/js/datepicker.js" type="text/javascript" language="javascript"></script>
+<script type="text/javascript">
+(function() {
+    var backToTopTxt = "",  backToTopEle = jQuery('<div class="backToTop_pro"></div>').appendTo(jQuery("body"))
+    .text( backToTopTxt).attr("title",  backToTopTxt).click(function() {
+        jQuery("html, body").animate({ scrollTop: 0 }, 120);
+	}),  backToTopFun = function() {
+	    var st = jQuery(document).scrollTop(), winh = jQuery(window).height();
+	    (st > 0)?  backToTopEle.show():  backToTopEle.hide();
+	    //IE6下的定位
+	    if (!window.XMLHttpRequest) {
+	         backToTopEle.css("top", st + winh - 166);
+	    }
+	};
+	jQuery(window).bind("scroll", backToTopFun);
+	jQuery(function() { backToTopFun(); });
+})();
+</script><div class="backToTop_pro" title="" style="display: none;"></div>
+<script>
+function getTicketInfo(pageIndex){
+	jQuery.get(
+		"$link.setAction('tickets.AjaxGetTicketInfomation')?ticketsId=$ticketsId&pageIndex="+pageIndex,
+		function(data){
+			if(data!=null){
+				jQuery("#ticketInfoDiv").html(data);
+			} 
+		});
+}
+getTicketInfo(1);
+
+
+function doSubmit(){
+	document.getElementById("actionFlag").value="saveTicketFlag";
+	document.actionForm.submit();
+}
+
+function uploadAttach(){
+	var imageUrl = document.getElementById("fileOldName").value;
+	if(imageUrl=="" || imageUrl==null){
+		alert("please upload the image first");
+		return ;
+	}
+	document.getElementById("actionFlag").value="uploadFlag";
+	document.actionForm.submit();
+}
+</script>
+
+#if($msg)
+<script>
+	alert('$msg');
+</script>
+#end
+
+</body></html>

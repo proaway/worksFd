@@ -1,0 +1,399 @@
+$page.setTitle("运输方式设置")
+  <script language="javascript" src="/static/prototype/shopmic-manage/js/shipping.js"></script>
+##  <script language="javascript" src="$content.getURI('js/shipping.js')"></script>
+	<br class="clear" />
+  	<h4 class="mar_top_15">运输方式设置</h4>
+    <br class="clear" />
+<div id="shippings">
+#if($shippingInfo.details)
+	<table class="table table-hover table-bordered center_t font14" style="margin-bottom:0px;">
+        <tr class="info">
+            <td>运输方式</td>
+            <td>摘要信息</td>
+        </tr>
+        <tbody>
+#foreach($detail in $shippingInfo.details)
+			<tr>
+              <td>
+	${detail.shippingCompany}
+			  </td>
+              <td>
+  #if($detail.shippingType == "off")
+	折扣运费，折扣值: $detail.discountRate %
+  #elseif($detail.shippingType == "custom")
+	#set($i=0)
+	#foreach($option in $detail.options)
+		#set($i=$i+1)
+		运费组合 $i ： [
+		#if($option.shippingType == "custom")
+		起重：$option.weightPrice，续重：$option.reWeightPrice，
+		#elseif($option.shippingType == "off")
+		折扣运费，折扣值: $option.discountRate %
+		#else
+		免运费，
+		#end
+		 ] <br/>
+	#end
+  #else
+	免运费
+  #end
+			  </td>
+            </tr>
+#end
+        </tbody>
+    </table>
+#end
+<a href="javascript:;" class="btn btn-primary btn-small mar_right_5 font12" onclick="showEditShipping()"><span class="white">编 辑</span></a>
+</div>
+<div id="add_feeTemplet" class="hide well well-small">
+	<form id="shippingInfoForm" name="shippingInfoForm">
+		<input type="hidden" name="shippingInfoId" value="$!shippingInfo.shippingInfoId"/>
+    <div class="padding_15">
+        <table class="table">
+        	<tr class="warning center_t">
+            	<td align="center" colspan="2" class="border_right">选择您支持的运输方式</td>
+            	<td align="center" colspan="5">定义运费</td>
+            </tr>
+        	<tr class="tr_td_label_mar_top5">
+            <td width="60"></td>
+            <td class="border_right">
+      <label class="checkbox mar_top_5"><input value="UPS" name="shippingCompany" type="checkbox" id="UPS"/>UPS </label>
+      <label class="checkbox mar_top_20"><input value="TNT" name="shippingCompany" type="checkbox" id="TNT">TNT</label>
+      <label class="checkbox mar_top_20"><input value="DHL" name="shippingCompany" type="checkbox" id="DHL">DHL</label>
+      <label class="checkbox mar_top_20"><input value="EMS" name="shippingCompany" type="checkbox" id="EMS">EMS</label>
+      <label class="checkbox mar_top_20"><input value="FEDEX" name="shippingCompany" type="checkbox" id="FEDEX">FEDEX</label>
+			</td>
+    	<td width="60"></td>
+    	<td>
+        <label class="radio mar_top_5"><input disabled value="freeshipping" id="UPS" type="radio" name="UPS">
+        免运费
+      </label>
+      <label class="radio mar_top_20">
+        <input disabled value="freeshipping" id="TNT" type="radio" name="TNT">
+        免运费
+      </label>
+      <label class="radio mar_top_20">
+        <input disabled value="freeshipping" id="DHL" type="radio" name="DHL">
+        免运费
+      </label>
+      <label class="radio mar_top_20">
+        <input disabled value="freeshipping" id="EMS" type="radio" name="EMS">
+        免运费
+      </label>
+      <label class="radio mar_top_20">
+        <input disabled value="freeshipping" id="FEDEX" type="radio" name="FEDEX">
+        免运费
+      </label></td>
+	<td class="td_label_left_mar_right10">
+    <div class="radio"><label>
+      <input disabled value="off" id="UPS" name="UPS" type="radio">
+        折扣
+      </label><input disabled type="text" name="UPS_off" placeholder="折扣" class="span1 left" value="0"/> %</div>
+      <div class="radio mar_top_10"><label>
+        <input disabled value="off" id="TNT" name="TNT" type="radio">
+        折扣
+      </label><input disabled type="text" name="TNT_off" placeholder="折扣" class="span1 left" value="0"/> %</div>
+      <div class="radio mar_top_10"><label>
+        <input disabled value="off" id="DHL" name="DHL" type="radio">
+        折扣
+      </label><input disabled type="text" name="DHL_off" placeholder="折扣" class="span1 left" value="0"/> %</div>
+      <div class="radio mar_top_10"><label>
+        <input disabled value="off" id="EMS" name="EMS" type="radio">
+        折扣
+      </label><input disabled type="text" name="EMS_off" placeholder="折扣" class="span1 left" value="0"/> %</div>
+      <div class="radio mar_top_10"><label>
+        <input disabled value="off" id="FEDEX" name="FEDEX" type="radio">
+        折扣
+      </label><input disabled type="text" name="FEDEX_off" placeholder="折扣" class="span1 left" value="0"/> %</div>
+	  </td>
+      <td>
+      <label class="radio mar_top_5">
+        <input disabled value="custom" name="UPS" id="UPS" type="radio" data-toggle="modal" onclick="loadCustomSetting(this)">
+        自定义运费
+      </label>
+      <label class="radio mar_top_20">
+        <input disabled value="custom" name="TNT" id="TNT" type="radio" data-toggle="modal" onclick="loadCustomSetting(this)">
+        自定义运费
+      </label>
+      <label class="radio mar_top_20">
+        <input disabled value="custom" name="DHL" id="DHL" type="radio" data-toggle="modal" onclick="loadCustomSetting(this)">
+        自定义运费
+      </label>
+      <label class="radio mar_top_20">
+        <input disabled value="custom" name="EMS" id="EMS" type="radio" data-toggle="modal" onclick="loadCustomSetting(this)">
+        自定义运费
+      </label>
+      <label class="radio mar_top_20">
+        <input disabled value="custom" name="FEDEX" id="FEDEX" type="radio" data-toggle="modal" onclick="loadCustomSetting(this)">
+        自定义运费
+      </label></td><td width="90"></td>
+                </tr>
+            	<tr>
+                	<td colspan="8" class="pad_left_20"><span class="help-block mar_top_5 mar_left_20">使用China Post挂号航空小包<!--和航空大包-->，<span class="red">邮政包裹风险较高，若需使用必须挂号。</span><a href="javascript:showModal('cp_terms_of_use', '$link.setPage('shipping,CpTermsOfUse.html')')">使用须知</a></span>
+                                        
+                    </td>
+                </tr>
+            	<tr class="tr_td_label_mar_top5">
+                <td></td>
+                	<td class="border_right">
+      <label class="checkbox mar_top_5">
+        <input value="CPAM" name="shippingCompany" type="checkbox" id="CPAM">
+        China Post Air Mail
+      </label>
+##      <label class="checkbox mar_top_20">
+##        <input value="CPAP" name="shippingCompany" type="checkbox" id="CPAP">
+##        China Post Air Parcel
+##      </label>
+      </td>
+                	<td></td>
+                	<td><label class="radio mar_top_5">
+        <input disabled value="freeshipping" id="CPAM" name="CPAM" type="radio">
+        免运费
+      </label>
+##      <label class="radio mar_top_20">
+##        <input disabled value="freeshipping" id="CPAP" name="CPAP" type="radio">
+##        免运费
+##      </label>
+		</td>
+         <td class="td_label_left_mar_right10"><div class="radio">
+		<label><input disabled value="off" id="CPAM" name="CPAM" type="radio">折扣</label>
+		<input disabled type="text" name="CPAM_off" placeholder="折扣" class="span1 left" value="0"/> %</div>
+##      <div class="radio mar_top_10"><label>
+##        <input disabled value="off" id="CPAP" name="CPAP" type="radio">
+##        折扣
+##      </label><input disabled type="text" name="CPAP_off" placeholder="折扣" class="span1 left" value="0"/> %</div>
+      </td>
+                	<td>
+      <label class="radio mar_top_5">
+        <input disabled value="custom" id="CPAM" name="CPAM" type="radio" data-toggle="modal" onclick="loadCustomSetting(this)">
+        自定义运费
+      </label>
+##      <label class="radio mar_top_20">
+##        <input disabled value="custom" id="CPAP" name="CPAP" type="radio" data-toggle="modal" onclick="loadCustomSetting(this)">
+##        自定义运费
+##      </label>
+      </td><td></td>
+                </tr>
+            	<tr>
+                	<td colspan="8" class="pad_left_20"><span class="help-block mar_top_5 mar_left_20">使用HongKong Post挂号航空小包<!--和航空大包-->，<span class="red">邮政包裹风险较高，若需使用必须挂号。</span><a href="javascript:showModal('hp_terms_of_use', '$link.setPage('shipping,HkpTermsOfUse.html')')">使用须知</a></span>
+                    
+                    </td>
+                </tr>
+            	<tr class="tr_td_label_mar_top5 border_bottom">
+                <td></td>
+                	<td class="border_right">
+      <label class="checkbox mar_top_5"><input value="HKPAM" type="checkbox" name="shippingCompany" id="HKPAM">Hongkong Post Air Mail</label>
+##      <label class="checkbox mar_top_20"><input value="HKPAP" type="checkbox" name="shippingCompany" id="HKPAP">Hongkong Post Air Parcel</label>
+      </td>
+                	<td></td>
+                	<td>
+						<label class="radio mar_top_5"><input disabled value="freeshipping" id="HKPAM" name="HKPAM" type="radio">免运费</label>
+##						<label class="radio mar_top_20"><input disabled value="freeshipping" id="HKPAP" name="HKPAP" type="radio">免运费</label>
+					</td>
+                	<td class="td_label_left_mar_right10">
+						<div class="radio"><label><input disabled value="off" id="HKPAM" name="HKPAM" type="radio"> 折扣</label>
+						<input disabled type="text" name="HKPAM_off" placeholder="折扣" class="span1 left" value="0"/> %</div>
+##                        <div class="radio mar_top_10"><label><input disabled value="off" id="HKPAP" name="HKPAP" type="radio">折扣</label>
+##                		<input disabled type="text" name="HKPAP_off" placeholder="折扣" class="span1 left" value="0"/> %</div>
+      				</td>
+                	<td>
+                      <label class="radio mar_top_5"><input disabled value="custom" id="HKPAM" name="HKPAM" type="radio" data-toggle="modal" onclick="loadCustomSetting(this)">自定义运费</label>
+##                      <label class="radio mar_top_20"><input disabled value="custom" id="HKPAP" name="HKPAP" type="radio" data-toggle="modal" onclick="loadCustomSetting(this)"> 自定义运费</label>
+      				</td>
+					<td></td>
+                </tr>
+            </table>
+        </div>
+		<table class="table" id="add_zdy_ys_style">
+        	<tr class="hide" id="customShipping">
+            	<td colspan="5" class="pad_left_20"><span class="help-block mar_top_5 mar_left_20">自定义运输方式</span></td>
+            </tr>
+        </table>
+
+        <div class="mar_bottom_5 mar_top_5" id="addCustomShippingCompany">
+            <a href="javascript:;" onclick="addCustomShppingComany()"><span class="icon-plus"></span>添加自定义运输方式</a>
+        </div>
+	</form>
+        <div class="center_t mar_top_f10">
+        <button class="btn font_w_b mar_right_15" onclick='jQuery("#add_feeTemplet").hide();jQuery("#shippings").show();'>取消</button>
+		<button class="btn btn-primary font_w_b mar_right_15" onclick="saveShippingInfo()">保存</button>
+        </div>
+</div>
+
+    <div id="custom_fee" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h5 id="myModalLabel">自定义运费</h5>
+        </div>
+        <div class="modal-body">
+          <span class="help-block left font14">运输方式：<span class="red" id="shippingCompanyTitle">UPS</span></span><br />
+		  <div id="selectedCountryDiv">
+		  </div>
+          <div class="pad_bottom_20 hide" id="addCustomShippingGroupDiv">
+              <a href="javascript:;" onclick="addCustomShippingGroup()"><span class="icon-plus"></span>添加一个运费组合</a>
+          </div>
+		  
+          <div class="accordion mar_top_15" id="accordion1">
+              <div class="accordion-group">
+                  <div class="accordion-heading" onclick="changeExpan(this)">
+                      <a class="accordion-toggle font_s_14" data-toggle="collapse" data-parent="#accordion1" href="#collapseOne"><span class="icon-minus mar_right_10"></span>按照地区选择国家</a>
+                  </div>
+                  <div id="collapseOne" class="accordion-body collapse in">
+                    <div class="accordion-inner">
+                      <table border="0" cellspacing="0" cellpadding="0" class="upload_tab width_100">
+                        <tr><td colspan="3"><label class="checkbox"><input id="chkAllContinent" type="checkbox">选中全部</label></td></tr>
+                        <tr>
+                          <td>&nbsp;</td>
+                          <td class="v_top">
+                              <label class="checkbox left"><input value="" id="chkAll" type="checkbox">亚洲</label>
+							  <a class="left mar_left_5" href="javascript:;" id="showAll">[显示全部]</a><a class="left mar_left_5 hide" href="javascript:;" id="hideAll">[收起]</a><span class="left mar_left_5 text-error hide" id="partSelect">部分选中</span>
+                              <div id="continentDiv" class="alert clear black hide">
+                              </div><!-- E Asia_all -->
+                          </td>
+                          <td class="v_top"><label class="checkbox left"><input value="" id="chkAll" type="checkbox">欧洲</label>
+							<a class="left mar_left_5" href="javascript:;" id="showAll">[显示全部]</a><a class="left mar_left_5 hide" href="javascript:;" id="hideAll">[收起]</a><span class="left mar_left_5 text-error hide" id="partSelect">部分选中</span>
+                              <div id="continentDiv" class="alert clear black hide">
+                              </div><!-- E Europe_all -->
+						  </td>
+                        </tr>
+                        <tr>
+                          <td>&nbsp;</td>
+                          <td class="v_top">
+							<label class="checkbox left"><input value="" id="chkAll" type="checkbox">非洲</label>
+							<a class="left mar_left_5" href="javascript:;" id="showAll">[显示全部]</a><a class="left mar_left_5 hide" href="javascript:;" id="hideAll">[收起]</a><span class="left mar_left_5 text-error hide" id="partSelect">部分选中</span>
+                              <div id="continentDiv" class="alert clear black hide">
+                              </div><!-- E Africa_all --></td>
+                          <td class="v_top">
+							<label class="checkbox left"><input value="" id="chkAll" type="checkbox">大洋洲</label>
+							<a class="left mar_left_5" href="javascript:;" id="showAll">[显示全部]</a><a class="left mar_left_5 hide" href="javascript:;" id="hideAll">[收起]</a><span class="left mar_left_5 text-error hide" id="partSelect">部分选中</span>
+                              <div id="continentDiv" class="alert clear black hide">
+                              </div><!-- E Oceania_all --></td>
+                        </tr>
+                        <tr>
+                          <td>&nbsp;</td>
+                          <td class="v_top"><label class="checkbox left"><input value="" id="chkAll" type="checkbox">北美洲</label>
+							<a class="left mar_left_5" href="javascript:;" id="showAll">[显示全部]</a><a class="left mar_left_5 hide" href="javascript:;" id="hideAll">[收起]</a><span class="left mar_left_5 text-error hide" id="partSelect">部分选中</span>
+                              <div id="continentDiv" class="alert clear black hide">
+                              </div><!-- E NorthAmerica_all --></td>
+                          <td class="v_top"><label class="checkbox left"><input value="" id="chkAll" type="checkbox">南美洲</label>
+							<a class="left mar_left_5" href="javascript:;" id="showAll">[显示全部]</a><a class="left mar_left_5 hide" href="javascript:;" id="hideAll">[收起]</a><span class="left mar_left_5 text-error hide" id="partSelect">部分选中</span>
+                              <div id="continentDiv" class="alert clear black hide">
+                              </div><!-- E SouthAmerica_all --></td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+              </div><!-- E 1 -->
+              <div class="accordion-group">
+                  <div class="accordion-heading" onclick="changeExpan(this)">
+                      <a class="accordion-toggle font_s_14" data-toggle="collapse" data-parent="#accordion1" href="#collapseTwo"><span class="icon-plus mar_right_10"></span>按区域选择国家（运往同一区域内的国家，物流公司的收费相同）</a>
+                  </div>
+                  <div id="collapseTwo" class="accordion-body collapse">
+                      <div class="accordion-inner">
+                          <table border="0" cellspacing="0" cellpadding="0" class="upload_tab width_100">
+                            <tr>
+                              <td class="v_top">
+                                  <label class="checkbox left"><input value="1区（2）" type="checkbox">1区（2）</label>
+								  <a class="left mar_left_5 hide" id="showAll" href="javascript:();">[显示全部]</a><a class="left mar_left_5" id="hideAll" href="javascript:();">[收起]</a>
+                                  <div id="area" class="alert clear black">
+                                    <label class="checkbox"><input id="shippingCountry" name="shippingCountry" value="" type="checkbox">Hong Kong 香港</label>
+                                  </div><!-- E Area1_all -->
+                              </td>
+                              <td class="v_top">
+                              </td>
+                              <td class="v_top">
+                              </td>
+                            </tr>
+                          </table>
+                      </div>
+                  </div>
+              </div><!-- E 2 -->
+            </div><!-- E all div -->              
+        <div id="shippingRateSetting"> 
+            <h5>运费设置：</h5>
+      <table border="0" cellspacing="0" cellpadding="0" class="custom_fee_upload_tab font14">
+          <tr>
+            <td><label class="control-label">设置运费类型：</label></td>
+            <td><select onchange="setCustomShippingType(this)" id="shippingMethod">
+      <option value="off">标准运费</option>
+      <option value="custom">自定义运费</option>
+      <option value="freeshipping">卖家承担运费</option></select> 物流天数：<input type="text" placeholder="" id="transportDays" class="input-mini"> 天</td>
+          </tr>
+          <tr id="customDiscountRate">
+            <td>运费减免率：</td>
+            <td><input id="customDiscountRate" placeholder="" class="input-small" type="text">%
+            </td>
+          </tr>
+        </table>
+          <table border="0" cellspacing="0" cellpadding="0" class="upload_tab font14 hide" id="customSettings">
+            <tr>
+              <td align="center">首重运费（500g）</td>
+              <td align="center">续重运费（500g）</td>
+            </tr>
+            <tr>
+              <td>US $<input type="text" placeholder="" id="weightPrice" class="input-small"></td>
+              <td>US $<input type="text" placeholder="" id="reWeightPrice" class="input-small"></td>
+            </tr>
+        </table> 
+		</div>
+        </div>
+        <div class="modal-footer"><span class="help-block left red"></span>
+		<button id="editGroupBtn" class="btn btn-primary hide" onclick="cancelEditGroup();">取消</button>
+		<button id="editGroupBtn" class="btn btn-primary hide" onclick="confirmAddGroup();">确定组合</button>
+		<button id="addGroupBtn" class="btn btn-primary" onclick="cancelAddGroup();">取消</button>
+		<button id="addGroupBtn" class="btn btn-primary" onclick="confirmAddGroup();">确定组合</button>
+        <button id="customBtn" class="btn btn-info hide" data-dismiss="modal" aria-hidden="true">取消</button>
+        <button id="customBtn" class="btn btn-primary hide" onclick="confirmCustom();">确定</button>
+        </div>
+    </div><!-- E custom_fee -->   
+<script>
+function showEditShipping() {
+	jQuery("#add_feeTemplet").show();
+	jQuery("#shippings").hide();
+}
+jQuery("#add_feeTemplet").find("input:checkbox").click(function(){
+	var id = jQuery(this).attr("id");
+	if (this.checked) {
+		jQuery("input#" + id).removeAttr("disabled");
+	} else {
+		jQuery("input#" + id).attr("disabled","disabled");
+	}
+	jQuery(this).removeAttr("disabled");
+});
+jQuery('#custom_fee').on('hide', function () {
+	
+})
+jQuery("input:radio").change(function(){
+	if (this.value=='off') {
+		jQuery(this).parent().next().removeAttr("disabled");
+	} else {
+		var comp = jQuery(this).attr("id");
+		disableOffInput(comp);
+	}
+});
+function setCustomShippingType(o) {
+	if (o.value=="off") {
+		jQuery("#customDiscountRate").show();
+		jQuery("#customSettings").hide();
+	} else if (o.value=="custom") {
+		jQuery("#customDiscountRate").hide();
+		jQuery("#customSettings").show();
+	} else if (o.value=="freeshipping") {
+		jQuery("#customDiscountRate").hide();
+		jQuery("#customSettings").hide();
+	}
+}
+#if($shippingInfo)
+var shippingInfo = $JSONUtil.obj2JSON($shippingInfo);
+initShippingTemplate(shippingInfo);
+#end
+function showModal(divId, url) {
+	if(jQuery("#"+divId).length==0) {
+		var div = jQuery("<div></div>");
+		jQuery("body").append(div);
+		div.load(url);
+	} else {
+		jQuery("#"+divId).modal("show");
+	}
+}
+</script>

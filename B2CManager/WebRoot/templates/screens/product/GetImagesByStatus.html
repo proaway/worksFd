@@ -1,0 +1,27 @@
+#if($images)
+	<ul class="inline images_space_content" >
+	#foreach($image in $images)
+	<li><label class="checkbox left"> <input
+			value="$image.imageId" type="checkbox" name="chk_list"
+			onclick="updateSelectImgCount();" /> </label> <a href="javascript:;;"
+		class="right" value="$image.imageId" name="delImage"> <span
+			class="left icon-remove mar_top_5 clear"></span> </a> <a
+		href="javascript:();"> <img src="$image.imageUrl"
+			class="img-polaroid clear" /> </a> <span
+		class="left #if($image.isused == 1) icon-ok-circle #end clear mar_top_3"></span>
+		<span class="help-block left">$image.imageName</span>
+	</li>
+	#end
+	</ul>
+	<form name="listForm" id="listForm">
+	<input type="hidden" name="pageIndex" value="$!pageInfo.pageIndex"/>
+	<input type="hidden" name="datapickerb" value="$!imageCond.params.endDate"/>
+	<input type="hidden" name="datapickera" value="$!imageCond.params.startDate"/>
+	<input type="hidden" name="key" value="$!imageCond.params.keyword"/>
+	<input type="hidden" name="catId" value="$!imageCond.catId"/>
+	<input type="hidden" name="operator" value="$!imageCond.operator"/>
+	</form>
+	#parse("/screens/Nap.html")
+#else
+ 	无图片
+#end

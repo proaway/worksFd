@@ -1,0 +1,26 @@
+#set($title="Congratulations on successfully registering at " + $WebPropUtil.getProperty("website.webname"))
+$page.setTitle($title)
+  <div id="mainContent">
+  	<!-- --------------- S register success --------------- -->
+    <div class="reg_suc_con">
+    <h1 class="reg_suc_h1">Congratulations on successfully registering at <font style="color:#F90;">$WebPropUtil.getProperty("website.webname")</font>! </h1>
+	<br />
+    <p class="reg_suc_ptxt">ShopMadeInChina.com is an on-line business tradce platforms where you can search and buy products from attract potential sellers. Just need take the following steps you will have your products home.</p>
+    <p><img src="/static/prototype/product_fashion/images/flow.jpg" width="442" height="96" alt="flow" style="margin:20px 0;" /><br /></p>
+    <p class="reg_suc_now">Now, you can:</p>
+    <p class="line-height25"><a href="/static/prototype/product_fashion/index.shtml" target="_blank"> search products</a> or<a href="/static/prototype/product_fashion/account/my_profile.shtml"> compelete your member profile. </a></p>
+    <p class="line-height25">If you have any questions, try our<a href="http://www.shopmadeinchina.com/static/help-whoselsale/index.shtml"> help page</a> or <a href="http://www.shopmadeinchina.com/static/help-whoselsale/contact_us.shtml">contact   us </a>directly. </p>
+  </div>
+    <!-- --------------- E register success --------------- -->
+    <br class="clearfloat" />
+  </div>
+  <script type="text/javascript">
+  function visitRegister(userId) {
+		var params = "?referer=" + encodeURIComponent(document.referrer) + "&url=" + encodeURIComponent(document.location) + "&regUser=" + userId;
+		var url = "http://stat.fulldol.com/stat/action/statistics.VisitStatAction";
+	    	jQuery.getScript(url+params + "&" + Math.random());
+	}
+	 visitRegister("$!buyer");
+//-->
+</script>
+  

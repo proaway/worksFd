@@ -1,0 +1,151 @@
+<form action="$link.setPage('tickets,Tickets.html')" id="listForm" name="listForm" method="get">
+   <div class="acc_content">
+            <div class="acc_search">
+                <div class="tickets_div mar_bottom_10">
+                    <ul class="inline">
+                    	<li><select class="left oi_status_max_w" name="timeType" id="timeType">
+                              <option value="1" #if($!searchVo.timeType=="1")selected #end>Send time</option>
+                              <option value="2" #if($!searchVo.timeType=="2")selected #end>Last post time</option>
+                            </select>
+            				<input type="text" class="acc_text mar_right_5 mar_left_10 left" id="datepickera" #if($!searchVo.timeType==1) value="$!StringUtil.getDateString($!searchVo.sendTimeStart)" #elseif($!searchVo.timeType==2) value="$!StringUtil.getDateString($!searchVo.replyTimeStart)" #end name="timeStart">
+            				<label class="left mar_top_5">to</label>
+            				<input type="text" class="acc_text mar_left_5 mar_right_5 left" id="datepickerb" #if($!searchVo.timeType==1) value="$!StringUtil.getDateString($!searchVo.sendTimeEnd)" #elseif($!searchVo.timeType==2) value="$!StringUtil.getDateString($!searchVo.replyTimeEnd)" #end name = "timeEnd"></li>
+            			 <li><label class="left mar_top_5">
+            				<input type="checkbox" style="width:20px;" class="left" name="sendIt" id="sendIt" #if($!searchVo.sendType==5) checked #end value="5">
+            				<span class="left">View System</span>
+            				</label>
+            			</li>
+            			 <br class="clear"><br class="clear">
+                        <li>
+                            <label class="left mar_top_5">Question classification：</label>
+                            <select class="left oi_status_max_w" name="questionType" id="questionType">
+                              <option value="" #if($!searchVo.questionType=="")selected #end>all</option>
+            				  <option value="1" #if($!searchVo.questionType=="1")selected #end>Account – Can’t sign in</option>
+                              <option value="2" #if($!searchVo.questionType=="2")selected #end>Transaction—Inquiries about recent orders</option>
+                              <option value="3" #if($!searchVo.questionType=="3")selected #end>Order Dispute</option>
+            				  <option value="4" #if($!searchVo.questionType=="4")selected #end>Report functional error</option >
+                              <option value="5" #if($!searchVo.questionType=="5")selected #end>Report unfair or suspicious behavior</option>
+                              <option value="6" #if($!searchVo.questionType=="6")selected #end>Others</option>
+                            </select>
+                        </li>
+                        <li>
+                            <label class="left mar_top_5">Message status：</label>
+                            <select class="left oi_status_max_w" name="messType" id="messType">
+                              <option value="" #if($!searchVo.messType=="")selected #end>all</option>
+                              <option value="2" #if($!searchVo.messType=="2")selected #end>Not reply</option>
+                              <option value="1" #if($!searchVo.messType=="1")selected #end>Has returned</option>
+                              <option value="3" #if($!searchVo.messType=="3")selected #end>Has Closed</option>
+                            </select>
+                        </li>
+            			<br class="clear"><br class="clear">
+            			<li>
+            				<input type="text" placeholder="" class="width_large" name="subjectContent" id="subjectContent" value="$!searchVo.keyword">
+            				<input type="button" class="btn" value="Search" onclick="submitSearch();">
+            			</li><br class="clear">
+            			<br class="clear">
+                      <li><!--<a class="btn btn-success left mar-top10 padding_5" href="javascript:addTicket();"><span class="white">New Tickects</span></a>-->
+						<input type="button" value="New Tickets" onclick="addTicket()" class="btn btn-success font12 left mar_left_15">
+					  </li>
+                    </ul>
+                    <br class="clear">
+                </div>
+        	</div>
+            <table cellspacing="0" cellpadding="0" border="0" class="acc_order_tab acc_tab_lh22">
+              <tbody><tr class="acc_order_tabtit">
+                <td class="acc_order_tabtit_td">Send time</td>
+                <td class="acc_order_tabtit_td">Subject</td>
+                <td class="acc_order_tabtit_td">Sender</td>
+                <td class="acc_order_tabtit_td">Question classification</td>
+                <td class="acc_order_tabtit_td">Message status</td>
+                <td class="acc_order_tabtit_td">Last post time</td>
+                <td class="acc_order_tabtit_td">Option</td>
+              </tr>
+    #if($ticketList)
+    	#foreach($tick in $ticketList)
+      <tr  trid="$tick.ticketsId">
+        <td class="font10"><label>#if($tick.sendTime)$!StringUtil.getDateTimeString($!tick.sendTime)#end</label></td>
+        <td><label>${tick.title}</label></td>
+        <td>#if($!tick.identity==1) $!{tick.ticketsSystem}(system)  #else $!{tick.buyerName}(buyer) #end</td>
+        <td><label>#if($!tick.questionType == 2) Transaction—Inquiries about recent orders  #elseif($tick.questionType == 1) Account – Can’t sign in  #elseif($tick.questionType == 3) Order Dispute  #elseif($tick.questionType == 4) Report functional error  #elseif($tick.questionType == 5) Report unfair or suspicious behavior #else Others  #end</label></td>
+        <td id="ticketStatus_$!{tick.ticketsId}">
+			<label>
+				#if($!tick.status==3)
+					Has Closed 
+				#elseif($!tick.status==2)
+					Not reply
+				#else 
+					Has returned
+				#end
+			</label>
+		</td>
+        <td class="font10"><label>#if($tick.lastReplayTime)$!StringUtil.getDateTimeString($!tick.lastReplayTime)#end</label></td>
+        <td id="operId_${tick.ticketsId}">
+    		#if($tick.status==3)
+				<a href="$link.setPage('tickets,TicketsReply.html')?ticketsId=$tick.ticketsId&flag=1" role="button" class="mar_left_10" target="_blank">View</a>
+    		#else
+				<a href="$link.setPage('tickets,TicketsReply.html')?ticketsId=$tick.ticketsId" role="button" class="mar_left_10" target="_blank">Reply</a>
+				<!--
+				#if($tick.identity==1)
+    			#else 
+    				<a href="javascript:closeTicket('$tick.ticketsId')" role="button" class="mar_left_10">Close</a>
+				#end
+				#if($tick.status==2)
+    				<a href="$link.setPage('tickets,TicketsReply.html')?ticketsId=$tick.ticketsId" role="button" class="mar_left_10" target="_blank">Reply</a>
+    			#end	
+				-->
+    		#end
+    		</td>
+        </tr>
+    	#end
+    #end
+    		  </tbody>
+    		</table>
+    #parse("screens/BuyerNap.html")
+     <br class="clearfloat">
+   </div>
+</form>
+<script type="text/javascript">
+    	function showLayer_1(){
+    		var dialogBox = new Dialog($(blockLayer_1),{
+                "width":"500px",
+                "title":"View attachments",
+                'modal':true,
+    			"dTopNum":"100px"
+            });
+    		document.getElementById("blockLayer_1").style.display="block";
+    	}
+    </script>
+    <script>
+	
+	function submitSearch(){
+    	document.listForm.submit();
+    }
+    
+    function addTikcetToShow(ticket){
+    	if(ticket==null){
+    		return;
+    	}else{
+    		submitSearch();
+    	}
+    }
+	
+	function addTicket(){
+		window.open('$link.setPage("tickets,NewTickets.html")','newwindow', 'height=600, width=910, top=0, left=0, toolbar=no, menubar=no, scrollbars=yes, resizable=no,location=no, status=no');
+	}
+	
+function closeTicket(ticketsId){
+    if(confirm("确定要关闭该tickets吗？")){
+    	jQuery.get(
+    		"$link.setAction('tickets.AjaxCloseTicketAction')?ticketsId="+ticketsId,
+    		function(data){
+    			if(data==1){
+					jQuery("tr[trid='"+ticketsId+"']").find("#ticketStatus_"+ticketsId).html("<label>Has Closed</label>");
+					jQuery("tr[trid='"+ticketsId+"']").find("#operId_"+ticketsId).html("");
+    				alert("成功关闭");
+    			} else{
+    				alert("关闭失败");
+    			}
+    		});
+    }
+}
+	</script>

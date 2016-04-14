@@ -1,0 +1,73 @@
+<div id="edit_template2" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<form name="ediTemplate" id="ediTemplateform" method="post" action="$link.setPage('cms,DoEditTemplate.html')" enctype="multipart/form-data" target="hidden_frame"  >   
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal"
+		aria-hidden="true">×</button>
+	<h5 id="myModalLabel">修改模板</h5>
+</div>
+<div class="modal-body">
+	<table border="0" cellspacing="0" cellpadding="0" class="mar_left_20">
+		<tr>
+			<td class="v_top"><label class="mar_right_10 right mar_top_5">模板名称：</label><span
+				class="required mar_right_5 right mar_top_5">*</span>
+			</td>
+			<td><input type="text" class="input-medium" value="$!template.templateName" name="templateName" 
+				placeholder="最大输入25个字符" /></td>
+		</tr>
+		<tr>
+			<td class="v_top"><label class="mar_right_10 right mar_top_5">模板文件：</label><span
+				class="required mar_right_5 right mar_top_5">*</span>
+			</td>
+			<td><input class="input-file" name="fileurl"  type="file" value="$!template.fileUrl">
+			</td>
+		</tr>
+		<tr>
+			<td class="v_top"><label class="mar_right_10 right mar_top_10">模板类型：</label><span
+				class="required mar_right_5 right mar_top_10">*</span>
+			</td>
+			<td>
+	            <select name="templateType" class="left oi_status_max_w mar_top_5">
+	                <option value="1" #if($!template.templateType == 1) selected #end>首页</option>
+	                <option value="2" #if($!template.templateType == 2) selected #end>频道</option>
+	                <option value="3" #if($!template.templateType == 3) selected #end>活动</option>
+	                <option value="4" #if($!template.templateType == 4) selected #end>文章</option>
+	                <option value="5" #if($!template.templateType == 5) selected #end>邮件</option>
+                </select>
+			</td>
+		</tr>
+		<tr>
+			<td class="v_top"><label class="mar_right_10 right mar_top_5">语言：</label><span
+				class="required mar_right_5 right mar_top_5">*</span>
+			</td>
+			<td><select name="languageId" class="left oi_status_max_w">
+                <option value="0" #if($!template.languageId == 0) selected #end>英语</option>
+                <option value="0" #if($!template.languageId == 1) selected #end>中文</option>
+			</select></td>
+		</tr>
+		<tr>
+			<td class="v_top"><label class="mar_right_10 right mar_top_5">备注：</label>
+			</td>
+			<td><textarea rows="3" class="input-xlarge left" name="memo"
+					placeholder="Message" style="resize: none;">$!template.memo</textarea></td>
+		</tr>
+	</table>
+</div>
+<div class="modal-footer">
+       <input type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true" value="取消"/>
+       <input type="button" class="btn btn-primary" data-dismiss="modal" value="确定" onclick="doeditTemplate('ediTemplateform')"/>
+</div>
+<input type="hidden" name="templateId" value="$!template.templateId" id="templateId"/>
+<iframe name='hidden_frame' id="hidden_frame" style='display:none'></iframe>
+</form>
+    </div><!-- E edit_template -->
+<script>
+jQuery('#edit_template2').modal({
+	show:true
+})
+
+function doeditTemplate(formId){
+	jQuery("#"+formId).submit();
+}
+
+
+</script>

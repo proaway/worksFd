@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+	<insert id="insertFinancialBean" parameterClass="com.fd.fashion.finance.bean.FinancialBean">
+        <![CDATA[
+insert into T_FINANCIAL
+  (CREATE_TIME, AMOUNT, LINKE_ID, AMOUNT_TYPE, MEMO, PAYMENT_TYPE, FINANCIAL_STATUS, BALANCE)
+values
+  (#createTime#, #amount#, #linkeId#, #amountType#, #memo#, #paymentType#, #financialStatus#, #balance#)
+        ]]>
+		<selectKey keyProperty="financialId" resultClass="long">
+            <![CDATA[select @@identity as financialId]]>
+		</selectKey>
+	</insert>
+
+	<update id="updateFinancialBean" parameterClass="com.fd.fashion.finance.bean.FinancialBean">
+        <![CDATA[
+update T_FINANCIAL 
+        ]]>
+		<dynamic prepend="set">
+			<isNotNull property="financialId" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[FINANCIAL_ID = #financialId#]]>
+			</isNotNull>
+			<isNotNull property="createTime" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[CREATE_TIME = #createTime#]]>
+			</isNotNull>
+			<isNotNull property="amount" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[AMOUNT = #amount#]]>
+			</isNotNull>
+			<isNotNull property="linkeId" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[LINKE_ID = #linkeId#]]>
+			</isNotNull>
+			<isNotNull property="amountType" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[AMOUNT_TYPE = #amountType#]]>
+			</isNotNull>
+			<isNotNull property="memo" prepend="," removeFirstPrepend="true">
+                <![CDATA[MEMO = #memo#]]>
+			</isNotNull>
+			<isNotNull property="paymentType" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[PAYMENT_TYPE = #paymentType#]]>
+			</isNotNull>
+			<isNotNull property="financialStatus" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[FINANCIAL_STATUS = #financialStatus#]]>
+			</isNotNull>
+			<isNotNull property="balance" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[BALANCE = #balance#]]>
+			</isNotNull>
+		</dynamic>
+        <![CDATA[
+where FINANCIAL_ID = #financialId#
+        ]]>
+	</update>
+
+	<sql id="getFinancialBeanCondition">
+		<isNotNull property="financialId" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[FINANCIAL_ID = #financialId#]]>
+		</isNotNull>
+		<isNotNull property="createTime" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[CREATE_TIME = #createTime#]]>
+		</isNotNull>
+		<isNotNull property="amount" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[AMOUNT = #amount#]]>
+		</isNotNull>
+		<isNotNull property="linkeId" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[LINKE_ID = #linkeId#]]>
+		</isNotNull>
+		<isNotNull property="amountType" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[AMOUNT_TYPE = #amountType#]]>
+		</isNotNull>
+		<isNotNull property="memo" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MEMO = #memo#]]>
+		</isNotNull>
+		<isNotNull property="paymentType" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[PAYMENT_TYPE = #paymentType#]]>
+		</isNotNull>
+		<isNotNull property="financialStatus" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[FINANCIAL_STATUS = #financialStatus#]]>
+		</isNotNull>
+		<isNotNull property="balance" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[BALANCE = #balance#]]>
+		</isNotNull>
+	</sql>
+	
+	
+	<sql id="getFinancialListCondition">
+		<isNotNull property="startDate" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[CREATE_TIME >= #startDate#]]>
+		</isNotNull>
+		<isNotNull property="endDate" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[CREATE_TIME <= ADDDATE(#endDate#,1)]]>
+		</isNotNull>
+		<isNotNull property="startAmount" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[amount >= #startAmount#]]>
+		</isNotNull>
+		<isNotNull property="endAmount" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[amount <= #endAmount#]]>
+		</isNotNull>
+		<isNotNull property="type" prepend="and">
+			 <isEqual property="type" compareValue="1" removeFirstPrepend="true">
+			 	<![CDATA[amount > 0]]>
+			 </isEqual>
+            <isEqual property="type" compareValue="0" removeFirstPrepend="true">
+            	<![CDATA[amount < 0]]>
+            </isEqual>
+		</isNotNull>
+	</sql>
+
+	<select id="getFinancialBeanCount" parameterClass="com.fd.fashion.finance.vo.FinancialVo"
+		resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_FINANCIAL 
+        ]]>
+		<dynamic prepend="where">
+		<!-- 	<include refid="getFinancialBeanCondition" /> -->
+		<include refid="getFinancialListCondition" />
+		</dynamic>
+	</select>
+
+	<select id="getFinancialBean" parameterClass="com.fd.fashion.finance.vo.FinancialVo"
+		resultClass="com.fd.fashion.finance.bean.FinancialBean">
+        <![CDATA[
+select 
+	FINANCIAL_ID	as financialId,
+	CREATE_TIME	as createTime,
+	AMOUNT	as amount,
+	LINKE_ID	as linkeId,
+	AMOUNT_TYPE	as amountType,
+	MEMO	as memo,
+	PAYMENT_TYPE	as paymentType,
+	FINANCIAL_STATUS	as financialStatus,
+	BALANCE	as balance
+from T_FINANCIAL 
+        ]]>
+		<dynamic prepend="where">
+			<!-- <include refid="getFinancialBeanCondition" /> -->
+			<include refid="getFinancialListCondition" />
+		</dynamic>
+         <![CDATA[ ORDER BY FINANCIAL_ID DESC]]>
+	</select>
+
+	<delete id="deleteFinancialBean" parameterClass="com.fd.fashion.finance.bean.FinancialBean">
+        <![CDATA[
+delete from T_FINANCIAL where FINANCIAL_ID=#financialId#
+        ]]>
+	</delete>
+
+	<select id="getFinancialSum" resultClass="com.fd.fashion.finance.vo.FinancialVo">
+		<![CDATA[
+		SELECT
+		sum(
+			CASE
+			WHEN f.AMOUNT > 0 THEN
+			f.AMOUNT
+			END
+		) as incomeTotal,
+		sum(
+			CASE
+			WHEN f.amount < 0 THEN
+			f.amount
+			END
+		) as expendTotal
+		FROM
+		t_financial f
+		]]>
+	</select>
+	<!-- 			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) >'24:00:00' and substr(f.CREATE_TIME,12,20) <='2:00:00'   then  f.AMOUNT end ),0) 'T1',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) >'2:00:00'  and substr(f.CREATE_TIME,12,20) <='4:00:00'   then  f.AMOUNT end ),0) 'T2',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) >'4:00:00'  and substr(f.CREATE_TIME,12,20) <='6:00:00'   then  f.AMOUNT end ),0) 'T3',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) >'6:00:00'  and substr(f.CREATE_TIME,12,20) <='8:00:00'   then  f.AMOUNT end ),0) 'T4',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) >'8:00:00'  and substr(f.CREATE_TIME,12,20) <='10:00:00'  then  f.AMOUNT end ),0) 'T5',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) >'10:00:00' and substr(f.CREATE_TIME,12,20) <='12:00:00'  then  f.AMOUNT end ),0) 'T6',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) >'12:00:00' and substr(f.CREATE_TIME,12,20) <='14:00:00'  then  f.AMOUNT end ),0) 'T7',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) >'14:00:00' and substr(f.CREATE_TIME,12,20) <='16:00:00' then  f.AMOUNT end ),0) 'T8',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) >'16:00:00' and substr(f.CREATE_TIME,12,20) <='18:00:00' then  f.AMOUNT end ),0) 'T9',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) >'18:00:00' and substr(f.CREATE_TIME,12,20) <='20:00:00' then  f.AMOUNT end ),0) 'T10',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) >'20:00:00' and substr(f.CREATE_TIME,12,20) <='22:00:00' then  f.AMOUNT end ),0) 'T11',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) >'22:00:00' and substr(f.CREATE_TIME,12,20) <='24:00:00'  then  f.AMOUNT end ),0) 'T12' -->
+	<select id="FinancialMapDate" resultClass="java.util.HashMap">
+		<![CDATA[
+		select 
+
+
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) <='03:00:00'  then  f.AMOUNT end ),0) 'T1',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) <='05:00:00'  then  f.AMOUNT end ),0) 'T2',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) <='07:00:00'  then  f.AMOUNT end ),0) 'T3',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) <='09:00:00'  then  f.AMOUNT end ),0) 'T4',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) <='11:00:00'  then  f.AMOUNT end ),0) 'T5',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) <='13:00:00'  then  f.AMOUNT end ),0) 'T6',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) <='15:00:00'  then  f.AMOUNT end ),0) 'T7',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) <='17:00:00'  then  f.AMOUNT end ),0) 'T8',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) <='19:00:00'  then  f.AMOUNT end ),0) 'T9',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) <='21:00:00'  then  f.AMOUNT end ),0) 'T10',
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) <='23:00:00'  then  f.AMOUNT end ),0) 'T11', 
+			IFNULL(sum(case when substr(f.CREATE_TIME,12,20) <='24:00:00' or substr(f.CREATE_TIME,12,20) <='01:00:00' then  f.AMOUNT end ),0) 'T12'
+		from t_financial f
+		where substr(f.CREATE_TIME,1,10) = #date# and f.AMOUNT_TYPE=1
+		]]>
+	</select>
+
+</sqlMap>

@@ -1,0 +1,338 @@
+<script>
+var actionUrl = "$link.setAction('order.AjaxCheckPickingAction')";	
+
+jQuery(function(){
+	jQuery("#inputOrderId").focus();
+});
+
+</script>
+
+<form id="listForm" name="listForm" method="get" action="$link.setPage('order,PickingOrder.html')">
+<br class="clear">
+<h4 class="mar_top_15 mar_bottom_20">拣货</h4>
+<div class="search_form">
+	<ul class="inline">
+        <li><label class="left mar_top_5">拣货人：$!picker</label></li>
+		<li><label class="mar_top_5">任务数：#if($!pageInfo && $!pageInfo.recordCount>0)$!pageInfo.recordCount #else 0 #end 单</label></li>
+		<li><label class="left mar_top_5" id="errorInfo"></label></li>
+	<!--<li>
+            <label class="left mar_top_5">拣货状态：</label>
+            <select class="left oi_status_max_w" name="pickStatus" id="pickStatus">
+				<option value=""  #if($pickStatus || $pickStatus!="") #else selected  #end>全部</option>
+                <option value="1" #if($pickStatus && $pickStatus=="1") selected  #end>等待拣货</option>
+                <option value="2" #if($pickStatus && $pickStatus=="2") selected  #end>已拣</option>
+            </select>
+		</li>
+		<li><input type="submit" class="btn btn-primary left" value="查询"></li>
+	-->
+		<!-- <li><input type="button" class="btn btn-primary left" value="扫描"></li> -->
+        
+    </ul>
+</div>
+<div class="pin-wrapper" style="height: 56px;">
+	<div class="pinned picking_pinned_div" style="width: 474px;">
+    	<ul class="inline">
+        	<li><label class="left mar_top_5">订单号：</label><input type="text" placeholder="订单号" class="input-medium left" id="inputOrderId" name="inputOrderId"  onkeydown="if(event.keyCode==13) checkOrderNo();"></li>
+        	<li><label class="left mar_top_5">SKU号：</label><input type="text" placeholder="SKU号" class="input-medium left" id="inputSku" name="inputSku" onkeydown="if(event.keyCode==13) checkSku();"></li>
+        </ul>
+    </div>
+</div>
+<br class="clear">
+
+<table cellspacing="0" cellpadding="0" border="0" class="table border_none center_t font12 tl_mt3_mb3">
+  <tbody><tr class="info bold">
+    <td><label>拣货日期</label></td>
+    <td><label>订单号</label></td>
+    <td><label>商品种类</label></td>
+    <td><label>商品数量</label></td>
+    <td><label>任务状态</label></td>
+    <td><label>订单状态</label></td>
+  </tr>
+  #if($pickList)
+	#foreach($pk in $!pickList)
+  <tr id="order_$!{pk.pick.orderId}" name="showLine">
+    <td><label>$!StringUtil.getDateString($!pk.pick.pickingDate,'yyyy-MM-dd HH:mm:ss')</label></td>
+    <td><label class="blue cursor_pointer collapsed" data-target="#product_$!{pk.pick.orderId}" data-toggle="collapse">$!pk.pick.orderId</label></td>
+    <td><label>$pk.calCounts</label></td>
+    <td><label>$pk.totalCount</label></td>
+    <td><label name="orderStatus">未拣货状态 </label></td>
+    <td><label>$pk.orderStatusCn</label></td>
+  </tr>
+  <tr id="prod_$!{pk.pick.orderId}" name="showLine">
+  	<td style="padding:0px; height:0px;" colspan="7">
+        <div class="bgcolor_gray pad_left_20 pad_right_20 mar_left_20 collapse" id="product_$!{pk.pick.orderId}" style="height: 0px;">
+            <table cellspacing="0" cellpadding="0" border="0" class="table border_none table-condensed center_t font12 tl_mt3_mb3 mar_top_20 underline">
+          <tbody id="tbody_$!{pk.pick.orderId}"><tr class="success bold">
+            <td><label>序号</label></td>
+            <td><label>商品编号</label></td>
+            <td><label>商品名称</label></td>
+            <td><label>规格尺码</label></td>
+            <td><label>数量</label></td>
+            <td><label>状态</label></td>
+            <td><label>操作</label></td>
+          </tr>
+		  #set($index = 1)
+	 #foreach($pro in $pk.pickInfos)
+          <tr #if($!pro.status==4)class="red" #elseif($!pro.status == 1)class="gray" #else  class="black" #end id="$!{pk.pick.orderId}_$!{pro.sku}" name="proLine">
+            <td><label>$index</label></td>
+            <td><label><span id="skuFlag">$!pro.sku</span></label></td>
+            <td><label>$!StringUtil.substring($!pro.productName,80)</label></td>
+            <td><label>$!pro.productStandar1 / $!pro.productStandar2</label></td>
+            <td><label><span id="scanCount">#if($!pro.currentCount) $!pro.currentCount #else 0 #end</span>/<span id="scanTotalCount">$!pro.productCount</span></label></td>
+            <td><label><span id="scanStatus"> #if($!pro.status == 1)已拣 #elseif($!pro.status == 2)等待拣货 #elseif($!pro.status==3) 已登记缺货 #elseif($!pro.status==4) 错误<span class='icon-remove'></span> #end </span></label></td>
+            <td><span id="scanOper">#if($!pro.status==4)<a onclick="javascript:clearErr('$!{pk.pick.orderId}','$!pro.sku')">撤销</a>  #elseif($!pro.status==3) <a onclick="javascript:changeNotice('$!{pk.pick.orderId}','$!pro.sku')">已到货</a>  #elseif($!pro.status==1) 缺货登记  #else  <a href="javascript:noticeProduct('$!{pk.pick.orderId}','$!pro.sku')">缺货登记</a> #end</span></td>
+          </tr>
+      #set($index = $index + 1)
+	  #end    
+        </tbody></table>
+        </div>
+	</td>
+  </tr>
+      #end
+ #end
+</tbody></table>
+
+###parse("screens/Nap.html") jQuery("span[name='err']").addClass("hide");  jQuery("tr[id='passwordTr']").hide();
+</form>
+
+<script>
+function checkOrderNo(){
+	jQuery("label[id='errorInfo']").hide();
+	var inputOrderId  = jQuery("#inputOrderId").val();
+	inputOrderId = inputOrderId.trim();
+	if(inputOrderId==""){
+        jQuery("#errInfo").show().html("<font class='red'>订单号不能为空</font>");
+		jQuery("#inputOrderId").val("").focus();
+		return false;
+	}
+	jQuery.getJSON(
+		actionUrl,
+		{orderId:inputOrderId,flag:'checkOrderNoFlag'},
+		function(data){
+			if(data=="1"){
+    			jQuery("label[id='errorInfo']").hide();
+				var trs = jQuery("tr[name='showLine']");
+				for(var i=0;i<trs.length;i=i+2){
+					var status = jQuery("tr[id='"+trs[i].id+"']").find("label[name='orderStatus']").html();
+					if(status.trim()=='正在拣货'){
+						jQuery("tr[id='"+trs[i].id+"']").show();
+						var a = trs[i].id.lastIndexOf("_");
+						var ss = trs[i].id.substring(a);
+						jQuery("tr[id='prod_"+ss+"']").show();
+					}else{
+						jQuery("tr[id='"+trs[i].id+"']").hide();
+						var a = trs[i].id.lastIndexOf("_");
+						var ss = trs[i].id.substring(a);
+						jQuery("tr[id='prod_"+ss+"']").hide();
+					}
+				}
+				jQuery("tr[id='order_"+inputOrderId+"']").show();
+				jQuery("tr[id='prod_"+inputOrderId+"']").show();
+    			jQuery("#inputSku").val("").focus();
+			} else {
+				jQuery("label[id='errorInfo']").show().html("<font color='red'>订单号无效</font>");
+    			jQuery("#inputOrderId").val("").focus();
+			}
+		});
+}
+
+
+function checkSku(){
+	jQuery("label[id='errorInfo']").hide();
+	var inputOrderId  = jQuery("#inputOrderId").val();
+	inputOrderId = inputOrderId.trim();
+	if(inputOrderId==""){
+        jQuery("#errInfo").show().html("<font class='red'>订单号不能为空</font>");
+		jQuery("#inputOrderId").val("").focus();
+		return;
+	}
+	var inputSku = jQuery("#inputSku").val();
+	inputSku = inputSku.trim();
+	if(inputSku==""){
+        jQuery("#errInfo").show().html("<font class='red'>sku号不能为空</font>");
+		jQuery("#inputSku").val("").focus();
+		return;
+	}
+	jQuery("label[id='errorInfo']").hide();
+	var chid=inputOrderId+"_"+inputSku;
+	var content = jQuery("tr[id='"+chid+"']").html();
+	if(cnotent==null || content=="" || content.length<1){
+		jQuery.getJSON(
+		actionUrl,
+		{orderId:inputOrderId,flag:'saveProductSkuFlag',sku:inputSku,productCount:'',status:4},
+		function(data){
+			if(data=="1"){
+				var str = "<tr class='red' id='"+chid+"' name='proLine'>";
+    			var count = jQuery("tr[id='prod_"+inputOrderId+"']").find("tr[name='proLine']").length;
+    			str = str+"<td><label>"+(count+1)+"</label></td>";
+           	 	str = str + "<td><label><span id='skuFlag'>"+inputSku+"</span></label></td><td><label></label></td><td><label></label></td>";
+                str = str+"<td><label><span id='scanTotalCount'></span></label></td><td><label><span id='scanStatus'>错误<span class='icon-remove'></span></span></label></td><td><label><span id='scanOper'>";
+				var id = "'"+inputOrderId+"','"+inputSku+"'";
+				var sstr = '<a onclick="javascript:clearErr('+id+')">撤销</a>';
+				str = str+sstr+"</span></label></td></tr>";
+    			jQuery("#tbody_"+inputOrderId).append(str);
+			}
+			jQuery("#inputSku").val("").focus();
+		});
+	}else{
+		jQuery("tr[id='order_"+inputOrderId+"']").find("label[name='orderStatus']").html("正在拣货");
+		var count = jQuery("tr[id='"+chid+"']").find("span[id='scanCount']").html();
+		if(count=="0" || count==""){
+			count = "1";
+		}else{
+			count = Number(count)+1;
+		}
+		
+		var totalCount = jQuery("tr[id='"+chid+"']").find("span[id='scanTotalCount']").html();
+		if(count<totalCount){
+			jQuery("tr[id='"+chid+"']").find("span[id='scanStatus']").html("正在拣货");
+			var idstr = "'"+orderId+"','"+sku+"'";
+			if(jQuery("tr[id='"+chid+"']").find("span[id='scanStatus']").html().trim()=='已缺货登记'){
+    			var sstr = '<a onclick="javascript:noticeProduct('+idstr+')">登记缺货</a>';
+    			jQuery("tr[id='"+chid+"']").find("span[id='scanOper']").html(sstr);
+			}
+			jQuery.getJSON(
+        		actionUrl,
+        		{orderId:inputOrderId,flag:'saveProductSkuFlag',sku:inputSku,productCount:count,status:2},
+        		function(data){
+					if(data=="1"){
+						jQuery("tr[id='"+chid+"']").find("span[id='scanCount']").html(count);
+						jQuery("#inputSku").val("").focus();
+					}
+				});
+		}else if(count==totalCount){
+			jQuery.getJSON(
+        		actionUrl,
+        		{orderId:inputOrderId,flag:'saveProductSkuFlag',sku:inputSku,productCount:count,status:1},
+        		function(data){
+					if(data=="1"){
+						jQuery("tr[id='"+chid+"']").find("span[id='scanStatus']").html("已拣");
+						jQuery("tr[id='"+chid+"']").find("span[id='scanCount']").html(count);
+						jQuery("tr[id='"+chid+"']").find("span[id='scanOper']").html("登记缺货");
+						jQuery("tr[id='"+chid+"']").attr('class','gray');
+						doSubmit();
+					}
+				});
+		}else {
+			jQuery.getJSON(
+        		actionUrl,
+        		{orderId:inputOrderId,flag:'saveProductSkuFlag',sku:inputSku,productCount:count,status:4},
+        		function(data){
+					if(data=="1"){
+						jQuery("tr[id='"+chid+"']").find("span[id='scanCount']").html(count);
+						jQuery("tr[id='"+chid+"']").attr('class','red');
+						jQuery("tr[id='"+chid+"']").find("span[id='scanStatus']").html("错误<span class='icon-remove'></span>");
+						var id = "'"+inputOrderId+"','"+inputSku+"'";
+						var sstr = '<a onclick="javascript:clearErr('+id+')">撤销</a>';
+						jQuery("tr[id='"+chid+"']").find("span[id='scanOper']").html(sstr);
+						jQuery("#inputSku").val("").focus();
+					}
+				});
+		}
+	}
+	
+}
+
+function clearErr(orderId,sku){
+	jQuery("label[id='errorInfo']").hide();
+	var chid=orderId+"_"+sku;
+	var count = jQuery("tr[id='"+chid+"']").find("span[id='scanCount']").html();
+	if(count==null || count==""){
+		count = "0";
+	}
+	jQuery.getJSON(
+		actionUrl,
+		{orderId:orderId,sku:sku,flag:'deleteOrderFlag',productCount:count},
+		function(data){
+			if(data!=null){
+				if(count=="0" ||count==""){
+					jQuery("#"+chid).remove();
+					doSubmit();
+				}else{
+					jQuery("tr[id='"+chid+"']").find("span[id='scanStatus']").html("等待拣货");
+					jQuery("tr[id='"+chid+"']").find("span[id='scanCount']").html("0");
+					jQuery("tr[id='"+chid+"']").attr('class','black');
+					var idstr = "'"+orderId+"','"+sku+"'";
+					var sstr = '<a onclick="javascript:noticeProduct('+idstr+')">登记缺货</a>';
+					jQuery("tr[id='"+chid+"']").find("span[id='scanOper']").html(sstr);
+				}
+			} else {
+				jQuery("label[id='errorInfo']").show().html("<font color='red'>撤销失败</font>");
+			}
+		});
+	jQuery("#inputSku").val("").focus();
+}
+
+//缺货登记noticeProductCountFlag
+
+function  noticeProduct(orderId,sku){
+	jQuery("label[id='errorInfo']").hide();
+	var div = jQuery("#outOfStockDiv");
+	if (div.length == 0) {
+		div = jQuery("<div id='outOfStockDiv'></div>");
+		jQuery("body").append(div);
+	}
+	div.empty();
+	div.load("$link.setPage('order,NoticeStockOut.html')?orderId=" + orderId+"&sku="+sku);
+}
+
+// 已到货
+function changeNotice(orderId,sku){
+	jQuery("label[id='errorInfo']").hide();
+	jQuery.getJSON(
+		actionUrl,
+		{orderId:orderId,sku:sku,flag:'noticeProductCountFlag'},
+		function(data){
+			if(data!=null){
+				var chid = orderId+"_"+sku;
+				jQuery("tr[id='"+chid+"']").find("span[id='scanStatus']").html("等待拣货");
+				jQuery("tr[id='"+chid+"']").find("span[id='scanCount']").html(data.currentCount);
+				jQuery("tr[id='"+chid+"']").attr('class','black');
+				var idstr = "'"+orderId+"','"+sku+"'";
+				var sstr = '<a onclick="javascript:noticeProduct('+idstr+')">登记缺货</a>';
+				jQuery("tr[id='"+chid+"']").find("span[id='scanOper']").html(sstr);
+			} else {
+				jQuery("label[id='errorInfo']").show().html("<font color='red'>到货登记失败</font>");
+			}
+		});
+}
+
+function doSubmit(){
+	jQuery("label[id='errorInfo']").hide();
+	var inputOrderId  = jQuery("#inputOrderId").val();
+	inputOrderId = inputOrderId.trim();
+	if(inputOrderId==""){
+        jQuery("#errInfo").show().html("<font class='red'>订单号不能为空</font>");
+		jQuery("#inputOrderId").val("").focus();
+		return;
+	}
+	var trs = jQuery("tr[id='prod_"+inputOrderId+"']").find("tr[name='proLine']");
+	var count = 0;
+	for(var i=0;i<trs.length;i++){
+		var	trid =  trs[i].id;
+		var status = jQuery("tr[id='"+trid+"']").find("span[id='scanStatus']").html();
+		if(status.trim()=="已拣"){
+			count = count+1;
+		}
+	}
+	if(count==trs.length){
+		jQuery.getJSON(
+        		actionUrl,
+        		{orderId:inputOrderId,flag:'updatePickFlag'},
+        		function(data){
+					if(data=="1"){
+						jQuery("tr[id='order_"+inputOrderId+"']").hide();
+						jQuery("tr[id='prod_"+inputOrderId+"']").hide();
+						doMit();
+					}
+				});
+	}else{
+		jQuery("#inputSku").val("").focus();
+	}
+	
+}
+
+function doMit(){
+	document.listForm.submit();
+}
+</script>

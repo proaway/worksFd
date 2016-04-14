@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertShippingInfoBean" parameterClass="com.fd.fashion.seller.bean.ShippingInfoBean">
+        <![CDATA[
+insert into T_SHIPPING_INFO
+  (SELLER_ID, NAME, CREATE_DATE, MODIFY_TIME)
+values
+  (#sellerId#, #name#, #createDate#, #modifyTime#)
+        ]]>
+        <selectKey keyProperty="shippingInfoId" resultClass="long">
+            <![CDATA[select @@identity as shippingInfoId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateShippingInfoBean" parameterClass="com.fd.fashion.seller.bean.ShippingInfoBean">
+        <![CDATA[
+update T_SHIPPING_INFO 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="shippingInfoId" prepend="," removeFirstPrepend="true">
+                <![CDATA[SHIPPING_INFO_ID = #shippingInfoId#]]>
+            </isNotNull>
+            <isNotNull property="sellerId" prepend="," removeFirstPrepend="true">
+                <![CDATA[SELLER_ID = #sellerId#]]>
+            </isNotNull>
+            <isNotNull property="name" prepend="," removeFirstPrepend="true">
+                <![CDATA[NAME = #name#]]>
+            </isNotNull>
+            <isNotNull property="createDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_DATE = #createDate#]]>
+            </isNotNull>
+            <isNotNull property="modifyTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[MODIFY_TIME = #modifyTime#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where SHIPPING_INFO_ID = #shippingInfoId#
+        ]]>
+    </update>
+
+    <sql id="getShippingInfoBeanCondition">
+            <isNotNull property="shippingInfoId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[SHIPPING_INFO_ID = #shippingInfoId#]]>
+            </isNotNull>
+            <isNotNull property="sellerId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[SELLER_ID = #sellerId#]]>
+            </isNotNull>
+            <isNotNull property="name" prepend="and" removeFirstPrepend="true">
+                <![CDATA[NAME = #name#]]>
+            </isNotNull>
+            <isNotNull property="createDate" prepend="and" removeFirstPrepend="true">
+                <![CDATA[CREATE_DATE = #createDate#]]>
+            </isNotNull>
+            <isNotNull property="modifyTime" prepend="and" removeFirstPrepend="true">
+                <![CDATA[MODIFY_TIME = #modifyTime#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getShippingInfoBeanCount" parameterClass="com.fd.fashion.seller.bean.ShippingInfoBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_SHIPPING_INFO 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getShippingInfoBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getShippingInfoBean" parameterClass="com.fd.fashion.seller.bean.ShippingInfoBean"
+        resultClass="com.fd.fashion.seller.bean.ShippingInfoBean">
+        <![CDATA[
+select 
+	SHIPPING_INFO_ID	as shippingInfoId,
+	SELLER_ID	as sellerId,
+	NAME	as name,
+	CREATE_DATE	as createDate,
+	MODIFY_TIME	as modifyTime
+from T_SHIPPING_INFO 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getShippingInfoBeanCondition"/>        </dynamic>
+    </select>
+
+    <delete id="deleteShippingInfoBean" parameterClass="com.fd.fashion.seller.bean.ShippingInfoBean">
+        <![CDATA[
+delete from T_SHIPPING_INFO where SHIPPING_INFO_ID=#shippingInfoId#
+        ]]>
+    </delete>
+</sqlMap>

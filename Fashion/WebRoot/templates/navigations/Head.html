@@ -1,0 +1,560 @@
+<div class="header_top_div">
+	<div class="header_top_right">
+		<span id="user" class="header_top_user"></span>
+
+		<!--S user-->
+		<script type="text/javascript" src="/static/prototype/product_fashion/inc/statclick.js"></script>
+		<script type="text/javascript">
+<!--
+	function getwebstatus() {
+		jQuery.getScript(
+			"$link.setAction('buyer.AjaxCheckLogin')",
+			function() {
+				if (info.LoginFlag == "1") {
+					document.getElementById("user").innerHTML = "Hi "
+							+ info.userId
+							+ ", welcome back! <span class=\"fontred\"><a href=\"$link.setAction('buyer.Logout')\"><strong>Sign out</strong></a></span>";
+				} else {
+					document.getElementById("user").innerHTML = "<span class=\"fontred\"><a href=\"$link.setPage('buyer,Login.html')"
+							+ "\"><strong>Sign in</strong></a></span> or <span class=\"fontblue\"><a href=\"$link.setPage('buyer,Register.html')"
+							+ "\"><strong>Register</strong></a></span>";
+				}
+				document.getElementById("qua").innerHTML = info.Quantity;
+			});
+	}
+	getwebstatus();
+//-->
+</script>
+		<!--E user-->
+		<script type="text/javascript">
+	jQuery(function() {
+		jQuery("#Tag_Translate").hover(function() {
+			jQuery("#box_up_Translate").stop(true, true).slideDown(300);
+		}, function() {
+			jQuery("#box_up_Translate").stop(true, true).slideUp("fast");
+		});
+	});
+</script>
+		<span class="header_top_account"><a
+			href="$link.setPage('buyer,MyAccount.html')"><strong>My
+					Account</strong> </a> </span>
+	</div>
+</div>
+<br class="clearfloat" />
+<div class="header_middle_div">
+	<a href="http://www.shopmadeinchina.com/" title="ShopMadeInChina.com"><img
+			src="/static/web/images/logo-shopMadeInChina.gif"
+			alt="MadeInChina.com" title="MadeInChina.com" border="0"
+			style="margin-top: 10px;"> </a>
+	<div class="header_middle_right">
+		<div class="header_middle_search">
+			<form id="formHead" name="formHead" method="post" action=""
+				onsubmit="return onSubmitSearch();" class="header_middle_form">
+				<div style="width: 280px; float: left;">
+					<input type="text" id="keywords_search" name="keywords_search"
+						value="Search Products" class="keywords_search" autocomplete="off"/>
+				</div>
+				<script type="text/javascript">
+	$(document).ready(function() {
+		//focusblurtext
+		jQuery.focusblurtext = function(focusdom, focuswidthnew, animatetime) {
+			var focusblurtextid = $(focusdom);
+			var defval = focusblurtextid.val();
+			var defwidth = focusblurtextid.width();
+			focusblurtextid.focus(function() {
+				var thisval = $(this).val();
+				if (thisval == defval) {
+					$(this).val("");
+					$(this).animate({
+						width : "+" + focuswidthnew
+					}, focuswidthnew).addClass("keywords_searchfocus");
+				}
+			});
+			focusblurtextid.blur(function() {
+				var thisval = $(this).val();
+				if (thisval == "") {
+					$(this).val(defval);
+				}
+				$(this).animate({
+					width : "+" + defwidth
+				}, focuswidthnew).removeClass("keywords_searchfocus");
+			});
+
+		};
+		jQuery.focusblurtext("#keywords_search", "270px", "300");
+	});
+</script>
+				<div style="width: 165px; float: left; margin-left: -1px;">
+					<input type="hidden" name="category_search" id="category_search">
+					<input type="hidden" name="category_name" id="category_name">
+					<input type="hidden" name="alltxt1" id="alltxt1" vlaue="">
+					<input type="hidden" name="kdm" id="kdm" vlaue="">
+					<!--ul li select begin-->
+					<script type="text/javascript">
+	jQuery(document).ready(function() {
+		jQuery('.son_ul').hide();
+		jQuery('.select_box span').hover(function() {
+			jQuery(this).parent().find('ul.son_ul').slideDown();
+			jQuery(this).parent().find('li').hover(function() {
+				jQuery(this).addClass('hover')
+			}, function() {
+				jQuery(this).removeClass('hover')
+			});
+			jQuery(this).parent().hover(function() {
+			}, function() {
+				jQuery(this).parent().find("ul.son_ul").slideUp();
+			});
+		}, function() {
+		});
+		jQuery('ul.son_ul li').click(function() {
+			jQuery(this).parents('li').find('span').html(jQuery(this).html());
+			jQuery(this).parents('li').find('ul').slideUp();
+			if (jQuery(this).attr("id") == null) {
+				jQuery('#category_name').val("");
+			} else {
+				jQuery('#category_name').val(jQuery(this).attr("id"));
+			}
+			if (jQuery(this).attr("accessKey") == null) {
+				jQuery('#category_search').val("");
+			} else {
+				jQuery('#category_search').val(jQuery(this).attr("accessKey"));
+			}
+		});
+	});
+</script>
+					<div class="select_box_area">
+						<ul id="main_box">
+							<li class="select_box">
+								<span>All Categories...</span>
+								<ul class="son_ul" style="display: none">
+									<li id="" accessKey="">
+										All Categories...
+									</li>
+									<li id="Apparel & Accessories" accessKey="001">
+										Apparel & Accessories
+									</li>
+									<li id="Automobiles & Motorcycles" accessKey="002">
+										Automobiles & Motorcycles
+									</li>
+									<li id="Baby Products" accessKey="003">
+										Baby Products
+									</li>
+									<li id="Beauty & Health" accessKey="004">
+										Beauty & Health
+									</li>
+									<li id="Computer & Networking" accessKey="005">
+										Computer & Networking
+									</li>
+									<li id="Construction & Real Estate" accessKey="006">
+										Construction & Real Estate
+									</li>
+									<li id="Consumer Electronics" accessKey="007">
+										Consumer Electronics
+									</li>
+									<li id="Electrical Equipment & Supplies" accessKey="008">
+										Electrical Equipment & Supplies
+									</li>
+									<li id="Electronic Components & Supplies" accessKey="009">
+										Electronic Components & Supplies
+									</li>
+									<li id="Food" accessKey="010">
+										Food
+									</li>
+									<li id="Furniture" accessKey="011">
+										Furniture
+									</li>
+									<li id="Hardware" accessKey="012">
+										Hardware
+									</li>
+									<li id="Home & Garden" accessKey="013">
+										Home & Garden
+									</li>
+									<li id="Home Appliances" accessKey="014">
+										Home Appliances
+									</li>
+									<li id="Industry & Business" accessKey="015">
+										Industry & Business
+									</li>
+									<li id="Jewelry & Watch" accessKey="016">
+										Jewelry & Watch
+									</li>
+									<li id="Lights & Lighting" accessKey="017">
+										Lights & Lighting
+									</li>
+									<li id="Luggage & Bags" accessKey="018">
+										Luggage & Bags
+									</li>
+									<li id="Office & School Supplies" accessKey="019">
+										Office & School Supplies
+									</li>
+									<li id="Phones & Telecommunications" accessKey="020">
+										Phones & Telecommunications
+									</li>
+									<li id="Security & Protection" accessKey="021">
+										Security & Protection
+									</li>
+									<li id="Shoes" accessKey="022">
+										Shoes
+									</li>
+									<li id="Special Category" accessKey="023">
+										Special Category
+									</li>
+									<li id="Sports & Entertainment" accessKey="024">
+										Sports & Entertainment
+									</li>
+									<li id="Tools" accessKey="025">
+										Tools
+									</li>
+									<li id="Toys & Hobbies" accessKey="026">
+										Toys & Hobbies
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+					<br class="clearfloat" />
+				</div>
+				<!--ul li select end-->
+				<div style="width: 33px; float: left;">
+					<input name="button" type="submit" value="" id="searchbtn"
+						class="searchbtn" onclick="return onSubmitSearch();" />
+				</div>
+			</form>
+		</div>
+		<br class="clearfloat" />
+		<div class="header_middle_cart">
+			<a href="/fashion/template/cart,Cart.html"> <img
+					src="/static/prototype/product_fashion/images/cart.gif" alt="cart"
+					title="cart" align="absmiddle"
+					style="width: 26px; height: 22px; margin-top: 8px;" />&nbsp;<span id="qua"></span> item(s) </a>
+		</div>
+		<br class="clearfloat" />
+	</div>
+	<script type="text/javascript">
+	String.prototype.trim = function() {
+		return this.replace(/(^\s*)|(\s*$)/g, "");
+	}
+
+	function returnLen(strObj) {
+		var len = 0;
+		for (i = 0; i < strObj.length; i++) {
+			if (strObj.charCodeAt(i) > 256) {
+				len += 2;
+			} else {
+				len++;
+			}
+		}
+		return len;
+	}
+
+	function onSubmitSearch() {
+		var keywords = document.getElementById('keywords_search').value.trim();
+		if (keywords == "Search Products") {
+			keywords = "";
+			return false;
+		}
+		var category = jQuery('#category_search').val();
+		var catname = jQuery('#category_name').val();
+		if (keywords != "") {
+			if (returnLen(keywords) > 200) {
+				alert("Keywords is too length!");
+				return false;
+			}
+		}
+		if (keywords == "" && category == "") {
+			alert("Please select category or input keywords.");
+			return false;
+		}
+		var tarUrl = "";
+		if (keywords != "") {
+			tarUrl = "http://www.fashion.com/search/" + encodeURIComponent(keywords) + ".html";
+			if (category != "") {
+				tarUrl = tarUrl + "?catId=" + category;
+			}
+		} else {
+			tarUrl = "http://www.fashion.com/category/" + catname + "_" + category + ".html";
+		}
+		this.location = tarUrl;
+		return false;
+	}
+</script>
+</div>
+<br class="clearfloat" />
+<div class="guider">
+	<span class="title" style="margin-left: 6px;"><a href="#">New
+			Arrivals</a> </span>
+	<span class="title"><a href="#" target="_blank">Women's</a> </span>
+	<span class="title"><a href="#" target="_blank">Men's</a> </span>
+	<span class="title"><a href="#" target="_blank">Kids'</a> </span>
+	<span class="title"><a href="#" target="_blank">Consumer Electronics</a> </span>
+	<span class="title"><a href="#" target="_blank">Households</a> </span>
+	<span class="title"><a href="#" target="_blank">Fashion</a> </span>
+	<span class="title"><a href="#" target="_blank">Toys</a> </span>
+	<span class="title" style="float: right; margin-right: 2px;"><a
+		href="#" target="_blank" style="color: #C00;">Promotion<img
+				src="/static/prototype/product_fashion/images/down_icon.gif"
+				style="margin-top: 18px; margin-left: 5px;" /> </a> </span>
+	<br class="clearfloat" />
+	<div class="list" style="display: none;">
+		<ul>
+			<li url="#">
+				Submenu1-1
+			</li>
+			<li url="#">
+				Submenu1-2
+			</li>
+			<li url="#">
+				Submenu1-3
+			</li>
+			<li url="#">
+				Submenu1-4
+			</li>
+			<li url="#">
+				Submenu1-5
+			</li>
+		</ul>
+		<ul>
+			<li url="#">
+				Submenu1-1
+			</li>
+			<li url="#">
+				Submenu1-2
+			</li>
+			<li url="#">
+				Submenu1-3
+			</li>
+			<li url="#">
+				Submenu1-4
+			</li>
+			<li url="#">
+				Submenu1-5
+			</li>
+		</ul>
+		<ul>
+			<li url="#">
+				Submenu1-1
+			</li>
+			<li url="#">
+				Submenu1-2
+			</li>
+			<li url="#">
+				Submenu1-3
+			</li>
+			<li url="#">
+				Submenu1-4
+			</li>
+			<li url="#">
+				Submenu1-5
+			</li>
+		</ul>
+		<ul>
+			<a href="#"><img
+					src="/static/prototype/product_fashion/images/small/pro_test_01.jpg"
+					style="margin-top: 5px;" /> </a>
+			<br />
+			<a href="#"><p style="margin: 5px 0px 0px 5px; color: #333;">
+					Men's Shirt
+				</p> </a>
+		</ul>
+	</div>
+	<br class="clearfloat" />
+	<div class="list">
+		<ul>
+			<li url="#">
+				Submenu2-1
+			</li>
+			<li url="#">
+				Submenu2-2
+			</li>
+			<li url="#">
+				Submenu2-3
+			</li>
+		</ul>
+	</div>
+	<br class="clearfloat" />
+	<div class="list">
+		<ul>
+			<li url="#">
+				Submenu2-1
+			</li>
+			<li url="#">
+				Submenu2-2
+			</li>
+			<li url="#">
+				Submenu2-3
+			</li>
+		</ul>
+	</div>
+	<br class="clearfloat" />
+	<div class="list">
+		<ul>
+			<li url="#">
+				Submenu2-1
+			</li>
+			<li url="#">
+				Submenu2-2
+			</li>
+			<li url="#">
+				Submenu2-3
+			</li>
+		</ul>
+	</div>
+	<br class="clearfloat" />
+	<div class="list">
+		<ul>
+			<li url="#">
+				Submenu2-1
+			</li>
+			<li url="#">
+				Submenu2-2
+			</li>
+			<li url="#">
+				Submenu2-3
+			</li>
+		</ul>
+		<ul>
+			<li url="#">
+				Submenu1-1
+			</li>
+			<li url="#">
+				Submenu1-2
+			</li>
+			<li url="#">
+				Submenu1-3
+			</li>
+			<li url="#">
+				Submenu1-4
+			</li>
+			<li url="#">
+				Submenu1-5
+			</li>
+		</ul>
+		<ul>
+			<li url="#">
+				Submenu1-1
+			</li>
+			<li url="#">
+				Submenu1-2
+			</li>
+			<li url="#">
+				Submenu1-3
+			</li>
+			<li url="#">
+				Submenu1-4
+			</li>
+			<li url="#">
+				Submenu1-5
+			</li>
+		</ul>
+		<ul>
+			<li url="#">
+				Submenu1-1
+			</li>
+			<li url="#">
+				Submenu1-2
+			</li>
+			<li url="#">
+				Submenu1-3
+			</li>
+			<li url="#">
+				Submenu1-4
+			</li>
+			<li url="#">
+				Submenu1-5
+			</li>
+		</ul>
+		<ul>
+			<li url="#">
+				Submenu1-1
+			</li>
+			<li url="#">
+				Submenu1-2
+			</li>
+			<li url="#">
+				Submenu1-3
+			</li>
+			<li url="#">
+				Submenu1-4
+			</li>
+			<li url="#">
+				Submenu1-5
+			</li>
+		</ul>
+	</div>
+	<br class="clearfloat" />
+	<div class="list">
+		<ul>
+			<li url="#">
+				Submenu2-1
+			</li>
+			<li url="#">
+				Submenu2-2
+			</li>
+			<li url="#">
+				Submenu2-3
+			</li>
+		</ul>
+	</div>
+	<br class="clearfloat" />
+	<div class="list">
+		<ul>
+			<li url="#">
+				Submenu2-1
+			</li>
+			<li url="#">
+				Submenu2-2
+			</li>
+			<li url="#">
+				Submenu2-3
+			</li>
+		</ul>
+	</div>
+	<br class="clearfloat" />
+	<div class="list">
+		<ul>
+			<li url="#">
+				Submenu2-1
+			</li>
+			<li url="#">
+				Submenu2-2
+			</li>
+			<li url="#">
+				Submenu2-3
+			</li>
+		</ul>
+	</div>
+	<br class="clearfloat" />
+	<div class="list" style="margin-left: -120px;">
+		<pre
+			style="font-size: 14px; color: #F90; font-weight: bolder; line-height: 30px; width: 210px;">  
+New Year's Resolution:
+Save big!
+Always Free Shipping
+            </pre>
+	</div>
+	<br class="clearfloat" />
+</div>
+<br class="clearfloat" />
+
+				<!-- ------------------------- S menu ------------------------- -->
+				<div id="menu">
+					<div style="float: left; width: 80%;">
+						<a href="http://www.fashion.com/"><img
+								src="/static/prototype/product_fashion/images/homepage.gif"
+								width="15" height="14" alt="Homepage" title="Homepage"
+								style="margin-top: 9px; margin-right: 6px;" />Home</a>
+								&nbsp;&nbsp;&gt;&nbsp;&nbsp;<span><a href="http://www.fashion.com/allcategories.shtml">All categories</a></span>
+#if($breadCrumbs)
+#foreach($breadCrumb in $breadCrumbs)
+	&nbsp;&nbsp;&gt;&nbsp;&nbsp;<span><a href="$breadCrumb.url">$breadCrumb.name</a></span>
+#end
+#end
+					</div>
+					<div style="float: right; width: 20%; text-align: right;">
+						<img src="/static/prototype/product_fashion/images/mcafee.gif"
+							width="115" height="32" />
+					</div>
+				</div>
+				
+				<!-- ------------------------- E menu ------------------------- -->
+				<br class="clearfloat" />

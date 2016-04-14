@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertVisitProductBean" parameterClass="com.fd.statistics.bean.VisitProductBean">
+        <![CDATA[
+insert into T_VISIT_PRODUCT
+  (VISIT_ID, PRODUCT_ID, CHANNEL_ID, POSITION, CLICK_TIME, CART, ORDER_NO, URL)
+values
+  (#visitId#, #productId#, #channelId#, #position#, #clickTime#, #cart#, #orderNo#, #url#)
+        ]]>
+        <selectKey keyProperty="visitId" resultClass="long">
+            <![CDATA[select @@identity as visitId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateVisitProductBean" parameterClass="com.fd.statistics.bean.VisitProductBean">
+        <![CDATA[
+update T_VISIT_PRODUCT 
+        ]]>
+        <dynamic prepend="set">
+
+            <isNotNull property="channelId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CHANNEL_ID = #channelId#]]>
+            </isNotNull>
+            <isNotNull property="position" prepend="," removeFirstPrepend="true">
+                <![CDATA[POSITION = #position#]]>
+            </isNotNull>
+            <isNotNull property="clickTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[CLICK_TIME = #clickTime#]]>
+            </isNotNull>
+            <isNotNull property="cart" prepend="," removeFirstPrepend="true">
+                <![CDATA[CART = #cart#]]>
+            </isNotNull>
+            <isNotNull property="orderNo" prepend="," removeFirstPrepend="true">
+                <![CDATA[ORDER_NO = #orderNo#]]>
+            </isNotNull>
+            <isNotNull property="url" prepend="," removeFirstPrepend="true">
+                <![CDATA[URL = #url#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where VISIT_ID = #visitId# and PRODUCT_ID = #productId#
+        ]]>
+    </update>
+
+    <sql id="getVisitProductBeanCondition">
+         <isNotNull property="visitId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VISIT_ID = #visitId#]]>
+         </isNotNull>
+         <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PRODUCT_ID = #productId#]]>
+         </isNotNull>
+         <isNotNull property="channelId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CHANNEL_ID = #channelId#]]>
+         </isNotNull>
+         <isNotNull property="position" prepend="and" removeFirstPrepend="true">
+             <![CDATA[POSITION = #position#]]>
+         </isNotNull>
+         <isNotNull property="clickTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CLICK_TIME = #clickTime#]]>
+         </isNotNull>
+         <isNotNull property="cart" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CART = #cart#]]>
+         </isNotNull>
+         <isNotNull property="orderNo" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ORDER_NO = #orderNo#]]>
+         </isNotNull>
+         <isNotNull property="url" prepend="and" removeFirstPrepend="true">
+             <![CDATA[URL = #url#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getVisitProductBeanCount" parameterClass="com.fd.statistics.bean.VisitProductBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_VISIT_PRODUCT 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitProductBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getVisitProductBean" parameterClass="com.fd.statistics.bean.VisitProductBean"
+        resultClass="com.fd.statistics.bean.VisitProductBean">
+        <![CDATA[
+select 
+	VISIT_ID	as visitId,
+	PRODUCT_ID	as productId,
+	CHANNEL_ID	as channelId,
+	POSITION	as position,
+	CLICK_TIME	as clickTime,
+	CART	as cart,
+	ORDER_NO	as orderNo,
+	URL	as url
+from T_VISIT_PRODUCT 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitProductBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteVisitProductBean" parameterClass="com.fd.statistics.bean.VisitProductBean">
+        <![CDATA[
+delete from T_VISIT_PRODUCT where VISIT_ID=#visitId#
+        ]]>
+    </delete>
+
+</sqlMap>

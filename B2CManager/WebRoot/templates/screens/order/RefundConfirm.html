@@ -1,0 +1,72 @@
+##退款确认
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal hide fade" id="refund_confirmation">
+<div class="modal-header">
+<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+<h5 id="myModalLabel">退款确认</h5>
+</div>
+<div class="modal-body">
+<table cellspacing="0" cellpadding="0" border="0" class="mar_left_10">
+  <tbody><tr>
+<td width="130px" class="v_top right_t"><label class="mar_right_10">订单号：</label></td>
+<td><label class="text-info">$order.orderId</label></td>
+  </tr>
+  <tr>
+<td class="v_top right_t"><label class="mar_right_10">订单金额（$）：</label></td>
+<td>
+	<label class="text-info">$order.total</label>
+</td>
+  </tr>
+  <tr>
+<td class="v_top right_t"><label class="mar_right_10">申请退款时间：</label></td>
+<td>
+	<label class="text-info">2013-03-28 18:34:29</label>
+</td>
+  </tr>
+  <tr>
+<td class="v_top right_t"><label class="mar_right_10">退款来源：</label></td>
+<td>
+	<label class="text-info">$osb.statusCn</label>
+</td>
+  </tr>
+  <tr>
+<td class="v_top right_t"><label class="mar_right_10 mar_top_5">备注：</label></td>
+<td><textarea rows="3" class="input-xlarge" placeholder="备注" style="resize: none;" id="remark"></textarea>
+<p class="help-block red">必须填写备注内容。</p></td>
+  </tr>
+  <tr>
+<td class="v_top right_t"><label class="mar_right_10 mar_top_5">退款金额（$）：</label></td>
+<td>
+	<input type="text" placeholder="退款金额" class="input-medium" value="$order.refundAmount" id="refundNum">
+</td>
+  </tr>
+</tbody></table>
+</div>
+<div class="modal-footer">
+<button aria-hidden="true" data-dismiss="modal" class="btn">驳回</button>
+<button aria-hidden="true" data-dismiss="modal" class="btn btn-primary" onclick="doRefundConfirm()">确认退款</button>
+</div>
+</div><!-- E refund_confirmation -->
+<script>
+jQuery('#refund_confirmation').modal({
+	show:true
+})
+
+function doRefundConfirm(){
+	jQuery("body").showLoading();
+	var orderId = '$order.orderId';
+	var refundType = '$osb.statusCode';
+	var refundNum = jQuery("#refundNum").val();
+	var remark = jQuery("#remark").val();
+	var orderStatus = '$order.refundStatus';
+	var url = '$link.setAction("order.AjaxRefundConfirm")';
+	jQuery.getJSON(url, {orderId:orderId,refundNum:refundNum,remark:remark,refundType:refundType,orderStatus:orderStatus}, function(data) {
+		jQuery("body").hideLoading();
+		if (data == "1") {
+			alert("操作成功!");
+			location.reload(); 
+		}else{
+			alert("退款金额不能大于订单金额，且不能为负数!");
+		}
+	});
+}
+</script>

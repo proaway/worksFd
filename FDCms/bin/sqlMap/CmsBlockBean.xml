@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertCmsBlockBean" parameterClass="com.fd.fashion.cms.bean.CmsBlockBean">
+        <![CDATA[
+insert into T_CMS_BLOCK
+  (CHANNEL_ID, BLOCK_NAME, BLOCK_LOCATION, BLOCK_TYPE, INFO_ID, LINK_URL, IMG_URL, TITLE, SUMMARY, IMG_ALT, IMG_SPEC, SKU, TITLE_LENGTH, SUMMARY_LENGTH)
+values
+  (#channelId#, #blockName#, #blockLocation#, #blockType#, #infoId#, #linkUrl#, #imgUrl#, #title#, #summary#, #imgAlt#, #imgSpec#, #sku#, #titleLength#, #summaryLength#)
+        ]]>
+        <selectKey keyProperty="blockId" resultClass="long">
+            <![CDATA[select @@identity as blockId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateCmsBlockBean" parameterClass="com.fd.fashion.cms.bean.CmsBlockBean">
+        <![CDATA[
+update T_CMS_BLOCK 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="blockId" prepend="," removeFirstPrepend="true">
+                <![CDATA[BLOCK_ID = #blockId#]]>
+            </isNotNull>
+            <isNotNull property="channelId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CHANNEL_ID = #channelId#]]>
+            </isNotNull>
+            <isNotNull property="blockName" prepend="," removeFirstPrepend="true">
+                <![CDATA[BLOCK_NAME = #blockName#]]>
+            </isNotNull>
+            <isNotNull property="blockLocation" prepend="," removeFirstPrepend="true">
+                <![CDATA[BLOCK_LOCATION = #blockLocation#]]>
+            </isNotNull>
+            <isNotNull property="blockType" prepend="," removeFirstPrepend="true">
+                <![CDATA[BLOCK_TYPE = #blockType#]]>
+            </isNotNull>
+            <isNotNull property="infoId" prepend="," removeFirstPrepend="true">
+                <![CDATA[INFO_ID = #infoId#]]>
+            </isNotNull>
+            <isNotNull property="linkUrl" prepend="," removeFirstPrepend="true">
+                <![CDATA[LINK_URL = #linkUrl#]]>
+            </isNotNull>
+            <isNotNull property="imgUrl" prepend="," removeFirstPrepend="true">
+                <![CDATA[IMG_URL = #imgUrl#]]>
+            </isNotNull>
+            <isNotNull property="title" prepend="," removeFirstPrepend="true">
+                <![CDATA[TITLE = #title#]]>
+            </isNotNull>
+            <isNotNull property="summary" prepend="," removeFirstPrepend="true">
+                <![CDATA[SUMMARY = #summary#]]>
+            </isNotNull>
+            <isNotNull property="imgAlt" prepend="," removeFirstPrepend="true">
+                <![CDATA[IMG_ALT = #imgAlt#]]>
+            </isNotNull>
+            <isNotNull property="imgSpec" prepend="," removeFirstPrepend="true">
+                <![CDATA[IMG_SPEC = #imgSpec#]]>
+            </isNotNull>
+            <isNotNull property="sku" prepend="," removeFirstPrepend="true">
+                <![CDATA[SKU = #sku#]]>
+            </isNotNull>
+            <isNotNull property="titleLength" prepend="," removeFirstPrepend="true">
+                <![CDATA[TITLE_LENGTH = #titleLength#]]>
+            </isNotNull>
+            <isNotNull property="summaryLength" prepend="," removeFirstPrepend="true">
+                <![CDATA[SUMMARY_LENGTH = #summaryLength#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where BLOCK_ID = #blockId#
+        ]]>
+    </update>
+
+    <sql id="getCmsBlockBeanCondition">
+         <isNotNull property="blockId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[BLOCK_ID = #blockId#]]>
+         </isNotNull>
+         <isNotNull property="channelId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CHANNEL_ID = #channelId#]]>
+         </isNotNull>
+         <isNotNull property="blockName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[BLOCK_NAME = #blockName#]]>
+         </isNotNull>
+         <isNotNull property="blockLocation" prepend="and" removeFirstPrepend="true">
+             <![CDATA[BLOCK_LOCATION = #blockLocation#]]>
+         </isNotNull>
+         <isNotNull property="blockType" prepend="and" removeFirstPrepend="true">
+             <![CDATA[BLOCK_TYPE = #blockType#]]>
+         </isNotNull>
+         <isNotNull property="infoId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[INFO_ID = #infoId#]]>
+         </isNotNull>
+         <isNotNull property="linkUrl" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LINK_URL = #linkUrl#]]>
+         </isNotNull>
+         <isNotNull property="imgUrl" prepend="and" removeFirstPrepend="true">
+             <![CDATA[IMG_URL = #imgUrl#]]>
+         </isNotNull>
+         <isNotNull property="title" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TITLE = #title#]]>
+         </isNotNull>
+         <isNotNull property="summary" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SUMMARY = #summary#]]>
+         </isNotNull>
+         <isNotNull property="imgAlt" prepend="and" removeFirstPrepend="true">
+             <![CDATA[IMG_ALT = #imgAlt#]]>
+         </isNotNull>
+         <isNotNull property="imgSpec" prepend="and" removeFirstPrepend="true">
+             <![CDATA[IMG_SPEC = #imgSpec#]]>
+         </isNotNull>
+         <isNotNull property="sku" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SKU = #sku#]]>
+         </isNotNull>
+        <isNotNull property="titleLength" prepend="and" removeFirstPrepend="true">
+            <![CDATA[TITLE_LENGTH = #titleLength#]]>
+        </isNotNull>
+        <isNotNull property="summaryLength" prepend="and" removeFirstPrepend="true">
+            <![CDATA[SUMMARY_LENGTH = #summaryLength#]]>
+        </isNotNull>
+    </sql>
+
+    <select id="getCmsBlockBeanCount" parameterClass="com.fd.fashion.cms.bean.CmsBlockBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_CMS_BLOCK 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getCmsBlockBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getCmsBlockBean" parameterClass="com.fd.fashion.cms.bean.CmsBlockBean"
+        resultClass="com.fd.fashion.cms.bean.CmsBlockBean">
+        <![CDATA[
+select 
+	BLOCK_ID	as blockId,
+	CHANNEL_ID	as channelId,
+	BLOCK_NAME	as blockName,
+	BLOCK_LOCATION	as blockLocation,
+	BLOCK_TYPE	as blockType,
+	INFO_ID	as infoId,
+	LINK_URL	as linkUrl,
+	IMG_URL	as imgUrl,
+	TITLE	as title,
+	SUMMARY	as summary,
+	IMG_ALT	as imgAlt,
+	IMG_SPEC	as imgSpec,
+	SKU	as sku,
+	TITLE_LENGTH as titleLength,
+	SUMMARY_LENGTH as summaryLength
+from T_CMS_BLOCK 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getCmsBlockBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteCmsBlockBean" parameterClass="com.fd.fashion.cms.bean.CmsBlockBean">
+        <![CDATA[
+delete from T_CMS_BLOCK where BLOCK_ID=#blockId#
+        ]]>
+    </delete>
+
+</sqlMap>

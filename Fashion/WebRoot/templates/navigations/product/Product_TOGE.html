@@ -1,0 +1,115 @@
+#if($productGroup)
+<div
+	style="height: 5px; width: 100%; float: left; background: url(/static/prototype/product_fashion/images/topl.gif) repeat-x; margin-top: 26px;"></div>
+<br class="clearfloat" />
+
+<div class="itemsTogetherTit">
+	<img src="/static/prototype/product_fashion/images/down_icon.gif"
+		width="8" height="4" />
+	<span>Order other items together for bigger savings</span>
+</div>
+
+<div class="pro_L_M_1">
+	<div class="pro_R_M_1">
+		<div class="pro_R_M_1_img">
+			#if($imgList)
+			<img
+				src="$RewriteUtil.getImageUrl($imgList.get(0).imageUrl,'m')"
+				width="120px" height="120px" alt="$productVo.product.productName"
+				title="$productVo.product.productName" class="pro_top_img" />
+			#end
+		</div>
+		<div>$!StringUtil.stringformat($productVo.product.productName,50)</div>
+	</div>
+#set($prodIdx = 1)
+#foreach($prod in $productGroup.groupProducts)
+	<span class="pro_span_add">+</span>
+	<div class="pro_R_M_1" prodId="$prod.product.productId">
+	
+		<div class="pro_R_M_1_img"><input type="hidden" groupProd width="$prod.product.width" height="$prod.product.height" length="$prod.product.length" 
+			weight="$prod.product.weight" catId="$prod.product.customCatId" maxStockDays="$prod.product.stockDays" sku="$prod.product.sku" quantity="1"/>
+			<a href="$RewriteUtil.getProductUrl($prod.product.productName, $prod.product.productId)"
+				target="_blank" title=""><img id="groupImg_$prod.product.productId"
+					src="$prod.midImageUrl"
+					width="120" height="120" alt="$prod.product.productName" title="$prod.product.productName" /> </a>
+		</div>
+		<div class="page_R_M_3_1_tp width140">
+			<div id="add_pro_${prodIdx}_info" class="hide" name="groupChoosed" style="cursor: pointer;">Choosed: <br /><div class="content"></div></div>
+			<span><a
+				href="$RewriteUtil.getProductUrl($prod.product.productName, $prod.product.productId)"
+				target="_blank" title="$prod.product.productName">$!StringUtil.stringformat($prod.product.productName,37)</a> </span>
+			<br />
+			<span class="price"><label>
+					<input id="groupProd" type="checkbox"  onclick="return selectGroupProd(this)"/>
+				US $<span id="gprice">$prod.priceVo.discountPrice</span></label></span>
+			<br />
+		</div>
+		<div class="page_R_M_3_1_tp hide DanpinRight" id="add_pro_tit_${prodIdx}_cli">
+##if($prod.configVo)			
+            <div class="sizeChoose" id="mainConfig_${prod.product.productId}">
+			</div><br class="clear" />
+##end
+            <div class="sizeChoose" id="subConfig_${prod.product.productId}">
+			</div><br class="clear" />
+			<p><label class="red12" id="errInfo"></label></p>
+            <div class="button">
+              <input type="button" value="OK"/><input type="button" value="Cancel"/>	</div>
+       </div>
+	</div>
+#set($prodIdx = $prodIdx+1)
+#end
+</div>
+<span class="pro_span_add" style="color: #060;">=</span>
+<div class="itemsToPa">
+	<p
+		style="font-size: 15px; line-height: 40px; color: #999; font-weight: bold;">
+		Buy Package Save More
+	</p>
+	<p style="font-size: 12px; line-height: 30px; color: #666;">
+		<span style="color: #900;" id="groupSelectedCount">1</span> items selected together
+	</p>
+	<p style="line-height: 20px; padding: 0 10px;">
+		Package Price:
+		<span class="price">US $ <span id="groupDiscountPrice">$productVo.priceVo.discountPrice</span></span>
+	</p>
+	<p style="line-height: 20px;">
+		Sum Price:
+		<span class="pasprice">US $ <span id="groupPrice">$productVo.priceVo.price</span></span>
+	</p>
+	<p style="margin-top: 15px;">
+		<input type="button" onclick="buyGroup()" value="Buy Together" class="btn_addToPcg" />
+	</p>
+</div>
+
+<div
+	style="height: 5px; width: 100%; float: left; margin-top: 20px; margin-bottom: 20px; background: url(/static/prototype/product_fashion/images/bottoml.gif) repeat-x;"></div>
+#end
+<script>
+var discounts = [#if($productGroup.group.groupDiscount1) $productGroup.group.groupDiscount1, #end
+#if($productGroup.group.groupDiscount2) $productGroup.group.groupDiscount2, #end
+#if($productGroup.group.groupDiscount3) $productGroup.group.groupDiscount3, #end
+#if($productGroup.group.groupDiscount4) $productGroup.group.groupDiscount4, #end];
+var groupConfig;
+#foreach($prod in $productGroup.groupProducts)
+#if($prod.productConfigs)
+	groupConfig = $JSONUtil.obj2JSON($prod.productConfigs);
+	new GroupConfig("$prod.product.productId", groupConfig);
+#end
+#end
+jQuery("input#groupProd").each(function(i,o){o.checked=false;});
+
+function buyGroup() {
+	jQuery("body").showLoading();
+	var groups = getGroupParams();
+	for(var i=0; i<groups.length; i++) {
+		var param = groups[i];
+		jQuery.ajax({
+			url:"$link.setAction('cart.AddToCartAction')",
+			async:false,
+			data:param
+		});
+	}
+	addToCart($!productVo.product.productId);
+	jQuery("body").hideLoading();
+}
+</script>

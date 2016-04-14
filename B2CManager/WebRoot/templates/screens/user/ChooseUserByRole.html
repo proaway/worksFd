@@ -1,0 +1,97 @@
+##选择启用用户
+<div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal hide fade in" id="enable" style="display: block;">
+<div class="modal-header">
+<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+<h5 id="myModalLabel">启用</h5>
+</div>
+<div class="modal-body">
+	<h5>所属角色：<span class="green bold">$!roles.get($!roleId).roleName</span></h5>
+	<input type="hidden" id="roleName" name="roleName" value="$!roles.get($!roleId).roleName" />
+    <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-striped table-hover table-condensed center_t font12 tl_mt3_mb3 mar_bottom_0 mar_top_10">
+      <tbody>
+		<tr class="info bold">
+            <td><label class="checkbox left"><input type="checkbox" name="selectAll" id="selectAll">全选</label><label>用户名</label></td>
+            <td><label>姓名</label></td>
+            <td><label>部门</label></td>
+        </tr>
+		#foreach($user in $users)
+		<tr>
+            <td><label class="checkbox"><input type="checkbox" name="userIds" id="userId" value="$user.userId" />$user.loginName</label></td>
+            <td><label>$!user.userName</label></td>
+            <td><label>$!departments.get($!user.departmentId).departmentName</label></td>
+       </tr>
+		#end
+      </tbody>
+	</table>
+</div>
+<div class="modal-footer">
+<button aria-hidden="true" data-dismiss="modal" class="btn">取消</button>
+<input type="button" onclick="doSbumtClick();" value="确定" class="btn"/>
+</div>
+</div>
+<script>
+jQuery('#enable').modal({
+	show:true
+})
+
+function doSbumtClick(){
+	var ids = document.getElementsByName("userIds");
+	var idList = "";
+	for(var i=0;i<ids.length;i++){
+		if(	ids[i].checked==true){
+			idList = idList+ids[i].value;
+			if(i<ids.length-1){
+				idList = idList + ",";
+			}
+		}
+	}
+	jQuery("body").showLoading();
+	jQuery("#enable").modal("hide");
+	var roleId = $!roleId;
+	var url = '$link.setAction("user.AjaxVaildRoleAction")';
+	jQuery.getJSON(url, {roleId:roleId,userIds:idList,actionFlag:3}, function(data)  {
+		jQuery("body").hideLoading();
+		if(data.status) {
+			var roleName = jQuery("#roleName").val();
+			alert("同时启用了"+data.status+"为"+roleName+"角色的用户");
+		}else{
+			alert("操作失败");
+		}
+	});
+	
+}
+
+</script>
+<script>
+ function checkAll(id) {
+    if(document.getElementById(id).checked==true){
+		 var ids = document.getElementsByName("userIds");
+         for (var i = 0; i < ids.length; i++) {
+                ids[i].checked=true;
+         }  	
+	}else{
+		 var ids = document.getElementsByName("userIds");
+         for (var i = 0; i < ids.length; i++) {
+            	ids[i].checked=false;
+         }
+	}
+ }
+ 
+ function unCheck(){
+ 	var ids = document.getElementsByName("userIds");
+	var len = ids.length;
+	var count = 0;
+	if(len>0){
+		for(var i=0;i<ids.length;i++){
+			if(	ids[i].checked==true){
+				count++;
+			}
+		}
+		if(count==len){
+			 document.getElementById("selectAll").checked=true;
+		 }else{
+			 document.getElementById("selectAll").checked=false;
+		 }
+	}	
+ }
+</script>

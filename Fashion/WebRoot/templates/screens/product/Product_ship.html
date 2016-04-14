@@ -1,0 +1,36 @@
+<tr style="font-size: 14px; color: #999;">
+	<td>
+		<b>Shipping Method</b>
+	</td>
+	<td>
+		<b>Estimated Shipping Time</b>
+	</td>
+	<td>
+		<b>Shipping Cost</b>
+	</td>
+</tr>
+#foreach($resultRate in $resultRateList)
+<tr style="line-height: 30px;">
+	<td>
+		$resultRate.shippingCompany
+	</td>
+	<td>
+		($resultRate.numberDays)
+	</td>
+	<td>
+		USD $$cnu.cullNum($resultRate.shippingTotal)
+	</td>
+</tr>
+#end
+
+<!-- <tr>
+	<td style="color: #060;">
+		FREE Super Saver Shipping
+	</td>
+	<td>
+		(15-30 business days)
+	</td>
+	<td style="color: #060;">
+		FREE
+	</td>
+</tr> -->

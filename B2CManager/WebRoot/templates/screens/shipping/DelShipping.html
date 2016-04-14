@@ -1,0 +1,45 @@
+    <div id="del_feeTemplet" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h5 id="myModalLabel">删除选定运费模板</h5>
+        </div>
+        <div class="modal-body">
+        <p class="font14">执行此操作后使用该模板的产品会变为下架状态，<br />确定执行此操作吗？</p>
+        </div>
+        <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true" >取消</button>
+        <button class="btn btn-primary" onclick="confirmDel()">确定删除</button>
+        </div>
+<form id="delShippingForm" name="delShippingForm">
+#foreach($shippingId in $shippingIds)
+	<input name="shippingId" value="$shippingId" type="hidden"/> 
+#end
+</form>
+<script>
+jQuery('#del_feeTemplet').on('hide', function (e) { // 隐藏层时删除层数据
+	jQuery('#del_feeTemplet').remove();
+})
+jQuery('#del_feeTemplet').modal({
+	show:true
+})
+function confirmDel() {
+	var param = form2URL("delShippingForm");
+	var url = "$link.setAction('shipping.AjaxDelShipping')?" + param;
+	jQuery.getJSON(url,
+		function(data){
+			if (data.status == 1) {
+				var len = jQuery("#delShippingForm").find("input").length;
+				for(var i=0; i<len; i++) {
+					var id = jQuery("#delShippingForm").find("input")[i].value;
+					jQuery("#shippingCostId[value='"+id+"']").parents("tr").remove();
+				}
+    			alert("删除成功");
+    			jQuery("#del_feeTemplet").modal("hide"); // 隐藏层
+			} else {
+				alert("删除失败");
+			}
+		}
+	);
+}
+</script>
+    </div><!-- E del_feeTemplet -->

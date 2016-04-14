@@ -1,0 +1,300 @@
+#set($page.title="产品搬家")
+	<br class="clear" />
+  	<h4 class="mar_top_15 mar_bottom_20">产品搬家</h4>
+    <table border="0" cellspacing="0" cellpadding="0" width="92%">
+      <tr>
+      <td class="v_top right_t" width="150px"><label class=" mar_top_10">产品所在网站：</label></td>
+        <td class="v_top">
+        	<ul class="inline mar_top_5 black">
+            	<li><select class="left" name="website" id="website">
+              </select></li>
+            </ul></td>
+      </tr>
+      <tr>
+      <td class="v_top right_t"><label class="mar_top_10">网站店铺地址：</label></td>
+        <td class="v_top">
+        	<ul class="inline mar_top_5 black">
+            	<li><input type="text" id="storeUrl" class="input-xxlarge left" placeholder="网站店铺地址" /></li>
+                <li><input class="btn left mar_top_f40" value="添加地址并获取验证代码" type="button" onclick="addMoveMission(this)"/></li>
+            </ul></td>
+      </tr>
+      <tr>
+      <td class="v_top right_t"><label class="">验证码：</label></td>
+        <td class="v_top">
+        	<ul class="inline black">
+            	<li><label id="verifyCode"></label></li>
+            </ul></td>
+      </tr>
+      <tr>
+      <td class="v_top right_t"><label class="mar_top_10">验证码所在产品地址：</label></td>
+        <td class="v_top">
+        	<ul class="inline mar_top_5 black">
+            	<li><input type="text" class="input-xxlarge left" id="verifyUrl" placeholder="验证码所在产品地址" />
+				<input type="hidden" id="missionId" />
+				</li>
+                <li><input type="button" id="verifyBtn" class="btn btn-primary left mar_top_f40" onclick="verifyStore()" value="验证"/></li>
+            </ul><br class="clear" /></td>
+      </tr>
+    </table>
+
+   <table border="0" cellspacing="0" cellpadding="0" class="table table-bordered center_t font12 tl_mt3_mb3">
+  <tr class="info bold">
+    <td><label>店铺地址</label></td>
+    <td><label>店铺编码</label></td>
+    <td><label>产品数量</label></td>
+    <td><label>同步成功数</label></td>
+    <td><label>绑定时间</label></td>
+    <td><label>更新时间</label></td>
+    <td><label>频次</label></td>
+    <td><label>状态</label></td>
+    <td><label>操作</label></td>
+  </tr>
+  <tbody id="mission">
+#foreach($mission in $moveMissions)
+  <tr missionId="$mission.missionId" verifyStatus="$!mission.verifyStatus" productStatus="$!mission.productStatus" syncStatus="$!mission.syncStatus" syncFreq="$!mission.syncFreq" >
+    <td><a href="$mission.storeUrl" target="_blank" id="storeUrl">$mission.storeUrl</a>
+		<input type="hidden" id="website" value="$mission.website"/>
+		<input type="hidden" id="verifyCode" value="$mission.verifyCode"/>
+	</td>
+    <td>$!mission.storeCode</td>
+    <td id="productCount">$!mission.productCount</td>
+    <td>$!mission.syncCount</td>
+    <td id="verifyTime"><label class="font11">$!StringUtil.getDateTimeString($mission.verifyTime)</label></td>
+    <td><label class="font11">$!StringUtil.getDateTimeString($mission.updateTime)</label></td>
+    <td><label id="syncFreq">#if($mission.syncFreq) #if($mission.syncFreq==7)每周#elseif($mission.syncFreq==30)每月#else $mission.syncFreq 天#end #end</label></td>
+    <td id="syncStatus">
+#if($mission.verifyStatus==0)
+		<label class="label label-important">地址未验证</label>
+#else
+    #if($mission.syncStatus && $mission.syncStatus == 1)
+		<label class="label label-success">开启</label>
+	#else
+		<label class="label label-important">暂停</label>
+	#end
+#end
+	</td>
+    <td id="act">
+#if($mission.verifyStatus==0)
+	<a href="javascript:showVerifyStore($mission.missionId)" >验证地址</a>
+#else
+	<a onclick="showSyncConf($mission.missionId)">配置同步</a>
+	<a data-toggle="modal" role="button" href="#man_syn" class="mar_left_5">手动同步</a>
+#end
+	</td>
+  </tr>
+#end
+  </tbody>
+</table>
+<!-- E page -->
+    
+<div id="verification" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-body">
+<br /><p class="font16">您成功绑定的店铺地址:<a href="" target="_blank" id="verifyStoreUrl"></a></p>
+<br /><p class="font16">请您进行同步设置，以便尽快开展销售。</p><br />
+</div>
+<div class="modal-footer">
+<button class="btn" data-dismiss="modal" aria-hidden="true">稍后再说</button>
+<button type="button" class="btn btn-primary" onclick="showSyncConf()">配置同步</button>
+</div>
+</div><!-- E verification -->
+
+<div id="con_syn" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+<h5 id="myModalLabel">配置同步</h5>
+</div>
+<div class="modal-body">
+<table cellspacing="0" cellpadding="0" border="0" class="mar_left_20">
+  <tbody>
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">产品同步至：</label></td>
+    <td>
+    	<select class="left input-large" name="productStatus" id="productStatus">
+                  <option value="0">下架管理</option>
+                  <option value="1">上架销售</option>
+                  <option value="2">草稿箱</option>
+                </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">同步状态：</label></td>
+    <td>
+    	<select class="left input-large" name="syncStatus" id="syncStatus">
+                  <option value="0">暂停</option>
+                  <option value="1">开启</option>
+                </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">同步频次：</label></td>
+    <td>
+    	<select class="left input-large" name="syncFreq" id="syncFreq">
+                  <option value="7">每周</option>
+                  <option value="30">每月</option>
+                </select>
+    </td>
+  </tr>
+</tbody></table>
+</div>
+<div class="modal-footer">
+<button type="button" class="btn" data-toggle="modal" data-target="" data-dismiss="modal" aria-hidden="true">取消</button>
+<button type="button" class="btn btn-primary" onclick="confirmSyncConf()">保存</button>
+</div>
+</div><!-- E con_syn -->
+
+<div id="man_syn" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-body">
+<br /><p class="font16">已经成功开启本次同步任务。</p>
+<br /><p class="font16">服务器需要至少48小时完成产品的更新任务，请您耐心等候。 </p><br />
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true">确定</button>
+</div>
+</div><!-- E man_syn -->
+
+<script>
+jQuery.getJSON("http://spider.fulldol.com/api/website.GetWebsite?callback=?", function(data){
+  jQuery.each(data, function(i,item){
+    jQuery("#website").append("<option value='"+item.webName+"'>"+item.webName+"</option>");
+  });
+});
+
+function confirmSyncConf() {
+	jQuery("body").showLoading();
+	var missionId = jQuery("#missionId").val();
+	var productStatus = jQuery("select#productStatus").val();
+	var syncStatus = jQuery("select#syncStatus").val();
+	var syncFreq = jQuery("select#syncFreq").val();
+	jQuery.getJSON("$link.setAction('product.AjaxConfMission')", 
+		{missionId:missionId, productStatus:productStatus, syncStatus:syncStatus, syncFreq:syncFreq}, 
+		function(data){
+			if (data.status==1) {
+				var tr = jQuery("tr[missionId='"+missionId+"']");
+				tr.attr("productStatus", productStatus);
+				tr.attr("syncStatus", syncStatus);
+				tr.attr("syncFreq", syncFreq);
+				
+				if (syncFreq == 7) {
+					tr.find("#syncFreq").html("每周");
+				} else if (syncFreq == 30) {
+					tr.find("#syncFreq").html("每月");
+				} else {
+					tr.find("#syncFreq").html(syncFreq + " 天");
+				}
+				
+				if (syncStatus == 1) {
+					tr.find("#syncStatus").html('<label class="label label-success">开启</label>');
+				} else {
+					tr.find("#syncStatus").html('<label class="label label-important">暂停</label>');
+				}
+				
+				
+				jQuery("#con_syn").modal("hide");
+			}
+			jQuery("body").hideLoading();
+			alert(decodeHtmlUnicode(data.msg));
+		});
+}
+
+function showSyncConf(missionId) {
+	jQuery("#verifyBtn").prop("disabled", true);
+	if (missionId != null) {
+    	var tr = jQuery("tr[missionId='"+missionId+"']");
+    	var website = tr.find("#website").val();
+    	var storeUrl = tr.find("#storeUrl").html();
+    	var verifyCode = tr.find("#verifyCode").val();
+    	jQuery("select#website").val(website);
+    	jQuery("input#storeUrl").val(storeUrl);
+    	jQuery("#verifyCode").html(verifyCode);
+    	jQuery("#missionId").val(missionId);
+	} else {
+		missionId = jQuery("#missionId").val();
+	}
+	var tr = jQuery("tr[missionId='"+missionId+"']");
+	jQuery("select#productStatus").val(tr.attr("productStatus"));
+	jQuery("select#syncStatus").val(tr.attr("syncStatus"));
+	jQuery("select#syncFreq").val(tr.attr("syncFreq"));
+	jQuery("#con_syn").modal("show");
+}
+
+function addMoveMission() {
+	jQuery("body").showLoading();
+	var website = jQuery("select#website").val();
+	var storeUrl = jQuery("input#storeUrl").val();
+	jQuery.getJSON("$link.setAction('product.AjaxAddMoveMission')", 
+		{website:website, storeUrl:storeUrl}, 
+		function(data){
+			if (data.status == 1) {
+				jQuery("#verifyCode").html(data.mission.verifyCode);
+				jQuery("#missionId").val(data.mission.missionId);
+				if (jQuery("tr[missionId='"+data.mission.missionId+"']").length == 0) {
+    				var tr = jQuery('<tr missionId="'+data.mission.missionId+'"></tr>');
+    				jQuery("tbody#mission").prepend(tr);
+                    tr.append('<td><a href="'+data.mission.storeUrl+'" target="_blank" id="storeUrl">'+data.mission.storeUrl+'</a><input type="hidden" id="website" value="'+data.mission.website+'"/><input type="hidden" id="verifyCode" value="'+data.mission.verifyCode+'"/></td>');
+                    tr.append('<td><label>'+data.mission.storeCode+'</label></td>');
+                    tr.append('<td></td>');
+                    tr.append('<td></td>');
+                    tr.append('<td id="verifyTime"></td>');
+                    tr.append('<td></td>');
+                    tr.append('<td></td>');
+                    tr.append('<td id="syncStatus"><label class="label label-important">地址未验证</label></td>');
+                	tr.append('<td><a href="javascript:showVerifyStore('+data.mission.missionId+')" >验证地址</a></td>');
+				}
+			} else {
+				alert(decodeHtmlUnicode(data.msg));
+			}
+			if (jQuery("tr[missionId='"+data.mission.missionId+"']").attr("verifyStatus")=="1") {
+				jQuery("#verifyBtn").prop("disabled", true);
+			} else {
+				jQuery("#verifyBtn").prop("disabled", false);
+			}
+			jQuery("body").hideLoading();
+		});
+}
+
+function showVerifyStore(missionId) {
+	jQuery("body").showLoading();
+	jQuery("#verifyBtn").prop("disabled", false);
+	var tr = jQuery("tr[missionId='"+missionId+"']");
+	var website = tr.find("#website").val();
+	var storeUrl = tr.find("#storeUrl").html();
+	var verifyCode = tr.find("#verifyCode").val();
+	jQuery("select#website").val(website);
+	jQuery("input#storeUrl").val(storeUrl);
+	jQuery("#verifyCode").html(verifyCode);
+	jQuery("#missionId").val(missionId);
+	jQuery("#verifyUrl").focus();
+	jQuery("body").hideLoading();
+}
+
+function verifyStore() {
+	jQuery("body").showLoading();
+	var verifyUrl = jQuery("#verifyUrl").val();
+	var missionId = jQuery("#missionId").val();
+	if (jQuery.trim(verifyUrl) == "") {
+		jQuery("#verifyUrl").val();
+		jQuery("#verifyUrl").focus();
+		alert("输入校验地址");
+		return;
+	}
+	jQuery.getJSON("$link.setAction('product.AjaxVerifyMission')", 
+		{verifyUrl:verifyUrl, missionId:missionId}, 
+		function(data){
+			if (data.status==1) {
+				var storeUrl = jQuery("tr[missionId='"+missionId+"']").find("#storeUrl").html();
+				jQuery("#verifyStoreUrl").attr("href", storeUrl);
+				jQuery("#verifyStoreUrl").html(storeUrl);
+				jQuery("tr[missionId='"+missionId+"']").attr("verifyStatus", 1);
+				jQuery("tr[missionId='"+missionId+"']").find("#verifyTime").html('<label class="font11">'+formatJSONDate(data.mission.verifyTime.time)+'</label>');
+				jQuery("tr[missionId='"+missionId+"']").find("#productCount").html(data.mission.productCount);
+				jQuery("tr[missionId='"+missionId+"']").find("#syncStatus").html('<label class="label label-important">暂停</label>');
+				jQuery("tr[missionId='"+missionId+"']").find("#act").html('<a onclick="showSyncConf('+data.mission.missionId+')">配置同步</a><a data-toggle="modal" role="button" href="#man_syn" class="mar_left_5">手动同步</a>');
+				
+				jQuery("#verification").modal("show");
+			} else {
+				alert(decodeHtmlUnicode(data.msg));
+			}
+			jQuery("body").hideLoading();
+		});
+}
+</script>

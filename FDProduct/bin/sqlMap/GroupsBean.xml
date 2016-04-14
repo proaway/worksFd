@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertGroupsBean" parameterClass="com.fd.fashion.product.bean.GroupsBean">
+        <![CDATA[
+insert into T_GROUPS
+  (ACTIVITY_ID, GROUP_PRODUCT_ID1, GROUP_PRODUCT_ID2, GROUP_PRODUCT_ID3, GROUP_PRODUCT_ID4, GROUP_DISCOUNT1, GROUP_DISCOUNT2, GROUP_DISCOUNT3, GROUP_DISCOUNT4)
+values
+  (#activityId#, #groupProductId1#, #groupProductId2#, #groupProductId3#, #groupProductId4#, #groupDiscount1#, #groupDiscount2#, #groupDiscount3#, #groupDiscount4#)
+        ]]>
+    </insert>
+
+    <update id="updateGroupsBean" parameterClass="com.fd.fashion.product.bean.GroupsBean">
+        <![CDATA[
+update T_GROUPS 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="activityId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ACTIVITY_ID = #activityId#]]>
+            </isNotNull>
+            <isNotNull property="groupProductId1" prepend="," removeFirstPrepend="true">
+                <![CDATA[GROUP_PRODUCT_ID1 = #groupProductId1#]]>
+            </isNotNull>
+            <isNotNull property="groupProductId2" prepend="," removeFirstPrepend="true">
+                <![CDATA[GROUP_PRODUCT_ID2 = #groupProductId2#]]>
+            </isNotNull>
+            <isNotNull property="groupProductId3" prepend="," removeFirstPrepend="true">
+                <![CDATA[GROUP_PRODUCT_ID3 = #groupProductId3#]]>
+            </isNotNull>
+            <isNotNull property="groupProductId4" prepend="," removeFirstPrepend="true">
+                <![CDATA[GROUP_PRODUCT_ID4 = #groupProductId4#]]>
+            </isNotNull>
+            <isNotNull property="groupDiscount1" prepend="," removeFirstPrepend="true">
+                <![CDATA[GROUP_DISCOUNT1 = #groupDiscount1#]]>
+            </isNotNull>
+            <isNotNull property="groupDiscount2" prepend="," removeFirstPrepend="true">
+                <![CDATA[GROUP_DISCOUNT2 = #groupDiscount2#]]>
+            </isNotNull>
+            <isNotNull property="groupDiscount3" prepend="," removeFirstPrepend="true">
+                <![CDATA[GROUP_DISCOUNT3 = #groupDiscount3#]]>
+            </isNotNull>
+            <isNotNull property="groupDiscount4" prepend="," removeFirstPrepend="true">
+                <![CDATA[GROUP_DISCOUNT4 = #groupDiscount4#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ACTIVITY_ID = #activityId#
+        ]]>
+    </update>
+
+    <sql id="getGroupsBeanCondition">
+         <isNotNull property="activityId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ACTIVITY_ID = #activityId#]]>
+         </isNotNull>
+         <isNotNull property="groupProductId1" prepend="and" removeFirstPrepend="true">
+             <![CDATA[GROUP_PRODUCT_ID1 = #groupProductId1#]]>
+         </isNotNull>
+         <isNotNull property="groupProductId2" prepend="and" removeFirstPrepend="true">
+             <![CDATA[GROUP_PRODUCT_ID2 = #groupProductId2#]]>
+         </isNotNull>
+         <isNotNull property="groupProductId3" prepend="and" removeFirstPrepend="true">
+             <![CDATA[GROUP_PRODUCT_ID3 = #groupProductId3#]]>
+         </isNotNull>
+         <isNotNull property="groupProductId4" prepend="and" removeFirstPrepend="true">
+             <![CDATA[GROUP_PRODUCT_ID4 = #groupProductId4#]]>
+         </isNotNull>
+         <isNotNull property="groupDiscount1" prepend="and" removeFirstPrepend="true">
+             <![CDATA[GROUP_DISCOUNT1 = #groupDiscount1#]]>
+         </isNotNull>
+         <isNotNull property="groupDiscount2" prepend="and" removeFirstPrepend="true">
+             <![CDATA[GROUP_DISCOUNT2 = #groupDiscount2#]]>
+         </isNotNull>
+         <isNotNull property="groupDiscount3" prepend="and" removeFirstPrepend="true">
+             <![CDATA[GROUP_DISCOUNT3 = #groupDiscount3#]]>
+         </isNotNull>
+         <isNotNull property="groupDiscount4" prepend="and" removeFirstPrepend="true">
+             <![CDATA[GROUP_DISCOUNT4 = #groupDiscount4#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getGroupsBeanCount" parameterClass="com.fd.fashion.product.bean.GroupsBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_GROUPS 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getGroupsBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getGroupsBean" parameterClass="com.fd.fashion.product.bean.GroupsBean"
+        resultClass="com.fd.fashion.product.bean.GroupsBean">
+        <![CDATA[
+select 
+	ACTIVITY_ID	as activityId,
+	GROUP_PRODUCT_ID1	as groupProductId1,
+	GROUP_PRODUCT_ID2	as groupProductId2,
+	GROUP_PRODUCT_ID3	as groupProductId3,
+	GROUP_PRODUCT_ID4	as groupProductId4,
+	GROUP_DISCOUNT1	as groupDiscount1,
+	GROUP_DISCOUNT2	as groupDiscount2,
+	GROUP_DISCOUNT3	as groupDiscount3,
+	GROUP_DISCOUNT4	as groupDiscount4
+from T_GROUPS 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getGroupsBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteGroupsBean" parameterClass="com.fd.fashion.product.bean.GroupsBean">
+        <![CDATA[
+delete from T_GROUPS where ACTIVITY_ID=#activityId#
+        ]]>
+    </delete>
+
+</sqlMap>

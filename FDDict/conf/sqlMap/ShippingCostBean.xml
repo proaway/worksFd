@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertShippingCostBean" parameterClass="com.fd.fashion.dict.bean.ShippingCostBean">
+        <![CDATA[
+insert into TC_SHIPPING_COST
+  (SHIPPING_COST_ID, COUNTRY, SHIPPING_COMPANY, WEIGHT_PRICE, RE_WEIGHT_PRICE, TRANSPORT_DAYS)
+values
+  (#shippingCostId#, #country#, #shippingCompany#, #weightPrice#, #reWeightPrice#, #transportDays#)
+        ]]>
+        <selectKey keyProperty="shippingCostId" resultClass="long">
+            <![CDATA[select @@identity as shippingCostId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateShippingCostBean" parameterClass="com.fd.fashion.dict.bean.ShippingCostBean">
+        <![CDATA[
+update TC_SHIPPING_COST 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="shippingCostId" prepend="," removeFirstPrepend="true">
+                <![CDATA[SHIPPING_COST_ID = #shippingCostId#]]>
+            </isNotNull>
+            <isNotNull property="country" prepend="," removeFirstPrepend="true">
+                <![CDATA[COUNTRY = #country#]]>
+            </isNotNull>
+            <isNotNull property="shippingCompany" prepend="," removeFirstPrepend="true">
+                <![CDATA[SHIPPING_COMPANY = #shippingCompany#]]>
+            </isNotNull>
+            <isNotNull property="weightPrice" prepend="," removeFirstPrepend="true">
+                <![CDATA[WEIGHT_PRICE = #weightPrice#]]>
+            </isNotNull>
+            <isNotNull property="reWeightPrice" prepend="," removeFirstPrepend="true">
+                <![CDATA[RE_WEIGHT_PRICE = #reWeightPrice#]]>
+            </isNotNull>
+            <isNotNull property="transportDays" prepend="," removeFirstPrepend="true">
+                <![CDATA[TRANSPORT_DAYS = #transportDays#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where SHIPPING_COST_ID = #shippingCostId#
+        ]]>
+    </update>
+
+    <sql id="getShippingCostBeanCondition">
+        <isNotNull property="shippingCostId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[SHIPPING_COST_ID = #shippingCostId#]]>
+        </isNotNull>
+        <isNotNull property="country" prepend="and" removeFirstPrepend="true">
+            <![CDATA[COUNTRY = #country#]]>
+        </isNotNull>
+        <isNotNull property="shippingCompany" prepend="and" removeFirstPrepend="true">
+            <![CDATA[SHIPPING_COMPANY = #shippingCompany#]]>
+        </isNotNull>
+        <isNotNull property="weightPrice" prepend="and" removeFirstPrepend="true">
+            <![CDATA[WEIGHT_PRICE = #weightPrice#]]>
+        </isNotNull>
+        <isNotNull property="reWeightPrice" prepend="and" removeFirstPrepend="true">
+            <![CDATA[RE_WEIGHT_PRICE = #reWeightPrice#]]>
+        </isNotNull>
+        <isNotNull property="transportDays" prepend="and" removeFirstPrepend="true">
+            <![CDATA[TRANSPORT_DAYS = #transportDays#]]>
+        </isNotNull>
+        <isNotNull property="area" prepend="and" removeFirstPrepend="true">
+            <![CDATA[AREA = #area#]]>
+        </isNotNull>
+    </sql>
+
+    <select id="getShippingCostBeanCount" parameterClass="com.fd.fashion.dict.bean.ShippingCostBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from TC_SHIPPING_COST 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getShippingCostBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getShippingCostBean" parameterClass="com.fd.fashion.dict.bean.ShippingCostBean"
+        resultClass="com.fd.fashion.dict.bean.ShippingCostBean">
+        <![CDATA[
+select 
+	SHIPPING_COST_ID	as shippingCostId,
+	COUNTRY	as country,
+	SHIPPING_COMPANY	as shippingCompany,
+	WEIGHT_PRICE	as weightPrice,
+	RE_WEIGHT_PRICE	as reWeightPrice,
+	TRANSPORT_DAYS	as transportDays,
+	AREA    AS area
+from TC_SHIPPING_COST 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getShippingCostBeanCondition"/>        </dynamic>
+    </select>
+
+    <delete id="deleteShippingCostBean" parameterClass="com.fd.fashion.dict.bean.ShippingCostBean">
+        <![CDATA[
+delete from TC_SHIPPING_COST where SHIPPING_COST_ID=#shippingCostId#
+        ]]>
+    </delete>
+</sqlMap>

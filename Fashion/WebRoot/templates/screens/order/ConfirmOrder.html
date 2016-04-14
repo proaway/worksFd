@@ -1,0 +1,502 @@
+<form id="cartForm" action="$link.setAction('order.CreateOrderAction')" method="post">
+<div id="mainContent">
+	<h2 style="margin-left:13px; margin-bottom:20px;">Please Confirm
+		Your Order</h2>
+	<!-- --------------- S Shipping Address --------------- -->
+	<table cellpadding="0" cellspacing="0" class="confirm_tab">
+		<tr class="confirm_tab_tit">
+			<td align="left"><h2 class="cart_tit_h2">&nbsp;
+					&nbsp;Shipping Address</h2>
+			</td>
+		</tr>
+		<tr>
+			<td class="confirm_tab_con">
+				<table width="950" class="confirm_tab_sa_tab">
+					<input type="hidden" id="country" value="$countryId" /> #if($books
+					&& $books.size()>0) #foreach($book in $books)
+					<tr #if($!book.addressId==$!defaultAddrId)
+						style="background:#ffd18d;" #end id="add_$book.addressId">
+						<td style="text-align:center; padding-top:18px;" width="40">
+							<input name="shippingAdress" type="radio" country="$book.country" id="shippingAdress$book.addressId"
+							value="$book.addressId" #if($!book.addressId==$!defaultAddrId)
+							checked="checked" #end
+							onclick="selectAddr('$book.addressId','$book.country');" /></td>
+						<td><label for="shippingAdress$book.addressId"><b style="font-size:14px;">$!book.firstName
+								$!book.lastName</b></label></td>
+						<td>$!book.addressLine1 $!book.addressLine2<br />#if($!book.phone) Phone
+							number: $!book.phone #end</td>
+						<td style="text-align:center; "><a
+							href="javascript:editAddress('$book.addressId');">Edit</a>
+							#if($!book.isDefault==0)<br />
+						<a href="javascript:setDefaultAddress('$book.addressId');">Save
+								as Default</a>#end</td>
+					</tr>
+					#end #else
+					<script>jQuery(document).ready(function(){newAddress();});</script>
+					#end
+				</table></td>
+		</tr>
+		<tr>
+			<td
+				style="padding:5px 20px 10px 20px; text-align:right; line-height:30px;">
+				<a onclick="newAddress();" style="cursor:pointer; color:#0d4488;">Add
+					a new address</a> &nbsp; &nbsp; ##<a href="#">Manage address book</a></td>
+		</tr>
+	</table>
+	<!-- --------------- E Shipping Address --------------- -->
+	<br class="clearfloat" />
+	<!-- --------------- S Order Details --------------- -->
+	<table cellpadding="0" cellspacing="0" class="confirm_tab">
+		<tr class="confirm_tab_tit">
+			<td align="left" colspan="9"><h2 class="cart_tit_h2">
+					&nbsp; &nbsp;Order Details</h2>
+			</td>
+		</tr>
+		<tr class="confirm_tab_tit2">
+			<td width="90"></td>
+			<td style="min-width:370px;">Item</td>
+			<td width="10"></td>
+			<td class="center" width="190">Price</td>
+			<td width="10"></td>
+			<td class="center" width="190">Weight</td>
+			<td width="10"></td>
+			<td width="100" class="center">Quantity</td>
+			<td style="min-width:120px; text-align:center;">Amount</td>
+		</tr>
+		#set($productIds="")
+		#foreach($product in $cartProducts)
+		#set($productIds=$productIds+$product.productId+",")
+		<tr class="confirm_tab_order_bo">
+			<td width="90" style="padding:10px 0px;"><a
+				href="$ru.getProductUrl($product.productName, $product.productId)"
+				target="_blank" title=""><img
+					src="$product.imageUrl"
+					width="50" height="50" alt="product_pic" class="pd_img" />
+			</a>
+			</td>
+			<td>
+				<table width="100%" border="0" cellspacing="0" cellpadding="0">
+					<tr>
+						<td><a href="$ru.getProductUrl($product.productName, $product.productId)"
+							target="_blank" title="">$product.productName</a>
+							<input type="hidden" name="orderProductId" value="$product.productId"/>
+						</td>
+					</tr>
+					#if($product.mainId)<tr>
+						<td><span class="font11">$product.mainTitle:</span><span
+							class="font11 font_black ml6">$product.mainId</span>
+						</td>
+					</tr>#end
+					#if($product.subId)<tr>
+						<td><span class="font11">$product.subTitle :</span><span
+							class="font11 font_black ml6">$product.subId</span>
+						</td>
+					</tr>#end
+				</table></td>
+			<td width="30"></td>
+ 			<td class="center" style="vertical-align:middle;">
+<!--  			<span class="confirm_tab_order_price">USD $ 38.12 / piece</span><br /> <br /> -->
+			 USD<span class="font_red ml6">$</span><span><b>$product.price</b>
+			</span><span class="font11"> / piece</span>
+			</td>
+			<td width="30"></td>
+            <td class="center" style="vertical-align:middle;"><span name="sWeight">$product.weight</span>kg</td>
+			<td width="30"></td>
+			<td style="vertical-align:middle;" class="center">$product.quantity</td>
+			<td class="confirm_order_bo_amount_td"><span
+				style="color:#666;">USD</span><span class="font_red ml6">$</span><span class="blod" name="sPrice">$product.sumPrice
+			</span>
+			</td>
+		</tr>
+		#end
+	
+		<tr>
+			<td colspan="9"
+				style="padding:5px 20px 10px 20px; line-height:30px; text-align:right;">
+				<a	href="$link.setPage('cart,Cart.html')" >Back to shopping cart</a></td>
+		</tr>
+	</table>
+	<!-- --------------- E Order Details --------------- -->
+	<br class="clearfloat" />
+	<!-- --------------- S Shipping Method --------------- -->
+	<table cellpadding="0" cellspacing="0" class="confirm_tab">
+		<tr class="confirm_tab_tit">
+			<td align="left"><h2 class="cart_tit_h2">&nbsp;
+					&nbsp;Shipping Method</h2>
+			</td>
+		</tr>
+		<tr>
+			<td class="confirm_tab_con">
+				<div class="hide">Sorry, logistics can not reach your country</div>
+				<table width="800" class="confirm_tab_sm_tab" id="tbShippingInfo">
+					<tr style="color:#666;">
+						<td width="36"></td>
+						<td width="280"><b>Shipping Method</b>
+						</td>
+						<td><b>Estimated Shipping Time</b>
+						</td>
+						<td><b>Shipping Cost</b>
+						</td>
+					</tr>
+					<tbody id="shippingMethod">
+##					<tr id="shippingM">
+##						<td style="text-align:center; padding-top:10px;"><input 
+##							name="shippingMethod" type="radio" value="$shipping.detail.detailId"
+##							onclick="selectShipping(this)" />
+##						</td>
+##						<td>$shipping.detail.shippingCompany</td>
+##						<td>($shipping.transportDays business days)</td>
+##						<td style="line-height:14px;">USD<span class="font_red ml6">$</span><span name="sp">$shipping.shippingAmount</span></td>
+##					</tr>
+					</tbody>
+					<tr>
+						<td colspan="4"></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td colspan="3"><img
+							src="/static/prototype/product_fashion/images/when-will.png"
+							width="707" height="137" /></td>
+					</tr>
+				</table></td>
+		</tr>
+		<tr>
+			<td
+				style="padding:5px 20px 10px 20px; text-align:right; line-height:30px;">
+				Learn more about <a href="#"
+				style="color:#900; text-decoration:none;"><b>processing time</b>
+			</a></td>
+		</tr>
+	</table>
+	<!-- --------------- E Shipping Method --------------- -->
+	<br class="clearfloat" />
+	<!-- --------------- S Coupon --------------- -->
+	<table cellpadding="0" cellspacing="0" class="confirm_tab">
+		<tr class="confirm_tab_tit">
+			<td align="left"><h2 class="cart_tit_h2">&nbsp;
+					&nbsp;Coupon</h2>
+			</td>
+		</tr>
+		<tr>
+			<td style="padding:10px 20px 10px 30px;">
+				<div id="coupon_info">
+					Enter your coupon code: <input name="couponCode" type="text"
+						maxlength="30" class="coupon_text" /><input name="" type="button"
+						class="btn_coupon" id="applyCoupon" onclick="useCoupon();" value="Apply" />
+				</div>
+				<div id="coupon_no">
+					<label class="confirm_coupon_red"></label>
+				</div>
+				<div id="coupon_ok" style="font-size:14px; display:none;">
+					The coupon code "<b id="cp"></b>" is valid! Your discount is <span
+						class="font_red">USD $ <span id="cam">0.00</span></span> (expiration date <b id="exDate"></b>)<br />
+					<a href="javascript:;;" style="font-size:12px; line-height:26px;" onclick="removeCoupon()">Remove</a>
+				</div></td>
+		</tr>
+	</table>
+	<!-- --------------- E Coupon --------------- -->
+	<br class="clearfloat" />
+	<!-- --------------- S content bottom --------------- -->
+	<table cellpadding="0" cellspacing="0"
+		class="confirm_content_bottom_tab">
+		<tr>
+			<td>Subtotal ( <span id="pCount">2</span> items ) :USD $ <span id="itemTotal">0.00</span></td>
+		</tr>
+		<tr>
+			<td>(+) Shipping Charges ( <span id="pWeight">2</span> kg ) :USD $ <span id="shipPrice">0.00</span></td>
+		</tr>
+		<tr>
+			<td class="font_red">(-) Discount :USD $ <span id="cpdiscount">0.00</span></td>
+		</tr>
+		<tr>
+			<td height="40"
+				style="font-weight:bold; font-size:16px; border-bottom:solid 1px #999;">Grand
+				Total: <span class="font_red">USD $ <span id="totalPrice">0.00</span></span>
+				<input name="totalPrice" type="hidden" value="">
+			</td>
+		</tr>
+		<tr>
+			<td height="60" style="vertical-align:middle;"><input 
+				type="submit" class="btn_placeOrder"
+				value="Place Your Order" />
+			</td>
+		</tr>
+		<tr>
+			<td style="font-size:12px; color:#999;">Every order you place
+				with us is safe and secure.</td>
+		</tr>
+	</table>
+	<!-- --------------- E content bottom --------------- -->
+	<br class="clearfloat" />
+</div>
+<input type="hidden" name="addressBookId" id="addressBookId" value="$!defaultAddrId"/>
+<input type="hidden" name="shippingTotal" id="shippingTotal" value="0"/>
+<input type="hidden" name="itemTotal" id="itemTotal" value="0"/>
+<input type="hidden" name="couponProduct" id="couponProduct" value=""/>
+<input type="hidden" name="couponAmount" id="couponAmount" value=""/>
+</form>
+<script>
+function selectShipping(o) {
+	jQuery("tr#shippingM").css("background", "#ffffff");
+	jQuery(o).parent().parent().css("background", "#ffd18d");
+	cellTotalPrice();
+}
+function placeOrder() {
+	jQuery("#cartForm").submit();
+}
+
+ function toShowPrice(id){
+	var oDiv=document.getElementById('Fea_Pop_'+id);
+	oDiv.style.display='block'
+	}
+ function toHidePrice(id){
+	var oDiv=document.getElementById('Fea_Pop_'+id);
+	oDiv.style.display='none'
+	}
+	
+function MM_showHideLayers() { //v9.0
+  var i,p,v,obj,args=MM_showHideLayers.arguments;
+  for (i=0; i<(args.length-2); i+=3) 
+  with (document) if (getElementById && ((obj=getElementById(args[i]))!=null)) { v=args[i+2];
+    if (obj.style) { obj=obj.style; v=(v=='show')?'visible':(v=='hide')?'hidden':v; }
+    obj.visibility=v; }
+}
+
+function editAddress(addrId){
+	tipsWindown("Shipping Information","url:get?$link.setPage('order,EditAddress.html')?addressId=" + addrId,"600","500","false","","true","text","");
+}
+function newAddress(){
+	tipsWindown("Shipping Information","url:get?$link.setPage('order,EditAddress.html')","540","500","false","","true","text","");
+}
+function setDefaultAddress(addrId) {
+	jQuery.getJSON("$link.setAction('buyer.SetDefaultAddressAction')?addressId=" + addrId, 
+		function(data) {
+			jQuery(".confirm_tab_sa_tab tr").each(function(i,o){
+				var lastA = jQuery(o).find("a:last-child");
+				if(lastA.html()=='Edit') {
+					var df = "<br/>" + lastA.parent().html().replace('editAddress','setDefaultAddress').replace('Edit','Save as Default')
+					lastA.parent().append(df);
+				}
+			});
+			jQuery("#add_" + addrId).find("a:last-child").remove();
+			jQuery("#add_" + addrId).find("td:last-child").find("br").remove();
+		}
+	);
+}
+function selectAddr(addressId, country) {
+	jQuery(".confirm_tab_sa_tab tr").each(function(i,o){jQuery(o).removeAttr("style")});
+	jQuery("#add_" + addressId).attr({"style":"background:#ffd18d;"})
+	jQuery("#cartForm #addressBookId").val(addressId);
+	var oldCountry = jQuery("#country").val();
+	if (country != oldCountry) {
+		jQuery("#country").val(country);
+		changeCountry(country);
+	}
+}
+function selectCoupon(sellerName, sellerId) {
+	var couponCode = jQuery("table[seller='"+sellerId+"']").find("#couponPrice").attr("couponCode");
+	var param = "sellerName="+encodeURIComponent(sellerName) + "&sellerId=" + sellerId;
+	if (couponCode != null) {
+		param += "&couponCode=" + jQuery.trim(couponCode);
+	}
+	tipsWindown("Use Coupon or Coupon code","url:get?$link.setPage('order,usecoupon.vm')?"+param,"550","150","false","","true","text","");
+}
+function changeShip(itemCode){
+/* 	var item = jQuery("tr[itemCode='"+itemCode+"']");
+	var selectedShipping = item.find("input:radio:checked").parent();
+	var shippingCompanyId=selectedShipping.attr("id");
+	var shippingCompany = selectedShipping.find("#shippingCompany").html();
+	var numberDays = selectedShipping.find("#numberDays").html();
+	var freight = selectedShipping.find("#freight").html();
+	
+	var shipping = {"shippingCompanyId":shippingCompanyId, 
+		"shippingCompany":shippingCompany, "numberDays":numberDays, "freight":freight
+	};
+	setCurrentShippingInfo(itemCode, shipping);
+	calAllTotal();
+	updateCart(itemCode); */
+}
+if(jQuery("input[name='shippingAdress']:checked").val() != '$!defaultAddrId') {
+	jQuery("input[name='shippingAdress']:checked").click();
+}
+
+function cellTotalPrice(){
+	var subtotalPrice = 0;
+	jQuery("span[name='sPrice']").each(function(){
+		subtotalPrice += parseFloat(jQuery(this).text());
+		subtotalPrice = Math.round(subtotalPrice*100)/100;
+	});
+	var subWeight = 0;
+	jQuery("span[name='sWeight']").each(function(){
+		subWeight += parseFloat(jQuery(this).text());
+		subWeight = Math.round(subWeight*100)/100;
+	});
+	jQuery("#pWeight").text(subWeight);
+	jQuery("#pCount").text(jQuery("span[name='sPrice']").length);
+	jQuery("#itemTotal").text(subtotalPrice);
+	jQuery("input[name=itemTotal]").val(subtotalPrice);
+	var shipPrice = jQuery("input[name='shippingMethod']:checked").parent().parent().find("span[name='sp']").text();
+	shipPrice = Math.round(parseFloat(shipPrice)*100)/100;
+	jQuery("#shipPrice").text(shipPrice);
+	jQuery("input[name=shippingTotal]").val(shipPrice);
+	var couponAmount  =  jQuery("#cpdiscount").text();
+	couponAmount = Math.round(parseFloat(couponAmount)*100)/100;
+	var totalPrice = subtotalPrice + shipPrice - couponAmount ;
+	totalPrice = Math.round(totalPrice*100)/100;
+	jQuery("#totalPrice").text(totalPrice);
+	jQuery("input[name=totalPrice]").val(totalPrice)
+}
+jQuery("document").ready(function(){
+	changeCountry(jQuery("input[name='shippingAdress']:checked").attr("country"));
+});
+
+var countryShippingCost = {};
+function changeCountry(country) {
+	if (countryShippingCost[country] == null) {
+		jQuery("body").showLoading();
+    	jQuery.ajax({
+        	url:"$link.setAction("cart.GetCartShippingCost")",
+        	type:"post",
+        	async:false,
+        	data:{country:country},
+        	dataType:"json",
+        	success:function(data){
+				jQuery("body").hideLoading();
+				countryShippingCost[country]=data;
+    		},
+			error:function(){
+				jQuery("body").hideLoading();
+			}
+    	 });
+	 }
+	 setCountryShipping(countryShippingCost[country]);
+}
+function setCountryShipping(data) {
+	if (data.length == 0) {
+		jQuery("input[value='Place Your Order']").addClass("btn_cart_off");
+		jQuery("input[value='Place Your Order']").removeClass("btn_placeOrder");
+		jQuery("input[value='Place Your Order']").prop("disabled", true);
+		jQuery("table#tbShippingInfo").hide();
+		jQuery("table#tbShippingInfo").prev().show();
+	} else {
+		jQuery("input[value='Place Your Order']").addClass("btn_placeOrder");
+		jQuery("input[value='Place Your Order']").removeClass("btn_cart_off");
+		jQuery("input[value='Place Your Order']").prop("disabled", false);
+		jQuery("table#tbShippingInfo").show();
+		jQuery("table#tbShippingInfo").prev().hide();
+	}
+	var tbody = jQuery("tbody#shippingMethod");
+	tbody.empty();
+	var minidx = 0;
+	var minAmount = -1;
+	for(var i=0; i<data.length; i++) {
+		var shipping = data[i];
+		if (shipping.shippingAmount>=0) {
+			var tr = jQuery('<tr id="shippingM"></tr>');
+			tbody.append(tr);
+			tr.append('<td style="text-align:center; padding-top:10px;"><input name="shippingMethod" id="method'+i+'" type="radio" value="'+shipping.detail.shippingCompany+'" onclick="selectShipping(this)" /></td>');
+			tr.append('<td><label for="method'+i+'">'+shipping.shippingCompany+'</label></td>');
+			tr.append('<td>('+shipping.transportDays+' business days)</td>');
+			if (shipping.shippingAmount==0) {
+				tr.append('<td style="line-height:14px; color:#060;">FREE<span name="sp" class="hide">'+shipping.shippingAmount+'</span></td>');
+			} else {
+				tr.append('<td style="line-height:14px;">USD<span class="font_red ml6">$</span><span name="sp">'+shipping.shippingAmount+'</span></td>');
+			}
+			if (minAmount<0 || minAmount>shipping.shippingAmount) {
+				minAmount = shipping.shippingAmount;
+				minidx = i;
+			}
+		}
+	}
+	tbody.find("input#method"+minidx)[0].checked=true;
+	selectShipping(tbody.find("input#method"+minidx)[0]);
+}
+
+function useCoupon(){
+	jQuery(".confirm_coupon_red").html("");
+	var couponCode = jQuery.trim(jQuery("input[name=couponCode]").val());
+	var url = "$link.setAction('cart.UseCouponAction')";
+	var totalPrice = jQuery("#totalPrice").text();
+	//var catIds = jQuery("#catIds").val();
+	jQuery("body").showLoading();
+	jQuery.getJSON(url,
+			{totalPrice:totalPrice, couponCode: couponCode, random:Math.random()},
+			function(data) {
+				jQuery("body").hideLoading();
+				var status = data.status;
+				
+				if (status==0) {
+					jQuery("#applyCoupon").hide();
+					jQuery("#cpdiscount").text(data.couponAmount);
+					jQuery("#cp").text(couponCode);
+					jQuery("#exDate").text(data.couponEndDate);
+					jQuery("#cam").text(data.couponAmount);
+					jQuery("#couponAmount").val(data.couponAmount);
+					jQuery("#coupon_ok").show();
+					jQuery("#totalPrice").text(data.total);
+					jQuery("#couponProduct").val(data.couponProduct);
+				} else if (status==2) {
+					jQuery(".confirm_coupon_red").html("The coupon does not belong this buyer.");
+					jQuery("input[name=couponCode]").val('');
+				} else if (status==3) {
+					jQuery(".confirm_coupon_red").html("The Coupon selected has expired.");
+					jQuery("input[name=couponCode]").val('');
+				} else if (status==4) {
+					jQuery(".confirm_coupon_red").html("The Coupon can't use on these product");
+					jQuery("input[name=couponCode]").val('');
+				} else if (status==5) {
+					jQuery(".confirm_coupon_red").html("Not reach the minimum number of this coupon.(" + data.minAmount + ")");
+					jQuery("input[name=couponCode]").val('');
+				} else if (status==6) {
+					jQuery(".confirm_coupon_red").html("this Coupon has been used!");
+					jQuery("input[name=couponCode]").val('');
+				} else if (status==7) {
+					jQuery(".confirm_coupon_red").html("this Coupon has been disable!");
+					jQuery("input[name=couponCode]").val('');
+				} else if(status == 1){
+					jQuery(".confirm_coupon_red").html("Invalid coupon code.");
+					jQuery("input[name=couponCode]").val('');
+				}
+			}
+		);
+}
+
+function removeCoupon(){
+	jQuery("#coupon_ok").hide();
+	jQuery("input[name=couponCode]").val('');
+	jQuery("#couponAmount").val('');
+	jQuery("#cpdiscount").text('0.00');
+	jQuery("#applyCoupon").show();
+	cellTotalPrice();
+}
+
+function frashAddressBook(book) {
+	var addTr = jQuery("#add_" + book.addressId)
+	if (addTr != null) {
+		addTr.remove();
+	}
+	jQuery(".confirm_tab_sa_tab tr").each(function(i,o){jQuery(o).removeAttr("style")});
+	jQuery(".confirm_tab_sa_tab").prepend("<tr style=\"background:#ffd18d;\" id=\"add_"+book.addressId+"\"></tr>");
+	addTr = jQuery("#add_" + book.addressId);
+	var t1 = "<td style=\"text-align:center; padding-top:18px;\" width=\"40\">";
+	t1 = t1+"<input name=\"shippingAdress\" id=\"shippingAdress"+book.addressId+"\" type=\"radio\" country=\""+book.country+"\" value=\""+book.addressId+"\" checked=\"checked\" onclick=\"selectAddr('"+book.addressId+"','"+book.country+"')\" />";
+	t1 = t1+"</td>";
+	addTr.append(t1);
+	addTr.append("<td><label for='shippingAddress"+book.addressId+"'><b style=\"font-size:14px;\">"+book.firstName+" "+book.lastName+"</b></label></td>");
+	addTr.append("<td>"+book.addressLine1+" "+book.addressLine2+"<br />Phone number: "+book.phone+"</td>");
+	addTr.append("<td style=\"text-align:center;\"><a href=\"javascript:editAddress('"+book.addressId+"');\">Edit</a></td>");
+#if($book.isDefault==0)
+	addTr.find("td:last-child").append("<br/><a href=\"javascript:setDefaultAddress('"+book.addressId+"');\">Save as Default</a>");
+#end
+	jQuery("#country").val(book.country);
+	jQuery("#cartForm #addressBookId").val(book.addressId);
+	//calAllItemShipping();
+	cellTotalPrice();
+	closeWindown();
+	jQuery("#blockLayer").hide();
+}
+
+#if($productIds && $productIds.trim()!="")
+	saveProduct("$productIds", 2);
+#end
+</script>

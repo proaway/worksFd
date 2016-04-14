@@ -1,0 +1,56 @@
+<div id="edit_ad_banner" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+<h5 id="myModalLabel">编辑广告图片</h5>
+</div>
+<div class="modal-body"><form id="blockForm">
+	<input type="hidden" name="blockId" value="$!block.blockId"/>
+	<input type="hidden" name="blockName" value="$!block.blockName"/>
+	<input type="hidden" name="blockLocation" value="$!block.blockLocation"/>
+	<input type="hidden" name="channelId" value="$!block.channelId"/>
+	<input type="hidden" name="imgSpec" value="$!block.imgSpec"/>
+	<input type="hidden" name="blockType" value="1"/>
+	<input type="hidden" name="imgUrl" value="$!block.imgUrl"/>
+	<input type="hidden" name="infoId" value="$!block.infoId"/>
+	<input type="hidden" name="sku" value="$!block.sku"/>
+	<input type="hidden" name="summary" value="$!block.summary"/>
+    <table class="font12 mar_left_20" width="470px">
+    	<tr>
+        	<td width="280px">
+            	<img src="$!block.imgUrl" width="264" height="76" id="imgUrl"/>
+                <label class="checkbox mar_top_5"></label>
+            </td>
+            <td class="v_top">
+            	<ul class="unstyled">
+                	<li>图片大小: 200K以下</li>
+                	<li>格式: JPEG/GIF</li>
+                	<li>尺寸: $!block.imgSpec (width x height)</li>
+                	<li><input type="button" id="selectLocalImg" class="btn btn-mini left" value="本地上传"/>
+						<input type="button"  id="selectImg" class="btn btn-mini left mar_left_10" value="图片空间"/></li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+        	<td>图片ALT: </td><td class="right_t gray">(50个字符)</td>
+        </tr>
+        <tr><td colspan="2"><input type="text" placeholder="" name="imgAlt" class="span5" value="$!block.imgAlt"></td></tr>
+        <tr>
+        	<td>链接地址: </td><td class="right_t gray">(以http://开头的链接地址)</td>
+        </tr>
+        <tr><td colspan="2"><input type="text" placeholder="" name="linkUrl" class="span5" value="$!block.linkUrl"></td></tr>
+        <tr>
+        	<td>文字内容: </td><td class="right_t gray"></td>
+        </tr>
+        <tr><td colspan="2"><input type="text" placeholder="" name="title" class="span5" value="$!block.title"></td></tr>
+    </table></form>
+</div>
+<div class="modal-footer">
+<input type="button" class="btn" data-dismiss="modal" aria-hidden="true" value="取消"/>
+<input type="button" class="btn btn-primary" onclick="confirmAdBlock('edit_ad_banner', $block.blockLocation)" value="确定"/>
+</div>
+</div><!-- E edit_ad_banner -->
+<script>
+jQuery('#edit_ad_banner').modal({
+	show:true
+})
+</script>

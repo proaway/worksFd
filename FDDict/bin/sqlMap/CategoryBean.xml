@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertCategoryBean" parameterClass="com.fd.fashion.dict.bean.CategoryBean">
+        <![CDATA[
+insert into TC_CATEGORY
+  (CAT_ID, PARENT_ID, CAT_NAME, CAT_NAME_CN, CAT_LEVEL, ISLEAF, SEO_KEYWORDS, TITLE, DESCRIP_TION, KEYWORDS, H1_TITLE, H1_CONTENT, CREATOR, UPDATE_TIME, OPERATOR, CREATE_TIME)
+values
+  (#catId#, #parentId#, #catName#, #catNameCn#, #catLevel#, #isleaf#, #seoKeywords#, #title#, #descripTion#, #keywords#, #h1Title#, #h1Content#, #creator#, #updateTime#, #operator#, #createTime#)
+        ]]>
+        <selectKey keyProperty="catId" resultClass="long">
+            <![CDATA[select @@identity as catId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateCategoryBean" parameterClass="com.fd.fashion.dict.bean.CategoryBean">
+        <![CDATA[
+update TC_CATEGORY 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="catId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CAT_ID = #catId#]]>
+            </isNotNull>
+            <isNotNull property="parentId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PARENT_ID = #parentId#]]>
+            </isNotNull>
+            <isNotNull property="catName" prepend="," removeFirstPrepend="true">
+                <![CDATA[CAT_NAME = #catName#]]>
+            </isNotNull>
+            <isNotNull property="catNameCn" prepend="," removeFirstPrepend="true">
+                <![CDATA[CAT_NAME_CN = #catNameCn#]]>
+            </isNotNull>
+            <isNotNull property="catLevel" prepend="," removeFirstPrepend="true">
+                <![CDATA[CAT_LEVEL = #catLevel#]]>
+            </isNotNull>
+            <isNotNull property="isleaf" prepend="," removeFirstPrepend="true">
+                <![CDATA[ISLEAF = #isleaf#]]>
+            </isNotNull>
+            <isNotNull property="seoKeywords" prepend="," removeFirstPrepend="true">
+                <![CDATA[SEO_KEYWORDS = #seoKeywords#]]>
+            </isNotNull>
+            <isNotNull property="title" prepend="," removeFirstPrepend="true">
+                <![CDATA[TITLE = #title#]]>
+            </isNotNull>
+            <isNotNull property="descripTion" prepend="," removeFirstPrepend="true">
+                <![CDATA[DESCRIP_TION = #descripTion#]]>
+            </isNotNull>
+            <isNotNull property="keywords" prepend="," removeFirstPrepend="true">
+                <![CDATA[KEYWORDS = #keywords#]]>
+            </isNotNull>
+            <isNotNull property="h1Title" prepend="," removeFirstPrepend="true">
+                <![CDATA[H1_TITLE = #h1Title#]]>
+            </isNotNull>
+            <isNotNull property="h1Content" prepend="," removeFirstPrepend="true">
+                <![CDATA[H1_CONTENT = #h1Content#]]>
+            </isNotNull>
+            <isNotNull property="creator" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATOR = #creator#]]>
+            </isNotNull>
+            <isNotNull property="updateTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[UPDATE_TIME = #updateTime#]]>
+            </isNotNull>
+            <isNotNull property="operator" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPERATOR = #operator#]]>
+            </isNotNull>
+            <isNotNull property="createTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_TIME = #createTime#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where CAT_ID = #catId#
+        ]]>
+    </update>
+
+    <sql id="getCategoryBeanCondition">
+            <isNotNull property="catId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[CAT_ID = #catId#]]>
+            </isNotNull>
+            <isNotNull property="parentId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[PARENT_ID = #parentId#]]>
+            </isNotNull>
+            <isNotNull property="catName" prepend="and" removeFirstPrepend="true">
+                <![CDATA[CAT_NAME = #catName#]]>
+            </isNotNull>
+            <isNotNull property="catNameCn" prepend="and" removeFirstPrepend="true">
+                <![CDATA[CAT_NAME_CN like '%$catNameCn$%']]>
+            </isNotNull>
+            <isNotNull property="catLevel" prepend="and" removeFirstPrepend="true">
+                <![CDATA[CAT_LEVEL = #catLevel#]]>
+            </isNotNull>
+            <isNotNull property="isleaf" prepend="and" removeFirstPrepend="true">
+                <![CDATA[ISLEAF = #isleaf#]]>
+            </isNotNull>
+            <isNotNull property="seoKeywords" prepend="and" removeFirstPrepend="true">
+                <![CDATA[SEO_KEYWORDS = #seoKeywords#]]>
+            </isNotNull>
+            <isNotNull property="title" prepend="and" removeFirstPrepend="true">
+                <![CDATA[TITLE = #title#]]>
+            </isNotNull>
+            <isNotNull property="descripTion" prepend="and" removeFirstPrepend="true">
+                <![CDATA[DESCRIP_TION = #descripTion#]]>
+            </isNotNull>
+            <isNotNull property="keywords" prepend="and" removeFirstPrepend="true">
+                <![CDATA[KEYWORDS = #keywords#]]>
+            </isNotNull>
+            <isNotNull property="h1Title" prepend="and" removeFirstPrepend="true">
+                <![CDATA[H1_TITLE = #h1Title#]]>
+            </isNotNull>
+            <isNotNull property="h1Content" prepend="and" removeFirstPrepend="true">
+                <![CDATA[H1_CONTENT = #h1Content#]]>
+            </isNotNull>
+            <isNotNull property="creator" prepend="and" removeFirstPrepend="true">
+                <![CDATA[CREATOR = #creator#]]>
+            </isNotNull>
+            <isNotNull property="updateTime" prepend="and" removeFirstPrepend="true">
+                <![CDATA[UPDATE_TIME = #updateTime#]]>
+            </isNotNull>
+            <isNotNull property="operator" prepend="and" removeFirstPrepend="true">
+                <![CDATA[OPERATOR = #operator#]]>
+            </isNotNull>
+            <isNotNull property="createTime" prepend="and" removeFirstPrepend="true">
+                <![CDATA[CREATE_TIME = #createTime#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getCategoryBeanCount" parameterClass="com.fd.fashion.dict.bean.CategoryBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from TC_CATEGORY 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getCategoryBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getCategoryBean" parameterClass="com.fd.fashion.dict.bean.CategoryBean"
+        resultClass="com.fd.fashion.dict.bean.CategoryBean">
+        <![CDATA[
+select 
+	CAT_ID	as catId,
+	PARENT_ID	as parentId,
+	CAT_NAME	as catName,
+	CAT_NAME_CN	as catNameCn,
+	CAT_LEVEL	as catLevel,
+	ISLEAF	as isleaf,
+	SEO_KEYWORDS	as seoKeywords,
+	TITLE	as title,
+	DESCRIP_TION	as descripTion,
+	KEYWORDS	as keywords,
+	H1_TITLE	as h1Title,
+	H1_CONTENT	as h1Content,
+	CREATOR	as creator,
+	UPDATE_TIME	as updateTime,
+	OPERATOR	as operator,
+	CREATE_TIME	as createTime
+from TC_CATEGORY 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getCategoryBeanCondition"/>        </dynamic>
+    </select>
+
+    <select id="searchCategories" parameterClass="string"
+        resultClass="com.fd.fashion.dict.bean.CategoryBean">
+        <![CDATA[
+select 
+	CAT_ID	as catId,
+	PARENT_ID	as parentId,
+	CAT_NAME	as catName,
+	CAT_NAME_CN	as catNameCn,
+	CAT_LEVEL	as catLevel,
+	ISLEAF	as isleaf,
+	SEO_KEYWORDS	as seoKeywords,
+	TITLE	as title,
+	DESCRIP_TION	as descripTion,
+	KEYWORDS	as keywords,
+	H1_TITLE	as h1Title,
+	H1_CONTENT	as h1Content,
+	CREATOR	as creator,
+	UPDATE_TIME	as updateTime,
+	OPERATOR	as operator,
+	CREATE_TIME	as createTime
+from TC_CATEGORY 
+where CAT_NAME_CN like '%$value$%' or CAT_NAME like '%value%'
+        ]]>
+    </select>
+
+    <delete id="deleteCategoryBean" parameterClass="com.fd.fashion.dict.bean.CategoryBean">
+        <![CDATA[
+delete from TC_CATEGORY where CAT_ID=#catId#
+        ]]>
+    </delete>
+    
+    <select id="getCatIdbySrcId" resultClass="string" parameterClass="string">
+        <![CDATA[
+select 
+	CAT_ID	as catId
+from TC_CATEGORY where src_id=#value#
+        ]]>
+    </select>
+</sqlMap>

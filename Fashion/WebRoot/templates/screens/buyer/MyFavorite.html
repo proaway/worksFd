@@ -1,0 +1,70 @@
+$page.setTitle("My Favorite")
+<form name="listForm" id="listForm" method="get">
+<h2 style="color:#9f020e; line-height:32px;">My Favorite</h2>
+    <br class="clearfloat">
+
+    <div class="freeshipping">
+		#if($favoriteList)
+      <ul>
+		#set($index = 1)
+		#foreach($prod  in $favoriteList)
+		 <li ulid="$prod.product.productId">
+			<a title="Delete" href="javascript:deleteFavorite('$prod.product.productId');" id="deleteFlag$index" name="deleteFlag$index" class="hide">
+				<span class="del_l">
+					<span class="del_l_1">×</span>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+				</span>
+            </a>
+            <div>
+				<a title="$prod.product.productName" class="moveimg" target="_blank" href="$RewriteUtil.getProductUrl($prod.product.productName, $prod.product.productId)" onmouseover="javascript:jQuery('#deleteFlag$index').show();" onmouseout="javascript:jQuery('#deleteFlag$index').hide();">
+					<img border="0" width="130" height="130" alt="$prod.product.productName" title="$prod.product.productName" src="$RewriteUtil.getImageUrl($prod.firstImage.imageUrl, 'm')">
+				</a>
+			</div>
+            <p class="freename">
+				<a title="$prod.product.productName" target="_blank" href="$link.setPage('product,Product.html')?productId=$prod.product.productId" onmouseover="javascript:jQuery('#deleteFlag$index').show();" onmouseout="javascript:jQuery('#deleteFlag$index').hide();">$!StringUtil.substring(${prod.product.productName},20)</a>
+			</p>
+            <p class="price">
+				#if($prod.priceVo.priceBean.discount && $prod.priceVo.priceBean.discount>0)
+    			<span class="price"  style="height:auto;">USD <span class="listprice">$ ${prod.priceVo.discountPrice}</span></span>
+				#end
+				#if($prod.priceVo.priceBean.discount && $prod.priceVo.priceBean.discount>0)
+				<span class="listprice_all"  style="height:auto;">USD 
+				<span class="buyer_discount">$ $prod.priceVo.price</span></span>
+				#else
+				<span class="price"  style="height:auto;">USD 
+				<span class="listprice">$ $prod.priceVo.price</span>	</span>
+				#end
+				
+			</p>
+			<br class="clear">
+		   </li>
+		#set($index = $index+1)
+		#end
+      </ul>
+	  #end
+    </div>
+                
+                <!--<div class="list-page">
+<div class="global-page">Records:2   Pages: 1 &nbsp;&nbsp;&nbsp;<a class="global-page-previous" href="#">first</a> <a class="global-page-previous" href="#"><img src="/static/prototype/product_fashion/images/ico-previous.gif" width="8" height="7" vspace="6" align="absmiddle" /> prev</a> <a href="#">1</a> <span class="select">2</span><a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">6</a> <a href="#">7</a> <a href="#">8</a> <span class="global-page-break">...</span><a href="#">49</a> <a href="#">50</a> <a class="global-page-next" href="#">next <img src="/static/prototype/product_fashion/images/ico-next.gif" width="8" height="7" vspace="6" align="absmiddle" /></a> <a class="global-page-next" href="#">last</a>
+<input name="textfield" type="text"  class="input_go" id="textfield" onclick="this.value='';" value="Page" style="width:35px;" /> <input type="submit" name="button" id="button" value="Go" class="input_btn_protal_short"/></div></div>-->
+<br class="clearfloat">
+#parse("screens/BuyerNap.html")   
+    <br class="clearfloat">
+</form>
+<script>
+function deleteFavorite(productId){
+	if(confirm("do you want to remove it from your favorite？")){
+		jQuery("body").showLoading();
+		jQuery.get(
+		"$link.setAction('buyer.AjaxDeleteMyFavoriteAction')?productId="+productId,
+		function(data){
+			jQuery("body").hideLoading();
+			if(data!=null){
+				jQuery("li[ulid='"+productId+"']").remove();
+			} else {
+				alert("remove failure!");
+			}
+		});
+	}
+}
+</script>

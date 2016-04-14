@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertImageCatBean" parameterClass="com.fd.fashion.product.bean.ImageCatBean">
+        <![CDATA[
+insert into t_image_cat
+  (cat_id, cat_name, create_time)
+values
+  (#catId#, #catName#, #createTime#)
+        ]]>
+        <selectKey keyProperty="catId" resultClass="long">
+            <![CDATA[select @@identity as catId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateImageCatBean" parameterClass="com.fd.fashion.product.bean.ImageCatBean">
+        <![CDATA[
+update t_image_cat 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="catId" prepend="," removeFirstPrepend="true">
+                <![CDATA[cat_id = #catId#]]>
+            </isNotNull>
+            <isNotNull property="catName" prepend="," removeFirstPrepend="true">
+                <![CDATA[cat_name = #catName#]]>
+            </isNotNull>
+            <isNotNull property="createTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[create_time = #createTime#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where cat_id = #catId#
+        ]]>
+    </update>
+
+    <sql id="getImageCatBeanCondition">
+            <isNotNull property="catId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[cat_id = #catId#]]>
+            </isNotNull>
+            <isNotNull property="catName" prepend="and" removeFirstPrepend="true">
+                <![CDATA[cat_name = #catName#]]>
+            </isNotNull>
+            <isNotNull property="createTime" prepend="and" removeFirstPrepend="true">
+                <![CDATA[create_time = #createTime#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getImageCatBeanCount" parameterClass="com.fd.fashion.product.bean.ImageCatBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from t_image_cat 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getImageCatBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getImageCatBean" parameterClass="com.fd.fashion.product.bean.ImageCatBean"
+        resultClass="com.fd.fashion.product.bean.ImageCatBean">
+        <![CDATA[
+select 
+	cat_id	as catId,
+	cat_name	as catName,
+	create_time	as createTime
+from t_image_cat 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getImageCatBeanCondition"/>        </dynamic>
+    </select>
+
+    <delete id="deleteImageCatBean" parameterClass="com.fd.fashion.product.bean.ImageCatBean">
+        <![CDATA[
+delete from t_image_cat where cat_id=#catId#
+        ]]>
+    </delete>
+    
+    
+        <update id="updateImageCatId" parameterClass="com.fd.fashion.product.bean.ImageCatBean">
+        <![CDATA[
+update t_image
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="catId" prepend="," removeFirstPrepend="true">
+                <![CDATA[cat_id = 0]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where cat_id = #catId#
+        ]]>
+    </update>
+</sqlMap>

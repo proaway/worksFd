@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertCmsTemplateBean" parameterClass="com.fd.fashion.cms.bean.CmsTemplateBean">
+        <![CDATA[
+insert into T_CMS_TEMPLATE
+  (TEMPLATE_ID, TEMPLATE_NAME, TEMPLATE_TYPE, FILE_URL, CREATE_TIME, CREATE_USER, OPERATE_USER, OPERATE_DATE, LANGUAGE_ID, STATUS, MEMO, BLOCK_NUM)
+values
+  (#templateId#, #templateName#, #templateType#, #fileUrl#, #createTime#, #createUser#, #operateUser#, #operateDate#, #languageId#, #status#, #memo#, #blockNum#)
+        ]]>
+    </insert>
+
+    <update id="updateCmsTemplateBean" parameterClass="com.fd.fashion.cms.bean.CmsTemplateBean">
+        <![CDATA[
+update T_CMS_TEMPLATE 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="templateId" prepend="," removeFirstPrepend="true">
+                <![CDATA[TEMPLATE_ID = #templateId#]]>
+            </isNotNull>
+            <isNotNull property="templateName" prepend="," removeFirstPrepend="true">
+                <![CDATA[TEMPLATE_NAME = #templateName#]]>
+            </isNotNull>
+            <isNotNull property="templateType" prepend="," removeFirstPrepend="true">
+                <![CDATA[TEMPLATE_TYPE = #templateType#]]>
+            </isNotNull>
+            <isNotNull property="fileUrl" prepend="," removeFirstPrepend="true">
+                <![CDATA[FILE_URL = #fileUrl#]]>
+            </isNotNull>
+            <isNotNull property="createTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_TIME = #createTime#]]>
+            </isNotNull>
+            <isNotNull property="createUser" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_USER = #createUser#]]>
+            </isNotNull>
+            <isNotNull property="operateUser" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPERATE_USER = #operateUser#]]>
+            </isNotNull>
+            <isNotNull property="operateDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPERATE_DATE = #operateDate#]]>
+            </isNotNull>
+            <isNotNull property="languageId" prepend="," removeFirstPrepend="true">
+                <![CDATA[LANGUAGE_ID = #languageId#]]>
+            </isNotNull>
+            <isNotNull property="status" prepend="," removeFirstPrepend="true">
+                <![CDATA[STATUS = #status#]]>
+            </isNotNull>
+            <isNotNull property="memo" prepend="," removeFirstPrepend="true">
+                <![CDATA[MEMO = #memo#]]>
+            </isNotNull>
+            <isNotNull property="blockNum" prepend="," removeFirstPrepend="true">
+                <![CDATA[BLOCK_NUM = #blockNum#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where TEMPLATE_ID = #templateId#
+        ]]>
+    </update>
+
+    <sql id="getCmsTemplateBeanCondition">
+         <isNotNull property="templateId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TEMPLATE_ID = #templateId#]]>
+         </isNotNull>
+         <isNotNull property="templateName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TEMPLATE_NAME = #templateName#]]>
+         </isNotNull>
+         <isNotNull property="templateType" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TEMPLATE_TYPE = #templateType#]]>
+         </isNotNull>
+         <isNotNull property="fileUrl" prepend="and" removeFirstPrepend="true">
+             <![CDATA[FILE_URL = #fileUrl#]]>
+         </isNotNull>
+         <isNotNull property="createTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATE_TIME = #createTime#]]>
+         </isNotNull>
+         <isNotNull property="createUser" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATE_USER = #createUser#]]>
+         </isNotNull>
+         <isNotNull property="operateUser" prepend="and" removeFirstPrepend="true">
+             <![CDATA[OPERATE_USER = #operateUser#]]>
+         </isNotNull>
+         <isNotNull property="operateDate" prepend="and" removeFirstPrepend="true">
+             <![CDATA[OPERATE_DATE = #operateDate#]]>
+         </isNotNull>
+         <isNotNull property="languageId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LANGUAGE_ID = #languageId#]]>
+         </isNotNull>
+         <isNotNull property="status" prepend="and" removeFirstPrepend="true">
+             <![CDATA[STATUS = #status#]]>
+         </isNotNull>
+         <isNotNull property="memo" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MEMO = #memo#]]>
+         </isNotNull>
+         <isNotNull property="blockNum" prepend="and" removeFirstPrepend="true">
+             <![CDATA[BLOCK_NUM = #blockNum#]]>
+         </isNotNull>
+         <isNotNull property="createTimeStart" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATE_TIME > #createTimeStart#]]>
+         </isNotNull>         
+         <isNotNull property="createTimeEnd" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATE_TIME <= ADDDATE(#createTimeEnd#,1)]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getCmsTemplateBeanCount" parameterClass="com.fd.fashion.cms.bean.CmsTemplateBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_CMS_TEMPLATE 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getCmsTemplateBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getCmsTemplateBean" parameterClass="com.fd.fashion.cms.bean.CmsTemplateBean"
+        resultClass="com.fd.fashion.cms.bean.CmsTemplateBean">
+        <![CDATA[
+select 
+	TEMPLATE_ID	as templateId,
+	TEMPLATE_NAME	as templateName,
+	TEMPLATE_TYPE	as templateType,
+	FILE_URL	as fileUrl,
+	CREATE_TIME	as createTime,
+	CREATE_USER	as createUser,
+	OPERATE_USER	as operateUser,
+	OPERATE_DATE	as operateDate,
+	LANGUAGE_ID	as languageId,
+	STATUS	as status,
+	MEMO	as memo,
+	BLOCK_NUM	as blockNum
+from T_CMS_TEMPLATE 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getCmsTemplateBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteCmsTemplateBean" parameterClass="com.fd.fashion.cms.bean.CmsTemplateBean">
+        <![CDATA[
+delete from T_CMS_TEMPLATE where TEMPLATE_ID=#templateId#
+        ]]>
+    </delete>
+    
+    <select id="getLastTemplateId" resultClass="string">
+        <![CDATA[
+select max(TEMPLATE_ID) from T_CMS_TEMPLATE
+        ]]>
+    </select>
+
+</sqlMap>

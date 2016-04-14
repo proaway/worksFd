@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertCouponBean" parameterClass="com.fd.fashion.order.bean.CouponBean">
+        <![CDATA[
+insert into t_coupon
+  (COUPON_CODE, COUPON_TYPE, COUPON_DISCOUNT, COUPON_AMOUNT, LIMIT_CATEGORY, MINA_MOUNT, START_DATE, END_DATE, USER_ID, ORDER_ID, NORMAL_STATE, CREATE_ID, CREATE_DATE, OPERATE_ID, OPERATE_DATE, MEMO, NUMBER_TYPE, LIMIT_PRODUCT, STATUS)
+values
+  (#couponCode#, #couponType#, #couponDiscount#, #couponAmount#, #limitCategory#, #minaMount#, #startDate#, #endDate#, #userId#, #orderId#, #normalState#, #createId#, #createDate#, #operateId#, #operateDate#, #memo#, #numberType#, #limitProduct#, status)
+        ]]>
+    </insert>
+
+    <update id="updateCouponBean" parameterClass="com.fd.fashion.order.bean.CouponBean">
+        <![CDATA[
+update t_coupon 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="couponCode" prepend="," removeFirstPrepend="true">
+                <![CDATA[COUPON_CODE = #couponCode#]]>
+            </isNotNull>
+            <isNotNull property="couponType" prepend="," removeFirstPrepend="true">
+                <![CDATA[COUPON_TYPE = #couponType#]]>
+            </isNotNull>
+            <isNotNull property="couponDiscount" prepend="," removeFirstPrepend="true">
+                <![CDATA[COUPON_DISCOUNT = #couponDiscount#]]>
+            </isNotNull>
+            <isNotNull property="couponAmount" prepend="," removeFirstPrepend="true">
+                <![CDATA[COUPON_AMOUNT = #couponAmount#]]>
+            </isNotNull>
+            <isNotNull property="limitCategory" prepend="," removeFirstPrepend="true">
+                <![CDATA[LIMIT_CATEGORY = #limitCategory#]]>
+            </isNotNull>
+            <isNotNull property="minaMount" prepend="," removeFirstPrepend="true">
+                <![CDATA[MINA_MOUNT = #minaMount#]]>
+            </isNotNull>
+            <isNotNull property="startDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[START_DATE = #startDate#]]>
+            </isNotNull>
+	        <isNotNull property="endDate" prepend="and" removeFirstPrepend="true">
+	            <![CDATA[END_DATE >= ADDDATE(#endDate#,1) and START_DATE >= ADDDATE(#endDate#)]]>
+	        </isNotNull>
+            <isNotNull property="userId" prepend="," removeFirstPrepend="true">
+                <![CDATA[USER_ID = #userId#]]>
+            </isNotNull>
+            <isNotNull property="orderId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ORDER_ID = #orderId#]]>
+            </isNotNull>
+            <isNotNull property="normalState" prepend="," removeFirstPrepend="true">
+                <![CDATA[NORMAL_STATE = #normalState#]]>
+            </isNotNull>
+            <isNotNull property="createId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_ID = #createId#]]>
+            </isNotNull>
+            <isNotNull property="createDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_DATE = #createDate#]]>
+            </isNotNull>
+            <isNotNull property="operateId" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPERATE_ID = #operateId#]]>
+            </isNotNull>
+            <isNotNull property="operateDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPERATE_DATE = #operateDate#]]>
+            </isNotNull>
+            <isNotNull property="memo" prepend="," removeFirstPrepend="true">
+                <![CDATA[MEMO = #memo#]]>
+            </isNotNull>
+            <isNotNull property="numberType" prepend="," removeFirstPrepend="true">
+                <![CDATA[NUMBER_TYPE = #numberType#]]>
+            </isNotNull>
+            <isNotNull property="limitProduct" prepend="," removeFirstPrepend="true">
+                <![CDATA[LIMIT_PRODUCT = #limitProduct#]]>
+            </isNotNull>
+            <isNotNull property="status" prepend="," removeFirstPrepend="true">
+                <![CDATA[STATUS = #status#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where COUPON_CODE = #couponCode#
+        ]]>
+    </update>
+
+    <sql id="getCouponBeanCondition">
+        <isNotNull property="couponCode" prepend="and" removeFirstPrepend="true">
+            <![CDATA[COUPON_CODE = #couponCode#]]>
+        </isNotNull>
+        <isNotNull property="couponType" prepend="and" removeFirstPrepend="true">
+            <![CDATA[COUPON_TYPE = #couponType#]]>
+        </isNotNull>
+        <isNotNull property="couponDiscount" prepend="and" removeFirstPrepend="true">
+            <![CDATA[COUPON_DISCOUNT = #couponDiscount#]]>
+        </isNotNull>
+        <isNotNull property="couponAmount" prepend="and" removeFirstPrepend="true">
+            <![CDATA[COUPON_AMOUNT = #couponAmount#]]>
+        </isNotNull>
+        <isNotNull property="limitCategory" prepend="and" removeFirstPrepend="true">
+            <![CDATA[LIMIT_CATEGORY = #limitCategory#]]>
+        </isNotNull>
+        <isNotNull property="minaMount" prepend="and" removeFirstPrepend="true">
+            <![CDATA[MINA_MOUNT = #minaMount#]]>
+        </isNotNull>
+        <isNotNull property="startDate" prepend="and" removeFirstPrepend="true">
+            <![CDATA[START_DATE = #startDate#]]>
+        </isNotNull>
+        <isNotNull property="endDate" prepend="and" removeFirstPrepend="true">
+            <![CDATA[END_DATE >= ADDDATE(#endDate#,1) and START_DATE >= ADDDATE(#endDate#)]]>
+        </isNotNull>
+        <isNotNull property="userId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[USER_ID = #userId#]]>
+        </isNotNull>
+        <isNotNull property="orderId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[ORDER_ID = #orderId#]]>
+        </isNotNull>
+        <isNotNull property="normalState" prepend="and" removeFirstPrepend="true">
+            <![CDATA[NORMAL_STATE = #normalState#]]>
+        </isNotNull>
+        <isNotNull property="createId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[CREATE_ID = #createId#]]>
+        </isNotNull>
+        <isNotNull property="createDate" prepend="and" removeFirstPrepend="true">
+            <![CDATA[CREATE_DATE = #createDate#]]>
+        </isNotNull>
+        <isNotNull property="operateId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[OPERATE_ID = #operateId#]]>
+        </isNotNull>
+        <isNotNull property="operateDate" prepend="and" removeFirstPrepend="true">
+            <![CDATA[OPERATE_DATE = #operateDate#]]>
+        </isNotNull>
+        <isNotNull property="memo" prepend="and" removeFirstPrepend="true">
+            <![CDATA[MEMO = #memo#]]>
+        </isNotNull>
+        <isNotNull property="numberType" prepend="," removeFirstPrepend="true">
+        	<![CDATA[NUMBER_TYPE = #numberType#]]>
+        </isNotNull>
+       	<isNotNull property="limitProduct" prepend="," removeFirstPrepend="true">
+        	<![CDATA[LIMIT_PRODUCT = #limitProduct#]]>
+        </isNotNull>
+        <isNotNull property="status" prepend="," removeFirstPrepend="true">
+                <![CDATA[STATUS = #status#]]>
+            </isNotNull>
+        <isNotNull property="createDateStart" prepend="and" removeFirstPrepend="true">
+            <![CDATA[CREATE_DATE >= #createDateStart#]]>
+        </isNotNull>
+        <isNotNull property="createDateEnd" prepend="and" removeFirstPrepend="true">
+            <![CDATA[CREATE_DATE <= ADDDATE(#createDateEnd#,1)]]>
+        </isNotNull>
+        <isNotNull property="couponType">
+	        <isEqual property="couponType" compareValue="1">
+		        <isNotNull property="startAmount" prepend="and" removeFirstPrepend="true">
+		            <![CDATA[COUPON_DISCOUNT >= #startAmount#]]>
+		        </isNotNull>
+		        <isNotNull property="endAmount" prepend="and" removeFirstPrepend="true">
+		            <![CDATA[COUPON_DISCOUNT <= #endAmount#]]>
+		        </isNotNull>
+	        </isEqual>
+	        <isEqual property="couponType" compareValue="0">
+		        <isNotNull property="startAmount" prepend="and" removeFirstPrepend="true">
+		            <![CDATA[COUPON_AMOUNT >= #startAmount#]]>
+		        </isNotNull>
+		        <isNotNull property="endAmount" prepend="and" removeFirstPrepend="true">
+		            <![CDATA[COUPON_AMOUNT <= #endAmount#]]>
+		        </isNotNull>
+	        </isEqual>
+        </isNotNull>
+        <isNotNull property="startMiniAmount" prepend="and" removeFirstPrepend="true">
+            <![CDATA[MINA_MOUNT >= #startMiniAmount# ]]>
+        </isNotNull>
+        <isNotNull property="endMiniAmount" prepend="and" removeFirstPrepend="true">
+            <![CDATA[MINA_MOUNT <= #endMiniAmount# ]]>
+        </isNotNull>
+    </sql>
+
+    <select id="getCouponBeanCount" parameterClass="com.fd.fashion.order.bean.CouponBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from t_coupon 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getCouponBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getCouponBean" parameterClass="com.fd.fashion.order.bean.CouponBean"
+        resultClass="com.fd.fashion.order.bean.CouponBean">
+        <![CDATA[
+select 
+	COUPON_CODE	as couponCode,
+	COUPON_TYPE	as couponType,
+	COUPON_DISCOUNT	as couponDiscount,
+	COUPON_AMOUNT	as couponAmount,
+	LIMIT_CATEGORY	as limitCategory,
+	MINA_MOUNT	as minaMount,
+	START_DATE	as startDate,
+	END_DATE	as endDate,
+	USER_ID	as userId,
+	ORDER_ID	as orderId,
+	NORMAL_STATE	as normalState,
+	CREATE_ID	as createId,
+	CREATE_DATE	as createDate,
+	OPERATE_ID	as operateId,
+	OPERATE_DATE	as operateDate,
+	MEMO	as memo,
+	NUMBER_TYPE	as numberType,
+	LIMIT_PRODUCT as limitProduct,
+	STATUS	as status
+from t_coupon 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getCouponBeanCondition"/>
+        </dynamic>
+        <dynamic>
+            <isNotNull property="pageInfo">
+                <![CDATA[
+order by CREATE_DATE desc
+limit #pageInfo.beginRowNum#,#pageInfo.pageSize#
+            ]]>
+            </isNotNull>
+        </dynamic>
+    </select>
+
+    <delete id="deleteCouponBean" parameterClass="com.fd.fashion.order.bean.CouponBean">
+        <![CDATA[
+			delete from t_coupon where COUPON_CODE=#couponCode#
+        ]]>
+    </delete>
+</sqlMap>

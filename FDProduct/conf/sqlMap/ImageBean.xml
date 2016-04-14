@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertImageBean" parameterClass="com.fd.fashion.product.bean.ImageBean">
+        <![CDATA[
+insert into T_IMAGE
+  (IMAGE_ID, CAT_ID, IMAGE_URL, SELLER_ID, IMAGE_NAME, CREATE_TIME, OPERATOR, IMAGE_SIZE, ISUSED)
+values
+  (#imageId#,#catId#, #imageUrl#, #sellerId#, #imageName#, #createTime#, #operator#, #imageSize#, #isused#)
+        ]]>
+    </insert>
+
+    <update id="updateImageBean" parameterClass="com.fd.fashion.product.bean.ImageBean">
+        <![CDATA[
+update T_IMAGE 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="imageId" prepend="," removeFirstPrepend="true">
+                <![CDATA[IMAGE_ID = #imageId#]]>
+            </isNotNull>
+            <isNotNull property="catId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CAT_ID = #catId#]]>
+            </isNotNull>
+            <isNotNull property="imageUrl" prepend="," removeFirstPrepend="true">
+                <![CDATA[IMAGE_URL = #imageUrl#]]>
+            </isNotNull>
+            <isNotNull property="sellerId" prepend="," removeFirstPrepend="true">
+                <![CDATA[SELLER_ID = #sellerId#]]>
+            </isNotNull>
+            <isNotNull property="imageName" prepend="," removeFirstPrepend="true">
+                <![CDATA[IMAGE_NAME = #imageName#]]>
+            </isNotNull>
+            <isNotNull property="createTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_TIME = #createTime#]]>
+            </isNotNull>
+            <isNotNull property="operator" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPERATOR = #operator#]]>
+            </isNotNull>
+            <isNotNull property="imageSize" prepend="," removeFirstPrepend="true">
+                <![CDATA[IMAGE_SIZE = #imageSize#]]>
+            </isNotNull>
+            <isNotNull property="isused" prepend="," removeFirstPrepend="true">
+                <![CDATA[ISUSED = #isused#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where IMAGE_ID = #imageId#
+        ]]>
+    </update>
+
+    <sql id="getImageBeanCondition">
+        <isNotNull property="imageId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IMAGE_ID = #imageId#]]>
+        </isNotNull>
+        <isNotNull property="catId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[CAT_ID = #catId#]]>
+        </isNotNull>
+        <isNotNull property="imageUrl" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IMAGE_URL = #imageUrl#]]>
+        </isNotNull>
+        <isNotNull property="sellerId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[SELLER_ID = #sellerId#]]>
+        </isNotNull>
+        <isNotNull property="imageName" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IMAGE_NAME = #imageName#]]>
+        </isNotNull>
+        <isNotNull property="createTime" prepend="and" removeFirstPrepend="true">
+            <![CDATA[CREATE_TIME = #createTime#]]>
+        </isNotNull>
+        <isNotNull property="operator" prepend="and" removeFirstPrepend="true">
+            <![CDATA[OPERATOR = #operator#]]>
+        </isNotNull>
+        <isNotNull property="imageSize" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IMAGE_SIZE = #imageSize#]]>
+        </isNotNull>
+        <isNotNull property="isused" prepend="and" removeFirstPrepend="true">
+            <![CDATA[ISUSED = #isused#]]>
+        </isNotNull>
+        <isNotNull property="params.startDate" prepend="and" removeFirstPrepend="true">
+            <![CDATA[CREATE_TIME >= #params.startDate#]]>
+        </isNotNull>
+        <isNotNull property="params.endDate" prepend="and" removeFirstPrepend="true">
+            <![CDATA[CREATE_TIME <= #params.endDate#]]>
+        </isNotNull>
+        <isNotNull property="params.keyword" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IMAGE_NAME like '%$params.keyword$%']]>
+        </isNotNull>
+    </sql>
+
+    <select id="getImageBeanCount" parameterClass="com.fd.fashion.product.bean.ImageBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_IMAGE 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getImageBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getImageBean" parameterClass="com.fd.fashion.product.bean.ImageBean"
+        resultClass="com.fd.fashion.product.bean.ImageBean">
+        <![CDATA[
+select 
+	IMAGE_ID	as imageId,
+	CAT_ID	as catId,
+	IMAGE_URL	as imageUrl,
+	SELLER_ID	as sellerId,
+	IMAGE_NAME	as imageName,
+	CREATE_TIME	as createTime,
+	OPERATOR	as operator,
+	IMAGE_SIZE	as imageSize,
+	ISUSED	as isused
+from T_IMAGE 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getImageBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteImageBean" parameterClass="com.fd.fashion.product.bean.ImageBean">
+        <![CDATA[
+delete from T_IMAGE where IMAGE_ID=#imageId#
+        ]]>
+    </delete>
+
+    <select id="getImageBeanByStatus" parameterClass="com.fd.fashion.product.bean.ImageBean"
+        resultClass="com.fd.fashion.product.bean.ImageBean">
+        <![CDATA[
+select 
+	IMAGE_ID	as imageId,
+	CAT_ID	as catId,
+	IMAGE_URL	as imageUrl,
+	SELLER_ID	as sellerId,
+	IMAGE_NAME	as imageName,
+	CREATE_TIME	as createTime,
+	OPERATOR	as operator,
+	IMAGE_SIZE	as imageSize,
+	ISUSED	as isused
+from T_IMAGE ti
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getImageBeanCondition"/> </dynamic>
+        <dynamic prepend="order by">
+            <isNotEmpty property="orderByStatus">
+                <isEqual property="orderByStatus" compareValue="1" prepend=","
+                    removeFirstPrepend="true">
+                    <![CDATA[ ti.IMAGE_NAME desc]]>
+                </isEqual>
+                <isEqual property="orderByStatus" compareValue="2" prepend=","
+                    removeFirstPrepend="true">
+                    <![CDATA[ ti.IMAGE_SIZE desc]]>
+                </isEqual>
+                <isEqual property="orderByStatus" compareValue="3" prepend=","
+                    removeFirstPrepend="true">
+                    <![CDATA[ ti.CREATE_TIME desc]]>
+                </isEqual>
+            </isNotEmpty>
+            <isEmpty property="orderByStatus">
+                <![CDATA[IMAGE_ID desc]]>
+            </isEmpty>
+        </dynamic>
+        <dynamic>
+            <isNotNull property="pageInfo">
+                <![CDATA[
+			limit #pageInfo.beginRowNum#,#pageInfo.pageSize#
+            ]]>
+            </isNotNull>
+        </dynamic>
+    </select>
+    
+    <!-- 通过sellerid查询卖家图片空间总大小 -->
+    <select id="selectImageSize" parameterClass="java.lang.Long" resultClass="long">
+        <![CDATA[
+    		select SUM(t.IMAGE_SIZE) from t_image t 
+    	 ]]>
+    </select>
+</sqlMap>

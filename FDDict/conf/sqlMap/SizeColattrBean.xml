@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertSizeColattrBean" parameterClass="com.fd.fashion.dict.bean.SizeColattrBean">
+        <![CDATA[
+insert into TC_SIZE_COLATTR
+  (COL_ID, SIZECAT_ID, ATTR_ID, INDEX_ID)
+values
+  (#colId#, #sizecatId#, #attrId#, #indexId#)
+        ]]>
+        <selectKey keyProperty="colId" resultClass="long">
+            <![CDATA[select @@identity as colId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateSizeColattrBean" parameterClass="com.fd.fashion.dict.bean.SizeColattrBean">
+        <![CDATA[
+update TC_SIZE_COLATTR 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="colId" prepend="," removeFirstPrepend="true">
+                <![CDATA[COL_ID = #colId#]]>
+            </isNotNull>
+            <isNotNull property="sizecatId" prepend="," removeFirstPrepend="true">
+                <![CDATA[SIZECAT_ID = #sizecatId#]]>
+            </isNotNull>
+            <isNotNull property="attrId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ATTR_ID = #attrId#]]>
+            </isNotNull>
+            <isNotNull property="indexId" prepend="," removeFirstPrepend="true">
+                <![CDATA[INDEX_ID = #indexId#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where COL_ID = #colId#
+        ]]>
+    </update>
+
+    <sql id="getSizeColattrBeanCondition">
+            <isNotNull property="colId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[COL_ID = #colId#]]>
+            </isNotNull>
+            <isNotNull property="sizecatId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[SIZECAT_ID = #sizecatId#]]>
+            </isNotNull>
+            <isNotNull property="attrId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[ATTR_ID = #attrId#]]>
+            </isNotNull>
+            <isNotNull property="indexId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[INDEX_ID = #indexId#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getSizeColattrBeanCount" parameterClass="com.fd.fashion.dict.bean.SizeColattrBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from TC_SIZE_COLATTR 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getSizeColattrBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getSizeColattrBean" parameterClass="com.fd.fashion.dict.bean.SizeColattrBean"
+        resultClass="com.fd.fashion.dict.bean.SizeColattrBean">
+        <![CDATA[
+select 
+	COL_ID	as colId,
+	SIZECAT_ID	as sizecatId,
+	ATTR_ID	as attrId,
+	INDEX_ID	as indexId
+from TC_SIZE_COLATTR 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getSizeColattrBeanCondition"/>        </dynamic>
+    </select>
+
+    <delete id="deleteSizeColattrBean" parameterClass="com.fd.fashion.dict.bean.SizeColattrBean">
+        <![CDATA[
+delete from TC_SIZE_COLATTR where COL_ID=#colId#
+        ]]>
+    </delete>
+</sqlMap>

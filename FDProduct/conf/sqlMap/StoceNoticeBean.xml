@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertStoceNoticeBean" parameterClass="com.fd.fashion.product.bean.StoceNoticeBean">
+        <![CDATA[
+insert into T_STOCE_NOTICE
+  (STOCK_NOTICE_ID, BUYER_ID, PRODUCT_ID, PRODUCT_CONFIG_ID1)
+values
+  (#stockNoticeId#, #buyerId#, #productId#, #standardId#)
+        ]]>
+        <selectKey keyProperty="stockNoticeId" resultClass="long">
+            <![CDATA[select @@identity as stockNoticeId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateStoceNoticeBean" parameterClass="com.fd.fashion.product.bean.StoceNoticeBean">
+        <![CDATA[
+update T_STOCE_NOTICE 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="stockNoticeId" prepend="," removeFirstPrepend="true">
+                <![CDATA[STOCK_NOTICE_ID = #stockNoticeId#]]>
+            </isNotNull>
+            <isNotNull property="buyerId" prepend="," removeFirstPrepend="true">
+                <![CDATA[BUYER_ID = #buyerId#]]>
+            </isNotNull>
+            <isNotNull property="productId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="standardId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_CONFIG_ID1 = #standardId#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where STOCK_NOTICE_ID = #stockNoticeId#
+        ]]>
+    </update>
+
+    <sql id="getStoceNoticeBeanCondition">
+            <isNotNull property="stockNoticeId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[STOCK_NOTICE_ID = #stockNoticeId#]]>
+            </isNotNull>
+            <isNotNull property="buyerId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[BUYER_ID = #buyerId#]]>
+            </isNotNull>
+            <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="standardId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[PRODUCT_CONFIG_ID1 = #standardId#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getStoceNoticeBeanCount" parameterClass="com.fd.fashion.product.bean.StoceNoticeBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_STOCE_NOTICE 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getStoceNoticeBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getStoceNoticeBean" parameterClass="com.fd.fashion.product.bean.StoceNoticeBean"
+        resultClass="com.fd.fashion.product.bean.StoceNoticeBean">
+        <![CDATA[
+select 
+	STOCK_NOTICE_ID	as stockNoticeId,
+	BUYER_ID	as buyerId,
+	PRODUCT_ID	as productId,
+	PRODUCT_CONFIG_ID1	as standardId
+from T_STOCE_NOTICE 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getStoceNoticeBeanCondition"/>        </dynamic>
+    </select>
+
+    <delete id="deleteStoceNoticeBean" parameterClass="com.fd.fashion.product.bean.StoceNoticeBean">
+        <![CDATA[
+delete from T_STOCE_NOTICE where STOCK_NOTICE_ID=#stockNoticeId#
+        ]]>
+    </delete>
+</sqlMap>

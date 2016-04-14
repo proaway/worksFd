@@ -1,0 +1,31 @@
+<div class="DanpinLeft">
+        <div class="smallImg">
+          <div class="smallImgUp"> <img title="product image" alt="product image" src="/static/prototype/product_fashion/images/smallImgUp02.gif"> </div>
+          <ul id="imageMenu">
+	#if($imgList)
+		#set($idx=0)
+         #foreach($imgVo in $imgList)
+            <li class="track" name="Windows-track-$idx" #if($idx==0)id="onlickImg"#end> <img title="" alt="" src="$RewriteUtil.getImageUrl($imgVo.imageUrl,'m')" width="95" height="95"></li>
+         #set($idx=$idx+1)
+		 #end
+	#end
+          </ul>
+          <div class="smallImgDown"> <img title="product image" alt="product image" src="/static/prototype/product_fashion/images/smallImgDown01.gif"> </div>
+        </div>
+        <div class="bigImg" id="vertical"> 
+        	<img title="" alt="" src="$RewriteUtil.getImageUrl($imgList.get(0).imageUrl, 'b')" id="midimg">
+          	<div style="left: 0px; top: 236px; display: none;" id="winSelector"></div>
+        </div>
+        <div style="width: 268.041px; height: 260.038px; top: 360px; left: 530px; display: none;" id="bigView"><img title="" alt="" src="$RewriteUtil.getImageUrl($imgList.get(0).imageUrl)" style="left: 0px; top: -360.994px;"></div>
+        <div class="DanpinLeft_share">
+          <table style="width:380px; height:25px;">
+            <tbody><tr>
+              <td style="text-align:center;"><span class="btm_share_span">Share it:</span></td>
+              <td><a href="http://www.facebook.com/sharer.php?u=$newProductUrl"><img style="margin-bottom:-3px;" title="share on facebook" alt="share on facebook" src="/static/prototype/product_fashion/images/ico02.jpg"></a>&nbsp;<a title="share on Facebook" href="http://www.facebook.com/sharer.php?u=$newProductUrl">Facebook</a></td>
+              <td><a href="http://twitter.com/home?status=$newProductUrl"><img style="margin-bottom:-3px;" title="share on twitter" alt="share on twitter" src="/static/prototype/product_fashion/images/ico03.jpg"></a>&nbsp;<a title="share on Twitter" href="http://twitter.com/home?status=$newProductUrl">Twitter</a></td>
+              <td><a href="http://www.pinterest.com" target="_blank"><img style="margin-bottom:-3px;" title="share on pinterest" alt="share on pinterest" src="/static/prototype/product_fashion/images/ico04.jpg"></a>&nbsp;<a title="share on Pinterest" href="http://www.pinterest.com">Pinterest</a></td>
+              <td><a href="http://www.google.com/bookmarks/mark?op=edit&bkmk=$newProductUrl"><img style="margin-bottom:-3px;" title="share on google plus" alt="share on google plus" src="/static/prototype/product_fashion/images/ico05.jpg"></a>&nbsp;<a title="share on Google" href="http://www.google.com/bookmarks/mark?op=edit&bkmk=$newProductUrl">Google</a></td>
+            </tr>
+          </tbody></table>
+        </div>
+      </div>

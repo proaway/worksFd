@@ -1,0 +1,29 @@
+##查看附件
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal hide fade" id="view_attachments">
+<div class="modal-header">
+<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+<h5 id="myModalLabel">查看附件</h5>
+</div>
+<div class="modal-body">
+#if($ticketsAttachments)
+	#foreach($att in $ticketsAttachments)
+		<p>
+			#if($att.attachExt.toLowerCase()=="jpg"||$att.attachExt.toLowerCase()=="jpeg" ||$att.attachExt.toLowerCase()=="gif" ||$att.attachExt.toLowerCase()=="bmp"||$att.attachExt.toLowerCase()=="png")
+                <a href="$att.attachPath" target="_blank"><img src="$att.attachPath" alt="$att.attachName" title="img_$att.attachName"/></a>
+			#else
+                 <a href="$att.attachPath" target="_blank">$att.attachName</a>
+			#end
+		</p>
+	#end
+#end
+</div>
+<div class="modal-footer">
+<button aria-hidden="true" data-dismiss="modal" class="btn">关闭</button>
+</div>
+</div>
+	
+<script>
+jQuery('#view_attachments').modal({
+	show:true
+})
+</script>

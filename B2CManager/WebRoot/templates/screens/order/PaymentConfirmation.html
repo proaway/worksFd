@@ -1,0 +1,106 @@
+$page.setTitle("付款确认")
+<br class="clear">
+<form id="listForm" name="listForm" method="get" >
+<h4 class="mar_top_15 mar_bottom_20">付款确认</h4> 
+<input type="hidden" id="atcionFlag" name="atcionFlag" value="PaymentConfirmation" />
+<div class="search_form">
+	<ul class="inline">
+        <li><label class="left mar_top_5">订单号：</label><input type="text" placeholder="订单号" class="input-medium left" id="orderId" name="orderId" value="$!orderVo.orderId"></li>
+        <li><label class="left mar_top_5">买家昵称：</label><input type="text" placeholder="USERID" class="input-medium left" id="userId" name="userId" value="$!orderVo.userId"></li>
+        <li>
+			<label class="left mar_top_5">付款时间：</label>
+			<input type="text" class="input-small mar_right_10 left" id="paymentdatepickera" #if($!orderVo.startPaymentDate)value="$StringUtil.getDateString($!orderVo.startPaymentDate)"#end name="paymentDateStart">
+			<label class="left mar_top_5">到</label>
+			<input type="text" class="input-small mar_left_10 mar_right_5 left" id="paymentdatepickerb" #if($!orderVo.endPaymentDate)value="$StringUtil.getDateString($!orderVo.endPaymentDate)"#end name="paymentDateEnd">
+        <li>
+			<label class="left mar_top_5">支付方式：</label>
+			 <select class="left" name="paymentType" id="paymentType">
+    			<option value="" #if($orderVo.paymentType=="")selected #end >请选择支付方式</option>
+                <option value="1" #if($orderVo.paymentType=="1")selected #end >PayPal</option>
+                <option value="2" #if($orderVo.paymentType=="2")selected #end >WesternUnion</option>
+				<option value="3" #if($orderVo.paymentType=="3")selected #end >BANK TRANSFER</option>
+             </select>
+        </li>
+       <!-- <li>
+            <label class="left mar_top_5">支付形式：</label>
+            <select class="left" name="country_id" id="country">
+                <optgroup label="---------">
+                    <option value="0">请选择支付形式</option>
+                    <option value="1">线上付款待确认</option>
+                    <option value="2">线下付款待确认</option>
+                </optgroup>
+            </select>
+        </li>-->
+        <li><input type="button" class="btn btn-primary left" value="查询" onclick="searchWaitOrder()"></li>
+    </ul>
+</div>
+<br class="clear">
+<div class="search_form well well-small padding_5 mar_bottom_10">
+	<ul class="inline mar_top_5 black">
+        <li class="pad_top_5"><label class="left">订单总数：</label><a class="left" target="_blank" href="/static/prototype/shopmic-manage/order/waiting_for_payment.shtml"><label class="red bold">（$!searchOrderVo.orderCount）</label></a></li>
+        <li class="pad_top_5"><label class="left">订单总金额（$）：</label><a class="left" target="_blank" href="javascript:();"><label class="red bold">$cnu.cullNum($!searchOrderVo.orderPriceTotal)</label></a></li>
+        <li><button type="button" class="btn btn-link" onclick="javascript:exportAllDataForExcel('listForm');">
+<span class="icon-list"></span>
+Excel导出
+</button></li>
+    </ul>
+	<br class="clear">
+</div>
+<table cellspacing="0" cellpadding="0" border="0" class="table table-bordered center_t font12 tl_mt3_mb3">
+  <tbody><tr class="info bold">
+<td><label>订单号</label></td>
+<td><label>订单生成时间</label></td>
+<td><label>订单付款时间</label></td>
+<td><label>订单金额（$）</label></td>
+<td><label>买家昵称</label></td>
+<td><label>支付方式</label></td>
+<td><label>订单状态</label></td>
+<td><label>操作</label></td>
+  </tr>
+#if($searchOrderVo && $searchOrderVo.orders && $searchOrderVo.orders.size()>0)
+	#foreach($ord in $searchOrderVo.orders)
+      <tr id="$!ord.orderId">
+        <td><label><a target="_blank" href="$link.setPage('order,OrderDetail.html')?orderId=$ord.orderId">$!ord.orderId</a></label></td>
+        <td><label>#if($ord.createDate)$!StringUtil.getDateString($!ord.createDate,'yyyy-MM-dd HH:mm:ss')#else --- #end</label></td>
+        <td><label>#if($!ord.paymentDate)$!StringUtil.getDateString($!ord.paymentDate,'yyyy-MM-dd HH:mm:ss')#else --- #end</label></td>
+        <td><label>$cnu.cullNum($ord.total)</label></td>
+        <td><label>#if($ord.userId) $ord.userId #else --- #end</label></td>
+        <td>
+			<label>
+				#if($ord.paymentType)$ord.paymentType #else --- #end
+			</label>
+		</td>
+        <td><label> #if($ord.orderStatusCN) $!ord.orderStatusCN #else --- #end</label></td>
+        <td  orderId="$ord.orderId">
+			#if($ord.freeze=='OF001')
+			<a class="mar_right_10" href="javascript:();" onclick="freezeOrUnfreezeOrder('$ord.orderId',2,'paymentConfirmationFlag');">解冻</a>
+			#else
+			<a class="mar_right_10" href="javascript:();" onclick="freezeOrUnfreezeOrder('$ord.orderId',1,'paymentConfirmationFlag');">冻结</a>
+			#end
+			<a data-toggle="modal" class="mar_right_5" role="button" href="#" onclick="showConfirmPayment('$ord.orderId','$ord.orderStatus')">付款确认</a>
+			<a onclick="showOrderMeno('$ord.orderId','$ord.orderStatus')" href="#">备注</a></td>
+      </tr>
+	#end
+#end
+</tbody></table>
+#parse("screens/Nap.html")
+<!--<div class="pagination pagination-right">
+<span style="display:block; margin-bottom:5px;">总条数：<strong class="red mar_right_15">8</strong> 总页数：<strong class="red">1</strong></span>
+    <ul>
+        <li class="disabled"><a href="javascript:();">«</a></li>
+        <li class="active"><a href="javascript:();">1</a></li>
+        <li><a href="javascript:();">2</a></li>
+        <li><a href="javascript:();">3</a></li>
+        <li><a href="javascript:();">4</a></li>
+        <li><a href="javascript:();">5</a></li>
+        <li><a href="javascript:();">»</a></li>
+    </ul>
+</div>--><!-- E page -->
+</form>
+	<script>
+	//查询
+function searchWaitOrder(){
+    document.listForm.action = "$link.setPage('order,PaymentConfirmation.html')";
+    document.listForm.submit();
+}
+    </script>

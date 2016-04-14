@@ -1,0 +1,91 @@
+$page.setTitle("纠纷订单")
+<br class="clear">
+<form id="listForm" name="listForm" method="get" >
+<h4 class="mar_top_15 mar_bottom_20">纠纷订单</h4>
+<input type="hidden" id="atcionFlag" name="atcionFlag" value="DisputeOrder" />
+<div class="search_form">
+	<ul class="inline">
+        <li><label class="left mar_top_5">订单号：</label><input type="text" placeholder="订单号" class="input-medium left" id="orderId" name="orderId" value="$!orderVo.orderId"></li>
+        <li><label class="left mar_top_5">USERID：</label><input type="text" placeholder="USERID" class="input-medium left" id="userId" name="userId" value="$!orderVo.userId"></li>
+        <li><input type="button" class="btn btn-primary left" value="查询" onclick="searchDisputeOrder()"></li>
+    </ul>
+</div>
+<br class="clear">
+<div class="search_form well well-small padding_5 mar_bottom_10">
+	<ul class="inline mar_top_5 black">
+        <li class="pad_top_5"><label class="left">订单总数：</label><a class="left" target="_blank" href="/static/prototype/shopmic-manage/order/waiting_for_payment.shtml"><label class="red bold">（$!searchOrderVo.orderCount）</label></a></li>
+        <li class="pad_top_5"><label class="left">订单总金额（$）：</label><a class="left" target="_blank" href="javascript:();"><label class="red bold">$cnu.cullNum($!searchOrderVo.orderPriceTotal)</label></a></li>
+        <li><button type="button" class="btn btn-link"  onclick="javascript:exportAllDataForExcel('listForm');">
+<span class="icon-list"></span>
+Excel导出
+</button></li>
+    </ul>
+	<br class="clear">
+</div>
+<table cellspacing="0" cellpadding="0" border="0" class="table table-bordered center_t font12 tl_mt3_mb3">
+  <tbody><tr class="info bold">
+<td><label>订单号</label></td>
+<td><label>订单生成时间</label></td>
+<td><label>订单付款时间</label></td>
+<td><label>订单金额（$）</label></td>
+<td><label>USERID</label></td>
+<td><label>支付方式</label></td>
+<td><label>订单状态</label></td>
+<td><label>操作</label></td>
+  </tr>
+ #if($searchOrderVo && $searchOrderVo.orders && $searchOrderVo.orders.size()>0)
+	#foreach($ord in $searchOrderVo.orders)
+      <tr>
+        <td><label><a class="mar_right_5" target="_blank" href="$link.setPage('order,order_detail.html')?orderId=$ord.orderId">$!ord.orderId</a></label></td>
+        <td><label>#if($ord.createDate)$!StringUtil.getDateString($!ord.createDate,'yyyy-MM-dd HH:mm:ss')#end</label></td>
+        <td><label>#if($!ord.paymentDate)$!StringUtil.getDateString($!ord.paymentDate,'yyyy-MM-dd HH:mm:ss')#end</label></td>
+        <td><label>$cnu.cullNum($ord.total)</label></td>
+        <td><label>#if($ord.userId) $ord.userId #end</label></td>
+        <td>
+			<label>
+				#if($ord.paymentType=='1')
+					PayPal
+				#elseif($ord.paymentType=='2')
+					WesternUnion
+				#elseif($ord.paymentType=='3')
+					BANK TRANSFER
+				#end
+			</label>
+		</td>
+        <td><label> #if($ord.orderStatusCN) $!ord.orderStatusCN  #end</label></td>
+        <td  orderId="$ord.orderId">
+			#if($ord.freeze=='OF001')
+			<a class="mar_right_10" href="javascript:();" onclick="freezeOrUnfreezeOrder('$ord.orderId',2,'disputeOrderFlag');">解冻</a>
+			#else
+			<a class="mar_right_10" href="javascript:();" onclick="freezeOrUnfreezeOrder('$ord.orderId',1,'disputeOrderFlag');">冻结</a>
+			#end
+			<a data-toggle="modal" class="mar_right_5" role="button" href="#" onclick="showContactBuyer('$ord.buyerId','$ord.orderId')">联系买家</a>
+			<!--<a data-toggle="modal" class="mar_right_5" role="button" href="#" onclick="showDisputeOrder('$ord.orderId');">纠纷处理</a>-->
+			<a onclick="document.getElementById('remarks_info').style.display='block';" href="#"  onclick="showOrderMeno('$ord.orderId','$ord.orderStatus')">备注</a></td>
+	  </tr>
+	#end
+#end 
+</tbody></table>
+#parse("screens/Nap.html")
+<!--
+<div class="pagination pagination-right">
+<span style="display:block; margin-bottom:5px;">总条数：<strong class="red mar_right_15">3</strong> 总页数：<strong class="red">1</strong></span>
+    <ul>
+        <li class="disabled"><a href="javascript:();">«</a></li>
+        <li class="active"><a href="javascript:();">1</a></li>
+        <li><a href="javascript:();">2</a></li>
+        <li><a href="javascript:();">3</a></li>
+        <li><a href="javascript:();">4</a></li>
+        <li><a href="javascript:();">5</a></li>
+        <li><a href="javascript:();">»</a></li>
+    </ul>
+</div>--><!-- E page -->
+</form>
+	
+	<script>
+	//查询
+function searchDisputeOrder(){
+    document.listForm.action = "$link.setPage('order,DisputeOrder.html')";
+    document.listForm.submit();
+}
+    </script>

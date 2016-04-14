@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertProductConfImgBean" parameterClass="com.fd.fashion.product.bean.ProductConfImgBean">
+        <![CDATA[
+insert into T_PRODUCT_CONF_IMG
+  (CONFIG_IMG_ID, PRODUCT_CONFIG_ID, IMAGE_ID, INDEX_ID)
+values
+  (#configImgId#, #productConfigId#, #imageId#, #indexId#)
+        ]]>
+        <selectKey keyProperty="configImgId" resultClass="long">
+            <![CDATA[select @@identity as configImgId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateProductConfImgBean" parameterClass="com.fd.fashion.product.bean.ProductConfImgBean">
+        <![CDATA[
+update T_PRODUCT_CONF_IMG 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="configImgId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CONFIG_IMG_ID = #configImgId#]]>
+            </isNotNull>
+            <isNotNull property="productConfigId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_CONFIG_ID = #productConfigId#]]>
+            </isNotNull>
+            <isNotNull property="imageId" prepend="," removeFirstPrepend="true">
+                <![CDATA[IMAGE_ID = #imageId#]]>
+            </isNotNull>
+            <isNotNull property="indexId" prepend="," removeFirstPrepend="true">
+                <![CDATA[INDEX_ID = #indexId#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where CONFIG_IMG_ID = #configImgId#
+        ]]>
+    </update>
+
+    <sql id="getProductConfImgBeanCondition">
+            <isNotNull property="configImgId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[CONFIG_IMG_ID = #configImgId#]]>
+            </isNotNull>
+            <isNotNull property="productConfigId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[PRODUCT_CONFIG_ID = #productConfigId#]]>
+            </isNotNull>
+            <isNotNull property="imageId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[IMAGE_ID = #imageId#]]>
+            </isNotNull>
+            <isNotNull property="indexId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[INDEX_ID = #indexId#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getProductConfImgBeanCount" parameterClass="com.fd.fashion.product.bean.ProductConfImgBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_PRODUCT_CONF_IMG 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getProductConfImgBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getProductConfImgBean" parameterClass="com.fd.fashion.product.bean.ProductConfImgBean"
+        resultClass="com.fd.fashion.product.bean.ProductConfImgBean">
+        <![CDATA[
+select 
+	CONFIG_IMG_ID	as configImgId,
+	PRODUCT_CONFIG_ID	as productConfigId,
+	IMAGE_ID	as imageId,
+	INDEX_ID	as indexId
+from T_PRODUCT_CONF_IMG 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getProductConfImgBeanCondition"/>
+        </dynamic>
+        <![CDATA[
+order by INDEX_ID
+        ]]>
+    </select>
+
+    <delete id="deleteProductConfImgBean" parameterClass="com.fd.fashion.product.bean.ProductConfImgBean">
+        <![CDATA[
+delete from T_PRODUCT_CONF_IMG where PRODUCT_CONFIG_ID = #productConfigId#
+        ]]>
+    </delete>
+</sqlMap>

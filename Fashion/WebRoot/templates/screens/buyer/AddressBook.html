@@ -1,0 +1,82 @@
+$page.setTitle("My Address Book")
+<form id="frm" name="frm" action="$link.setPage('buyer,AddressBook.html')">
+<table cellspacing="0" cellpadding="0" class="acc_addr_tab">
+    <tbody>
+        <tr class="acc_addr_tab_tit">
+            <td align="left" style="padding-left:10px;" colspan="5">
+                <h2 class="cart_tit_h2">Address Book</h2>
+            </td>
+        </tr>
+		#if($books && $books.size()>0)
+			#set($index = 1)
+			#foreach($book in $books)
+            <tr class="acc_tab_addr" trid="$book.addressId">
+                <td width="50" style="border-right:solid 1px #d6d6d6;">
+                    <b class="acc_addr_num">$index</b>
+                </td>
+                <td width="120" style="border-right:none;">
+                    <b class="acc_addr_name">$!book.firstName,$!book.lastName</b>
+                </td>
+                <td width="400" style="text-align:left;">$!book.addressLine1 $!book.addressLine2<br />#if($!book.phone) Phone
+							number: $!book.phone #end</td>
+               <td width="90" style="color:#090"> #if($!book.addressId==$!defaultAddrId)Default#else &nbsp; #end</td>
+                <td>
+                    <a href="javascript:editAddress('$book.addressId');">Edit</a>
+                    <br>
+						#if($!book.addressId==$!defaultAddrId)
+						#else
+							<a href="javascript:setDefaultAddress('$book.addressId');">Save as Default</a>
+						#end
+                    <a href="javascript:deleteAddress('$book.addressId');">Delete</a>
+    			</td>
+    		</tr>
+			#set($index = $index+1)
+    		#end
+		#end
+	</tbody>
+</table>
+</form>
+#if(!$bookCount || $bookCount<11)
+<input type="button" value="Add a New Address" onclick="newAddress();" id="" class="btn_acc_search" name="">
+#end	
+<script>
+function editAddress(addrId){
+	tipsWindown("Shipping Information","url:get?$link.setPage('order,EditAddress.html')?addressId=" + addrId,"600","500","false","","true","text","");
+}
+function newAddress(){
+	tipsWindown("Shipping Information","url:get?$link.setPage('order,EditAddress.html')","540","500","false","","true","text","");
+}
+function deleteAddress(addressId){
+	if(confirm("do you want to delete this address ？")){
+		jQuery("body").showLoading();
+		jQuery.get(
+		"$link.setAction('buyer.AjaxDeleteAddressAction')?addressBookId="+addressId,
+		function(data){
+			jQuery("body").hideLoading();
+			if(data!=null){
+				jQuery("tr[trid='"+addressId+"']").remove();
+			} else {
+				alert("delete failure!");
+			}
+		});
+	}
+}
+function setDefaultAddress(addrId) {
+	jQuery("body").showLoading();
+	jQuery.getJSON("$link.setAction('buyer.SetDefaultAddressAction')?addressId=" + addrId, 
+		function(data) {
+			jQuery("body").hideLoading();
+			if(data!=null){
+				document.frm.submit();
+			} else {
+				alert("delete failure!");
+			}
+			
+		}
+	);
+}
+function frashAddressBook(book) {
+	alert("sucess");
+	document.frm.submit();
+}
+</script>

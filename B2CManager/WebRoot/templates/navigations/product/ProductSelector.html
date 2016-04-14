@@ -1,0 +1,154 @@
+<script>
+var prods = {};
+</script>
+<!-- S product modal -->
+<div id="pModal" class="modal hide fade width_760px"
+	tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+	aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">×</button>
+		<h5 id="myModalLabel">查找产品</h5>
+	</div>
+	<div class="modal-body height_500px"><form id="ajaxSearchProdForm">
+		<table border="0" cellspacing="0" cellpadding="0"
+			class="table mar_bottom_5">
+			<tr class="info" id="wid_sel_td">
+				<td><input type="text" class="input-medium " name="key"
+					placeholder="请输入产品名称">
+				</td>
+				<td><select name="catId" class="mar_right_10" id="customCatId1">
+						<option value="">选择分类</option>
+						
+				</select>
+				</td>
+				<td><select name="productStatus">
+						<option value="">选择产品状态</option>
+						<option value="0">下架</option>
+						<option value="1">上架</option>
+						<option value="2">草稿</option>
+						<option value="3">导入</option>
+				</select>
+				</td>
+				<td><select name="orderType">
+						<option value="">排序方式</option>
+						<option value="">创建时间</option>
+						<option value="">编辑时间</option>
+						<option value="">价格</option>
+				</select>
+				</td>
+				<td><input class="btn btn-warning bold" type="button"
+						onclick="searchProduct();" value="搜索"/>
+				</td>
+			</tr>
+		</table></form>
+		<table class="table table-hover mar_top_5 mar_bottom_5" id="ajaxSearchProdRes">
+			<thead>
+				<tr>
+					<th>图片</th>
+					<th>名称</th>
+					<th>分类</th>
+					<th>价格</th>
+					<th>库存</th>
+					<th>重量</th>
+					<th>状态</th>
+					<th>有效期</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tr class="hide">
+				<td id="prodImg"></td>
+				<td class="width_135px" id="prodName"></td>
+				<td class="width_135px" id="cat"></td>
+				<td id="price"></td>
+				<td id="stock"></td>
+				<td id="weight"></td>
+				<td id="productStatus"></td>
+				<td id="expiredDays"></td>
+				<td><a data-dismiss="modal" onclick="selectProduct(this)">选 择</a></td>
+			</tr>
+			<tbody class="td_vm" id="prodlist">
+			</tbody>
+		</table>
+<div id="ajaxSearchProdPages">#parse("/screens/AjaxNap.html")</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+	</div>
+</div>
+<!-- E search_pModal -->
+<script>
+function searchProduct(pageIndex) {
+	var params = form2JSON("ajaxSearchProdForm");
+	if (pageIndex == null) {
+		pageIndex = 1;
+	}
+	params["pageIndex"] = pageIndex;
+	jQuery("body").showLoading();
+	jQuery.getJSON(
+		"$link.setAction('product.AjaxSearchProduct')", params,
+		function(data){
+			jQuery("body").hideLoading();
+			var prodlist = jQuery("#prodlist");
+			prodlist.empty();
+			for(var i=0; i<data.products.length; i++) {
+				var p=data.products[i];
+				var tr = jQuery("#ajaxSearchProdRes").find("tr.hide").clone().removeClass("hide");
+				tr.find("td#prodImg").html("<a href='"+p.productUrl+"' target='_blank'><img src='"+p.smallImageUrl+"' alt='"+p.productName+"' title='"+p.productName+"' /></a>");
+				tr.find("td#prodName").html("<a href='"+p.productUrl+"' target='_blank'>"+p.productName+"</a><br/><b>SKU: "+p.product.sku+"</b>");
+				var cat="";
+				for(var j=0; j<p.cats.length; j++) {
+					var c = p.cats[j];
+					cat += c.catNameCn + " ><br/>";
+				}
+				tr.find("td#cat").html(cat);
+				tr.find("td#price").html("USD $" + p.priceVo.price);
+				var stock = 0;
+				if (p.productConfigs != null) {
+					stock = p.productConfigs.stockNum
+				} else {
+					stock =p.product.stock;
+				}
+				tr.find("td#stock").html(stock);
+				tr.find("td#weight").html(p.product.weight + " kg");
+				var productStatus;
+				if (p.product.productStatus == 0) {
+					productStatus = "下架";
+				} if (p.product.productStatus == 1) {
+					productStatus = "上架";
+				} else if (p.product.productStatus == 2) {
+					productStatus = "草稿";
+				} else if (p.product.productStatus == 3) {
+					productStatus = "导入";
+				}
+				tr.find("td#productStatus").html(productStatus);
+				var expiredDays;
+				if (p.product.expiredDay == 0) {
+					expiredDays = "无期限";
+				} else {
+					expiredDays = p.expiredDays + "天";
+				}
+				tr.find("td#expiredDays").html(expiredDays);
+				tr.attr("prodId", p.product.productId);
+				prodlist.append(tr);
+				prods[p.product.productId] = p.product;
+			}
+			var ul = jQuery("#ajaxSearchProdPages").find("ul");
+			ul.empty();
+			ul.append('<li><a href="javascript:searchProduct('+data.pageInfo.prePageNo+');">«</a></li>')
+			for(var i=data.pageInfo.rangeMin; i<=data.pageInfo.rangeMax; i++) {
+				if (i == pageIndex) {
+					ul.append('<li class="active"><a>'+i+'</a></li>');
+				} else {
+					ul.append('<li><a href="javascript:searchProduct('+i+');">'+i+'</a></li>');
+				}
+			}
+			ul.append('<li><a href="javascript:searchProduct('+data.pageInfo.nextPageNo+');">»</a></li>')
+		});
+}
+function selectProduct(o) {
+	var productId = jQuery(o).parents("tr").attr("prodId");
+	callbacks.fire(prods[productId]);
+	callbacks.empty();
+}
+</script>

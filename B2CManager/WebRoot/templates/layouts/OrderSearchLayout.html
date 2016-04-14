@@ -1,0 +1,248 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"><head>
+  <title>$page.title </title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="<!--MICCMS:Meta-Description-->;" name="description">
+  <meta content="<!--MICCMS:Meta-Keywords-->;" name="keywords">
+  <meta content="" name="author">
+  <link type="image/ico" href="/static/web/images/logo-ico.ico" rel="shortcut icon"> 
+  <link href="/static/prototype/shopmic-manage/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+  <link href="/static/prototype/shopmic-manage/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
+  <link href="/static/prototype/shopmic-manage/css/jquery-ui-1.10.0.custom.css" type="text/css" rel="stylesheet">
+  <link href="/static/prototype/shopmic-manage/css/whole.css" type="text/css" rel="stylesheet">
+  <link href="/static/prototype/shopmic-manage/css/shopmic_m.css" type="text/css" rel="stylesheet">
+<script src="/static/prototype/shopmic-manage/js/jquery-1.7.2.min.js" type="text/javascript" language="javascript"></script>
+<script src="/static/prototype/shopmic-manage/js/bootstrap.min.js" type="text/javascript" language="javascript"></script>
+<script src="/static/prototype/shopmic-manage/js/jquery-ui-1.10.0.custom.min.js" type="text/javascript" language="javascript"></script>
+<script language="javascript" src="/static/prototype/shopmic-manage/js/cookie.js"></script>
+  <link rel="stylesheet" type="text/css" href="/static/prototype/shopmic-manage/css/showLoading.css"/>
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/jquery.showLoading.min.js"></script>
+</head>
+<body>
+    <div id="header">
+		$navigation.setTemplate('Head.html')
+		<br class="clearfloat">
+    </div><!-- E header -->
+  <div id="container">
+		$screen_placeholder
+  </div><!-- E container -->
+  <br class="clear">
+  <!--<div style="width:100%; height:30px; margin-top:50px; background:url(/static/prototype/shopmic-manage/img/footer.jpg) repeat-x;"></div>-->
+  
+  <div id="layer_box">
+   <p class="layer_box_tit"><a href="javascript:();">新支付</a></p>
+   <p class="layer_box_tit"><a href="javascript:();">新订单</a></p>
+  </div>
+<!-- S javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript">
+(function() {
+    var backToTopTxt = "",  backToTopEle = jQuery('<div class="backToTop_pro"></div>').appendTo(jQuery("body"))
+    .text( backToTopTxt).attr("title",  backToTopTxt).click(function() {
+        jQuery("html, body").animate({ scrollTop: 0 }, 120);
+	}),  backToTopFun = function() {
+	    var st = jQuery(document).scrollTop(), winh = jQuery(window).height();
+	    (st > 0)?  backToTopEle.show():  backToTopEle.hide();
+	    //IE6下的定位
+	    if (!window.XMLHttpRequest) {
+	         backToTopEle.css("top", st + winh - 166);
+	    }
+	};
+	jQuery(window).bind("scroll", backToTopFun);
+	jQuery(function() { backToTopFun(); });
+})();
+</script><div class="backToTop_pro" title="" style="display: none;"></div>
+<script type="text/javascript">
+jQuery(function () {
+    // Datepicker
+    jQuery.datepicker.regional['zh-CN'] = {  
+        clearText: '清除',  
+        clearStatus: '清除已选日期',  
+        closeText: '关闭',  
+        closeStatus: '不改变当前选择',  
+        prevText: '<上月',  
+        prevStatus: '显示上月',  
+        prevBigText: '<<',  
+        prevBigStatus: '显示上一年',  
+        nextText: '下月>',  
+        nextStatus: '显示下月',  
+        nextBigText: '>>',  
+        nextBigStatus: '显示下一年',  
+        currentText: '今天',  
+        currentStatus: '显示本月',  
+        monthNames: ['一月','二月','三月','四月','五月','六月', '七月','八月','九月','十月','十一月','十二月'],  
+        monthNamesShort: ['一','二','三','四','五','六', '七','八','九','十','十一','十二'],  
+        monthStatus: '选择月份',  
+        yearStatus: '选择年份',  
+        weekHeader: '周',  
+        weekStatus: '年内周次',  
+        dayNames: ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'],  
+        dayNamesShort: ['周日','周一','周二','周三','周四','周五','周六'],  
+        dayNamesMin: ['日','一','二','三','四','五','六'],  
+        dayStatus: '设置 DD 为一周起始',  
+        dateStatus: '选择 m月 d日, DD',  
+        dateFormat: 'yy-mm-dd',  
+        firstDay: 1,  
+        initStatus: '请选择日期',  
+        isRTL: false};  
+        jQuery.datepicker.setDefaults(jQuery.datepicker.regional['zh-CN']);  
+
+    });
+
+jQuery( "#datepickera" ).datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#datepickerb" ).datepicker( "option", "minDate", selectedDate );
+    }
+});
+
+jQuery( "#datepickerb" ).datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#datepickera" ).datepicker( "option", "maxDate", selectedDate );
+    }
+});
+
+jQuery( "#delivedatepickera" ).datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#delivedatepickerb" ).datepicker( "option", "minDate", selectedDate );
+    }
+});
+
+jQuery( "#delivedatepickerb" ).datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#delivedatepickera" ).datepicker( "option", "maxDate", selectedDate );
+    }
+});
+
+jQuery( "#paymentdatepickera" ).datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#paymentdatepickerb" ).datepicker( "option", "minDate", selectedDate );
+    }
+});
+
+jQuery( "#paymentdatepickerb" ).datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#paymentdatepickera" ).datepicker( "option", "maxDate", selectedDate );
+    }
+});
+</script>
+
+</body>
+</html>
+	
+<script>
+//查询
+function searchOrder(){
+    document.listForm.action = "$link.setPage('order,OrderList.html')";
+    document.listForm.submit();
+}
+//备注
+function showOrderMeno(orderId,statusCode) {
+	var div = jQuery("#remarksInfoDiv");
+	if (div.length == 0) {
+		div = jQuery("<div id='remarksInfoDiv'></div>");
+		jQuery("body").append(div);
+	}
+	div.empty();
+	div.load("$link.setPage('order,OrderMemo.html')?orderId=" + orderId+"&statusCode="+statusCode);
+}
+//联系买家
+function showContactBuyer(buyerId,orderId) {
+	var div = jQuery("#contactBuyerDiv");
+	if (div.length == 0) {
+		div = jQuery("<div id='contactBuyerDiv'></div>");
+		jQuery("body").append(div);
+	}
+	div.empty();
+	div.load("$link.setPage('order,ContactBuyer.html')?buyerId=" + buyerId + "&orderId=" + orderId);
+}
+//调整金额
+function showAdjustAmount(orderId,orderStatus) {
+	var div = jQuery("#adjustAmountDiv");
+	if (div.length == 0) {
+		div = jQuery("<div id='adjustAmountDiv'></div>");
+		jQuery("body").append(div);
+	}
+	div.empty();
+	var orderTotal = jQuery("#"+orderId).find("label[name='total']").text();
+	div.load("$link.setPage('order,AjustAmount.html')?orderId=" + orderId+"&orderTotal="+orderTotal+"&orderStatus="+orderStatus);
+}
+//开始发货
+function showShippingInfo(orderId) {
+	var div = jQuery("#orderShippingInfoDiv");
+	if (div.length == 0) {
+		div = jQuery("<div id='orderShippingInfoDiv'></div>");
+		jQuery("body").append(div);
+	}
+	div.empty();
+	div.load("$link.setPage('order,ShippingInfo.html')?orderId=" + orderId);
+}
+//付款确认
+function showConfirmPayment(orderId,statusCode) {
+	var div = jQuery("#confirmPaymentDiv");
+	if (div.length == 0) {
+		div = jQuery("<div id='confirmPaymentDiv'></div>");
+		jQuery("body").append(div);
+	}
+	div.empty();
+	div.load("$link.setPage('order,ConfirmPayment.html')?orderId=" + orderId+"&statusCode="+statusCode);
+}
+//退款确认
+function showRefundPayment(orderId) {
+	var div = jQuery("#refundConfirmDiv");
+	if (div.length == 0) {
+		div = jQuery("<div id='refundConfirmDiv'></div>");
+		jQuery("body").append(div);
+	}
+	div.empty();
+	div.load("$link.setPage('order,RefundConfirm.html')?orderId=" + orderId);
+}
+//退款处理
+function showPaymentHandle(orderId) {
+	var div = jQuery("#waitForPaymentDiv");
+	if (div.length == 0) {
+		div = jQuery("<div id='waitForPaymentDiv'></div>");
+		jQuery("body").append(div);
+	}
+	div.empty();
+	div.load("$link.setPage('order,RefundInfo.html')?orderId=" + orderId);
+}
+//纠纷处理
+function showDisputeOrder(orderId) {
+	var div = jQuery("#disputeOrderDiv");
+	if (div.length == 0) {
+		div = jQuery("<div id='disputeOrderDiv'></div>");
+		jQuery("body").append(div);
+	}
+	div.empty();
+	div.load("$link.setPage('order,DisputeOrderFrame.html')?orderId=" + orderId);
+}
+//冻结/解冻订单
+function freezeOrUnfreezeOrder(orderId,num,actionFlag){
+	if(confirm("确定要执行此操作吗？")){
+		jQuery("body").showLoading();
+		jQuery.get(
+		"$link.setAction('order.AjaxFreezeOrUnfreezeAction')?orderId="+orderId+"&flag="+num+"&actionFlag="+actionFlag,
+		function(data){
+			jQuery("body").hideLoading();
+			if(data!=null){
+				jQuery("td[orderId='"+orderId+"']").html(data);
+			} else {
+				alert("操作失败!");
+			}
+		});
+	}
+}
+// 导出操作(查数据库)
+function exportAllDataForExcel(formId) {
+	var formObj = document.getElementById(formId);
+	formObj.action="$link.setAction('order.OrderExceportExcelAction')";
+	formObj.submit();
+}
+</script>

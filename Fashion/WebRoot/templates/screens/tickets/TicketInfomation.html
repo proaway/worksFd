@@ -1,0 +1,57 @@
+ #if($ticketInfos)  
+<h5 class="gray">往来消息：</h5>
+ <form id="listForm" name="listForm" action="$link.setPage('ticket,TicketInfomation.html')" method="get">
+<table cellspacing="0" cellpadding="0" border="0" class="table table-striped table-hover" style="margin-bottom:0px; clear:both;">
+  <tbody>
+		#foreach($ticketInfoVo in ${ticketInfos})
+      <tr #if($!ticketInfoVo.ticketInfo.identity==2)class="info"#else class="gray" #end>
+        <td width="120px"><label>$!ticketInfoVo.ticketInfo.sender</label><span class="font10">(#if($!ticketInfoVo.ticketInfo.sendTime) $!su.getDateString($!{ticketInfoVo.ticketInfo.sendTime},'yyyy-MM-dd HH:mm:ss')#end)</span></td>
+        <td>$!ticketInfoVo.ticketInfo.message</td>
+        <td width="80px">#if($ticketInfoVo.attachList && $ticketInfoVo.attachList.size()>0)<a class="btn btn-small" role="button" href="javascript:viewAttachment('$!ticketInfoVo.ticketInfo.ticketsInfoId');">查看</a>#end</td>
+      </tr>
+	   #end
+    </tbody>
+</table>
+#parse("screens/PieceNap.html")
+</form>
+ #end
+
+  <script>
+ function viewAttachment(id){
+ 	var div = jQuery("#viewTicketsAttachment");
+	if (div.length == 0) {
+		div = jQuery("<div id='viewTicketsAttachment'></div>");
+		jQuery("body").append(div);
+	}
+	div.empty();
+	div.load("$link.setPage('tickets,ViewAttachment.html')?ticketsInfoId=" + id);
+ }
+
+ </script>
+ 
+<script type="text/javascript"> 
+    /**
+*翻页脚本
+*@param pageIndex 页号
+*@param frm 翻页的表单
+*/
+function TurnPage(pageIndex,frm){
+ numStr  = /^(\d*)?$/;  
+ if(frm==null || frm==''){
+  	frm=document.getElementById('listForm');
+ }else{
+  	frm=document.getElementById(frm);
+ }
+  
+ if(frm!=null && frm.pageIndex!=null){ 
+   if (pageIndex!="goto"){
+    frm.pageIndex.value = pageIndex;
+   }
+   if(numStr.exec(frm.pageIndex.value)!=null && frm.pageIndex.value>0){
+  	 getTicketInfo(pageIndex);
+   }else{
+    alert('\u9875\u7801\u8f93\u5165\u9519\u8bef\uff0c\u8bf7\u91cd\u65b0\u8f93\u5165!'); //alert("页码输入错误，请重新输入！)"
+   }
+ }
+ }
+ </script>

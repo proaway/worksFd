@@ -1,0 +1,85 @@
+##付款确认
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal hide fade" id="payment_confirmation">
+<div class="modal-header">
+<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+<h5 id="myModalLabel">付款确认</h5>
+</div>
+<div class="modal-body">
+<table cellspacing="0" cellpadding="0" border="0" class="mar_left_20">
+  <tbody><tr>
+<td width="110px" class="v_top right_t"><label class="mar_right_10">订单号：</label></td>
+<td>
+	<label class="text-info">$orderInfo.orderId</label>
+</td>
+  </tr>
+  <tr>
+<td class="v_top right_t"><label class="mar_right_10">订单生成时间：</label></td>
+<td>
+	<label class="text-info">#if($orderInfo.createDate)$!StringUtil.getDateString($!orderInfo.createDate,'yyyy-MM-dd HH:mm:ss')#end</label>
+</td>
+  </tr>
+  <tr>
+<td class="v_top right_t"><label class="mar_right_10">支付时间：</label></td>
+<td>
+	<label class="text-info">#if($orderPaymentInfo.payTime)$!StringUtil.getDateString($!orderPaymentInfo.payTime,'yyyy-MM-dd HH:mm:ss')#end</label>
+</td>
+  </tr>
+  <tr>
+<td class="v_top right_t"><label class="mar_right_10">支付方式：</label></td>
+<td>
+	<label class="text-info">
+		#if($orderPaymentInfo.paymentType=='1')PayPal #end
+		#if($orderPaymentInfo.paymentType=='2')WesternUnion #end
+	</label>
+</td>
+  </tr>
+  <td class="v_top right_t"><label class="mar_right_10">订单金额：</label></td>
+<td>
+	<label class="text-info">
+		$orderInfo.total
+	</label>
+</td>
+  </tr>
+  <tr>
+  </tr>
+</tbody></table>
+</div>
+<div class="modal-footer">
+<input type="button" class="btn" onclick="rejectPayment()" value="驳回">
+<input type="button" class="btn btn-primary" value="确认已付款" onclick="doFormSubmit();">
+</div>
+</div><!-- E payment_confirmation -->
+<script >
+jQuery('#payment_confirmation').modal({
+	show:true
+})
+</script>
+
+<script>
+function doFormSubmit(){
+	jQuery("body").showLoading();
+	jQuery.getJSON(
+		"$link.setAction('order.AjaxConfirmPaymentAction')?orderId=${orderInfo.orderId}&statusCode=${orderInfo.orderStatus}",
+		function(data){
+			jQuery("body").hideLoading();
+			if(data!=null){
+				alert("success");
+				jQuery("tr[id='"+data.orderId+"']").remove();
+				jQuery("#payment_confirmation").modal("hide");
+			}
+		});
+}
+function rejectPayment() {
+	jQuery("body").showLoading();
+	jQuery.getJSON(
+		"$link.setAction('order.AjaxRejectPaymentAction')?orderId=${orderInfo.orderId}&statusCode=${orderInfo.orderStatus}",
+		function(data){
+			jQuery("body").hideLoading();
+			if(data!=null){
+				alert("success");
+				jQuery("tr[id='"+data.orderId+"']").remove();
+				jQuery("#payment_confirmation").modal("hide");
+			}
+		});
+}
+</script>

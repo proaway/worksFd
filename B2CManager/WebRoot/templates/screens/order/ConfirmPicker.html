@@ -1,0 +1,45 @@
+##指定拣货人
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal hide fade" id="picking_people">
+<div class="modal-header">
+<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+<h5 id="myModalLabel">指定拣货人</h5>
+</div>
+<div class="modal-body">
+      <label class="control-label left mar_top_5">请指定拣货人：</label>
+        <select class="input-large left mar_left_10" id="picker" name="picker">
+          #if($users)
+			#foreach($user in $users)
+				<option value="$user.userId">$user.loginName</option>
+			#end
+		  #end
+		</select>
+
+</div>
+<div class="modal-footer">
+<button aria-hidden="true" data-dismiss="modal" class="btn">关闭</button>
+<button  data-dismiss="modal" class="btn btn-primary" #if($users)#else disabled #end  onclick="printOrder();">确定</button>
+</div>
+</div><!-- E remarks_info -->
+<script>
+jQuery('#picking_people').modal({
+	show:true
+});
+
+function printOrder(){
+	var picker = jQuery("#picker").val();
+	if(picker==""){
+		alert("请先选择拣货人");
+		return;
+	}
+	var flag = jQuery("#flag").val();
+	var ids = jQuery("#addorderIds").val();
+	var url = '$link.setAction("order.AjaxAddPickerAction")';
+	jQuery.getJSON(url, {orderIds:ids,picker:picker,flag:flag}, function(data) {
+		if(data!=null){
+			updateOrder(data);
+			jQuery("#picking_people").modal("hide");
+		}
+	});
+}
+
+</script>

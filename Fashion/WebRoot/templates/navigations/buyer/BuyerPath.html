@@ -1,0 +1,84 @@
+<div class="aleft_menu_tit">
+    <b>My Account</b>
+	<input type="hidden" id="pageFlag" value="$pageFlag" name="pageFlag" />
+</div>
+<div class="aleft_menu_con">
+    <div class="aleft_menu_con_tit">
+        <img width="8" height="4" style="margin-top:12px; margin-right:5px;" src="/static/prototype/product_fashion/images/down_icon.gif">
+        <b><a href="#" onclick="return kadabra('Orders',this);">
+        Orders</a></b>
+	</div>
+    <ul id="Orders" style="display:block" >
+        <li #if($pageFlag && $pageFlag==1)class="ac_li_bg"#end>
+            <a href="$link.setPage('buyer,MyOrders.html')?pageFlag=1">My Orders</a>
+        </li>
+        <li #if($pageFlag && $pageFlag==2)class="ac_li_bg"#end>
+            <a href="$link.setPage('tickets,Tickets.html')?pageFlag=2">My Tickets</a>
+        </li>
+    </ul>
+    <div class="aleft_menu_con_tit">
+        <img width="8" height="4" style="margin-top:12px; margin-right:5px;" src="/static/prototype/product_fashion/images/down_icon.gif">
+            <b><a href="#" onclick="return kadabra('Shipping',this);">Shipping</a></b>
+    </div>
+    <ul id="Shipping" style="display:block" >
+        <li #if($pageFlag && $pageFlag==3)class="ac_li_bg"#end>
+            <a target="_blank" href="$link.setPage('cart,Cart.html')?pageFlag=3">Shopping Cart</a>
+        </li>
+        <li #if($pageFlag && $pageFlag==4)class="ac_li_bg"#end>
+            <a href="$link.setPage('buyer,MyFavorite.html')?pageFlag=4">My Favorites</a>
+        </li>
+        <li #if($pageFlag && $pageFlag==5)class="ac_li_bg"#end>
+            <a href="$link.setPage('buyer,ReviewHistory.html')?pageFlag=5">Review History</a>
+        </li>
+    </ul>
+    <div class="aleft_menu_con_tit">
+        <img width="8" height="4" style="margin-top:12px; margin-right:5px;" src="/static/prototype/product_fashion/images/down_icon.gif">
+            <b><a href="#" onclick="return kadabra('Setting',this);">Setting</a></b>
+    </div>
+    <ul id="Setting" style="display:block">
+		#if($buyerVo.emailActive && $buyerVo.emailActive==1 ) #else <label class="font11 red">(Email unconfirmed)</label> #end
+        <li #if($pageFlag && $pageFlag==6)class="ac_li_bg"#end>
+            <a href="$link.setPage('buyer,MyProfile.html')?pageFlag=6">My Profile</a>
+        </li>
+        <li #if($pageFlag && $pageFlag==7)class="ac_li_bg"#end>
+            <a href="$link.setPage('buyer,AddressBook.html')?pageFlag=7">Address Book<br></a>
+    </li>
+    <li #if($pageFlag && $pageFlag==8)class="ac_li_bg"#end>
+        <a href="$link.setPage('buyer,ChangePassword.html')?pageFlag=8">Change Password</a>
+    </li>
+    </ul>
+    <div class="aleft_menu_con_tit">
+        <img width="8" height="4" style="margin-top:12px; margin-right:5px;" src="/static/prototype/product_fashion/images/down_icon.gif">
+            <b><a href="#" onclick="return kadabra('Payment',this);">Payment</a></b>
+    </div>
+    <ul id="Payment" style="display:block">
+        <li>
+            <a href="javascript:();">My Point</a>
+        </li>
+        <li #if($pageFlag && $pageFlag==9)class="ac_li_bg"#end>
+            <a href="$link.setPage('marketing,CouponList.html')?pageFlag=9">My Coupon</a>
+        </li>
+    </ul>
+    <div class="aleft_menu_con_tit">
+        <img width="8" height="4" style="margin-top:12px; margin-right:5px;" src="/static/prototype/product_fashion/images/down_icon.gif">
+            <b>
+                <a href="#">Help Center</a>
+            </b>
+    </div>
+</div>
+<script>
+// Menu  
+function kadabra(zap,obj){
+	if (document.getElementById) {
+		var abra = document.getElementById(zap).style;
+		if (abra.display == "block") {
+			abra.display = "none";
+		} else {
+			abra.display = "block";
+		}
+		return false;
+	} else {
+		return true;
+	}
+}
+</script>

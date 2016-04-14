@@ -1,0 +1,212 @@
+  <SCRIPT type="text/javascript">
+		<!--
+		var setting = {
+			async: {
+				enable: true,
+				url:"user/EditRoleDetail.html",
+				autoParam:["id", "name=n", "level=lv"],
+				otherParam:{"chk":"chk"},
+				dataFilter: dataFilter
+			},
+			check: {
+				enable: true,
+				autoCheckTrigger: true
+			},
+			data: {
+				simpleData: {
+					enable: true
+				}
+			},
+			callback: {
+				onCheck: onCheck,
+				onAsyncSuccess: onAsyncSuccess
+			}
+		};
+
+		function dataFilter(treeId, parentNode, childNodes) {
+			if (parentNode.checkedEx === true) {
+				for(var i=0, l=childNodes.length; i<l; i++) {
+					childNodes[i].checked = parentNode.checked;
+					childNodes[i].halfCheck = false;
+					childNodes[i].checkedEx = true;
+				}
+			}
+			return childNodes;
+		}
+		function onCheck(event, treeId, treeNode) {
+			cancelHalf(treeNode)
+			treeNode.checkedEx = true;
+		}
+		function onAsyncSuccess(event, treeId, treeNode, msg) {
+			cancelHalf(treeNode);
+		}
+		function cancelHalf(treeNode) {
+			if (treeNode.checkedEx) return;
+			var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+			treeNode.halfCheck = false;
+			zTree.updateNode(treeNode);			
+		}
+		var zNodes =$!rootRoleList;
+
+		$(document).ready(function(){
+			$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+		});
+		//-->
+	</SCRIPT>
+
+<form id="roleDetailForm">
+<input type="hidden" id="role_roleId" name="roleId" value="$!role.roleId"/>
+<div>
+  <div id="tit" align="left">#if($!role.roleId)编辑#else新增#end角色</div>
+  <div id="tit1" align="left" valign="top">
+  <table width="100%" border="0" cellpadding="0" cellspacing="2" bgcolor="#FFFFFF" >
+  <tr >
+      <td width="80"  align="left" valign="top"><font color=red>*</font>角色名称：&nbsp;</td>
+      <td  align="left" valign="top"><input name="roleName"  id="role_roleName" value="$!role.roleName" type="text" maxlength="20" />
+		<!--  <label><input type="radio" name="status" value="1"/> 启用</label>
+		<label><input type="radio" name="status" value="0"/> 禁用</label>
+		<script>jQuery("input[name='status'][value='$!role.status']").prop("checked",true);</script> -->
+		<input type="hidden" id="status" id="status" value="$!role.status" />
+      &nbsp;<br />
+      <span class="STYLE2">您所定义的用户角色的名称，例如系统管理员、销售总监、财务人员等，
+        最多20个中文汉字（可包含数字和英文字符）。</span></td>
+      </tr>
+    <tr >
+      <td width="80"  align="left" valign="top">角色描述： </td>
+      <td  align="left" valign="top"><textarea name="roleDesc" id="role_roleDesc" cols="50" rows="4">$!role.roleDesc</textarea>
+        <br />
+        &nbsp;<span class="STYLE2">您所定义的用户角色的职责和工作内容描述，最多50个汉字（可包含数字和英文字符）。</span></td>
+      </tr>
+    <tr>
+      <td height="24"  align="left" valign="top"><span class="STYLE1">*</span>权限分配：</td>
+      <td height="24"  align="left" valign="top"  class="li_img">&nbsp;</td>
+      </tr>
+<!--  
+#foreach($rm in $rootmodules)
+    <tr>
+      <td height="24">&nbsp;</td>
+      <td height="24"  align="left" valign="top"  class="li_img">
+		<label>
+			<input type="checkbox" name="modulesIds" #if($rm.subModules) subs="1" #end onclick="checkModules(this);" value="$rm.modulesId" #if($roleMap && $roleMap.get($rm.modulesId))checked="checked"#end/>
+			$rm.modulesName
+		</label>
+	  </td>
+    </tr>
+#if($rm.subModules)
+#foreach($m in $rm.subModules)
+    <tr>
+      <td>&nbsp;</td>
+      <td align="left" valign="top"  class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<label class="mar_left_20">
+			<input type="checkbox" name="modulesIds" #if($m.subModules) subs="1" #end parentId="$rm.modulesId" onclick="checkModules(this)" value="$m.modulesId" #if($roleMap && $roleMap.get($m.modulesId))checked="checked"#end/>
+			$m.modulesName
+		</label>
+	  </td>
+    </tr>
+  #if($m.subModules)
+  #foreach($mm in $m.subModules)
+    <tr>
+      <td>&nbsp;</td>
+      <td align="left" valign="top"  class="blank">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+		<label class="mar_left_40">
+			<input type="checkbox" name="modulesIds" parentId="$m.modulesId" onclick="checkModules(this)" value="$mm.modulesId" #if($roleMap && $roleMap.get($mm.modulesId))checked="checked"#end/>
+			$mm.modulesName
+		</label>
+	  </td>
+    </tr>
+  #end
+  #end
+#end
+#end
+#end
+-->	
+	<tr>
+      <td height="24">&nbsp;</td>
+      <td><ul id="treeDemo" class="ztree"></ul></ul></td>
+    </tr>
+  </table>
+</div>
+<div id="tit1" align="center">
+  <input type="button" value="保  存" onclick="saveRoleDetails()"/>
+  <input type="button" value="取  消" onclick="closeWindown()"/>
+</div>
+</div>
+</form>
+<script>
+function saveRoleDetails() {
+	var zTree = $.fn.zTree.getZTreeObj("treeDemo");
+	var checkCount = zTree.getCheckedNodes(true).length;
+	var ids = "" ; 
+	if(checkCount>0){
+		var nodes = zTree.getCheckedNodes(true);
+		 for (var i = 0; i < nodes.length; i++) {
+            if(!nodes[i].getCheckStatus().half){
+                ids = ids + nodes[i].id;
+				if(i<nodes.length-1){
+					ids = ids+",";
+				}
+            }  
+		}
+	}
+	var url = "$link.setAction('user.Ajaxeditrole')";
+	var roleId = jQuery('#role_roleId').val();
+	var roleName = jQuery('#role_roleName').val();
+	var roleDesc = jQuery('#role_roleDesc').val();
+	//var param = "roleId="+roleId+"&roleName="+roleName+"&roleDesc="+roleDesc+"&modulesIds="+ids;
+	jQuery.getJSON(url, {roleId:roleId,roleName:roleName,roleDesc:roleDesc,modulesIds:ids}, function(data) {
+		if(data.status) {
+			addRole(data.role);
+			closeWindown();
+		} else {
+			alert("操作失败!");
+		}
+	});
+}
+function checkAllModules(modulesId) {
+	var chks = jQuery("*").find("#modules_" + modulesId);
+	if(chks.length>1){
+		var checked = chks[0].checked;
+		for(i=1; i<chks.length; i++) {
+			chks[i].checked=checked;
+		}
+	}
+}
+function checkModules(o) {
+	var parentId = jQuery(o).attr("parentId");
+	var modulesId = o.value;
+	var parent = jQuery("input[name='modulesIds'][value='"+parentId+"']");
+    var subs = jQuery("input[name='modulesIds'][parentId='"+modulesId+"']");
+	if (o.checked){
+		if (parent.length > 0) {
+    		parent.prop("checked", true);
+    		if (parent.attr("subs")=="1") {
+				jQuery("input[name='modulesIds'][value='"+parent.attr("parentId")+"']").prop("checked",true);
+			}
+		}
+    	if (jQuery(o).attr("subs")=="1") {
+    		subs.prop("checked", true);
+			for(var i=0; i<subs.length; i++) {
+				var sub = subs[i]
+				jQuery("input[name='modulesIds'][parentId='"+sub.value+"']").prop("checked",true);
+			}
+    	}
+	} else {
+		if (parent.length > 0) {
+    		if(jQuery("input[name='modulesIds'][parentId='"+parentId+"']:checked").length == 0) {
+    			parent.prop("checked", false);
+    		}
+    		if (parent.attr("subs")=="1" && 
+				jQuery("input[name='modulesIds'][parentId='"+parent.attr("parentId")+"']:checked").length == 0) {
+				jQuery("input[name='modulesIds'][value='"+parent.attr("parentId")+"']").prop("checked",false);
+			}
+		}
+    	if (jQuery(o).attr("subs")=="1") {
+    		subs.prop("checked", false);
+			for(var i=0; i<subs.length; i++) {
+				var sub = subs[i]
+				jQuery("input[name='modulesIds'][parentId='"+sub.value+"']").prop("checked",false);
+			}
+    	}
+	}
+}
+</script>

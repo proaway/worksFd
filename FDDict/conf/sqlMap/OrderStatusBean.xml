@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertOrderStatusBean" parameterClass="com.fd.fashion.dict.bean.OrderStatusBean">
+        <![CDATA[
+insert into TC_ORDER_STATUS
+  (STATUS_CODE, STATUS_EN, STATUS_CN)
+values
+  (#statusCode#, #statusEn#, #statusCn#)
+        ]]>
+        <selectKey keyProperty="statusCode" resultClass="long">
+            <![CDATA[select @@identity as statusCode]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateOrderStatusBean" parameterClass="com.fd.fashion.dict.bean.OrderStatusBean">
+        <![CDATA[
+update TC_ORDER_STATUS 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="statusCode" prepend="," removeFirstPrepend="true">
+                <![CDATA[STATUS_CODE = #statusCode#]]>
+            </isNotNull>
+            <isNotNull property="statusEn" prepend="," removeFirstPrepend="true">
+                <![CDATA[STATUS_EN = #statusEn#]]>
+            </isNotNull>
+            <isNotNull property="statusCn" prepend="," removeFirstPrepend="true">
+                <![CDATA[STATUS_CN = #statusCn#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where STATUS_CODE = #statusCode#
+        ]]>
+    </update>
+
+    <sql id="getOrderStatusBeanCondition">
+         <isNotNull property="statusCode" prepend="and" removeFirstPrepend="true">
+             <![CDATA[STATUS_CODE = #statusCode#]]>
+         </isNotNull>
+         <isNotNull property="statusEn" prepend="and" removeFirstPrepend="true">
+             <![CDATA[STATUS_EN = #statusEn#]]>
+         </isNotNull>
+         <isNotNull property="statusCn" prepend="and" removeFirstPrepend="true">
+             <![CDATA[STATUS_CN = #statusCn#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getOrderStatusBeanCount" parameterClass="com.fd.fashion.dict.bean.OrderStatusBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from TC_ORDER_STATUS 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getOrderStatusBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getOrderStatusBean" parameterClass="com.fd.fashion.dict.bean.OrderStatusBean"
+        resultClass="com.fd.fashion.dict.bean.OrderStatusBean">
+        <![CDATA[
+select 
+	STATUS_CODE	as statusCode,
+	STATUS_EN	as statusEn,
+	STATUS_CN	as statusCn
+from TC_ORDER_STATUS 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getOrderStatusBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteOrderStatusBean" parameterClass="com.fd.fashion.dict.bean.OrderStatusBean">
+        <![CDATA[
+delete from TC_ORDER_STATUS where STATUS_CODE=#statusCode#
+        ]]>
+    </delete>
+
+</sqlMap>

@@ -1,0 +1,13 @@
+<input type="hidden" name="data" id="data" value="$data"/>
+<script>
+var data=document.getElementById("data").value;
+if(data==0){
+	alert("更新失败!");
+	window.parent.location.reload();
+}else if(data==1){
+	alert("更新成功!");
+	window.parent.location.reload();
+}else{
+	alert('Failed!');
+}
+</script>

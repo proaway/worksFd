@@ -1,0 +1,25 @@
+  <div id="container">
+  	<br class="clear" />
+    <div class="control-group success left" style="width:360px; margin-left:200px; margin-top:80px; margin-bottom:80px;">
+        <span class="left mar_bottom_20 mar_top_15 mar_left_20 mar_right_20" style="width:32px; height:32px; background:url(/static/prototype/shopmic-manage/img/result_ico.gif) 0px 0px no-repeat;"></span>
+        <span class="help-inline mar_bottom_20 mar_top_20"><h4>恭喜，产品已经上传成功！</h4></span>
+        <br />
+        <a href="$!RewriteUtil.getProductUrl($product.productBean.productName, $product.productBean.productId)" target="_blank">&lt;&lt;查看该产品</a>
+    </div>
+    <br class="clear" />
+    <div class="well" style="margin-top:30px; padding-left:200px; margin-bottom:200px;">
+    	您现在可以：<br />
+        <div style="text-align:center;" class="mar_top_20">
+        	<table border="0" cellspacing="0" cellpadding="0" width="460">
+              <tr>
+              <td width="60px"></td>
+                <td><button class="btn btn-large btn-success font_w_b" type="button" onclick="javascript:window.location.href='$link.setPage('product,ProductUpload.html')';">继续上传产品</button></td>
+                <td><button class="btn btn-large btn-info font_w_b" type="button" onclick="javascript:window.location.href='$link.setPage('product,ProductsManage.html')';">返回产品管理首页</button></td>
+
+              </tr>
+            </table>
+        </div><!-- E button -->
+    </div>
+  	
+    
+  </div>

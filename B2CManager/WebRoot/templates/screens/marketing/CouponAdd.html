@@ -1,0 +1,143 @@
+  	<br class="clear" />
+  	<h4 class="mar_top_15 mar_bottom_20">Coupon</h4>
+    <div class="coupon_detail mar_bottom_10">
+        <dl class="dl-horizontal">
+            <dt><label class="mar_top_5 right">Coupon类型：</label><span class="required">*</span></dt>
+            <dd><label class="radio inline mar_right_10"><input value="" name="group" type="radio" checked="checked">美元</label><label class="radio inline"><input value="" name="group" type="radio">折扣</label></dd>
+            <dt><label class="mar_top_5 right">优惠额度：</label><span class="required">*</span></dt>
+            <dd><input placeholder="优惠额度" class="input-medium left" type="text"></dd>
+            <dt><label class="mar_top_5 right">有效期：</label><span class="required">*</span></dt>
+            <dd><input type="text" value="01/01/2013" id="datepickera" class="input-small mar_right_10 left" /><label class="left mar_top_5">到</label><input type="text" value="01/01/2013" id="datepickerb" class="input-small mar_left_10 mar_right_5 left" /><br class="clear" /></dd>
+            <dd><input placeholder="优惠额度" class="input-medium" type="text"></dd>
+            <dt><label class="mar_top_5 right">最低消费：</label></dt>
+            <dd><input placeholder="最低消费" class="input-medium left" type="text"><label class="left mar_top_5 mar_left_5">$</label></dd>
+            <dt><label class="mar_top_5 right">指定可用分类：</label></dt>
+            <dd>
+               
+					  <script language="javascript" src="/static/prototype/shopmic-manage/js/customcatselector.js"></script> 
+					  <script>var CustomCatSelector = new CustomCategorySelector(4, "customCatId","selectCatName");</script>
+						<select class="left mar_right_10 width_110px" id="customCatId1">
+							<option value="000">一级分类</option>
+					</select> 
+					<select class="left mar_right_10 width_110px" id="customCatId2">
+							<option value="000000">二级分类</option>
+					</select> 
+					<select class="left mar_right_10 width_110px" id="customCatId3">
+							<option value="000000000">三级分类</option>
+					</select> 
+					<select class="left mar_right_10 width_110px" id="customCatId4">
+							<option value="000000000000">四级分类</option>
+					</select> 
+                <button class="btn btn-success left" onclick="addCat()">添加</button><br class="clear" />
+                <span class="help-block">如果不指定分类，则生成的Coupon所有分类都可使用。</span>
+                <div class="alert alert-info blue">
+                    <table id="selectCatIds">
+                        <tr >
+                            <td><label class="mar_top_5 mar_right_20" id="choose_category"> <b id="selectCatName"></b><button class="btn btn-link" onclick="del(this);">删除</button></label>
+                            </td>
+                        </tr>
+                        <input type="hidden" name="customCatId" id="customCatId" value="" verify="id"/>
+                    </table>
+                    <table id="cats">
+                    
+                    </table>
+                </div>
+            </dd>
+            <dt><label class="mar_top_5 right">指定买家：</label></dt>
+            <dd>
+                <input placeholder="买家昵称" class="input-medium left mar_right_10" type="text" id="userId">
+                <button class="btn btn-success left" onclick="addUser()">添加</button><br class="clear" />
+                <span class="help-block">请输入买家昵称。</span>
+                <div class="alert alert-info blue">
+                   <ul class="inline" id="userIds">
+
+                    </ul>
+                </div>
+            </dd>
+            <dt><label class="mar_top_5 right">指定产品：</label></dt>
+            <dd>
+                <input placeholder="SKU/Item Code" class="input-medium left mar_right_10" type="text" id="sku">
+                <button class="btn btn-success left" onclick="addSkus()">添加</button><br class="clear" />
+                <span class="help-block">请输入产品SKU。</span>
+                <div class="alert alert-info blue">
+                     <ul class="inline" id="skus">
+
+                    </ul>
+                </div>
+            </dd>
+            <dt><label class="mar_top_5 right">生成Coupon数量：</label></dt>
+            <dd><input placeholder="Coupon数量" class="input-medium left" type="text" value="1"><label class="left mar_top_5 mar_left_5">个</label></dd>
+        </dl>
+    </div>
+    <div class="center_t">
+    	<button class="btn btn-large btn-primary bold mar_right_20" onclick="couponSubmit()">生成</button>
+    	<button class="btn btn-large bold mar_right_20">取消</button>
+    </div>
+    
+  <br class="clear" />
+  </div><!-- E container -->
+  <br class="clear" />
+  <!--<div style="width:100%; height:30px; margin-top:50px; background:url(/static/prototype/shopmic-manage/img/footer.jpg) repeat-x;"></div>-->
+  
+  <div id="layer_box">
+   <p class="layer_box_tit"><a href="javascript:();">新支付</a></p>
+   <p class="layer_box_tit"><a href="javascript:();">新订单</a></p>
+  </div>
+<!-- S javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script language="javascript" type="text/javascript"
+	src="/static/prototype/shopmic-manage/js/jquery-ui-1.10.0.custom.min.js"></script>
+<script language="javascript" type="text/javascript"
+	src="/static/prototype/shopmic-manage/js/datepicker.js"></script>
+	
+<script type="text/javascript">
+<!--
+function addUser(){
+	var userId = jQuery("#userId").val();
+	jQuery("#userIds").append('<li><label class="mar_top_5 left" id="choose_category">'+userId+'</label><button class="btn btn-link left" onclick="del(this);">删除</button></li>');                                                              
+	jQuery("#userId").val('');
+}
+function addSkus(){
+	var sku = jQuery("#sku").val();
+	jQuery("#skus").append('<li><label class="mar_top_5 left" id="choose_category">'+sku+'</label><button class="btn btn-link left" onclick="del(this);">删除</button></li>');                                                              
+	jQuery("#sku").val('');
+}
+function addCat(){
+	var html = jQuery("#selectCatIds").html();
+	jQuery("#cats").append(html);
+}
+function del(obj){
+	jQuery(obj).parent().remove();
+}
+function couponSubmit(){
+	jQuery("body").showLoading();
+	jQuery.ajax({
+		url:"$link.setAction('marketing.CreateCoupon')",
+		type:"post",
+		data:form2URL("couponForm"),
+		dataType:"json",
+		success:function(data){
+			jQuery("body").hideLoading();
+			if (data.status==1) {
+				window.location.href="$link.setPage('buyer,MyAccount.html')";
+			} else {
+				if (data.loginErrorCount>3) {
+					jQuery("#securityCode").parents("tr").show();
+				}
+				if (data.status == -1) {
+					jQuery("#securityError").show();
+				} else {
+					jQuery("#loginFailed").show();
+				}
+				jQuery('#securityCodeImg').attr('src','$content.getURI('GetSecurityImg')?'+Math.random());
+			}
+		},
+		error:function(){
+			jQuery("body").hideLoading();
+		}
+	 });	
+}
+
+//-->
+</script>

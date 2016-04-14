@@ -1,0 +1,10 @@
+#Mon Jun 17 17:07:57 CST 2013
+eclipse.preferences.version=1
+encoding//WebRoot/templates/screens/marketing/ActivityManage.html=UTF-8
+encoding//WebRoot/templates/screens/order=UTF-8
+encoding//WebRoot/templates/screens/order/AjustAmount.html=UTF-8
+encoding//WebRoot/templates/screens/order/BaleOrder.html=UTF-8
+encoding//WebRoot/templates/screens/order/CheckInOrder.html=UTF-8
+encoding//WebRoot/templates/screens/order/ConfirmPicker.html=UTF-8
+encoding/<project>=UTF-8
+separateDerivedEncodings=true

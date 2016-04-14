@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+	<insert id="insertBuyerBean" parameterClass="com.fd.fashion.buyer.bean.BuyerBean">
+        <![CDATA[
+insert into T_BUYER
+  (EMAIL, USER_ID, FIRST_NAME, LAST_NAME, PASSWORD, SEX, EMAIL_ACTIVE, ACTIVE_CODE, VAILD, IP_ADDRESS, COUNTRY,REGDATE)
+values
+  (#email#, #userId#, #firstName#, #lastName#, #password#, #sex#, #emailActive#, #activeCode#, #vaild#, #ipAddress#, #country#,#regDate#)
+        ]]>
+		<selectKey keyProperty="buyerId" resultClass="long">
+            <![CDATA[select @@identity as buyerId]]>
+		</selectKey>
+	</insert>
+
+	<update id="updateBuyerBean" parameterClass="com.fd.fashion.buyer.bean.BuyerBean">
+        <![CDATA[
+update T_BUYER 
+        ]]>
+		<dynamic prepend="set">
+			<isNotNull property="email" prepend="," removeFirstPrepend="true">
+                <![CDATA[EMAIL = #email#]]>
+			</isNotNull>
+			<isNotNull property="userId" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[USER_ID = #userId#]]>
+			</isNotNull>
+			<isNotNull property="firstName" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[FIRST_NAME = #firstName#]]>
+			</isNotNull>
+			<isNotNull property="lastName" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[LAST_NAME = #lastName#]]>
+			</isNotNull>
+			<isNotNull property="password" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[PASSWORD = #password#]]>
+			</isNotNull>
+			<isNotNull property="sex" prepend="," removeFirstPrepend="true">
+                <![CDATA[SEX = #sex#]]>
+			</isNotNull>
+			<isNotNull property="emailActive" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[EMAIL_ACTIVE = #emailActive#]]>
+			</isNotNull>
+			<isNotNull property="activeCode" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[ACTIVE_CODE = #activeCode#]]>
+			</isNotNull>
+			<isNotNull property="vaild" prepend="," removeFirstPrepend="true">
+                <![CDATA[VAILD = #vaild#]]>
+			</isNotNull>
+			<isNotNull property="ipAddress" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[IP_ADDRESS = #ipAddress#]]>
+			</isNotNull>
+			<isNotNull property="country" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[COUNTRY = #country#]]>
+			</isNotNull>
+			<isNotNull property="buyerType" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[BUYER_TYPE = #buyerType#]]>
+			</isNotNull>
+			<isNotNull property="company" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[COMPANY = #company#]]>
+			</isNotNull>
+			<isNotNull property="imageUrl" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[IMAGE_URL = #imageUrl#]]>
+			</isNotNull>
+			<isNotNull property="freeze" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[FREEZE = #freeze#]]>
+			</isNotNull>
+			<isNotNull property="regDate" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[REGDATE = #regDate#]]>
+			</isNotNull>
+		</dynamic>
+        <![CDATA[
+where BUYER_ID = #buyerId#
+        ]]>
+	</update>
+
+	<sql id="getBuyerBeanCondition">
+		<isNotNull property="buyerId" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[BUYER_ID = #buyerId#]]>
+		</isNotNull>
+		<isNotEmpty property="email" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[EMAIL = #email#]]>
+		</isNotEmpty>
+		<isNotEmpty property="userId" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[USER_ID = #userId#]]>
+		</isNotEmpty>
+		<isNotEmpty property="firstName" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[FIRST_NAME = #firstName#]]>
+		</isNotEmpty>
+		<isNotEmpty property="lastName" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[LAST_NAME = #lastName#]]>
+		</isNotEmpty>
+		<isNotEmpty property="password" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[PASSWORD = #password#]]>
+		</isNotEmpty>
+		<isNotNull property="sex" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SEX = #sex#]]>
+		</isNotNull>
+		<isNotEmpty property="emailActive" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[EMAIL_ACTIVE = #emailActive#]]>
+		</isNotEmpty>
+		<isNotEmpty property="activeCode" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[ACTIVE_CODE = #activeCode#]]>
+		</isNotEmpty>
+		<isNotNull property="vaild" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[VAILD = #vaild#]]>
+		</isNotNull>
+		<isNotEmpty property="ipAddress" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[IP_ADDRESS = #ipAddress#]]>
+		</isNotEmpty>
+		<isNotEmpty property="country" prepend="and"
+			removeFirstPrepend="true">
+             <![CDATA[COUNTRY = #country#]]>
+		</isNotEmpty>
+		<isNotNull property="buyerType" prepend="and"
+			removeFirstPrepend="true">
+                <![CDATA[BUYER_TYPE = #buyerType#]]>
+		</isNotNull>
+		<isNotEmpty property="company" prepend="and"
+			removeFirstPrepend="true">
+                <![CDATA[COMPANY = #company#]]>
+		</isNotEmpty>
+		<isNotEmpty property="imageUrl" prepend="and"
+			removeFirstPrepend="true">
+                <![CDATA[IMAGE_URL = #imageUrl#]]>
+		</isNotEmpty>
+		<isNotNull property="freeze" prepend="and"
+			removeFirstPrepend="true">
+                <![CDATA[FREEZE = #freeze#]]>
+		</isNotNull>
+		<isNotNull property="userLevel" prepend="and"
+			removeFirstPrepend="true">
+                <![CDATA[USER_LEVEL = #userLevel#]]>
+		</isNotNull>
+		<isNotNull property="regStartDate" prepend="and">
+				<![CDATA[ REGDATE >= #regStartDate# ]]>
+		</isNotNull>
+		<isNotNull property="regEndDate" prepend="and">
+				<![CDATA[ REGDATE <= ADDDATE(#regEndDate#,1) ]]>
+		</isNotNull>
+	</sql>
+
+	<select id="getBuyerBeanCount" parameterClass="com.fd.fashion.buyer.bean.BuyerBean"
+		resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_BUYER 
+        ]]>
+		<dynamic prepend="where">
+			<include refid="getBuyerBeanCondition" />
+		</dynamic>
+	</select>
+
+	<select id="getBuyerBean" parameterClass="com.fd.fashion.buyer.bean.BuyerBean"
+		resultClass="com.fd.fashion.buyer.bean.BuyerBean">
+        <![CDATA[
+select 
+	BUYER_ID	as buyerId,
+	EMAIL	as email,
+	USER_ID	as userId,
+	FIRST_NAME	as firstName,
+	LAST_NAME	as lastName,
+	PASSWORD	as password,
+	SEX	as sex,
+	EMAIL_ACTIVE	as emailActive,
+	ACTIVE_CODE	as activeCode,
+	VAILD	as vaild,
+	IP_ADDRESS	as ipAddress,
+	COUNTRY as country,
+	BUYER_TYPE as  buyerType,
+	COMPANY as company,
+	IMAGE_URL as imageUrl,
+	FREEZE as freeze,
+	 REGDATE as regDate
+           
+from T_BUYER 
+        ]]>
+		<dynamic prepend="where">
+			<include refid="getBuyerBeanCondition" />
+		</dynamic>
+	</select>
+
+	<delete id="deleteBuyerBean" parameterClass="com.fd.fashion.buyer.bean.BuyerBean">
+        <![CDATA[
+delete from T_BUYER where BUYER_ID=#buyerId#
+        ]]>
+	</delete>
+	
+	<select id="getBuyerListCase" parameterClass="com.fd.fashion.buyer.bean.BuyerBean"
+		resultClass="com.fd.fashion.buyer.bean.BuyerBean">
+        <![CDATA[
+SELECT
+b.USER_ID					as userId,
+max(o.CREATE_DATE)			as lastBuyDate,
+b.EMAIL						as email,
+b.FREEZE					as freeze,
+b.ACTIVE_CODE				as activeCode,
+b.BUYER_TYPE				as buyerType,
+b.COMPANY					as company,
+b.COUNTRY					as country,
+b.BUYER_ID					as buyerId,
+b.EMAIL_ACTIVE				as emailActive,
+b.IP_ADDRESS				as ipAddress ,
+b.REGDATE					as regDate,
+b.USER_LEVEL				as userLevel,
+b.SEX						as sex
+FROM
+	t_buyer b LEFT JOIN t_order o
+ON
+	o.BUYER_ID = b.BUYER_ID
+        ]]>
+		<dynamic prepend="where">
+			<isNotEmpty property="userId" prepend="and"
+				removeFirstPrepend="true">
+	             <![CDATA[b.USER_ID = #userId#]]>
+			</isNotEmpty>
+			<isNotNull property="regStartDate" prepend="and">
+					<![CDATA[ b.REGDATE >= #regStartDate# ]]>
+			</isNotNull>
+			<isNotNull property="regEndDate" prepend="and">
+					<![CDATA[ b.REGDATE <= ADDDATE(#regEndDate#,1) ]]>
+			</isNotNull>
+			<isNotNull property="userLevel" prepend="and"
+				removeFirstPrepend="true">
+	                <![CDATA[b.USER_LEVEL = #userLevel#]]>
+			</isNotNull>
+			<isNotEmpty property="country" prepend="and"
+				removeFirstPrepend="true">
+	             <![CDATA[b.COUNTRY = #country#]]>
+			</isNotEmpty>
+		</dynamic>
+		<![CDATA[
+	GROUP BY b.USER_ID
+	order by b.REGDATE
+        ]]>
+        <dynamic>
+			<isNotNull property="pageInfo">
+				<![CDATA[
+			limit #pageInfo.beginRowNum#,#pageInfo.endRowNum#
+            ]]>
+			</isNotNull>
+		</dynamic>
+	</select>
+
+</sqlMap>

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertAlipayNotifyBean" parameterClass="com.fd.payment.bean.AlipayNotifyBean">
+        <![CDATA[
+insert into T_ALIPAY_NOTIFY
+  (notify_time, notify_type, notify_id, sign_type, sign, out_trade_no, subject, payment_type, trade_no, trade_status, gmt_create, gmt_payment, gmt_close, refund_status, gmt_refund, seller_email, buyer_email, seller_id, buyer_id, price, total_fee, quantity, body, discount, is_total_fee_adjust, use_coupon, error_code, bank_seq_no, extra_common_param, currency, forex_total_fee, verified)
+values
+  (#notifyTime#, #notifyType#, #notifyId#, #signType#, #sign#, #outTradeNo#, #subject#, #paymentType#, #tradeNo#, #tradeStatus#, #gmtCreate#, #gmtPayment#, #gmtClose#, #refundStatus#, #gmtRefund#, #sellerEmail#, #buyerEmail#, #sellerId#, #buyerId#, #price#, #totalFee#, #quantity#, #body#, #discount#, #isTotalFeeAdjust#, #useCoupon#, #errorCode#, #bankSeqNo#, #extraCommonParam#, #currency#, #forexTotalFee#, #verified#)
+        ]]>
+        <selectKey keyProperty="id" resultClass="long">
+            <![CDATA[select @@identity as id]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateAlipayNotifyBean" parameterClass="com.fd.payment.bean.AlipayNotifyBean">
+        <![CDATA[
+update T_ALIPAY_NOTIFY 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="id" prepend="," removeFirstPrepend="true">
+                <![CDATA[id = #id#]]>
+            </isNotNull>
+            <isNotNull property="notifyTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[notify_time = #notifyTime#]]>
+            </isNotNull>
+            <isNotNull property="notifyType" prepend="," removeFirstPrepend="true">
+                <![CDATA[notify_type = #notifyType#]]>
+            </isNotNull>
+            <isNotNull property="notifyId" prepend="," removeFirstPrepend="true">
+                <![CDATA[notify_id = #notifyId#]]>
+            </isNotNull>
+            <isNotNull property="signType" prepend="," removeFirstPrepend="true">
+                <![CDATA[sign_type = #signType#]]>
+            </isNotNull>
+            <isNotNull property="sign" prepend="," removeFirstPrepend="true">
+                <![CDATA[sign = #sign#]]>
+            </isNotNull>
+            <isNotNull property="outTradeNo" prepend="," removeFirstPrepend="true">
+                <![CDATA[out_trade_no = #outTradeNo#]]>
+            </isNotNull>
+            <isNotNull property="subject" prepend="," removeFirstPrepend="true">
+                <![CDATA[subject = #subject#]]>
+            </isNotNull>
+            <isNotNull property="paymentType" prepend="," removeFirstPrepend="true">
+                <![CDATA[payment_type = #paymentType#]]>
+            </isNotNull>
+            <isNotNull property="tradeNo" prepend="," removeFirstPrepend="true">
+                <![CDATA[trade_no = #tradeNo#]]>
+            </isNotNull>
+            <isNotNull property="tradeStatus" prepend="," removeFirstPrepend="true">
+                <![CDATA[trade_status = #tradeStatus#]]>
+            </isNotNull>
+            <isNotNull property="gmtCreate" prepend="," removeFirstPrepend="true">
+                <![CDATA[gmt_create = #gmtCreate#]]>
+            </isNotNull>
+            <isNotNull property="gmtPayment" prepend="," removeFirstPrepend="true">
+                <![CDATA[gmt_payment = #gmtPayment#]]>
+            </isNotNull>
+            <isNotNull property="gmtClose" prepend="," removeFirstPrepend="true">
+                <![CDATA[gmt_close = #gmtClose#]]>
+            </isNotNull>
+            <isNotNull property="refundStatus" prepend="," removeFirstPrepend="true">
+                <![CDATA[refund_status = #refundStatus#]]>
+            </isNotNull>
+            <isNotNull property="gmtRefund" prepend="," removeFirstPrepend="true">
+                <![CDATA[gmt_refund = #gmtRefund#]]>
+            </isNotNull>
+            <isNotNull property="sellerEmail" prepend="," removeFirstPrepend="true">
+                <![CDATA[seller_email = #sellerEmail#]]>
+            </isNotNull>
+            <isNotNull property="buyerEmail" prepend="," removeFirstPrepend="true">
+                <![CDATA[buyer_email = #buyerEmail#]]>
+            </isNotNull>
+            <isNotNull property="sellerId" prepend="," removeFirstPrepend="true">
+                <![CDATA[seller_id = #sellerId#]]>
+            </isNotNull>
+            <isNotNull property="buyerId" prepend="," removeFirstPrepend="true">
+                <![CDATA[buyer_id = #buyerId#]]>
+            </isNotNull>
+            <isNotNull property="price" prepend="," removeFirstPrepend="true">
+                <![CDATA[price = #price#]]>
+            </isNotNull>
+            <isNotNull property="totalFee" prepend="," removeFirstPrepend="true">
+                <![CDATA[total_fee = #totalFee#]]>
+            </isNotNull>
+            <isNotNull property="quantity" prepend="," removeFirstPrepend="true">
+                <![CDATA[quantity = #quantity#]]>
+            </isNotNull>
+            <isNotNull property="body" prepend="," removeFirstPrepend="true">
+                <![CDATA[body = #body#]]>
+            </isNotNull>
+            <isNotNull property="discount" prepend="," removeFirstPrepend="true">
+                <![CDATA[discount = #discount#]]>
+            </isNotNull>
+            <isNotNull property="isTotalFeeAdjust" prepend="," removeFirstPrepend="true">
+                <![CDATA[is_total_fee_adjust = #isTotalFeeAdjust#]]>
+            </isNotNull>
+            <isNotNull property="useCoupon" prepend="," removeFirstPrepend="true">
+                <![CDATA[use_coupon = #useCoupon#]]>
+            </isNotNull>
+            <isNotNull property="errorCode" prepend="," removeFirstPrepend="true">
+                <![CDATA[error_code = #errorCode#]]>
+            </isNotNull>
+            <isNotNull property="bankSeqNo" prepend="," removeFirstPrepend="true">
+                <![CDATA[bank_seq_no = #bankSeqNo#]]>
+            </isNotNull>
+            <isNotNull property="extraCommonParam" prepend="," removeFirstPrepend="true">
+                <![CDATA[extra_common_param = #extraCommonParam#]]>
+            </isNotNull>
+            <isNotNull property="currency" prepend="," removeFirstPrepend="true">
+                <![CDATA[currency = #currency#]]>
+            </isNotNull>
+            <isNotNull property="forexTotalFee" prepend="," removeFirstPrepend="true">
+                <![CDATA[forex_total_fee = #forexTotalFee#]]>
+            </isNotNull>
+            <isNotNull property="verified" prepend="," removeFirstPrepend="true">
+                <![CDATA[verified = #verified#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where id = #id#
+        ]]>
+    </update>
+
+    <sql id="getAlipayNotifyBeanCondition">
+         <isNotNull property="id" prepend="and" removeFirstPrepend="true">
+             <![CDATA[id = #id#]]>
+         </isNotNull>
+         <isNotNull property="notifyTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[notify_time = #notifyTime#]]>
+         </isNotNull>
+         <isNotNull property="notifyType" prepend="and" removeFirstPrepend="true">
+             <![CDATA[notify_type = #notifyType#]]>
+         </isNotNull>
+         <isNotNull property="notifyId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[notify_id = #notifyId#]]>
+         </isNotNull>
+         <isNotNull property="signType" prepend="and" removeFirstPrepend="true">
+             <![CDATA[sign_type = #signType#]]>
+         </isNotNull>
+         <isNotNull property="sign" prepend="and" removeFirstPrepend="true">
+             <![CDATA[sign = #sign#]]>
+         </isNotNull>
+         <isNotNull property="outTradeNo" prepend="and" removeFirstPrepend="true">
+             <![CDATA[out_trade_no = #outTradeNo#]]>
+         </isNotNull>
+         <isNotNull property="subject" prepend="and" removeFirstPrepend="true">
+             <![CDATA[subject = #subject#]]>
+         </isNotNull>
+         <isNotNull property="paymentType" prepend="and" removeFirstPrepend="true">
+             <![CDATA[payment_type = #paymentType#]]>
+         </isNotNull>
+         <isNotNull property="tradeNo" prepend="and" removeFirstPrepend="true">
+             <![CDATA[trade_no = #tradeNo#]]>
+         </isNotNull>
+         <isNotNull property="tradeStatus" prepend="and" removeFirstPrepend="true">
+             <![CDATA[trade_status = #tradeStatus#]]>
+         </isNotNull>
+         <isNotNull property="gmtCreate" prepend="and" removeFirstPrepend="true">
+             <![CDATA[gmt_create = #gmtCreate#]]>
+         </isNotNull>
+         <isNotNull property="gmtPayment" prepend="and" removeFirstPrepend="true">
+             <![CDATA[gmt_payment = #gmtPayment#]]>
+         </isNotNull>
+         <isNotNull property="gmtClose" prepend="and" removeFirstPrepend="true">
+             <![CDATA[gmt_close = #gmtClose#]]>
+         </isNotNull>
+         <isNotNull property="refundStatus" prepend="and" removeFirstPrepend="true">
+             <![CDATA[refund_status = #refundStatus#]]>
+         </isNotNull>
+         <isNotNull property="gmtRefund" prepend="and" removeFirstPrepend="true">
+             <![CDATA[gmt_refund = #gmtRefund#]]>
+         </isNotNull>
+         <isNotNull property="sellerEmail" prepend="and" removeFirstPrepend="true">
+             <![CDATA[seller_email = #sellerEmail#]]>
+         </isNotNull>
+         <isNotNull property="buyerEmail" prepend="and" removeFirstPrepend="true">
+             <![CDATA[buyer_email = #buyerEmail#]]>
+         </isNotNull>
+         <isNotNull property="sellerId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[seller_id = #sellerId#]]>
+         </isNotNull>
+         <isNotNull property="buyerId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[buyer_id = #buyerId#]]>
+         </isNotNull>
+         <isNotNull property="price" prepend="and" removeFirstPrepend="true">
+             <![CDATA[price = #price#]]>
+         </isNotNull>
+         <isNotNull property="totalFee" prepend="and" removeFirstPrepend="true">
+             <![CDATA[total_fee = #totalFee#]]>
+         </isNotNull>
+         <isNotNull property="quantity" prepend="and" removeFirstPrepend="true">
+             <![CDATA[quantity = #quantity#]]>
+         </isNotNull>
+         <isNotNull property="body" prepend="and" removeFirstPrepend="true">
+             <![CDATA[body = #body#]]>
+         </isNotNull>
+         <isNotNull property="discount" prepend="and" removeFirstPrepend="true">
+             <![CDATA[discount = #discount#]]>
+         </isNotNull>
+         <isNotNull property="isTotalFeeAdjust" prepend="and" removeFirstPrepend="true">
+             <![CDATA[is_total_fee_adjust = #isTotalFeeAdjust#]]>
+         </isNotNull>
+         <isNotNull property="useCoupon" prepend="and" removeFirstPrepend="true">
+             <![CDATA[use_coupon = #useCoupon#]]>
+         </isNotNull>
+         <isNotNull property="errorCode" prepend="and" removeFirstPrepend="true">
+             <![CDATA[error_code = #errorCode#]]>
+         </isNotNull>
+         <isNotNull property="bankSeqNo" prepend="and" removeFirstPrepend="true">
+             <![CDATA[bank_seq_no = #bankSeqNo#]]>
+         </isNotNull>
+         <isNotNull property="extraCommonParam" prepend="and" removeFirstPrepend="true">
+             <![CDATA[extra_common_param = #extraCommonParam#]]>
+         </isNotNull>
+         <isNotNull property="currency" prepend="and" removeFirstPrepend="true">
+             <![CDATA[currency = #currency#]]>
+         </isNotNull>
+         <isNotNull property="forexTotalFee" prepend="and" removeFirstPrepend="true">
+             <![CDATA[forex_total_fee = #forexTotalFee#]]>
+         </isNotNull>
+         <isNotNull property="verified" prepend="and" removeFirstPrepend="true">
+             <![CDATA[verified = #verified#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getAlipayNotifyBeanCount" parameterClass="com.fd.payment.bean.AlipayNotifyBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_ALIPAY_NOTIFY 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getAlipayNotifyBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getAlipayNotifyBean" parameterClass="com.fd.payment.bean.AlipayNotifyBean"
+        resultClass="com.fd.payment.bean.AlipayNotifyBean">
+        <![CDATA[
+select 
+	id	as id,
+	notify_time	as notifyTime,
+	notify_type	as notifyType,
+	notify_id	as notifyId,
+	sign_type	as signType,
+	sign	as sign,
+	out_trade_no	as outTradeNo,
+	subject	as subject,
+	payment_type	as paymentType,
+	trade_no	as tradeNo,
+	trade_status	as tradeStatus,
+	gmt_create	as gmtCreate,
+	gmt_payment	as gmtPayment,
+	gmt_close	as gmtClose,
+	refund_status	as refundStatus,
+	gmt_refund	as gmtRefund,
+	seller_email	as sellerEmail,
+	buyer_email	as buyerEmail,
+	seller_id	as sellerId,
+	buyer_id	as buyerId,
+	price	as price,
+	total_fee	as totalFee,
+	quantity	as quantity,
+	body	as body,
+	discount	as discount,
+	is_total_fee_adjust	as isTotalFeeAdjust,
+	use_coupon	as useCoupon,
+	error_code	as errorCode,
+	bank_seq_no	as bankSeqNo,
+	extra_common_param	as extraCommonParam,
+	currency	as currency,
+	forex_total_fee	as forexTotalFee,
+	verified	as verified
+from T_ALIPAY_NOTIFY 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getAlipayNotifyBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteAlipayNotifyBean" parameterClass="com.fd.payment.bean.AlipayNotifyBean">
+        <![CDATA[
+delete from T_ALIPAY_NOTIFY where id=#id#
+        ]]>
+    </delete>
+
+</sqlMap>

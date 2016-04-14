@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertProductBean" parameterClass="com.fd.fashion.product.bean.ProductBean">
+        <![CDATA[
+insert into T_PRODUCT
+  (PRODUCT_ID, SELLER_ID, CAT_ID, CUSTOM_CAT_ID, PRODUCT_NAME, IMAGE_URL, PRODUCT_CODE, SKU, QUANTITY, PACKING, 
+   WEIGHT, WIDTH, LENGTH, HEIGHT, MATERIAL, ORIGIN, DESCRIPTION, SPECIFICATIONS, CREATE_TIME, CREATOR, 
+   UPDATE_TIME, OPERATOR, PRODUCT_STATUS, VAILD, BARCODE, STOCK_DAYS, KEYWORD, BRAND, PACKAGE_INFORMATION, 
+   SHIPING_TEMPLATEID, SIZE_TEMPLATE_ID, EXPIRED_DAY, STOCK, ISPACKAGE, EDIT_TIME, SALE_IGNORE_STOCK)
+values
+  (#productId#, #sellerId#, #catId#, #customCatId#, #productName#, #imageUrl#, #productCode#, #sku#, #quantity#, #packing#, 
+  #weight#, #width#, #length#, #height#, #material#, #origin#, #description#, #specifications#, #createTime#, #creator#, 
+  #updateTime#, #operator#, #productStatus#, #vaild#, #barcode#, #stockDays#, #keyword#, #brand#, #packageInformation#, 
+  #shippingTemplateId#, #sizeTemplateId#, #expiredDay#, #stock#, #ispackage#, #editTime#, #saleIgnoreStock#)
+        ]]>
+        <selectKey keyProperty="productId" resultClass="long">
+            <![CDATA[select @@identity as productId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateProductBean" parameterClass="com.fd.fashion.product.bean.ProductBean">
+        <![CDATA[
+update T_PRODUCT 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="productId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="sellerId" prepend="," removeFirstPrepend="true">
+                <![CDATA[SELLER_ID = #sellerId#]]>
+            </isNotNull>
+            <isNotNull property="catId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CAT_ID = #catId#]]>
+            </isNotNull>
+            <isNotNull property="customCatId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CUSTOM_CAT_ID = #customCatId#]]>
+            </isNotNull>
+            <isNotNull property="productName" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_NAME = #productName#]]>
+            </isNotNull>
+            <isNotNull property="imageUrl" prepend="," removeFirstPrepend="true">
+                <![CDATA[IMAGE_URL = #imageUrl#]]>
+            </isNotNull>
+            <isNotNull property="productCode" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_CODE = #productCode#]]>
+            </isNotNull>
+            <isNotNull property="sku" prepend="," removeFirstPrepend="true">
+                <![CDATA[SKU = #sku#]]>
+            </isNotNull>
+            <isNotNull property="quantity" prepend="," removeFirstPrepend="true">
+                <![CDATA[QUANTITY = #quantity#]]>
+            </isNotNull>
+            <isNotNull property="packing" prepend="," removeFirstPrepend="true">
+                <![CDATA[PACKING = #packing#]]>
+            </isNotNull>
+            <isNotNull property="weight" prepend="," removeFirstPrepend="true">
+                <![CDATA[WEIGHT = #weight#]]>
+            </isNotNull>
+            <isNotNull property="width" prepend="," removeFirstPrepend="true">
+                <![CDATA[WIDTH = #width#]]>
+            </isNotNull>
+            <isNotNull property="length" prepend="," removeFirstPrepend="true">
+                <![CDATA[LENGTH = #length#]]>
+            </isNotNull>
+            <isNotNull property="height" prepend="," removeFirstPrepend="true">
+                <![CDATA[HEIGHT = #height#]]>
+            </isNotNull>
+            <isNotNull property="material" prepend="," removeFirstPrepend="true">
+                <![CDATA[MATERIAL = #material#]]>
+            </isNotNull>
+            <isNotNull property="origin" prepend="," removeFirstPrepend="true">
+                <![CDATA[ORIGIN = #origin#]]>
+            </isNotNull>
+            <isNotNull property="description" prepend="," removeFirstPrepend="true">
+                <![CDATA[DESCRIPTION = #description#]]>
+            </isNotNull>
+            <isNotNull property="specifications" prepend="," removeFirstPrepend="true">
+                <![CDATA[SPECIFICATIONS = #specifications#]]>
+            </isNotNull>
+            <isNotNull property="updateTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[UPDATE_TIME = #updateTime#]]>
+            </isNotNull>
+            <isNotNull property="operator" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPERATOR = #operator#]]>
+            </isNotNull>
+            <isNotNull property="productStatus" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_STATUS = #productStatus#]]>
+            </isNotNull>
+            <isNotNull property="vaild" prepend="," removeFirstPrepend="true">
+                <![CDATA[VAILD = #vaild#]]>
+            </isNotNull>
+            <isNotNull property="barcode" prepend="," removeFirstPrepend="true">
+                <![CDATA[BARCODE = #barcode#]]>
+            </isNotNull>
+            <isNotNull property="stockDays" prepend="," removeFirstPrepend="true">
+                <![CDATA[STOCK_DAYS = #stockDays#]]>
+            </isNotNull>
+            <isNotNull property="keyword" prepend="," removeFirstPrepend="true">
+                <![CDATA[KEYWORD = #keyword#]]>
+            </isNotNull>
+            <isNotNull property="brand" prepend="," removeFirstPrepend="true">
+                <![CDATA[BRAND = #brand#]]>
+            </isNotNull>
+            <isNotNull property="packageInformation" prepend="," removeFirstPrepend="true">
+                <![CDATA[PACKAGE_INFORMATION = #packageInformation#]]>
+            </isNotNull>
+            <isNotNull property="shippingTemplateId" prepend="," removeFirstPrepend="true">
+                <![CDATA[SHIPING_TEMPLATEID = #shippingTemplateId#]]>
+            </isNotNull>
+            <isNotNull property="sizeTemplateId" prepend="," removeFirstPrepend="true">
+                <![CDATA[SIZE_TEMPLATE_ID = #sizeTemplateId#]]>
+            </isNotNull>
+            <isNotNull property="expiredDay" prepend="," removeFirstPrepend="true">
+                <![CDATA[EXPIRED_DAY = #expiredDay#]]>
+            </isNotNull>
+            <isNotNull property="stock" prepend="," removeFirstPrepend="true">
+                <![CDATA[STOCK = #stock#]]>
+            </isNotNull>
+            <isNotNull property="ispackage" prepend="," removeFirstPrepend="true">
+                <![CDATA[ISPACKAGE = #ispackage#]]>
+            </isNotNull>
+            <isNotNull property="editTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[EDIT_TIME = #editTime#]]>
+            </isNotNull>
+            <isNotNull property="saleIgnoreStock" prepend="," removeFirstPrepend="true">
+                <![CDATA[SALE_IGNORE_STOCK = #saleIgnoreStock#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where PRODUCT_ID = #productId#
+        ]]>
+    </update>
+
+    <sql id="getProductBeanCondition">
+        <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[PRODUCT_ID = #productId#]]>
+        </isNotNull>
+        <isNotNull property="sellerId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[SELLER_ID = #sellerId#]]>
+        </isNotNull>
+        <isNotNull property="catId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[CAT_ID = #catId#]]>
+        </isNotNull>
+        <isNotNull property="customCatId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[CUSTOM_CAT_ID = #customCatId#]]>
+        </isNotNull>
+        <isNotNull property="productName" prepend="and" removeFirstPrepend="true">
+            <![CDATA[PRODUCT_NAME = #productName#]]>
+        </isNotNull>
+        <isNotNull property="imageUrl" prepend="and" removeFirstPrepend="true">
+            <![CDATA[IMAGE_URL = #imageUrl#]]>
+        </isNotNull>
+        <isNotNull property="productCode" prepend="and" removeFirstPrepend="true">
+            <![CDATA[PRODUCT_CODE = #productCode#]]>
+        </isNotNull>
+        <isNotNull property="sku" prepend="and" removeFirstPrepend="true">
+            <![CDATA[SKU = #sku#]]>
+        </isNotNull>
+        <isNotNull property="quantity" prepend="and" removeFirstPrepend="true">
+            <![CDATA[QUANTITY = #quantity#]]>
+        </isNotNull>
+        <isNotNull property="packing" prepend="and" removeFirstPrepend="true">
+            <![CDATA[PACKING = #packing#]]>
+        </isNotNull>
+        <isNotNull property="weight" prepend="and" removeFirstPrepend="true">
+            <![CDATA[WEIGHT = #weight#]]>
+        </isNotNull>
+        <isNotNull property="width" prepend="and" removeFirstPrepend="true">
+            <![CDATA[WIDTH = #width#]]>
+        </isNotNull>
+        <isNotNull property="length" prepend="and" removeFirstPrepend="true">
+            <![CDATA[LENGTH = #length#]]>
+        </isNotNull>
+        <isNotNull property="height" prepend="and" removeFirstPrepend="true">
+            <![CDATA[HEIGHT = #height#]]>
+        </isNotNull>
+        <isNotNull property="material" prepend="and" removeFirstPrepend="true">
+            <![CDATA[MATERIAL = #material#]]>
+        </isNotNull>
+        <isNotNull property="origin" prepend="and" removeFirstPrepend="true">
+            <![CDATA[ORIGIN = #origin#]]>
+        </isNotNull>
+        <isNotNull property="description" prepend="and" removeFirstPrepend="true">
+            <![CDATA[DESCRIPTION = #description#]]>
+        </isNotNull>
+        <isNotNull property="specifications" prepend="and" removeFirstPrepend="true">
+            <![CDATA[SPECIFICATIONS = #specifications#]]>
+        </isNotNull>
+        <isNotNull property="createTime" prepend="and" removeFirstPrepend="true">
+            <![CDATA[CREATE_TIME = #createTime#]]>
+        </isNotNull>
+        <isNotNull property="creator" prepend="and" removeFirstPrepend="true">
+            <![CDATA[CREATOR = #creator#]]>
+        </isNotNull>
+        <isNotNull property="updateTime" prepend="and" removeFirstPrepend="true">
+            <![CDATA[UPDATE_TIME = #updateTime#]]>
+        </isNotNull>
+        <isNotNull property="operator" prepend="and" removeFirstPrepend="true">
+            <![CDATA[OPERATOR = #operator#]]>
+        </isNotNull>
+        <isNotNull property="productStatus" prepend="and" removeFirstPrepend="true">
+            <![CDATA[PRODUCT_STATUS = #productStatus#]]>
+        </isNotNull>
+        <isNotNull property="vaild" prepend="and" removeFirstPrepend="true">
+            <![CDATA[VAILD = #vaild#]]>
+        </isNotNull>
+        <isNotNull property="barcode" prepend="and" removeFirstPrepend="true">
+            <![CDATA[BARCODE = #barcode#]]>
+        </isNotNull>
+        <isNotNull property="stockDays" prepend="and" removeFirstPrepend="true">
+            <![CDATA[STOCK_DAYS = #stockDays#]]>
+        </isNotNull>
+        <isNotNull property="keyword" prepend="and" removeFirstPrepend="true">
+            <![CDATA[KEYWORD = #keyword#]]>
+        </isNotNull>
+        <isNotNull property="brand" prepend="and" removeFirstPrepend="true">
+            <![CDATA[BRAND = #brand#]]>
+        </isNotNull>
+        <isNotNull property="packageInformation" prepend="and" removeFirstPrepend="true">
+            <![CDATA[PACKAGE_INFORMATION = #packageInformation#]]>
+        </isNotNull>
+        <isNotNull property="shippingTemplateId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[SHIPING_TEMPLATEID = #shippingTemplateId#]]>
+        </isNotNull>
+        <isNotNull property="sizeTemplateId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[SIZE_TEMPLATE_ID = #sizeTemplateId#]]>
+        </isNotNull>
+        <isNotNull property="sizeTemplateId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[EXPIRED_DAY = #expiredDay#]]>
+        </isNotNull>
+        <isNotNull property="stock" prepend="," removeFirstPrepend="true">
+            <![CDATA[STOCK = #stock#]]>
+        </isNotNull>
+        <isNotNull property="ispackage" prepend="," removeFirstPrepend="true">
+            <![CDATA[ISPACKAGE = #ispackage#]]>
+        </isNotNull>
+        <isNotNull property="editTime" prepend="," removeFirstPrepend="true">
+            <![CDATA[EDIT_TIME = #editTime#]]>
+        </isNotNull>
+        <isNotNull property="saleIgnoreStock" prepend="," removeFirstPrepend="true">
+            <![CDATA[SALE_IGNORE_STOCK = #saleIgnoreStock#]]>
+        </isNotNull>
+    </sql>
+
+    <select id="getProductBeanCount" parameterClass="com.fd.fashion.product.bean.ProductBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_PRODUCT 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getProductBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getProductBean" parameterClass="com.fd.fashion.product.bean.ProductBean"
+        resultClass="com.fd.fashion.product.bean.ProductBean">
+        <![CDATA[
+select 
+	PRODUCT_ID	as productId,
+	SELLER_ID	as sellerId,
+	CAT_ID	as catId,
+	CUSTOM_CAT_ID	as customCatId,
+	PRODUCT_NAME	as productName,
+	IMAGE_URL	as imageUrl,
+	PRODUCT_CODE	as productCode,
+	SKU	as sku,
+	QUANTITY	as quantity,
+	PACKING	as packing,
+	WEIGHT	as weight,
+	WIDTH	as width,
+	LENGTH	as length,
+	HEIGHT	as height,
+	MATERIAL	as material,
+	ORIGIN	as origin,
+	DESCRIPTION	as description,
+	SPECIFICATIONS	as specifications,
+	CREATE_TIME	as createTime,
+	CREATOR	as creator,
+	UPDATE_TIME	as updateTime,
+	OPERATOR	as operator,
+	PRODUCT_STATUS	as productStatus,
+	VAILD	as vaild,
+	BARCODE	as barcode,
+	STOCK_DAYS	as stockDays,
+	KEYWORD	as keyword,
+	BRAND as brand,
+	PACKAGE_INFORMATION	as packageInformation,
+	SHIPING_TEMPLATEID	as shippingTemplateId,
+	SIZE_TEMPLATE_ID	as sizeTemplateId,
+	EXPIRED_DAY    as expiredDay,
+	STOCK	as stock,
+	ISPACKAGE	as ispackage,
+	EDIT_TIME as editTime,
+	SALE_IGNORE_STOCK as saleIgnoreStock
+from T_PRODUCT 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getProductBeanCondition"/>        
+        </dynamic>
+                
+    </select>
+
+    <delete id="deleteProductBean" parameterClass="com.fd.fashion.product.bean.ProductBean">
+        <![CDATA[
+delete from T_PRODUCT where PRODUCT_ID=#productId#
+        ]]>
+    </delete>
+    
+    <select id="selectFavoriteProductCount" parameterClass="com.fd.fashion.product.bean.BuyerProductListBean" resultClass="java.lang.Integer">
+    	 <![CDATA[  
+    SELECT 
+    count(p.PRODUCT_ID)
+	 from t_product p  
+    where p.PRODUCT_ID in (SELECT b.PRODUCT_ID from t_buyer_productlist b WHERE b.BUYER_ID = #buyerId#) 
+    ]]>
+    </select>
+    
+    <select id="selectFavoriteProduct" parameterClass="com.fd.fashion.product.bean.BuyerProductListBean" resultClass="com.fd.fashion.product.bean.ProductBean">
+    <![CDATA[  
+SELECT 
+   t.BUYER_ID		as buyerId,
+   t.PRODUCT_ID		as productId,
+   t.CREATE_TIME	as createTime,
+   p.CAT_ID 		as catId
+ from t_product p ,t_buyer_productlist t 
+ where p.PRODUCT_ID = t.PRODUCT_ID and t.BUYER_ID=#buyerId#
+    ]]>
+     <dynamic>
+		<isNotNull property="pageInfo">
+			<![CDATA[
+		limit #pageInfo.beginRowNum#,#pageInfo.endRowNum#
+           ]]>
+		</isNotNull>
+	</dynamic>
+    </select>
+    
+    <select id="getCustomCatProductCount" resultClass="int" parameterClass="string">
+        <![CDATA[
+select count(0) from t_product where CUSTOM_CAT_ID like '$catId$%'
+        ]]>
+    </select>
+    
+    <select id="getProductStatusCount" resultClass="com.fd.fashion.product.vo.ProductCountVo">
+        <![CDATA[
+select PRODUCT_STATUS as productStatus, count(0) productCount from t_product where PRODUCT_STATUS is not null group by PRODUCT_STATUS
+        ]]>
+    </select>
+    
+    <select id="getHotSaleProducts" resultClass="com.fd.fashion.product.bean.ProductBean" parameterClass="com.fd.fashion.product.bean.ProductBean">
+    	<![CDATA[
+    	select 	
+    		tp.PRODUCT_ID	as productId,
+			tp.SELLER_ID	as sellerId,
+			tp.CAT_ID	as catId,
+			tp.CUSTOM_CAT_ID	as customCatId,
+			tp.PRODUCT_NAME	as productName,
+			tp.IMAGE_URL	as imageUrl,
+			tp.PRODUCT_CODE	as productCode,
+			tp.SKU	as sku,
+			tp.QUANTITY	as quantity,
+			tp.PACKING	as packing,
+			tp.WEIGHT	as weight,
+			tp.WIDTH	as width,
+			tp.LENGTH	as length,
+			tp.HEIGHT	as height,
+			tp.MATERIAL	as material,
+			tp.ORIGIN	as origin,
+			tp.DESCRIPTION	as description,
+			tp.SPECIFICATIONS	as specifications,
+			tp.CREATE_TIME	as createTime,
+			tp.CREATOR	as creator,
+			tp.UPDATE_TIME	as updateTime,
+			tp.OPERATOR	as operator,
+			tp.PRODUCT_STATUS	as productStatus,
+			tp.VAILD	as vaild,
+			tp.BARCODE	as barcode,
+			tp.STOCK_DAYS	as stockDays,
+			tp.KEYWORD	as keyword,
+			tp.BRAND as brand,
+			tp.PACKAGE_INFORMATION	as packageInformation,
+			tp.SHIPING_TEMPLATEID	as shippingTemplateId,
+			tp.SIZE_TEMPLATE_ID	as sizeTemplateId,
+			tp.EXPIRED_DAY    as expiredDay,
+			tp.STOCK	as stock,
+			tp.ISPACKAGE	as ispackage,
+			tp.EDIT_TIME as editTime
+    	from 	
+    		t_order_product t, 
+    		t_product tp 
+    	where 
+    		tp.PRODUCT_ID=t.PRODUCT_ID 
+    	]]>
+    	<dynamic>
+	        <isNotNull property="customCatId" prepend="and">
+	            <![CDATA[tp.CUSTOM_CAT_ID = #customCatId#]]>
+	        </isNotNull>
+		</dynamic>
+		<![CDATA[
+    		group by t.PRODUCT_ID order by count(t.PRODUCT_ID) limit 6
+    	]]>
+    </select>
+    
+    <select id="getHotProductByRecent" parameterClass="com.fd.fashion.product.vo.SearchProductVo" resultClass="com.fd.fashion.product.bean.ProductBean">
+<![CDATA[ 
+	SELECT 
+	p.PRODUCT_ID  as productId
+	from t_order_product p where p.ORDER_ID in (
+		select o.ORDER_ID  from t_order o 
+ ]]>
+ <dynamic prepend="where">
+       <isNotNull property="createDateStart" prepend="and">
+			<![CDATA[ o.CREATE_DATE >= #createDateStart# ]]>
+		</isNotNull>
+		<isNotNull property="createDateEnd" prepend="and">
+			<![CDATA[ o.CREATE_DATE <= ADDDATE(#createDateEnd#,1) ]]>
+		</isNotNull> 
+</dynamic>
+<![CDATA[  )
+group by p.PRODUCT_ID 
+ LIMIT 5
+ ]]>
+    </select>
+</sqlMap>

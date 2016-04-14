@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertOrderstatusInfoBean" parameterClass="com.fd.fashion.order.bean.OrderstatusInfoBean">
+        <![CDATA[
+insert into T_ORDERSTATUS_INFO
+  (ORDER_ID, ORDER_STATUS, OPERATOR, MEMO, CREATE_TIME, STATUS)
+values
+  (#orderId#, #orderStatus#, #operator#, #memo#, #createTime#, #status#)
+        ]]>
+        <selectKey keyProperty="orderInfoId" resultClass="long">
+            <![CDATA[select @@identity as orderInfoId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateOrderstatusInfoBean" parameterClass="com.fd.fashion.order.bean.OrderstatusInfoBean">
+        <![CDATA[
+update T_ORDERSTATUS_INFO 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="orderInfoId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ORDER_INFO_ID = #orderInfoId#]]>
+            </isNotNull>
+            <isNotNull property="orderId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ORDER_ID = #orderId#]]>
+            </isNotNull>
+            <isNotNull property="orderStatus" prepend="," removeFirstPrepend="true">
+                <![CDATA[ORDER_STATUS = #orderStatus#]]>
+            </isNotNull>
+            <isNotNull property="operator" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPERATOR = #operator#]]>
+            </isNotNull>
+            <isNotNull property="memo" prepend="," removeFirstPrepend="true">
+                <![CDATA[MEMO = #memo#]]>
+            </isNotNull>
+            <isNotNull property="createTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_TIME = #createTime#]]>
+            </isNotNull>
+            <isNotNull property="status" prepend="," removeFirstPrepend="true">
+                <![CDATA[STATUS = #status#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ORDER_INFO_ID = #orderInfoId#
+        ]]>
+    </update>
+
+    <sql id="getOrderstatusInfoBeanCondition">
+         <isNotNull property="orderInfoId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ORDER_INFO_ID = #orderInfoId#]]>
+         </isNotNull>
+         <isNotNull property="orderId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ORDER_ID = #orderId#]]>
+         </isNotNull>
+         <isNotNull property="orderStatus" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ORDER_STATUS = #orderStatus#]]>
+         </isNotNull>
+         <isNotNull property="operator" prepend="and" removeFirstPrepend="true">
+             <![CDATA[OPERATOR = #operator#]]>
+         </isNotNull>
+         <isNotNull property="memo" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MEMO = #memo#]]>
+         </isNotNull>
+         <isNotNull property="createTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATE_TIME = #createTime#]]>
+         </isNotNull>
+         <isNotNull property="status" prepend="and" removeFirstPrepend="true">
+             <![CDATA[STATUS = #status#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getOrderstatusInfoBeanCount" parameterClass="com.fd.fashion.order.bean.OrderstatusInfoBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_ORDERSTATUS_INFO 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getOrderstatusInfoBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getOrderstatusInfoBean" parameterClass="com.fd.fashion.order.bean.OrderstatusInfoBean"
+        resultClass="com.fd.fashion.order.bean.OrderstatusInfoBean">
+        <![CDATA[
+select 
+	ORDER_INFO_ID	as orderInfoId,
+	ORDER_ID	as orderId,
+	ORDER_STATUS	as orderStatus,
+	OPERATOR	as operator,
+	MEMO	as memo,
+	CREATE_TIME	as createTime,
+	STATUS	as status
+from T_ORDERSTATUS_INFO 
+
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getOrderstatusInfoBeanCondition"/>
+        </dynamic>
+       <![CDATA[ ORDER BY ORDER_INFO_ID  DESC]]>
+    </select>
+
+    <delete id="deleteOrderstatusInfoBean" parameterClass="com.fd.fashion.order.bean.OrderstatusInfoBean">
+        <![CDATA[
+delete from T_ORDERSTATUS_INFO where ORDER_INFO_ID=#orderInfoId#
+        ]]>
+    </delete>
+
+    <select id="getLastOrderStatusinfo" parameterClass="long"
+        resultClass="com.fd.fashion.order.bean.OrderstatusInfoBean">
+        <![CDATA[
+select 
+	ORDER_INFO_ID	as orderInfoId,
+	ORDER_ID	as orderId,
+	ORDER_STATUS	as orderStatus,
+	OPERATOR	as operator,
+	MEMO	as memo,
+	CREATE_TIME	as createTime,
+	STATUS	as status
+from T_ORDERSTATUS_INFO 
+where ORDER_ID=#orderId#
+ORDER BY ORDER_INFO_ID DESC
+LIMIT 1
+        ]]>
+    </select>
+</sqlMap>

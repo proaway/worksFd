@@ -1,0 +1,100 @@
+<div class="accordion-heading upload_tit"> <button class="hide" id="standardTitle"></button>
+	<span class="accordion-toggle font_s_14 blue">规格库存</span>
+</div>
+<div id="collapseSix" class="accordion-body collapse in">
+	<div class="accordion-inner">
+		<table border="0" cellspacing="0" cellpadding="0" width="100%"
+			class="upload_tab" id="configTb">
+			<tr id="mainTr" class="hide">
+			</tr>
+			<tr id="subTr" class="hide">
+			</tr>
+			<tr id="retailPriceTr">
+			  <td  class="td_136_r"><label class="right mar_top_5"><span class="required">*</span>售价：</label></td>
+              <td>
+                  <input name="price" class="input-large left" type="text" value="$!product.priceVo.priceBean.price"
+					onfocus="javascript:hideOtextOptions('retailPriceEmpty');hideOtextOptions('retailPriceErrDiv');"
+					onblur="javascript:checkPrice();"
+					placeholder="请填写该商品的售价。"  id="retailPrice"/>
+					<input type="hidden" id="retailPriceFlag" name="retailPriceFlag" value="0" />
+				  <span class="help-block left mar_left_10 mar_top_5">根据您当前的佣金费率，您的实际售价是<span class="red" id="priceSpan"></span></span>
+				  <br class="clear" />
+				   <span class="help-block left mar_left_10 mar_top_5 hide" id="retailPriceEmpty"><span class="red">价格不能为空</span></span>
+				   <span class="help-block left mar_left_10 mar_top_5 hide" id="retailPriceErrDiv"><span class="red">输入价格格式错误，请用阿拉伯数字重新填写。</span></span>
+                  </td>
+            </tr>
+            <tr id="retailPriceTr">
+			<td class="td_136_r"><label class="right mar_top_5"><span class="required">*</span>库存：</label></td>
+              <td>
+                  <input class="input-small left" type="text" value="$!product.product.stock" placeholder="库存只能是数字"  onblur="javascript:isValueEmpty('stock');" onfocus="javascript:hideOtextOptions('stockEmpty')"
+					id="stock" name="stock" onkeyup="this.value=this.value.replace(/\D/g,'');"/>
+					<input type="hidden" name="stockFlag" id="stockFlag" value="0" /><br class="clear" />
+                  <span class="help-block left mar_left_10 mar_top_5 hide" id="stockEmpty"><span class="red">库存不能为空，请用阿拉伯数字</span></span>
+                  </td>
+            </tr>
+            <tr>
+			<td class="td_136_r"></td>
+              <td>
+				  <label class="checkbox left  "><input type="checkbox" value="1" onclick="" name="saleIgnoreStock" #if($saleIgnoreStock) checked=checked #end/>零库存后是否继续销售</label>
+                  <span class="help-block left mar_left_10 ">勾选后，产品详细页将不显示库存数，库存为零后如有买家购买，库存管理中缺货数自动增加</span>
+              </td>
+            </tr>
+			<tr>
+              <td class="td_136_r">折扣价：</td>
+              <td><label class="checkbox left"><input id="if_discount" name="ifDiscount" type="checkbox" value="1"/>是否有折扣</label><span class="red hide" id="err">请先填写零售价</span>
+                  <div id="discount_content" class="alert alert-block control-group warning black hide">
+                      折扣有效期：<input value="$!StringUtil.getDateString($!product.priceVo.priceBean.discountStartDate)" id="discount_datepickera" name="discountStartDate" class="input-medium mar_top_10 mar_left_10 mar_right_10" type="text" placeholder="起始日期">至<input value="$!StringUtil.getDateString($!product.priceVo.priceBean.discountEndDate)" id="discount_datepickerb" name="discountEndDate" class="input-medium mar_top_10 mar_left_10 mar_right_20" type="text" placeholder="终止日期"><br />折扣值：<input class="input-mini mar_top_10 mar_left_10" value="$!product.priceVo.priceBean.discount" id="discount" name="discount"  type="text" placeholder="折扣值"> %<span class="help-block"><span class="red" id="err"></span></span><span class="help-block"><span class="black">您可以自由设定指定日期内产品的促销折扣，指定日期之后折扣自动取消。<br />例如：您的产品价格设定为$100 让利20% off ，实际价格为$80。</span></span>
+                      <button type="button" class="btn mar_right_15" id="cancel">取消</button><button type="button" class="btn btn-warning" id="confirm">确定</button>
+                  </div><!-- E discount_content -->
+                  <div id="discount_content_sure" class="alert alert-block control-group warning black hide">
+                      <span class="help-block font14"><span class="black">根据您输入的折扣，该商品在 <span class="red" id="startDate">2013-03-13</span> 至 <span class="red" id="endDate">2013-04-12</span> 期间的折扣值是 <span class="red" id="discount"></span> ，即 <span class="red" id="discountShow"></span> 折。</span></span></span>
+                      <button type="button" class="btn btn-warning" onclick="document.getElementById('discount_content_sure').style.display='none';document.getElementById('discount_content').style.display='block';">修改</button>
+                  </div><!-- E discount_content_sure -->
+#if($product.priceVo.priceBean.discount && $product.priceVo.priceBean.discount>0)<script>jQuery("document").ready(function(){jQuery("#discount_content").find("button[id='confirm']").click();});</script> #end
+                  </td>
+            </tr>
+              <tr>
+                <td class="td_136_r">批发价：</td>
+                <td class="pad_top_5">
+                    <label class="checkbox left"><input type="checkbox" name="ifWholesale" id="if_wholesale" value="1"/>是否支持批发</label><span class="red hide" id="err">请先填写零售价</span>
+                    <div id="wholesale_content" class="alert alert-block control-group warning black hide">
+                        购买数量<input value="$!product.priceVo.priceBean.wholesaleCount" class="input-mini mar_top_10 mar_left_10 mar_right_10" type="text" id="wholesaleCount" name="wholesaleCount" placeholder="数量" onkeyup="this.value=this.value.replace(/\D/g,'');">件及以上时，每件价格在零售价的基础上减免<input value="$!product.priceVo.priceBean.wholesaleDiscount" class="input-mini mar_top_10 mar_left_10 mar_right_10" id="wholesaleDiscount" name="wholesaleDiscount" type="text" placeholder="减免">% 。<br /><span class="help-block mar_top_5"><span class="red hide" id="err">请填写最少购买数量及折扣值。</span></span>
+                        <button type="button" class="btn mar_right_15" id="cancel">取消</button><button type="button" class="btn btn-warning" id="confirm">确定</button>
+                    </div><!-- E wholesale_content -->
+                    <div id="wholesale_content_sure" class="alert alert-block control-group warning black hide">
+                            <span class="help-block font14"><span class="black">购买数量 <span class="red" id="wholesaleCount">15</span> 件及以上时，每件价格在零售价的基础上减免 <span class="red" id="wholesaleDiscount">5%</span> ，即 <span class="red" id="wholesaleDiscountShow">9.5</span> 折。</span></span></span>
+                            <button type="button" class="btn btn-warning" onclick="document.getElementById('wholesale_content_sure').style.display='none';document.getElementById('wholesale_content').style.display='block';">修改</button>
+                    </div><!-- E wholesale_content_sure -->
+#if($product.priceVo.priceBean.wholesaleCount && $product.priceVo.priceBean.wholesaleCount>0)<script>jQuery("document").ready(function(){jQuery("#wholesale_content").find("button[id='confirm']").click();});</script> #end
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td>
+                    <table id="standardTb" class="table table-bordered mar_top_5 table-hover hide">
+                      <tr>
+                          <td colspan="7" id="standardRetail">
+                              批量将下列零售价设置为：<input class="input-small mar_top_10" type="text" placeholder="零售价"><input type="button" class="btn btn-warning mar_left_10" value="确定" id="setAllPrice"/><span class="red hide" id="err">请先填写零售价</span>
+                          </td>
+                      </tr>
+                      <tr class="warning" id="standardTitle">
+                          <td><span class="required mar_left_10 mar_top_5 mar_right_5 left">*</span>售价</td>
+                          <td>实际出售价格</td>
+                          <td><span class="required mar_left_10 mar_top_5 mar_right_5 left">*</span>库存</td>
+                          <td><span class="required mar_left_10 mar_top_5 mar_right_5 left">*</span>SKU编码</td>
+                          <td><label class="checkbox left font12 mar_right_10"><input type="checkbox" value="折扣" id="setAllDiscount">折扣</label><label class="checkbox left font12"><input type="checkbox" value="批发" id="setAllWholesale">批发 </label></td>
+                      </tr>
+                  </table>
+                </td>
+              </tr>
+			  <tr id="configErrTr" class="hide">
+				<td>&nbsp;</td>
+				<td>
+					<span class="help-block mar_top_5 mar_bottom_5">
+						<span class="red">规格信息(价格，库存，sku编码等不能为空)</span>
+					</span>
+				</td>
+			  </tr>
+		</table>
+	</div>
+</div>

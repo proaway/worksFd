@@ -1,0 +1,170 @@
+ 	<br class="clear" />
+  	<h4 class="mar_top_15 mar_bottom_20">财务总览</h4>
+    <div class="alert alert-info mar_top_15 font14 mar_bottom_5 black">
+    	<table width="100%">
+        	<tr>
+            	<td width="50%">
+                	<h4>您的账户盈余：</h4>
+                    <h1 class="yellow left mar_left_60 mar_top_10">$ $!financialVo.incomeTotal</h1>
+                    <h5 class="left mar_top_25 mar_left_5">即</h5>
+                    <h6 class="left mar_top_25 mar_left_5 font14 red">$!financialVo.incomeTotalRMB</h6>
+                    <span class="left mar_top_25 mar_left_5 font12">RMB</span>
+                    <span class="left mar_top_25 mar_left_5 font12 green">(今日汇率:$!rate)</span>
+                </td>
+                <td>
+                	<ul class="inline black">
+                    	<li><a href="$link.setPage('financial,FinancialDetails.html')" target="_blank">账户收支明细</a></li>
+ ##                   	<li class="mar_left_20"><a href="javascript:();">采购明细</a></li>
+ ##                  	<li class="mar_left_20"><a href="javascript:();">运费明细</a></li>
+ ##                  	<li class="mar_left_20"><a href="javascript:();">收款方式（3种）</a><a href="javascript:();"><span class="orange font12">管理</span></a></li>
+                    </ul>
+                    <br class="clear" />
+                	<ul class="inline black">
+                    	<li>安全等级：<span class="green">中级</span></li>
+                    	<li class="mar_left_20">已绑定手机：<span class="green">135******47</span><a href="javascript:();" class="mar_left_5">修改</a></li>
+                    	<li class="gray mar_left_20">权限未分离<a href="javascript:();" class="mar_left_5">设置</a></li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </div><br class="clear" />
+    <table class="width_100">
+    	<tr>
+       	  <td width="40%" class="center_middle">
+          	<!-- <img src="/static/prototype/shopmic-manage/img/chart.png" style="width:480px; height:170px;" alt="图表位置" title="图表位置" /> -->
+          	<div id="graph">Loading graph...</div>
+          </td>
+            <td>
+       	  <div class="alert black">
+                	<p>收款方式：</p>
+                    <table class="table table-bordered table-hover mar_top_10 left mar_right_15" style="width:160px;">
+                    	<tr>
+                        	<th style="background:#DEE0E0;"><span class="font14">VSIA</span></th>
+                        </tr>
+                    	<tr>
+                        	<td style="background:#fff;">
+                                <p class="center_middle lineh_36">****  ****  ****  7788</p>
+                            	<a href="javascript:();" class="right">管理</a>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered table-hover mar_top_10 left mar_right_15" style="width:160px;">
+                    	<tr>
+                        	<th style="background:#DEE0E0;"><span class="font14">Paypal</span></th>
+                        </tr>
+                    	<tr>
+                        	<td style="background:#fff;">
+                                <p class="center_middle lineh_36">wang********g@fulldol.com</p>
+                            	<a href="javascript:();" class="right">管理</a>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table table-bordered table-hover mar_top_10 left mar_right_15" style="width:160px; border:dashed 1px #CCC;">
+
+                    	<tr>
+                        	<td style="background:#fff;">
+                            <a href="javascript:();" style="text-decoration:none;"><p class="center_middle lineh_44 font60 gray mar_top_10">+</p>
+                            	<p class="center_middle gray lineh_36 bold">添加收款方式</p></a>
+                            </td>
+                        </tr>
+                    </table>
+                <br class="clear" />
+                </div>
+            </td>
+        </tr>
+    </table>
+    
+	<div class="upload_tit pm_tit">
+    	<ul>
+       	  <li class="bold font14" style="border-right:none;">最近交易列表</li>
+        	<li><a href="$link.setPage('financial,FinancialDetails.html')" target="_blank">收支明细</a></li>
+##             <li><a href="javascript:();">采购明细</a></li>
+##            <li><a href="javascript:();">运费明细</a></li> 
+        </ul>
+        <span class="help-block mar_top_10">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    </div><!-- E tool -->
+    <table border="0" cellspacing="0" cellpadding="0" class="table table-hover center_t pm_table mar_bottom_5">
+   
+      <tr class="success font14">
+        <td><span>流水号</span></td>
+        <td><span>交易时间</span></td>
+        <td><span>名称 | 备注</span></td>
+        <td><span>交易金额（$）</span></td>
+        <td><span>交易状态 | 订单状态</span></td>
+        <td><span>操作</span></td>
+      </tr>
+    
+     #foreach($financial in $financialVo.financialList)
+      <tr>
+        <td><label>$!financial.financialId</label></td>
+        <td><label>$!StringUtil.getDateString($!financial.createTime,'yyyy-MM-dd hh:mm:ss')</label></td>
+        <td><label>#if($!financial.amountType == 1) 收入
+        		#elseif($!financial.amountType == 2) 退款
+         		#elseif($!financial.amountType == 3) 采购
+          		#elseif($!financial.amountType == 4) 运费
+          	 	#elseif($!financial.amountType == 5) 佣金
+            	#elseif($!financial.amountType == 6) 活动
+             	#end</label></td>
+        <td><label class="red"> $!financial.amount</label></td>
+        <td><label>$!financial.financialStatus</label></td>
+        <td><a href="$link.setPage('order,OrderDetail.html')?orderId=$!financial.linkeId" target="_blank">详情</a></td>
+      </tr>
+      #end
+      
+    </table><!-- E content -->
+    <div class="upload_tit pm_tit right_t">
+        <span class="help-block mar_top_10 mar_right_15"><a href="$link.setPage('financial,FinancialDetails.html')">&gt;&gt;查看所有交易记录</a></span>
+    </div><!-- E tool -->
+    <br class="clear" />
+
+  </div><!-- E container -->
+  
+  <script type="text/javascript">
+	var myChart = new JSChart('graph', 'line');
+	myChart.setDataArray($!dataYesterday, 'blue');
+	myChart.setDataArray($!dataToday, 'green');
+/* 	myChart.setAxisPaddingBottom(40);
+	myChart.setTextPaddingBottom(20); */
+	myChart.setTextPaddingLeft(0);
+	myChart.setTextPaddingBottom(0);
+	myChart.setAxisValuesNumberY(11);
+	myChart.setIntervalStartY(0);
+	myChart.setIntervalEndY($maxTotal);
+	myChart.setLabelX([2,'2:00']);
+	myChart.setLabelX([4,'4:00']);
+	myChart.setLabelX([6,'6:00']);
+	myChart.setLabelX([8,'8:00']);
+	myChart.setLabelX([10,'10:00']);
+	myChart.setLabelX([12,'12:00']);
+	myChart.setLabelX([14,'14:00']);
+	myChart.setLabelX([16,'16:00']);
+	myChart.setLabelX([18,'18:00']);
+	myChart.setLabelX([20,'20:00']);
+	myChart.setLabelX([22,'22:00']);
+	myChart.setLabelX([24,'24:00']);
+	myChart.setAxisValuesNumberX(13);
+	myChart.setShowXValues(false);
+	myChart.setTitleColor('#454545');
+	myChart.setAxisValuesColor('#454545');
+	myChart.setLineColor('#A4D314', 'green');
+	myChart.setLineColor('#e5f3fa', 'gray');
+	myChart.setAxisNameX('时间');
+	myChart.setAxisNameY('额度');
+	myChart.setTooltip([2]);
+	myChart.setTooltip([4]);
+	myChart.setTooltip([6]);
+	myChart.setTooltip([8]);
+	myChart.setTooltip([10]);
+	myChart.setTooltip([12]);
+	myChart.setTooltip([14]);
+	myChart.setTooltip([16]);
+	myChart.setTooltip([18]);
+	myChart.setTooltip([20]);
+	myChart.setTooltip([22]);
+	myChart.setTooltip([24]);
+//	myChart.setFlagColor('#9D16FC');
+	myChart.setFlagRadius(4);
+
+	myChart.setSize(600, 320);
+	myChart.draw();
+</script>

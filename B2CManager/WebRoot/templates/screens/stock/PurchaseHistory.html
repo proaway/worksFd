@@ -1,0 +1,203 @@
+$page.setTitle("采购历史")
+  	<br class="clear" />
+  	<h4 class="mar_top_15 mar_bottom_20">采购历史</h4>
+    <div class="search_form mar_bottom_10">
+        <ul class="inline">
+            <li><label class="left mar_top_5">凭证号：</label><input type="text" class="input-medium left" placeholder="凭证号" /></li>
+            <li><a class="btn btn-primary left">查询</a><a id="block_more_search" class="btn btn-link left" onclick="javascript:document.getElementById('more_search').style.display='block';document.getElementById('block_more_search').style.display='none';document.getElementById('hide_more_search').style.display='block';">高级查询<span class="icon-chevron-down"></span></a><a id="hide_more_search" class="btn btn-link left hide" onclick="javascript:document.getElementById('more_search').style.display='none';document.getElementById('block_more_search').style.display='block';document.getElementById('hide_more_search').style.display='none';">收起<span class="icon-chevron-up"></span></a>
+            </li>
+        </ul>
+        <br class="clear" />
+        <ul class="inline alert blue pad_left_5 pad_right_5 pad_top_15 hide" id="more_search">
+            <li>
+              <select id="" name="" class="left oi_status_max_w">
+                <option value="1">采购日期</option>
+              </select>
+              <input type="text" value="01/01/2013" id="datepickera" class="input-small mar_left_10 mar_right_10 left" /><label class="left mar_top_5">到</label><input type="text" value="01/01/2013" id="datepickerb" class="input-small mar_left_10 mar_right_5 left" /></li>
+            <li><label class="left mar_top_5">采购数量：</label>
+              <input type="text" class="input-mini left" placeholder="" />
+              <label class="left mar_top_5 mar_left_5 mar_right_5">至</label>
+              <input type="text" class="input-mini left" placeholder="" />
+            </li>
+            <li><label class="left mar_top_5">采购价格：</label>
+              <input type="text" class="input-mini left" placeholder="" />
+              <label class="left mar_top_5 mar_left_5 mar_right_5">至</label>
+              <input type="text" class="input-mini left" placeholder="" />
+            </li>
+            <li><label class="left mar_top_5">渠道：</label>
+              <select id="" name="" class="left oi_status_max_w">
+                <option value="1">淘宝</option>
+              </select>
+            </li>
+            <li><label class="left mar_top_5">采购人：</label>
+              <select id="" name="" class="left oi_status_max_w">
+                <option value="1">淘宝</option>
+              </select>
+            </li>
+            <li><label class="left mar_top_5">物流方式：</label>
+              <select id="" name="" class="left oi_status_max_w">
+                <option value="1">顺丰快递</option>
+              </select>
+            </li>
+            <li><label class="left mar_top_5">产品名称：</label>
+              <input type="text" class="input-medium left" placeholder="产品名称" />
+            </li>
+            <li><button class="btn btn-success left"><span class="white">应用</span></button></li><br class="clear" />
+        </ul>
+    </div>
+
+    
+    <table border="0" cellspacing="0" cellpadding="0" class="table table-bordered table-striped table-hover center_t font12 tl_mt3_mb3 mar_bottom_0">
+  <tr class="info bold">
+     <td><label>凭证号</label></td>
+     <td><label>SKU</label></td>
+    <td width="180px"><label>产品名称</label></td>
+    <td><label>采购日期</label></td>
+    <td><label>采购数量</label></td>
+    <td><label>采购价</label></td>
+    <td><label>入库数</label></td>
+    <td><label>入库时间</label></td>
+    <td><label>渠道</label></td>
+    <td><label>运费</label></td>
+    <td><label>物流方式</label></td>
+    <td><label>货运单号</label></td>
+    <td><label>采购总价</label></td>
+    <td><label>采购人（驳回人）</label></td>
+    <td><label>任务状态</label></td>
+    <td width="80px"><label>备注信息</label></td>
+    </tr>
+      <tr>
+        <td><label>1324156798787</label></td>
+        <td><label>TG738709</label></td>
+        <td><label>If Edward struck gold in the Colorado Rockies</label></td>
+        <td><label class="font10"><span>2013-05-12</span></label></td>
+        <td><label>96</label></td>
+        <td><label>￥56.00</label></td>
+        <td><label>56</label></td>
+        <td><label class="font10"><span>2013-6-8 19:01:00</span></label></td>
+        <td><label>淘宝</label></td>
+        <td><label>￥22.00</label></td>
+        <td><label>顺丰快递</label></td>
+        <td><label>1324156798787</label></td>
+        <td><label>￥1034.99</label></td>
+        <td><label>张三</label></td>
+        <td><label>成功</label></td>
+        <td><a href="#view_remarks" role="button" class="" data-toggle="modal">查看</a></td>
+      </tr>
+      <tr>
+        <td><label>1324156798787</label></td>
+        <td><label>TG738709</label></td>
+        <td><label>If Edward struck gold in the Colorado Rockies</label></td>
+        <td><label class="font10"><span>2013-05-12</span></label></td>
+        <td><label>96</label></td>
+        <td><label>￥56.00</label></td>
+        <td><label>56</label></td>
+        <td><label class="font10"><span>2013-6-8 19:01:00</span></label></td>
+        <td><label>淘宝</label></td>
+        <td><label>￥22.00</label></td>
+        <td><label>顺丰快递</label></td>
+        <td><label>1324156798787</label></td>
+        <td><label>￥1034.99</label></td>
+        <td><label>张三</label></td>
+        <td><label>部分成功，断货</label></td>
+        <td><a href="#view_remarks" role="button" class="" data-toggle="modal">查看</a></td>
+      </tr>
+      <tr>
+        <td><label>1324156798787</label></td>
+        <td><label>TG738709</label></td>
+        <td><label>If Edward struck gold in the Colorado Rockies</label></td>
+        <td><label class="font10"><span>--</span></label></td>
+        <td><label>--</label></td>
+        <td><label>--</label></td>
+        <td><label>--</label></td>
+        <td><label class="font10"><span>--</span></label></td>
+        <td><label>--</label></td>
+        <td><label>--</label></td>
+        <td><label>--</label></td>
+        <td><label>--</label></td>
+        <td><label>--</label></td>
+        <td><label>张三</label></td>
+        <td><label>未成功，断货</label></td>
+        <td><a href="#view_remarks" role="button" class="" data-toggle="modal">查看</a></td>
+      </tr>
+      <tr>
+        <td><label>1324156798787</label></td>
+        <td><label>TG738709</label></td>
+        <td><label>If Edward struck gold in the Colorado Rockies</label></td>
+        <td><label class="font10"><span>--</span></label></td>
+        <td><label>--</label></td>
+        <td><label>--</label></td>
+        <td><label>--</label></td>
+        <td><label class="font10"><span>--</span></label></td>
+        <td><label>--</label></td>
+        <td><label>--</label></td>
+        <td><label>--</label></td>
+        <td><label>--</label></td>
+        <td><label>--</label></td>
+        <td><label>张三</label></td>
+        <td><label>取消采购</label></td>
+        <td><a href="#view_remarks" role="button" class="" data-toggle="modal">查看</a></td>
+      </tr>
+    </table>
+
+    <div class="pagination pagination-right">
+    <span style="display:block; margin-bottom:5px;">总条数：<strong class="red mar_right_15">4</strong> 总页数：<strong class="red">1</strong></span>
+        <ul>
+            <li class="disabled"><a href="javascript:();">«</a></li>
+            <li class="active"><a href="javascript:();">1</a></li>
+            <li><a href="javascript:();">2</a></li>
+            <li><a href="javascript:();">3</a></li>
+            <li><a href="javascript:();">4</a></li>
+            <li><a href="javascript:();">5</a></li>
+            <li><a href="javascript:();">»</a></li>
+        </ul>
+    </div><!-- E page -->
+    
+<div id="replenishment" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="width: 990px; max-width: 990px; margin-left: -495px; ">
+        <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h5 id="myModalLabel">新增采购任务</h5>
+        </div>
+        <div class="modal-body">
+
+        </div>
+        <div class="modal-footer">
+        <button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+        <button class="btn btn-primary" data-dismiss="modal">生成</button>
+        </div>
+    </div><!-- E replenishment -->
+
+  <br class="clear" />
+  <div id="footer"></div>
+
+  <!--<div style="width:100%; height:30px; margin-top:50px; background:url(/static/prototype/shopmic-manage/img/footer.jpg) repeat-x;"></div>-->
+  
+  <div id="layer_box">
+   <p class="layer_box_tit"><a href="javascript:();">新支付</a></p>
+   <p class="layer_box_tit"><a href="javascript:();">新订单</a></p>
+  </div>
+<!-- S javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/jquery-1.7.2.min.js"></script>
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/bootstrap.min.js"></script>
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/jquery-ui-1.10.0.custom.min.js"></script>
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/datepicker.js"></script>
+#**
+<script type="text/javascript">
+(function() {
+    var $backToTopTxt = '', $backToTopEle = $('<div class="backToTop_pro"></div>').appendTo($("body"))
+        .text($backToTopTxt).attr("title", $backToTopTxt).click(function() {
+            $("html, body").animate({ scrollTop: 0 }, 120);
+    }), $backToTopFun = function() {
+        var st = $(document).scrollTop(), winh = $(window).height();
+        (st > 0)? $backToTopEle.show(): $backToTopEle.hide();
+        //IE6下的定位
+        if (!window.XMLHttpRequest) {
+            $backToTopEle.css("top", st + winh - 166);
+        }
+    };
+    $(window).bind("scroll", $backToTopFun);
+    $(function() { $backToTopFun(); });
+})();
+</script>*#

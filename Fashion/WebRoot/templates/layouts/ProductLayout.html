@@ -1,0 +1,113 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>
+			$page.title</title>
+		<meta name="description" content="<!--MICCMS:Meta-Description-->" />
+		<meta name="keywords" content="<!--MICCMS:Meta-Keywords-->" />
+		<link rel="shortcut icon" href="/static/web/images/logo-ico.ico" type="image/ico" />
+		<script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/jquery-1.7.2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/images/list-new/colorbox.css">
+        <link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/whole.css" />
+		<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/fashion.css" />
+		<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/details.css" />
+		<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/cart.css" />
+		<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/list.css" />
+		<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/inc/tips/tips.css" />
+        <link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/log_reg.css" />
+##		<link rel="stylesheet" type="text/css" href="$content.getURI('js/tips/tips.css')" />
+		<script language="javascript" type="text/javascript"
+			src="/static/prototype/product_fashion/inc/product_fashion_nav.js"></script>
+		<script language="javascript" type="text/javascript"
+			src="/static/prototype/product_fashion/inc/product_fashion_tab.js"></script>
+##		<script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/product_fashion_pro_view.js"></script>
+		<script language="javascript" type="text/javascript"
+			src="/static/prototype/product_fashion/inc/show_layer.js"></script>
+		<script language="javascript" src="/static/prototype/product_fashion/inc/groupConfig.js"></script>
+##		<script language="javascript" src="$content.getURI('js/groupConfig.js')"></script>
+		<script language="javascript" src="/static/prototype/product_fashion/inc/imageview.js"></script>
+		<script language="javascript" src="/static/prototype/product_fashion/inc/cookie.js"></script>
+		<script language="javascript" src="/static/prototype/product_fashion/inc/producthist.js"></script>
+		<script language="javascript" src="/static/prototype/product_fashion/inc/productConfig.js"></script>
+##		<script language="javascript" src="$content.getURI('js/productConfig.js')"></script>
+		<script language="javascript" src="/static/prototype/product_fashion/inc/logintest.js"></script>
+		<script language="javascript" src="/static/prototype/product_fashion/inc/tips/tips.js"></script>
+##		<script language="javascript" src="$content.getURI('js/logintest.js')"></script>
+##		<script language="javascript" src="$content.getURI('js/tips/tips.js')"></script>
+<script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/jsonconvert.js"></script>
+<script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/buyercheck.js"></script>
+<script type="text/javascript" src="/static/prototype/product_fashion/inc/statclick.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/showLoading.css"/>
+<script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/jquery.showLoading.js"></script>
+
+	</head>
+	<body>
+		<div id="container">
+			<!-- ------------------------- S header ------------------------- -->
+			<div id="header">
+				<!--S header-->
+				$navigation.setTemplate('Head.html')
+
+			<!--E header-->
+			</div>
+			<!-- ------------------------- E header ------------------------- -->
+			<br class="clearfloat" />
+			<!-- ------------------------- S product ------------------------- -->
+			<div id="product">
+				<br class="clearfloat" />
+				<!--productView start-->
+				<div class="productView">
+					<!--productView start-->
+					<div class="DanpinLeft">
+						$navigation.setTemplate('product,Product_TP.html')
+					</div>
+					<!--productView end-->
+					<!--DanpinRight start-->
+					<div class="DanpinRight">
+						<!--S danpin right-->
+						<div class="featured_detail_1_2">
+							$screen_placeholder
+						</div>
+						<!--E danpin right-->
+					</div>
+					<!--DanpinRight end-->
+				</div>
+				<!--productView end-->
+				<br class="clearfloat" />
+			</div>
+			<!-- ------------------------- E product ------------------------- -->
+			<br class="clearfloat" />
+			<!-- ------------------------- S itemsTogether ------------------------- -->
+			<div id="itemsTogether">
+				$navigation.setTemplate('product,Product_TOGE.html')
+			</div>
+			<!-- ------------------------- E itemsTogether ------------------------- -->
+			<br class="clearfloat" />
+			<!-- ------------------------- S mainContent ------------------------- -->
+			<div id="mainContent">
+				<!--S other Product-->
+				$navigation.setTemplate('product,Product_CONTENT.html')
+				<!--E other Product-->
+				<br class="clearfloat" />
+
+				<!--S other Product-->
+				$navigation.setTemplate('product,Product_YRH.html')
+				<!--E other Product-->
+				<br class="clearfloat" />
+			</div>
+			<!-- ------------------------- E mainContent ------------------------- -->
+			<br class="clearfloat" />
+			<!-- ------------------------- S footer ------------------------- -->
+			<div id="footer">
+				<!--S footer-->
+				$navigation.setTemplate('Bottom.html')
+				<br class="clearfloat" />
+				<!--E footer-->
+			</div>
+			<!-- ------------------------- S footer ------------------------- -->
+			<br class="clearfloat" />
+		</div>
+	</body>
+</html>

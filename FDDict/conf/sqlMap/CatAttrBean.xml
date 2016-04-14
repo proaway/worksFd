@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertCatAttrBean" parameterClass="com.fd.fashion.dict.bean.CatAttrBean">
+        <![CDATA[
+insert into TC_CAT_ATTR
+  (CAT_ID, ATTR_ID, SHOW_STYLE, SHOW_TYPE)
+values
+  (#catId#, #attrId#, #showStyle#, #showType#)
+        ]]>
+    </insert>
+
+    <update id="updateCatAttrBean" parameterClass="com.fd.fashion.dict.bean.CatAttrBean">
+        <![CDATA[
+update TC_CAT_ATTR 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="catId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CAT_ID = #catId#]]>
+            </isNotNull>
+            <isNotNull property="attrId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ATTR_ID = #attrId#]]>
+            </isNotNull>
+            <isNotNull property="showStyle" prepend="," removeFirstPrepend="true">
+                <![CDATA[SHOW_STYLE = #showStyle#]]>
+            </isNotNull>
+            <isNotNull property="showType" prepend="," removeFirstPrepend="true">
+                <![CDATA[SHOW_TYPE = #showType#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where CAT_ID = #catId#
+        ]]>
+    </update>
+
+    <sql id="getCatAttrBeanCondition">
+        <isNotNull property="catId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[CAT_ID = #catId#]]>
+        </isNotNull>
+        <isNotNull property="attrId" prepend="and" removeFirstPrepend="true">
+            <![CDATA[ATTR_ID = #attrId#]]>
+        </isNotNull>
+        <isNotNull property="showStyle" prepend="and" removeFirstPrepend="true">
+            <![CDATA[SHOW_STYLE = #showStyle#]]>
+        </isNotNull>
+        <isNotNull property="showType" prepend="and" removeFirstPrepend="true">
+            <![CDATA[SHOW_TYPE = #showType#]]>
+        </isNotNull>
+    </sql>
+
+    <select id="getCatAttrBeanCount" parameterClass="com.fd.fashion.dict.bean.CatAttrBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from TC_CAT_ATTR 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getCatAttrBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getCatAttrBean" parameterClass="com.fd.fashion.dict.bean.CatAttrBean"
+        resultClass="com.fd.fashion.dict.bean.CatAttrBean">
+        <![CDATA[
+select 
+	CAT_ID	as catId,
+	ATTR_ID	as attrId,
+	SHOW_STYLE	as showStyle,
+	SHOW_TYPE as showType
+from TC_CAT_ATTR 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getCatAttrBeanCondition"/>
+        </dynamic>
+        <![CDATA[
+order by CAT_ID, IDX
+        ]]>
+    </select>
+
+    <delete id="deleteCatAttrBean" parameterClass="com.fd.fashion.dict.bean.CatAttrBean">
+        <![CDATA[
+delete from TC_CAT_ATTR where CAT_ID=#catId#
+        ]]>
+    </delete>
+</sqlMap>

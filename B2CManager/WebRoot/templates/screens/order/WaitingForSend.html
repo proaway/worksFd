@@ -1,0 +1,114 @@
+$page.setTitle("待发货订单")
+<br class="clear">
+<form name="listForm" id="listForm" method="get" >
+<h4 class="mar_top_15 mar_bottom_20">待发货</h4>
+<input type="hidden" id="atcionFlag" name="atcionFlag" value="WaitingForSend" />
+<div class="search_form">
+	<ul class="inline">
+        <li>
+			<label class="left mar_top_5">订单号：</label>
+			<input type="text" placeholder="订单号" class="input-medium left" id="orderId" name="orderId" value="$!orderVo.orderId"></li>
+        <li>
+			<label class="left mar_top_5">订单生成时间：</label>
+			<input id="datepickera" class="input-small   mar_right_10 left" type="text" value="$!StringUtil.getDateString($!orderVo.startCreateDate)" name="createOrderStart">
+			<label class="left mar_top_5">到</label>
+			<input id="datepickerb" class="input-small  mar_left_10 mar_right_10  left" type="text" value="$!StringUtil.getDateString($!orderVo.endCreateDate)" name="createOrderEnd">
+		</li>
+        <li>
+			<label class="left mar_top_5">付款时间：</label>
+			<input type="text" class="input-small mar_right_10 left" id="paymentdatepickera" #if($!orderVo.startPaymentDate)value="$StringUtil.getDateString($!orderVo.startPaymentDate)"#end name="paymentDateStart">
+			<label class="left mar_top_5">到</label>
+			<input type="text" class="input-small mar_left_10 mar_right_5 left" id="paymentdatepickerb" #if($!orderVo.endPaymentDate)value="$StringUtil.getDateString($!orderVo.endPaymentDate)"#end name="paymentDateEnd">
+		</li>
+        <li><label class="left mar_top_5">买家昵称：</label><input type="text" placeholder="userId" class="input-medium left" id="userId" name="userId" value="$!orderVo.userId"></li>
+        <li>
+            <label class="left mar_top_5">货运国家：</label>
+            <select class="left" name="regionId" id="regionId">
+                <optgroup label="---------">
+					<option value="">请选择货运国家</option>
+					#foreach($regionVo in $regionLists)
+						<option value="$regionVo.regionId" #if($orderVo.shippingCountry==$regionVo.regionId) selected #end >$regionVo.regionNameCn</option>
+					#end
+                </optgroup>
+            </select>
+        </li>
+        <li><label class="left mar_top_5">剩余备货时间：</label>
+          <select class="left" name="maxStockDays" id="maxStockDays">
+			<option value="" #if($orderVo.maxStockDays=="")selected #end >请选择备货时间</option>
+            <option value="1" #if($orderVo.maxStockDays==1)selected #end >小于1天</option>
+            <option value="2" #if($orderVo.maxStockDays==2)selected #end >小于2天<!--小于12小时--></option>
+            <option value="3" #if($orderVo.maxStockDays==3)selected #end >小于3天<!--小于6小时--></option>
+            <option value="4" #if($orderVo.maxStockDays==4)selected #end >小于4天<!--小于1小时--></option>
+          </select>
+        </li>
+        <li><input type="button" class="btn btn-primary left" value="查询" onclick="searchWaitSendOrder();"></li>
+    </ul>
+</div>
+<br class="clear">
+<div class="search_form well well-small padding_5 mar_bottom_10">
+	<ul class="inline mar_top_5 black">
+        <li class="pad_top_5"><label class="left">订单总数：</label><a class="left" target="_blank" href="javascript:();"><label class="red bold">（$!searchOrderVo.orderCount）</label></a></li>
+        <li class="pad_top_5"><label class="left">订单总金额（$）：</label><a class="left" target="_blank" href="javascript:();"><label class="red bold">$cnu.cullNum($!searchOrderVo.orderPriceTotal)</label></a></li>
+        <li><button type="button" class="btn btn-link" onclick="javascript:exportAllDataForExcel('listForm');">
+<span class="icon-list"></span>
+Excel导出
+</button></li>
+    </ul>
+	<br class="clear">
+</div>
+<table cellspacing="0" cellpadding="0" border="0" class="table table-bordered center_t font12 tl_mt3_mb3">
+  <tbody><tr class="info bold">
+<td><label>订单号</label></td>
+<td><label>订单生成时间</label></td>
+<td><label>订单金额</label></td>
+<td><label>订单付款时间</label></td>
+<td><label>买家昵称</label></td>
+<td><label>货运国家</label></td>
+<td><label>订单状态</label></td>
+<td><label>操作</label></td>
+  </tr>
+#if($searchOrderVo && $searchOrderVo.orders && $searchOrderVo.orders.size()>0)
+	#foreach($ord in $searchOrderVo.orders)
+		<tr>
+            <td><a target="_blank" href="$link.setPage('order,OrderDetail.html')?orderId=$ord.orderId">$ord.orderId</a></td>
+            <td><label>#if($ord.createDate)$!StringUtil.getDateString($!ord.createDate,'yyyy-MM-dd HH:mm:ss')#end</label></td>
+            <td><label>$ <span name="total">$cnu.cullNum($ord.total)</span></label></td>	
+            <td><label>#if($!ord.paymentDate)$!StringUtil.getDateString($!ord.paymentDate,'yyyy-MM-dd HH:mm:ss') #end</label></td>
+            <td><label>#if($ord.userId) $ord.userId #end</label></td>
+            <td><label>$!ord.shippingCountry</label></td>
+            <td><label> #if($ord.orderStatusCN) $!ord.orderStatusCN  #end</label></td>
+            <td  orderId="$ord.orderId">
+				#if($ord.freeze=='OF001')
+				<a class="mar_right_10" href="javascript:();" onclick="freezeOrUnfreezeOrder('$ord.orderId',2,'waitingForSendFlag');">解冻</a>
+				#else
+				<a class="mar_right_5" onclick="showShippingInfo('$ord.orderId');" href="#">开始发货</a>
+				<a class="mar_right_10" href="javascript:();" onclick="freezeOrUnfreezeOrder('$ord.orderId',1,'waitingForSendFlag');">冻结</a>
+				#end
+				<a data-toggle="modal" class="mar_right_5" role="button" href="#" onclick="showContactBuyer('$ord.buyerId','$ord.orderId');">联系买家</a>
+				<a href="#" role="button" data-toggle="modal" onclick="showOrderMeno('$ord.orderId','$ord.orderStatus')">备注</a>
+			</td>
+      </tr>
+	#end
+#end
+</tbody></table>
+#parse("screens/Nap.html")
+<!--<div class="pagination pagination-right">
+<span style="display:block; margin-bottom:5px;">总条数：<strong class="red mar_right_15">5</strong> 总页数：<strong class="red">1</strong></span>
+    <ul>
+        <li class="disabled"><a href="javascript:();">«</a></li>
+        <li class="active"><a href="javascript:();">1</a></li>
+        <li><a href="javascript:();">2</a></li>
+        <li><a href="javascript:();">3</a></li>
+        <li><a href="javascript:();">4</a></li>
+        <li><a href="javascript:();">5</a></li>
+        <li><a href="javascript:();">»</a></li>
+    </ul>
+</div>--><!-- E page -->
+</form>
+	<script>
+	//查询
+function searchWaitSendOrder(){
+    document.listForm.action = "$link.setPage('order,WaitingForSend.html')";
+    document.listForm.submit();
+}
+    </script>

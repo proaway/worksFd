@@ -1,0 +1,219 @@
+#set($title="Register a New Account - " + $WebPropUtil.getProperty("website.webname"))
+$page.setTitle($title)
+  <div id="mainContent">
+  	<!-- --------------- S registerANewAccount --------------- -->
+    <div id="registerANewAccount">
+        <div class="reg_tit">Register a New Account</div><br class="clearfloat" />
+        <div class="reg_con">
+            <form id="regForm" name="regForm" method="post" action="" onsubmit="return chkForm();">
+            <input name="returnUrl" id="returnUrl" value="$returnUrl" type="hidden">
+          <table border="0" cellpadding="2" cellspacing="0">
+            <tbody><tr>
+              <td colspan="2" align="left" height="50" valign="top"><div><b class="line-height30 font-size14">Email Address:</b></div>
+                <input name="email" id="email" maxlength="200" size="40" class="log_text" onblur="chkBuyerEmail(this)" value="">
+				<label class="log_email_yes hide" id="ok">&nbsp;√</label>
+                <label class="log_email_red" id="empty"><br />Please enter your Email Address.</label>
+                <label class="log_email_red hide" id="error"><br />Sorry! This account already exists. Please input valid.</label>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" align="left" height="10" valign="top"></td>
+            </tr>
+            <tr>
+              <td colspan="2" align="left" valign="top"><div><b class="line-height30 font-size14">User ID:</b></div>
+              <div>
+                <input id="userId" name="userId" maxlength="20" value="" onchange="chkUserId(this)" class="reg_userid" size="20">
+				<label class="log_email_yes hide" id="ok">&nbsp;√</label>
+              </div>
+                <div style="color:#666;">Use letters or numbers, but not symbols.</div>
+				<label class="reg_userid_red" id="empty">Please enter your User ID.</label>
+                <label class="reg_userid_red hide" id="error">Sorry! User ID is incorrect. Please try again.</label></td>
+            </tr>
+            <tr>
+              <td colspan="2" align="left" height="10" valign="top"></td>
+            </tr>
+            <tr>
+              <td colspan="2" align="left" height="10" valign="top">
+				<div><b class="line-height30 font-size14">Country:</b></div>
+				<select name="country" id="country" style="width:185px" onchange="chkCountry(this)">
+					<option value="">Coose country</option>
+                #foreach($country in $countries)
+                	<option value="$country.regionId">$country.regionName</option>
+                #end
+				</select>
+				<div class="reg_userid_red" id="empty">Please choose country.</div>
+			  </td>
+            </tr>
+            <tr>
+              <td colspan="2" align="left" height="10" valign="top"></td>
+            </tr>
+            <tr>
+              <td align="left" valign="top" width="260"><div><b class="line-height30 font-size14">First Name:</b></div>
+              <input name="firstName" id="firstname" maxlength="30" size="30" class="name_text" onchange="chkName(this)" value="">
+				<label class="reg_userid_red" id="empty"><br />Please enter your First Name.</label>
+              </td>
+              <td colspan="" align="left" valign="top"><div><b class="line-height30 font-size14">Last Name:</b></div>
+                <input name="lastName" id="lastname" maxlength="30" size="30" class="name_text" onchange="chkName(this)" value="">
+				<label class="reg_userid_red" id="empty"><br />Please enter your Last Name.</label>
+              </td>
+              <td style="vertical-align:middle; padding-top:10px;">
+			  </td>
+             </tr>
+            <tr>
+              <td colspan="2" align="left" height="20" valign="top"></td>
+            </tr>
+            <tr>
+              <td align="left" valign="top"><div><b class="line-height30 font-size14">Password:</b></div>
+              <input class="reg_pwd" id="password" name="password" size="30" value="" maxlength="20" type="password" onblur="chkPassword(this)" onchange="chkPasswordR('#confirmPassword')"/>
+                <br>
+              <div class="clear" style="color:#666;">6 to 20 characters</div>
+			  <label class="reg_userid_red hide" id="error">Sorry! Password is incorrect. Please try again.</label>
+              <div id="passwordTipDiv"></div>
+              </td>
+              <td colspan="3" align="left" valign="top"><div><b class="line-height30 font-size14">Reenter Password:</b></div>
+                <input class="reg_pwd" id="confirmPassword" name="confirmPassword" value="" size="23" maxlength="20" onchange="chkPasswordR(this)" type="password">
+					<label class="reg_userid_red hide" id="error"><br />Sorry! Reenter Password is incorrect. Please try again.</label>
+                <div id="confirmPasswordTipDiv"></div>
+              <div style="display:none;">Invalid email address, please input valid email address....</div>&nbsp;</td>
+            </tr>
+            <tr>
+              <td colspan="2" align="left" height="10" valign="top"></td>
+            </tr>
+            <tr>
+              <td colspan="2" align="left" valign="bottom"><div class="floatleft"><div><b class="line-height30 font-size14">Security Code:</b></div>
+                <div style="float:left;"><input class="reg_yzm" name="securityCode" size="17" value="" maxlength="6" onkeypress="if(event.keyCode=='13'){doRegister();}" onblur="chkName(this)"> 
+                <img id="securityCodeImg" alt="" src="$content.getURI('GetSecurityImg')" align="absmiddle" height="20" width="80">
+					
+                </div></div>
+                <div class="clear"><span style="color:#666;">Cannot see the security code?</span> <a href="javascript:;;" onclick="jQuery('#securityCodeImg').attr('src','$content.getURI('GetSecurityImg')?'+Math.random())">click here.</a>
+				<label class="reg_userid_red" id="empty"><br />Please Reenter Security Code.</label>
+                </div>
+              <div class="Mistake_02 clear hide">Register failed!</div>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" align="right" valign="top">&nbsp;</td>
+            </tr>
+            <tr>
+              <td colspan="2" align="left" valign="top"><input id="agree" name="agree" value="1" checked="" type="checkbox">
+              <span class="log_remember">I accept <a href="http://www.shopmadeinchina.com/MicBuyer/help-whoselsale/terms_of_use.shtml" target="_blank">Terms of Use</a> of MadeInChina.com.</span></td>
+            </tr>
+            <tr>
+              <td colspan="2" align="left" valign="top"><div style="margin-top:15px;"><input class="reg_btn" value="Register" type="button"  
+				onmouseout="this.style.background='url(/static/prototype/product_fashion/images/button1.gif) no-repeat'" 
+				onmouseover="this.style.background='url(/static/prototype/product_fashion/images/button2.gif) no-repeat'" 
+				onmousedown="this.style.background='url(/static/prototype/product_fashion/images/button3.gif) no-repeat'" 
+				onmouseup="this.style.background='url(/static/prototype/product_fashion/images/button2.gif) no-repeat'" 
+				onclick="doRegister();" /></div></td>
+            </tr>
+          </tbody></table>
+          </form>
+        </div>
+        
+    </div>
+    <!-- --------------- E registerANewAccount --------------- -->
+    <!-- --------------- S rightContent --------------- -->
+    <div id="rightContent">
+        <div class="font-size14 mar-top20"><b>Already have an account?</b></div>
+        <div style="margin-top:10px;"><input type="button" class="SignIn_button" value="Sign In" onclick="location='$link.setPage('buyer,Login.html')'" /></div>
+        <div class="forget_pwd"><a href="/static/prototype/product_fashion/forget_password.shtml">Forgot your password?</a></div>
+    </div>
+    <!-- --------------- E rightContent --------------- -->
+    <br class="clearfloat" />
+  </div>
+<script>
+function chkBuyerEmail(obj) {
+	var email = jQuery(obj).val();
+	jQuery(obj).parents("tr").find("label").each(function(i,o){jQuery(o).hide();});
+	if (email == "" || !isEmail(email)) {
+		jQuery(obj).parents("tr").find("#empty").show();
+	} else {
+		jQuery("body").showLoading();
+		jQuery.getJSON("$link.setAction('buyer.AjaxCheckEmail')", {email:email}, function(data){
+			jQuery("body").hideLoading();
+			if (data.status == 1) {
+				jQuery(obj).parents("tr").find("#ok").show();
+			} else {
+				jQuery(obj).parents("tr").find("#error").show();
+			}
+		});
+	}
+}
+function chkCountry(o) {
+	var country = o.value;
+	if (country == "") {
+		jQuery(o).next().show();
+	} else {
+		jQuery(o).next().hide();
+	}
+}
+function chkUserId(obj) {
+	var userId = jQuery(obj).val();
+	jQuery(obj).parents("tr").find("label").each(function(i,o){jQuery(o).hide();});
+	if (userId == "" || !validUsername(userId)) {
+		jQuery(obj).parents("tr").find("#error").show();
+	} else {
+		jQuery("body").showLoading();
+		jQuery.getJSON("$link.setAction('buyer.AjaxCheckUserId')", {userId:userId}, function(data){
+			jQuery("body").hideLoading();
+			if (data.status == 1) {
+				jQuery(obj).parents("tr").find("#ok").show();
+			} else {
+				jQuery(obj).parents("tr").find("#error").show();
+			}
+		});
+	}
+}
+function chkPassword(obj) {
+	var password = jQuery(obj).val();
+	jQuery(obj).parents("td").find("label").each(function(i,o){jQuery(o).hide();});
+	if (!checkByteLength(password,6,20)) {
+		jQuery(obj).parents("td").find("#error").show();
+	}
+}
+function chkPasswordR(obj) {
+	var passwordR = jQuery(obj).val();
+	var password = jQuery("#password").val();
+	jQuery(obj).parents("td").find("label").each(function(i,o){jQuery(o).hide();});
+	if (password != passwordR) {
+		jQuery(obj).parents("td").find("#error").show();
+	}
+}
+function doRegister() {
+	var error = false;
+	jQuery("*").find("#empty").each(function(i,o){
+		if (jQuery(o).css("display") != "none") {
+			jQuery(o).parents("td").find("input").focus();
+			error = true;
+			return;
+		}
+	});
+	jQuery("*").find("#error").each(function(i,o){
+		if (jQuery(o).css("display") != "none") {
+			jQuery(o).parents("td").find("input").focus();
+			error = true;
+			return;
+		}
+	});
+	if (!error) {
+		jQuery("body").showLoading();
+		jQuery.ajax({
+        	url:"$link.setAction('buyer.AjaxRegister')",
+        	type:"post",
+        	data:form2URL("regForm"),
+        	dataType:"json",
+        	success:function(data){
+				jQuery("body").hideLoading();
+				if (data.status==1) {
+					window.location.href="$link.setPage('buyer,RegisterSuccess.html')?regUser="+data.buyer;
+				} else {
+					alert("failed!");
+				}
+			},
+			error:function(){
+				jQuery("body").hideLoading();
+			}
+    	 });	
+	}
+}
+</script>

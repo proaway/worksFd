@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertSizeTemplateDetailBean" parameterClass="com.fd.fashion.seller.bean.SizeTemplateDetailBean">
+        <![CDATA[
+insert into T_SIZE_TEMPLATE_DETAIL
+  (DETAIL_ID, TEMPLATE_ID, COL_ID, ROW_ID, ATTR_VALUE)
+values
+  (#detailId#, #templateId#, #colId#, #rowId#, #attrValue#)
+        ]]>
+        <selectKey keyProperty="detailId" resultClass="long">
+            <![CDATA[select @@identity as detailId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateSizeTemplateDetailBean" parameterClass="com.fd.fashion.seller.bean.SizeTemplateDetailBean">
+        <![CDATA[
+update T_SIZE_TEMPLATE_DETAIL 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="detailId" prepend="," removeFirstPrepend="true">
+                <![CDATA[DETAIL_ID = #detailId#]]>
+            </isNotNull>
+            <isNotNull property="templateId" prepend="," removeFirstPrepend="true">
+                <![CDATA[TEMPLATE_ID = #templateId#]]>
+            </isNotNull>
+            <isNotNull property="colId" prepend="," removeFirstPrepend="true">
+                <![CDATA[COL_ID = #colId#]]>
+            </isNotNull>
+            <isNotNull property="rowId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ROW_ID = #rowId#]]>
+            </isNotNull>
+            <isNotNull property="attrValue" prepend="," removeFirstPrepend="true">
+                <![CDATA[ATTR_VALUE = #attrValue#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where DETAIL_ID = #detailId#
+        ]]>
+    </update>
+
+    <sql id="getSizeTemplateDetailBeanCondition">
+            <isNotNull property="detailId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[DETAIL_ID = #detailId#]]>
+            </isNotNull>
+            <isNotNull property="templateId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[TEMPLATE_ID = #templateId#]]>
+            </isNotNull>
+            <isNotNull property="colId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[COL_ID = #colId#]]>
+            </isNotNull>
+            <isNotNull property="rowId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[ROW_ID = #rowId#]]>
+            </isNotNull>
+            <isNotNull property="attrValue" prepend="and" removeFirstPrepend="true">
+                <![CDATA[ATTR_VALUE = #attrValue#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getSizeTemplateDetailBeanCount" parameterClass="com.fd.fashion.seller.bean.SizeTemplateDetailBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_SIZE_TEMPLATE_DETAIL 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getSizeTemplateDetailBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getSizeTemplateDetailBean" parameterClass="com.fd.fashion.seller.bean.SizeTemplateDetailBean"
+        resultClass="com.fd.fashion.seller.bean.SizeTemplateDetailBean">
+        <![CDATA[
+select 
+	DETAIL_ID	as detailId,
+	TEMPLATE_ID	as templateId,
+	COL_ID	as colId,
+	ROW_ID	as rowId,
+	ATTR_VALUE	as attrValue
+from T_SIZE_TEMPLATE_DETAIL 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getSizeTemplateDetailBeanCondition"/>        </dynamic>
+    </select>
+
+    <delete id="deleteSizeTemplateDetailBean" parameterClass="com.fd.fashion.seller.bean.SizeTemplateDetailBean">
+        <![CDATA[
+delete from T_SIZE_TEMPLATE_DETAIL where DETAIL_ID=#detailId#
+        ]]>
+    </delete>
+</sqlMap>

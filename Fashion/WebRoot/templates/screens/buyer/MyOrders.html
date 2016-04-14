@@ -1,0 +1,183 @@
+$page.setTitle("My Orders")
+  <div id="add_to_cart_div1" class="hide">
+  	<span class="close_right_top" title="close" onclick="javascript:document.getElementById('add_to_cart_div1').style.display='none';"></span>
+    <div class="add_to_cart_div2">
+        <table border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td rowspan="2" align="right" class="pad_right_20"><img src="/static/prototype/product_fashion/images/green_32px.gif" width="32" height="32" alt="successful" title="successful" /></td>
+            <td><p style="font-size:14px; color:#666; margin-top:5px;">A new item has been added to your Shopping Cart.</p></td>
+          </tr>
+          <tr>
+            <td class="pad_top_15">
+                <span class="mar_right_20"><a href="javascript:;" onclick="document.getElementById('add_to_cart_div1').style.display='none';">Continue Shopping</a></span>
+                <span><input name="" type="submit" class="btn_successful" id="" onclick="window.location='$link.setPage('cart,Cart.html')';" value="View Shopping Cart" /></span>
+            </td>
+          </tr>
+        </table>
+    </div>
+</div>
+
+<form name="listForm" id="listForm" method="get">
+<div class="acc_search">
+	<table cellspacing="0" cellpadding="0" border="0" class="acc_tab_lh22">
+      <tbody><tr>
+        <td>Order Number:</td>
+        <td><input type="text" class="acc_text" maxlength="30" id="orderId" name="orderId" value="$!orderVo.orderId"></td>
+        <td>Status:</td>
+        <td>
+			<select id="statusType" name="statusType">
+                <option value="" #if($orderVo.orderStatus=="")selected #end>All Status</option>
+				<option value="OA001" #if($orderVo.orderStatus=="OA001")selected #end >Pending</option>
+				<option value="OC101" #if($orderVo.orderStatus=="OC101") selected #end >Completed</option>
+				<option value="OD001" #if($orderVo.orderStatus=="OD001") selected #end >disputed</option>
+				<option value="OC201" #if($orderVo.orderStatus=="OC201") selected #end >Order cancellation</option>
+				<option value="OF101" #if($orderVo.orderStatus=="OF101") selected #end >Order freeze</option>
+				<option value="OR201" #if($orderVo.orderStatus=="OR201") selected #end >refund</option>
+				<option value="OS001" #if($orderVo.orderStatus=="OS001") selected #end >Pending seller's confirmation</option>
+				<option value="OS005" #if($orderVo.orderStatus=="OS005") selected #end >Pending buyer's confirmation</option>
+				<option value="OR213" #if($orderVo.orderStatus=="OR213") selected #end >Awaiting buyer's returning</option>
+				<option value="OR214" #if($orderVo.orderStatus=="OR214") selected #end >Refund is successful</option>
+				<option value="OA002" #if($orderVo.orderStatus=="OA002") selected #end >Pending payment verification</option>
+			</select>
+		</td>
+        <td>Order Date:</td>
+        <td>
+			<input id="datepickera"   class="acc_text" maxlength="4" type="text" value="$!StringUtil.getDateString($!orderVo.startCreateDate,'MM/dd/yyyy')" name="createOrderStart">-<input id="datepickerb"   class="acc_text" maxlength="4" type="text" value="$!StringUtil.getDateString($!orderVo.endCreateDate,'MM/dd/yyyy')" name="createOrderEnd">
+		</td>
+      </tr>
+      <tr>
+        <td align="right" style=" padding-top:20px;" colspan="6"><input type="button" value="Search" onclick="searchOrder();" id="" class="btn_acc_search" name=""></td>
+      </tr>
+    </tbody>
+	</table>
+</div>
+<table cellspacing="0" cellpadding="0" border="0" class="acc_order_tab acc_tab_lh22">
+  <tbody><tr class="acc_order_tabtit">
+    <td class="acc_order_tabtit_td">Order Number</td>
+    <td class="acc_order_tabtit_td">Order Date</td>
+    <td class="acc_order_tabtit_td">Grand Toral</td>
+    <td class="acc_order_tabtit_td">Status</td>
+    <td class="acc_order_tabtit_td">Operations</td>
+  </tr>
+  #if($searchOrderVo && $searchOrderVo.orders && $searchOrderVo.orders.size()>0)
+	#foreach($ord in $searchOrderVo.orders)
+      <tr trid="$ord.orderId">
+        <td><a target="_blank" href="$link.setPage('buyer,OrderDetail.html')?orderId=$ord.orderId">$!ord.orderId</a></td>
+        <td>#if($ord.createDate)$!StringUtil.getDateString($!ord.createDate,'yyyy-MM-dd HH:mm:ss')#end</td>
+        <td>USD $ $cnu.cullNum($ord.total)</td>
+        <td id="statusLine">#if($ord.orderStatusCN) $!ord.orderStatusCN #end</td>
+        <td id="opertorLine">
+			#if($ord.freeze=='OF001')
+			#else
+				#if($ord.riskStatus =='OR101')
+    				<a class="mar_right_5"  onclick="cancelOrder('$ord.orderId','');" href="#">Cancel Order</a><br>
+				#elseif($ord.disputeStatus=='OD001'||$ord.disputeStatus=='OD002'||$ord.disputeStatus=='OD003')
+				#elseif($ord.refundStatus.startsWith('OR'))
+					#if($ord.refundStatus=='OR214')
+        				<li><a href="javascript:;;" target="_blank"><input type="button" value="Write a feedback" class="btn padding_5 mar_right_10 bold"></a></li>
+        			#end
+    			#elseif($ord.orderStatus=='OA001'||$ord.orderStatus=='OA003')
+    				<a class="mar_right_10" href="$link.setPage('order,PayOrder.html')?orderId=$!ord.orderId" target="_blank">Complete your payment</a><br>
+					<a class="mar_right_10" onclick="cancelOrder('$ord.orderId','');" href="#">Cancel Order</a><br>
+    			#elseif($ord.orderStatus=='OC101')
+					<a class="mar_right_10" href="#"  onclick="refundOrder('$ord.orderId','')">Refund</a><br>
+    				<a class="mar_right_5" data-toggle="modal" role="button" href="#" onclick="javascript:;;">Write a feedback</a><br>
+        		#elseif($ord.orderStatus=='OS002'||$ord.orderStatus=='OS003'||$ord.orderStatus=='OS004')
+    				<a class="mar_right_5"  onclick="refundOrder('$ord.orderId','');">Refund</a><br>
+    			#elseif($ord.orderStatus=='OS005')
+    				<a class="mar_right_5"  onclick="completeOrder('$ord.orderId','');" href="#">Confirm receipt</a><br>
+					<a class="mar_right_5"  onclick="refundOrder('$ord.orderId','');" href="#">Refund</a><br>
+				#end
+			#end
+			<a href="javascript:;;" onclick="reAddToCart('$ord.orderId');">Re-add to cart</a>
+    	</td>
+      </tr>
+   #end
+ #end
+</tbody>
+</table>
+        <!--<div class="list-page">
+<div class="global-page">Records:2   Pages: 1 &nbsp;&nbsp;&nbsp;<a class="global-page-previous" href="#">first</a> <a class="global-page-previous" href="#"><img src="/static/prototype/product_fashion/images/ico-previous.gif" width="8" height="7" vspace="6" align="absmiddle" /> prev</a> <a href="#">1</a> <span class="select">2</span><a href="#">3</a> <a href="#">4</a> <a href="#">5</a> <a href="#">6</a> <a href="#">7</a> <a href="#">8</a> <span class="global-page-break">...</span><a href="#">49</a> <a href="#">50</a> <a class="global-page-next" href="#">next <img src="/static/prototype/product_fashion/images/ico-next.gif" width="8" height="7" vspace="6" align="absmiddle" /></a> <a class="global-page-next" href="#">last</a>
+<input name="textfield" type="text"  class="input_go" id="textfield" onclick="this.value='';" value="Page" style="width:35px;" /> <input type="submit" name="button" id="button" value="Go" class="input_btn_protal_short"/></div></div>-->
+#parse("screens/BuyerNap.html")
+<div id="blockLayer_1" style="width:500px; height:220px; display:none;" class="blockLayer">
+	<h3 class="mar_left_20 mar_top_15">Please select the reason for requesting a refund:</h3>
+	<p class="mar_left_40 mar_top_15">
+		<label>
+			<input type="radio" value="Option_1" name="group">
+				I bought this product have not been shipped for a lang time.
+		</label>
+        <label>
+			<input type="radio" value="Option_2" name="group">
+				I didn't receive the parcel.
+        </label>
+        <label>
+			<input type="radio" value="Option_3" name="group">
+				Receive the goods and the product description doesn't match.
+        </label>
+        <label>
+			<input type="radio" value="Option_4" name="group">
+				The goods have been damaged.
+        </label>
+	</p>
+	<br>
+    <p class="mar_left_40">
+    	<input type="button" value="Submit" onclick="" id="" class="btn_coupon floatleft mar_right_15" name="">
+        <input type="button" value="Cancel" onclick="javascript:;" id="" class="btn_coupon_gray floatleft" name="">
+    </p>
+</div>
+
+<div id="blockLayer_2" style="width:500px; height:120px; display:none;" class="blockLayer">
+	<h3 class="mar_left_20 mar_top_20">Are you sure you want to cancel your order?</h3>
+	<br>
+    <p class="mar_left_40 mar_top_10">
+    	<input type="button" value="YES" onclick="" id="" class="btn_coupon floatleft mar_right_15" name="">
+        <input type="button" value="NO" onclick="javascript:;" id="" class="btn_coupon_gray floatleft" name="">
+    </p>
+</div>
+
+<div id="blockLayer_3" style="width:500px; height:120px; display:none;" class="blockLayer">
+	<h3 class="mar_left_20 mar_top_20">If you have received goods,please confirm receipt,or cancel.</h3>
+	<br>
+    <p class="mar_left_40 mar_top_10">
+    	<input type="button" value="OK" onclick="" id="" class="btn_coupon floatleft mar_right_15" name="">
+        <input type="button" value="Cancel" onclick="javascript:;" id="" class="btn_coupon_gray floatleft" name="">
+    </p>
+</div>
+</form>
+<script type="text/javascript">
+	function showLayer_1(){
+		var dialogBox = new Dialog($(blockLayer_1),{
+            "width":"500px",
+            "title":"Refund",
+            'modal':true,
+			"dTopNum":"100px"
+        });
+		document.getElementById("blockLayer_1").style.display="block";
+	}
+	function showLayer_2(){
+		var dialogBox = new Dialog($(blockLayer_2),{
+            "width":"500px",
+            "title":"Refund",
+            'modal':true,
+			"dTopNum":"100px"
+        });
+		document.getElementById("blockLayer_2").style.display="block";
+	}
+	function showLayer_3(){
+		var dialogBox = new Dialog($(blockLayer_3),{
+            "width":"500px",
+            "title":"Refund",
+            'modal':true,
+			"dTopNum":"100px"
+        });
+		document.getElementById("blockLayer_3").style.display="block";
+	}
+</script>
+	
+<script>
+function searchOrder(){
+    document.listForm.action = "$link.setPage('buyer,MyOrders.html')";
+    document.listForm.submit();
+}
+</script>

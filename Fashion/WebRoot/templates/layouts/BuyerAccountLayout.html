@@ -1,0 +1,172 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+<title>$page.title </title>
+<meta content="<!--MICCMS:Meta-Description-->" name="description">
+<meta content="<!--MICCMS:Meta-Keywords-->" name="keywords">
+<link type="image/ico" href="/static/web/images/logo-ico.ico" rel="shortcut icon">
+<script src="/static/prototype/product_fashion/inc/jquery-1.6.4.min.js" type="text/javascript" language="javascript"></script>
+<script src="/static/prototype/product_fashion/inc/png-ie6.js" type="text/javascript" language="javascript"></script>
+<link href="/static/prototype/product_fashion/css/whole.css" type="text/css" rel="stylesheet">
+<link href="/static/prototype/product_fashion/css/fashion.css" type="text/css" rel="stylesheet">
+<link href="/static/prototype/product_fashion/css/list.css" type="text/css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/static/prototype/shopcart/css/tips.css" />
+<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/cart.css" />
+<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/details.css" />
+<link href="/static/prototype/product_fashion/css/account.css" type="text/css" rel="stylesheet">
+<script language="javascript" src="/static/prototype/shopcart/inc/tips.js"></script>
+<script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/show_layer.js"></script>
+<script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/jsonconvert.js"></script>
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/jquery-ui-1.10.0.custom.min.js"></script>
+<script src="/static/prototype/product_fashion/inc/product_fashion_nav.js" type="text/javascript" language="javascript"></script>
+<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/showLoading.css"/>
+<script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/jquery.showLoading.js"></script>
+<style>
+	.acc_content a{ text-decoration:none;}
+</style>
+</head>
+<body>
+<div id="container">
+  <!-- ------------------------- S header ------------------------- -->
+  <div id="header">
+	$navigation.setTemplate('Head.html')
+  </div>
+  <!-- ------------------------- E header ------------------------- -->
+  <br class="clearfloat">
+  <!-- ------------------------- S mainContent ------------------------- -->
+  <div id="mainContent">
+    <!-- --------------- S left menu --------------- -->
+    <!-- # include virtual="/static/prototype/product_fashion/account/left_menu.shtml" -->
+    <div class="aleft_menu">
+		$navigation.setTemplate('buyer,BuyerPath.html')
+	</div>
+    <!-- --------------- E left menu --------------- -->
+    
+    <!-- --------------- S content --------------- -->
+    <div class="acc_content">
+        $screen_placeholder
+    </div>
+    <!-- --------------- E content --------------- -->
+    <br class="clearfloat">
+  </div>
+  <!-- ------------------------- E mainContent ------------------------- -->
+  <br class="clearfloat">
+  <!-- ------------------------- S footer ------------------------- -->
+  <div id="footer">
+    <!--S footer-->
+	$navigation.setTemplate('Bottom.html')
+    <!--E footer-->
+  </div>
+  <!-- ------------------------- S footer ------------------------- -->
+  <br class="clearfloat">
+</div>
+
+<script>
+jQuery( "#datepickera" ).datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#datepickerb" ).datepicker( "option", "minDate", selectedDate );
+    }
+});
+
+jQuery( "#datepickerb" ).datepicker({
+    onClose: function( selectedDate ) {
+        defaultDate: "+1w",
+        jQuery( "#datepickera" ).datepicker( "option", "maxDate", selectedDate );
+    }
+});
+</script>
+
+<script>
+//取消订单
+function cancelOrder(orderId,showFlag){
+	if(confirm("Do you want to cancel this order？")){
+		jQuery("body").showLoading();
+    	jQuery.get(
+    	"$link.setAction('buyer.AjaxUpdateOrderStatusAction')?orderId="+orderId+"&actionFlag=cancelOrder",
+    	function(data){
+			jQuery("body").hideLoading();
+    		if(data!=null){
+				if(showFlag=="detail"){
+					updateOrderDetailInfo();
+				}else{
+					jQuery("tr[trid='"+orderId+"']").find("td[id='statusLine']").remove();
+					jQuery("tr[trid='"+orderId+"']").find("td[id='opertorLine']").remove();
+					jQuery("tr[trid='"+orderId+"']").append(data);
+				}
+    		} else {
+    			alert("cancel order failure!");
+    		}
+    	});
+	}
+}
+//refund订单
+function refundOrder(orderId,showFlag){
+	if(confirm("Do you want to fefund this order？")){
+		jQuery("body").showLoading();
+    	jQuery.get(
+    	"$link.setAction('buyer.AjaxUpdateOrderStatusAction')?orderId="+orderId+"&actionFlag=refundOrder",
+    	function(data){
+			jQuery("body").hideLoading();
+    		if(data!=null){
+				if(showFlag=="detail"){
+					updateOrderDetailInfo();
+				}else{
+					jQuery("tr[trid='"+orderId+"']").find("td[id='statusLine']").remove();
+					jQuery("tr[trid='"+orderId+"']").find("td[id='opertorLine']").remove();
+					jQuery("tr[trid='"+orderId+"']").append(data);
+				}
+    		} else {
+    			alert("refund order failure!");
+    		}
+    	});
+	}
+}
+//完成订单
+function completeOrder(orderId,showFlag){
+	if(confirm("Do you want to complete this order？")){
+	jQuery("body").showLoading();
+    	jQuery.get(
+    	"$link.setAction('buyer.AjaxUpdateOrderStatusAction')?orderId="+orderId+"&actionFlag=completeOrder",
+    	function(data){
+			jQuery("body").hideLoading();
+    		if(data!=null){
+				if(showFlag=="detail"){
+					updateOrderDetailInfo();
+				}else{
+    				jQuery("tr[trid='"+orderId+"']").find("td[id='statusLine']").remove();
+					jQuery("tr[trid='"+orderId+"']").find("td[id='opertorLine']").remove();
+					jQuery("tr[trid='"+orderId+"']").append(data);
+				}
+    		} else {
+    			alert("complete order failure!");
+    		}
+    	});
+	}
+}
+//重新加入购物车
+function reAddToCart(orderId){
+jQuery("body").showLoading();
+jQuery.get(
+	"$link.setAction('buyer.AjaxOrderToCartAction')?orderId="+orderId,
+	function(data){
+		jQuery("body").hideLoading();
+		if(data!=null){
+			document.getElementById("add_to_cart_div1").style.display="block";
+    		getwebstatus();
+			getwebstatus();
+		} else {
+			alert("add to cart fail!");
+		}
+	});
+
+}
+
+function updateOrderDetailInfo(){
+	document.detailForm.action="$link.setPage('buyer,OrderDetail.html')";
+	document.detailForm.submit();
+}
+</script>
+
+</body></html>

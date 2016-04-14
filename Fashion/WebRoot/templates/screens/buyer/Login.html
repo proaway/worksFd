@@ -1,0 +1,152 @@
+#set($title="Login - " + $WebPropUtil.getProperty("website.webname"))
+$page.setTitle($title)
+		  <div id="mainContent">
+          	<!-- --------------- S signIn --------------- -->
+            <div id="signIn">
+            	
+                <div class="log_tit">Sign In</div><br class="clearfloat" />
+    			<div class="log_con">
+                 <form method="post" name="loginForm" id="loginForm">
+                    <input name="returnUrl" id="returnUrl" value="$!returnUrl" type="hidden">
+                  <table align="center" border="0" cellpadding="2" cellspacing="2" width="510" style="margin-left:70px;">
+                    <tbody><tr>
+                      <td height="50" valign="top"><div><b class="line-height30 font-size14">Email:</b></div>
+                        <input name="email" id="email" maxlength="200" size="40" class="log_text" value="" type="text" onblur="chkBuyerEmail(this)">
+                <label class="log_email_red hide" id="empty"><br />Please enter Email Address.</label>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td valign="top" style="line-height:6px;">&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td height="50" valign="top"><div><b class="line-height30 font-size14">Password:</b></div>
+                        <div> <input name="password" id="password" maxlength="20" size="40" onblur="chkPassword(this)" class="log_text" value="" type="password">
+                <label class="log_email_red hide" id="empty"><br />Please enter password.</label>
+                        </div>
+                      <div class="clear" style="margin-top:8px;"><a href="javascript:;;" target="_blank">Forgot your password? </a></div>
+					  <label class="log_email_red hide" id="loginFailed">The email address or password you entered is incorrect. Please try again.</label>
+						<label class="log_email_red hide" id="isFreeze">Your account is abnormal,you can contact us for help.</label></td>
+                    </tr>
+                    <tr>
+                      <td valign="top" style="line-height:8px;">&nbsp;</td>
+                    </tr>
+                    <tr #if($loginErrorCount<=3) class="hide" #end>
+                      <td colspan="2" align="left" valign="bottom"><div class="floatleft"><div><b class="line-height30 font-size14">Security Code:</b></div>
+                        <div style="float:left;"><input class="reg_yzm" id="securityCode" name="securityCode" size="17" value="" maxlength="6" onkeypress=""> 
+                        <img id="securityCodeImg" alt="" src="$content.getURI('GetSecurityImg')" align="absmiddle" height="20" width="80">
+                        </div></div>
+                        <div class="clear"><span style="color:#666;">Cannot see the security code?</span> <a href="javascript:;;" onclick="jQuery('#securityCodeImg').attr('src','$content.getURI('GetSecurityImg')?'+Math.random())">click here.</a>
+						<label class="reg_userid_red hide" id="empty"><br />Please Reenter Security Code.</label>
+						<label class="reg_userid_red hide" id="securityError"><br />Security Code error.</label>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td valign="top" style="line-height:10px;">&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td height="100" valign="top">
+                          <div class="mar-top25"><input onclick="doLogin(this);" value="Sign In" type="button" class="log_btn" 
+    						onmouseout="this.style.background='url(/static/prototype/product_fashion/images/button1.gif) no-repeat'" 
+    						onmouseover="this.style.background='url(/static/prototype/product_fashion/images/button2.gif) no-repeat'" 
+    						onmousedown="this.style.background='url(/static/prototype/product_fashion/images/button3.gif) no-repeat'" 
+    						onmouseup="this.style.background='url(/static/prototype/product_fashion/images/button2.gif) no-repeat'" >
+							<br class="clear" />
+						  </div>          
+					  </td>
+                    </tr>
+                  </tbody></table>
+                  </form>
+                </div>
+                
+            </div>
+            <!-- --------------- E signIn --------------- -->
+            <!-- --------------- S rightContent --------------- -->
+            <div id="rightContent">
+            <div class="font-size14 mar-top20"><b>Ready to buy? Register here</b></div>
+            <div class="mar-top8">Join Now, Only 1 step. Free and Safe!</div>
+            <div class="mar-top10"><input type="button" class="SignIn_button" value="Register" onclick="location='$link.setPage('buyer,Register.html')'" /></div>
+            </div>
+            <!-- --------------- E rightContent --------------- -->
+          	<br class="clearfloat" />
+          </div>
+<script>
+function chkBuyerEmail(obj) {
+	var email = jQuery(obj).val();
+	jQuery(obj).parents("tr").find("label").each(function(i,o){jQuery(o).hide();});
+	if (email == "" || !isEmail(email)) {
+		jQuery(obj).parents("tr").find("#empty").show();
+		return false;
+	}
+	return true;
+}
+function chkPassword(obj) {
+	var password = jQuery(obj).val();
+	jQuery(obj).parents("td").find("label").each(function(i,o){jQuery(o).hide();});
+	if (password=="") {
+		jQuery(obj).parents("td").find("#empty").show();
+		return false;
+	}
+	return true;
+}
+function doLogin(o) {
+	jQuery(o).prop("disabled", true);
+	var securityVerify = jQuery("#securityCode").parents("tr").css("display") != "none"
+	var verify = chkBuyerEmail("#email") && chkPassword("#password");
+	if (verify && securityVerify) {
+		verify = chkName("#securityCode")
+	}
+	if (verify) {
+		jQuery("body").showLoading();
+		jQuery.ajax({
+        	url:"$link.setAction('buyer.AjaxLogin')",
+        	type:"post",
+        	data:form2URL("loginForm"),
+        	dataType:"json",
+        	success:function(data){
+				jQuery("body").hideLoading();
+				if (data.status==1) {
+#if($returnUrl)
+					var returnUrl = "$returnUrl";
+#else
+					var returnUrl = "$link.setPage('buyer,MyOrders.html')";
+#end
+					window.location.href=returnUrl;
+				} else {
+					jQuery(o).prop("disabled", false);
+					if (data.loginErrorCount>3) {
+						jQuery("#securityCode").parents("tr").show();
+					}
+					if(data.status==-2){
+						jQuery("#isFreeze").show();
+					}else if (data.status == -1) {
+						jQuery("#securityError").show();
+					} else {
+						jQuery("#loginFailed").show();
+					}
+					jQuery('#securityCodeImg').attr('src','$content.getURI('GetSecurityImg')?'+Math.random());
+				}
+			},
+			error:function(){
+				jQuery("body").hideLoading();
+			}
+    	 });	
+	} else {
+		jQuery(o).prop("disabled", false);
+	}
+}
+jQuery("document").ready(function(){
+	jQuery("input[name='email']").keydown(function(event){if(event.keyCode==13){jQuery("input[name='password']").focus(); return false;}});
+	jQuery("input[name='password']").keydown(function(event){if(event.keyCode==13){
+    		if(jQuery("[name='securityCode']").parents("tr").attr("class")=="hide") {
+    			doLogin(jQuery("input[value='Sign In']")[0]);
+    		} else {
+    			jQuery("input[name='securityCode']").focus();
+    		}
+			return false;
+		}
+	});
+	jQuery("input[name='securityCode']").keydown(function(event){if(event.keyCode==13){doLogin(jQuery("input[value='Sign In']")[0]); return false;}});
+});
+jQuery("input[name='email']").focus();
+</script>

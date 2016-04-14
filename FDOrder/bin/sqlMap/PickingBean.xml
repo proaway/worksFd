@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertPickingBean" parameterClass="com.fd.fashion.order.bean.PickingBean">
+        <![CDATA[
+insert into T_PICKING
+  (ORDER_ID, PICKING_DATE, STATUS, PICKING_USER)
+values
+  (#orderId#, #pickingDate#, #status#, #pickingUser#)
+        ]]>
+    </insert>
+
+    <update id="updatePickingBean" parameterClass="com.fd.fashion.order.bean.PickingBean">
+        <![CDATA[
+update T_PICKING 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="orderId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ORDER_ID = #orderId#]]>
+            </isNotNull>
+            <isNotNull property="pickingDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[PICKING_DATE = #pickingDate#]]>
+            </isNotNull>
+            <isNotNull property="status" prepend="," removeFirstPrepend="true">
+                <![CDATA[STATUS = #status#]]>
+            </isNotNull>
+            <isNotNull property="pickingUser" prepend="," removeFirstPrepend="true">
+                <![CDATA[PICKING_USER = #pickingUser#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ORDER_ID = #orderId#
+        ]]>
+    </update>
+
+    <sql id="getPickingBeanCondition">
+         <isNotNull property="orderId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ORDER_ID = #orderId#]]>
+         </isNotNull>
+         <isNotNull property="pickingDate" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PICKING_DATE = #pickingDate#]]>
+         </isNotNull>
+         <isNotNull property="status" prepend="and" removeFirstPrepend="true">
+             <![CDATA[STATUS = #status#]]>
+         </isNotNull>
+         <isNotNull property="pickingUser" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PICKING_USER = #pickingUser#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getPickingBeanCount" parameterClass="com.fd.fashion.order.bean.PickingBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_PICKING 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getPickingBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getPickingBean" parameterClass="com.fd.fashion.order.bean.PickingBean"
+        resultClass="com.fd.fashion.order.bean.PickingBean">
+        <![CDATA[
+select 
+	ORDER_ID	as orderId,
+	PICKING_DATE	as pickingDate,
+	STATUS	as status,
+	PICKING_USER	as pickingUser
+from T_PICKING 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getPickingBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deletePickingBean" parameterClass="com.fd.fashion.order.bean.PickingBean">
+        <![CDATA[
+delete from T_PICKING where ORDER_ID=#orderId#
+        ]]>
+    </delete>
+
+</sqlMap>

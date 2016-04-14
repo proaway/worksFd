@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+	<sql id="getSearchProductAttrCondition">
+		<isNotNull property="attrList" prepend="and" removeFirstPrepend="true">
+			<![CDATA[ tpa.VALUE_ATTR_ID IN  ]]>
+			<iterate property="attrList" conjunction="," open="(" close=")">
+				<![CDATA[ #attrList[]# ]]>
+			</iterate>
+		</isNotNull>
+		<isNotNull property="configsList" prepend="and" removeFirstPrepend="true">
+			<![CDATA[ tpc.VALUE_ATTR_ID IN  ]]>
+			<iterate property="configsList" conjunction="," open="(" close=")">
+				<![CDATA[ #configsList[]# ]]>
+			</iterate>
+		</isNotNull>
+	</sql>
+	<sql id="getSearchProductCondition">
+		<isNotNull property="key" prepend="and" removeFirstPrepend="true">
+			<![CDATA[
+				(t.PRODUCT_NAME like '%$key$%' or t.KEYWORD like '%$key$%'
+				 or t.DESCRIPTION LIKE '%$key$%' or t.PRODUCT_ID = #key#
+				 or t.SKU = #key#)
+			]]>
+		</isNotNull>
+		<isNotNull property="catId" prepend="and" removeFirstPrepend="true">
+			<![CDATA[ t.CUSTOM_CAT_ID like '$catId$%' ]]>
+		</isNotNull>
+		<isNotNull property="priceStart" prepend="and" removeFirstPrepend="true">
+			<![CDATA[ tp.PRICE * $commission$ >= #priceStart# ]]>
+		</isNotNull>
+		<isNotNull property="priceEnd" prepend="and" removeFirstPrepend="true">
+			<![CDATA[ tp.PRICE * $commission$ <= #priceEnd# ]]>
+		</isNotNull>
+		<isNotNull property="productStatus" prepend="and" removeFirstPrepend="true">
+			<![CDATA[ t.PRODUCT_STATUS = #productStatus# ]]>
+		</isNotNull>
+		<isNotNull property="createDateStart" prepend="and">
+			<![CDATA[ t.CREATE_TIME >= #createDateStart# ]]>
+		</isNotNull>
+		<isNotNull property="createDateEnd" prepend="and">
+			<![CDATA[ t.CREATE_TIME <= ADDDATE(#createDateEnd#,1) ]]>
+		</isNotNull>
+		<isNotNull property="productStatuses" prepend="and">
+			<![CDATA[ t.PRODUCT_STATUS in ]]>
+			<iterate property="productStatuses" open="(" conjunction="," close=")">
+				<![CDATA[#productStatuses[]#]]>
+			</iterate>
+		</isNotNull>
+	</sql>
+	
+	<select id="getSearchProductCount" parameterClass="com.fd.fashion.product.vo.SearchProductVo"
+		resultClass="int">
+		<![CDATA[
+			select 
+				count(distinct t.product_id)
+		 	from t_product t
+		 	LEFT JOIN t_product_attr tpa ON tpa.PRODUCT_ID = t.PRODUCT_ID
+			LEFT JOIN t_product_config tpc ON tpc.PRODUCT_ID = t.PRODUCT_ID
+			LEFT JOIN t_price tp ON tp.PRODUCT_ID = t.PRODUCT_ID 
+        ]]>
+		<dynamic prepend="where">
+			<include refid="getSearchProductAttrCondition"/>
+			<include refid="getSearchProductCondition"/>
+		</dynamic>
+	</select>
+
+	<select id="getProductBeanByKey" parameterClass="com.fd.fashion.product.vo.SearchProductVo"
+		resultClass="com.fd.fashion.product.bean.ProductBean">
+		<![CDATA[
+select p.PRODUCT_ID as productId,
+		SELLER_ID	as sellerId,
+		CAT_ID	as catId,
+		CUSTOM_CAT_ID	as customCatId,
+		PRODUCT_NAME	as productName,
+		IMAGE_URL	as imageUrl,
+		PRODUCT_CODE	as productCode,
+		SKU	as sku,
+		QUANTITY	as quantity,
+		PACKING	as packing,
+		WEIGHT	as weight,
+		WIDTH	as width,
+		LENGTH	as length,
+		HEIGHT	as height,
+		MATERIAL	as material,
+		ORIGIN	as origin,
+		DESCRIPTION	as description,
+		SPECIFICATIONS	as specifications,
+		CREATE_TIME	as createTime,
+		CREATOR	as creator,
+		UPDATE_TIME	as updateTime,
+		OPERATOR	as operator,
+		PRODUCT_STATUS	as productStatus,
+		VAILD	as vaild,
+		BARCODE	as barcode,
+		STOCK_DAYS	as stockDays,
+		KEYWORD	as keyword,
+		BRAND as brand,
+		PACKAGE_INFORMATION	as packageInformation,
+		SHIPING_TEMPLATEID	as shippingTemplateId,
+		SIZE_TEMPLATE_ID	as sizeTemplateId,
+		EXPIRED_DAY    as expiredDay,
+		STOCK	as stock,
+		ISPACKAGE	as ispackage,
+		EDIT_TIME   as editTime
+from (
+	select 
+			t.PRODUCT_ID
+		 from t_product t 
+		 LEFT JOIN t_product_attr tpa ON tpa.PRODUCT_ID = t.PRODUCT_ID
+		 LEFT JOIN t_product_config tpc ON tpc.PRODUCT_ID = t.PRODUCT_ID
+		 LEFT JOIN t_price tp on tp.PRODUCT_ID = t.PRODUCT_ID
+			  ]]>
+		<dynamic prepend="where">
+			<include refid="getSearchProductAttrCondition"/>
+			<include refid="getSearchProductCondition"/>
+		</dynamic>
+		<![CDATA[ group by t.PRODUCT_ID ]]>
+		<dynamic>
+			<isNotNull property="orderType">
+				<isEqual property="orderType" compareValue="12">
+					<![CDATA[ ORDER BY tp.price asc ]]>
+				</isEqual>
+				<isEqual property="orderType" compareValue="1">
+					<![CDATA[ ORDER BY t.CREATE_TIME asc ]]>
+				</isEqual>
+				<isEqual property="orderType" compareValue="2">
+					<![CDATA[ ORDER BY t.CREATE_TIME desc ]]>
+				</isEqual>
+				<isEqual property="orderType" compareValue="3">
+					<![CDATA[ ORDER BY t.EDIT_TIME asc ]]>
+				</isEqual>
+				<isEqual property="orderType" compareValue="4">
+					<![CDATA[ ORDER BY t.EDIT_TIME desc ]]>
+				</isEqual>
+				<isEqual property="orderType" compareValue="5">
+					<![CDATA[ ORDER BY t.UPDATE_TIME asc ]]>
+				</isEqual>
+				<isEqual property="orderType" compareValue="6">
+					<![CDATA[ ORDER BY t.UPDATE_TIME desc ]]>
+				</isEqual>
+			</isNotNull>
+			<isNotNull property="pageInfo">
+				<![CDATA[
+			limit #pageInfo.beginRowNum#,#pageInfo.pageSize# 
+            ]]>
+			</isNotNull>
+		</dynamic>
+<![CDATA[
+) tt, t_product p where p.PRODUCT_ID=tt.PRODUCT_ID  
+]]>
+	</select>
+
+	<select id="getSearchProductCatByKey" parameterClass="com.fd.fashion.product.vo.SearchProductVo"
+		resultClass="com.fd.fashion.seller.bean.CustomCategoryBean">
+		<![CDATA[
+			select 
+				COUNT(t.PRODUCT_ID) as productCount,
+				tc.CAT_ID	as catId,
+				PARENT_ID	as parentId,
+				CAT_NAME	as catName,
+				CAT_NAME_CN	as catNameCn
+				from t_product t join tc_custom_category tc ON tc.CAT_ID = t.CUSTOM_CAT_ID 
+		 		LEFT JOIN t_price tp on tp.PRODUCT_ID = t.PRODUCT_ID
+			]]>
+		<dynamic prepend="where">
+			<include refid="getSearchProductCondition"/>
+		</dynamic>
+		<![CDATA[group by t.CUSTOM_CAT_ID   ]]>
+	</select>
+	
+	<select id="getSearchProductAttrCount" parameterClass="com.fd.fashion.product.vo.SearchProductVo"
+		resultClass="com.fd.fashion.product.vo.SearchAttrVo">
+		<![CDATA[
+SELECT
+	pa.TITLE_ATTR_ID as titleId,
+	pa.VALUE_ATTR_ID as attrId,
+	a.VALUE	         as attrValue,
+	count(0)         as prodCount
+FROM
+	t_product t
+JOIN t_product_attr pa ON t.product_id = pa.PRODUCT_ID
+JOIN tc_attribute a ON a.ATTR_ID = pa.VALUE_ATTR_ID
+LEFT JOIN t_price tp on tp.PRODUCT_ID = t.PRODUCT_ID
+WHERE pa.VALUE_ATTR_ID IS NOT NULL
+		]]>
+		<dynamic>
+			<include refid="getSearchProductCondition"/>
+		</dynamic>
+		<![CDATA[
+GROUP BY
+	pa.TITLE_ATTR_ID,
+	pa.VALUE_ATTR_ID,
+	a.VALUE
+		]]>
+	</select>
+	<select id="getSearchProductConfCount" parameterClass="com.fd.fashion.product.vo.SearchProductVo"
+		resultClass="com.fd.fashion.product.vo.SearchAttrVo">
+		<![CDATA[
+SELECT
+	pc.TITLE_ATTR_ID as titleId,
+	pc.VALUE_ATTR_ID as attrId,
+	a.VALUE	         as attrValue,
+	count(0)         as prodCount
+FROM
+	t_product t
+JOIN t_product_config pc ON t.product_id = pc.PRODUCT_ID
+JOIN tc_attribute a ON a.ATTR_ID = pc.VALUE_ATTR_ID
+LEFT JOIN t_price tp on tp.PRODUCT_ID = t.PRODUCT_ID
+WHERE pc.VALUE_ATTR_ID IS NOT NULL
+		]]>
+		<dynamic>
+			<include refid="getSearchProductCondition"/>
+		</dynamic>
+		<![CDATA[
+GROUP BY
+	pc.TITLE_ATTR_ID,
+	pc.VALUE_ATTR_ID,
+	a.VALUE
+		]]>
+	</select>
+</sqlMap>

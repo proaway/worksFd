@@ -1,0 +1,66 @@
+##缺货登记
+
+<div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal hide fade in" id="out_of_stock_registration" style="display: block;">
+<div class="modal-header">
+<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+<h5 id="myModalLabel">缺货登记</h5>
+<input type="hidden" id="orderId" name="orderId" value="$!pick.orderId" />
+<input type="hidden" id="sku" name="sku" value="$!pick.sku" />
+</div>
+<div class="modal-body">
+    <table><tbody><tr>
+        <td width="90px"><label class="">产品SKU：</label></td>
+        <td><label class="">$!pick.sku</label></td></tr><tr>
+        <td><label class="">产品名称：</label></td>
+        <td><label class="">$!StringUtil.substring($!pick.productName,80)</label></td></tr><tr>
+        <td><label class="">缺货数量：</label></td>
+        <td><input type="text" class="input-medium mar_top_5" placeholder="缺货数量" name="outCount" id="outCount"></td></tr>
+    </tbody></table>
+</div>
+<div class="modal-footer">
+<button aria-hidden="true" data-dismiss="modal" class="btn">取消</button>
+<input type="button" class="btn btn-primary" onclick="noticeOutStock();" value="确认"/>
+</div>
+</div>
+ <script>
+jQuery('#out_of_stock_registration').modal({
+	show:true
+})
+</script>	
+<script>
+String.prototype.trim = function () {
+    //用正则表达式将前后空格用空字符串替代
+	return this.replace(/(^\s*)|(\s*$)/g, "");
+};
+
+
+function noticeOutStock(){
+	var orderId = jQuery("#orderId").val();
+	var sku = jQuery("#sku").val();
+	var count = jQuery("#outCount").val();
+	if(count=="null" || count=="" ){
+		alert("请填写缺货数量");
+		jQuery("#outCount")[0].focus();
+		return ;
+	}
+	var chid = orderId+"_"+sku;
+	jQuery.getJSON(
+		 "$link.setAction('order.AjaxCheckPickingAction')",
+		{orderId:orderId,sku:sku,flag:'noticeProductCountFlag',productCount:count},
+		function(data){
+			if(data!=null){
+				if(count==""){
+					jQuery("tr[id='"+chid+"']").hide();
+					doSubmit();
+				}else{
+					jQuery("tr[id='"+chid+"']").find("span[id='scanStatus']").html("已缺货登记");
+					var idstr = "'"+orderId+"','"+sku+"'";
+					var sstr = '<a onclick="javascript:changeNotice('+idstr+')">已到货</a>';
+					jQuery("tr[id='"+chid+"']").find("span[id='scanOper']").html(sstr);
+				}
+			} else {
+				jQuery("#errorInfo").show().html("<font color='red'>缺货登记失败</font>");
+			}
+		});
+}
+</script>

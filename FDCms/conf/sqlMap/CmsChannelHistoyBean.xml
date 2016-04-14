@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertCmsChannelHistoyBean" parameterClass="com.fd.fashion.cms.bean.CmsChannelHistoyBean">
+        <![CDATA[
+insert into T_CMS_CHANNEL_HISTOY
+  (SKU, CHANNEL_ID, BLOCK_ID, CHANNEL_LOCATION, PUB_DATE, END_DATE, PRODUCT_ID)
+values
+  (#sku#, #channelId#, #blockId#, #channelLocation#, #pubDate#, #endDate#, #productId#)
+        ]]>
+        <selectKey keyProperty="channelhistoryId" resultClass="long">
+            <![CDATA[select @@identity as channelhistoryId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateCmsChannelHistoyBean" parameterClass="com.fd.fashion.cms.bean.CmsChannelHistoyBean">
+        <![CDATA[
+update T_CMS_CHANNEL_HISTOY 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="channelhistoryId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CHANNELHISTORY_ID = #channelhistoryId#]]>
+            </isNotNull>
+            <isNotNull property="sku" prepend="," removeFirstPrepend="true">
+                <![CDATA[SKU = #sku#]]>
+            </isNotNull>
+            <isNotNull property="productId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="channelId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CHANNEL_ID = #channelId#]]>
+            </isNotNull>
+            <isNotNull property="blockId" prepend="," removeFirstPrepend="true">
+                <![CDATA[BLOCK_ID = #blockId#]]>
+            </isNotNull>
+            <isNotNull property="channelLocation" prepend="," removeFirstPrepend="true">
+                <![CDATA[CHANNEL_LOCATION = #channelLocation#]]>
+            </isNotNull>
+            <isNotNull property="pubDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[PUB_DATE = #pubDate#]]>
+            </isNotNull>
+            <isNotNull property="endDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[END_DATE = #endDate#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where CHANNELHISTORY_ID = #channelhistoryId#
+        ]]>
+    </update>
+
+    <sql id="getCmsChannelHistoyBeanCondition">
+         <isNotNull property="channelhistoryId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CHANNELHISTORY_ID = #channelhistoryId#]]>
+         </isNotNull>
+         <isNotNull property="sku" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SKU = #sku#]]>
+         </isNotNull>
+         <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PRODUCT_ID = #productId#]]>
+         </isNotNull>
+         <isNotNull property="channelId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CHANNEL_ID = #channelId#]]>
+         </isNotNull>
+         <isNotNull property="blockId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[BLOCK_ID = #blockId#]]>
+         </isNotNull>
+         <isNotNull property="channelLocation" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CHANNEL_LOCATION = #channelLocation#]]>
+         </isNotNull>
+         <isNotNull property="pubDate" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PUB_DATE = #pubDate#]]>
+         </isNotNull>
+         <isNotNull property="endDate" prepend="and" removeFirstPrepend="true">
+             <![CDATA[END_DATE = #endDate#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getCmsChannelHistoyBeanCount" parameterClass="com.fd.fashion.cms.bean.CmsChannelHistoyBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_CMS_CHANNEL_HISTOY 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getCmsChannelHistoyBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getCmsChannelHistoyBean" parameterClass="com.fd.fashion.cms.bean.CmsChannelHistoyBean"
+        resultClass="com.fd.fashion.cms.bean.CmsChannelHistoyBean">
+        <![CDATA[
+select 
+	CHANNELHISTORY_ID	as channelhistoryId,
+	SKU	as sku,
+	PRODUCT_ID  as productId,
+	CHANNEL_ID	as channelId,
+	BLOCK_ID	as blockId,
+	CHANNEL_LOCATION	as channelLocation,
+	PUB_DATE	as pubDate,
+	END_DATE	as endDate
+from T_CMS_CHANNEL_HISTOY 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getCmsChannelHistoyBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteCmsChannelHistoyBean" parameterClass="com.fd.fashion.cms.bean.CmsChannelHistoyBean">
+        <![CDATA[
+delete from T_CMS_CHANNEL_HISTOY where CHANNELHISTORY_ID=#channelhistoryId#
+        ]]>
+    </delete>
+
+    <select id="getNotClosedHistory" resultClass="com.fd.fashion.cms.bean.CmsChannelHistoyBean" parameterClass="string">
+        <![CDATA[
+select 
+	CHANNELHISTORY_ID	as channelhistoryId,
+	SKU	as sku,
+	PRODUCT_ID  as productId,
+	CHANNEL_ID	as channelId,
+	BLOCK_ID	as blockId,
+	CHANNEL_LOCATION	as channelLocation,
+	PUB_DATE	as pubDate,
+	END_DATE	as endDate
+from T_CMS_CHANNEL_HISTOY 
+where CHANNEL_ID=#channelId# and END_DATE is null
+        ]]>
+    </select>
+</sqlMap>

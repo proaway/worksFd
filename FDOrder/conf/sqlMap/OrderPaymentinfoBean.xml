@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertOrderPaymentinfoBean" parameterClass="com.fd.fashion.order.bean.OrderPaymentinfoBean">
+        <![CDATA[
+insert into T_ORDER_PAYMENTINFO
+  (ORDER_ID, PAYMENT_TYPE, PAY_TIME, TXN_ID, PAYMENT_IP, PAY_METHOD_ID)
+values
+  (#orderId#, #paymentType#, #payTime#, #txnId#, #paymentIp#, #payMethodId#)
+        ]]>
+        <selectKey keyProperty="paymentInfoId" resultClass="long">
+            <![CDATA[select @@identity as paymentInfoId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateOrderPaymentinfoBean" parameterClass="com.fd.fashion.order.bean.OrderPaymentinfoBean">
+        <![CDATA[
+update T_ORDER_PAYMENTINFO 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="paymentInfoId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PAYMENT_INFO_ID = #paymentInfoId#]]>
+            </isNotNull>
+            <isNotNull property="orderId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ORDER_ID = #orderId#]]>
+            </isNotNull>
+            <isNotNull property="paymentType" prepend="," removeFirstPrepend="true">
+                <![CDATA[PAYMENT_TYPE = #paymentType#]]>
+            </isNotNull>
+            <isNotNull property="payTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[PAY_TIME = #payTime#]]>
+            </isNotNull>
+            <isNotNull property="txnId" prepend="," removeFirstPrepend="true">
+                <![CDATA[TXN_ID = #txnId#]]>
+            </isNotNull>
+            <isNotNull property="paymentIp" prepend="," removeFirstPrepend="true">
+                <![CDATA[PAYMENT_IP = #paymentIp#]]>
+            </isNotNull>
+            <isNotNull property="payMethodId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PAY_METHOD_ID = #payMethodId#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where PAYMENT_INFO_ID = #paymentInfoId#
+        ]]>
+    </update>
+
+    <sql id="getOrderPaymentinfoBeanCondition">
+         <isNotNull property="paymentInfoId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PAYMENT_INFO_ID = #paymentInfoId#]]>
+         </isNotNull>
+         <isNotNull property="orderId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ORDER_ID = #orderId#]]>
+         </isNotNull>
+         <isNotNull property="paymentType" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PAYMENT_TYPE = #paymentType#]]>
+         </isNotNull>
+         <isNotNull property="payTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PAY_TIME = #payTime#]]>
+         </isNotNull>
+         <isNotNull property="txnId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TXN_ID = #txnId#]]>
+         </isNotNull>
+         <isNotNull property="paymentIp" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PAYMENT_IP = #paymentIp#]]>
+         </isNotNull>
+         <isNotNull property="payMethodId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PAY_METHOD_ID = #payMethodId#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getOrderPaymentinfoBeanCount" parameterClass="com.fd.fashion.order.bean.OrderPaymentinfoBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_ORDER_PAYMENTINFO 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getOrderPaymentinfoBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getOrderPaymentinfoBean" parameterClass="com.fd.fashion.order.bean.OrderPaymentinfoBean"
+        resultClass="com.fd.fashion.order.bean.OrderPaymentinfoBean">
+        <![CDATA[
+select 
+	PAYMENT_INFO_ID	as paymentInfoId,
+	ORDER_ID	as orderId,
+	PAYMENT_TYPE	as paymentType,
+	PAY_TIME	as payTime,
+	TXN_ID	as txnId,
+	PAYMENT_IP	as paymentIp,
+	PAY_METHOD_ID	as payMethodId
+from T_ORDER_PAYMENTINFO 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getOrderPaymentinfoBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteOrderPaymentinfoBean" parameterClass="com.fd.fashion.order.bean.OrderPaymentinfoBean">
+        <![CDATA[
+delete from T_ORDER_PAYMENTINFO where PAYMENT_INFO_ID=#paymentInfoId#
+        ]]>
+    </delete>
+
+</sqlMap>

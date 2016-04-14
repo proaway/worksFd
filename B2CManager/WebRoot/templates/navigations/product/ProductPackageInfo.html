@@ -1,0 +1,79 @@
+
+<div class="accordion-heading upload_tit">
+	<span class="accordion-toggle font_s_14 blue">包装信息</span>
+</div>
+<div id="collapseThree" class="accordion-body collapse in">
+	<div class="accordion-inner">
+		<table border="0" cellspacing="0" cellpadding="0" width="100%"
+			class="upload_tab">
+			<tr>
+				<td class="td_136_r"><label class="right mar_top_5"><span
+						class="required">*</span>包装后重量：</label>
+				</td>
+				<td><input class="input-medium left" type="text"  onfocus="javascript:hideOtextOptions('weightEmpty');" value="$!product.product.weight"
+					onblur="javascript:isValueEmpty('weight');"
+					placeholder="包装后重量" name="weight" id="weight" onkeyup="this.value=this.value.replace(/[^0-9\.]/g,'');" /> 
+					<span
+					class="help-block left mar_left_10 mar_top_5"><span 
+						class="black">公斤/件</span>
+                </span> <br class="clear"/>
+				<span class="help-block left mar_left_10 mar_top_5 hide" id="weightEmpty"><span class="red">请填写包装后的商品重量。</span></span>
+					<input type="hidden" id="weightFlag" name="weightFlag" value="0" /></td>
+			</tr>
+			<tr>
+				<td class="td_136_r"><label class="right mar_top_5"><span
+						class="required">*</span>包装尺寸：</label>
+				</td>
+				<td><input class="input-mini left mar_right_10" type="text" onblur="javascript:isValueEmpty('length');calVolum();" onfocus="javascript:hideOtextOptions('lengthEmpty');" value="$!product.product.length"
+					placeholder="长" name="length" id="length" onkeyup="this.value=this.value.replace(/\D/g,'');" /> <span
+					class="help-block left mar_right_10 mar_top_5"><span
+						class="black">×</span>
+				</span><input class="input-mini left mar_right_10" type="text" onblur="javascript:isValueEmpty('width');calVolum();" onfocus="javascript:hideOtextOptions('widthEmpty');" value="$!product.product.width"
+					placeholder="宽" name="width" id="width" onkeyup="this.value=this.value.replace(/\D/g,'');" /> <span
+					class="help-block left mar_right_10 mar_top_5"><span
+						class="black">×</span>
+				</span><input class="input-mini left mar_right_10" type="text" onblur="javascript:isValueEmpty('height');calVolum();" onfocus="javascript:hideOtextOptions('heightEmpty');" value="$!product.product.height"
+					placeholder="高" name="height" id="height" onkeyup="this.value=this.value.replace(/\D/g,'');" /> <span
+					class="help-block left mar_right_10 mar_top_5">（单位：厘米，每件/个 <span id="volum">0</span>
+						立方厘米）<span id="volWeight"></span></span><br class="clear" />
+				<span class="help-block left mar_left_10 mar_top_5 hide" id="lengthEmpty"><span class="red">长不能为空</span></span>
+				<span class="help-block left mar_left_10 mar_top_5 hide" id="widthEmpty"><span class="red">宽不能为空</span></span>
+				<span class="help-block left mar_left_10 mar_top_5 hide" id="heightEmpty"><span class="red">高不能为空</span></span>
+				<input type="hidden" id="lengthFlag" name="lengthFlag" value="0" />
+				<input type="hidden" id="widthFlag" name="widthFlag" value="0" />
+				<input type="hidden" id="heightFlag" name="heightFlag" value="0" />
+				</td>
+			</tr>
+			<tr>
+				<td class="td_136_r"><label class="right mar_top_5"><span
+						class="required">*</span>包裹信息：</label>
+				</td>
+				<td><textarea name="packageInformation" rows="4" class="input-xxlarge left"  onfocus="javascript:hideOtextOptions('packageInformationEmpty');"
+					id="packageInformation" 	onblur="javascript:isValueEmpty('packageInformation');" 
+						placeholder="包裹信息" style="ime-mode:disabled" >$!product.product.packageInformation</textarea> <span
+					class="help-block left mar_left_10 mar_top_5">请填写包裹里的物品清单。</span>
+					<br class="clear" />
+					<input type="hidden" name="packageInformationFlag" id="packageInformationFlag" value="0" />
+					<span class="help-block left mar_left_10 mar_top_5 hide" id="packageInformationEmpty"><span class="red">包裹信息不能为空</span></span>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<script>
+function calVolum() {
+	var length = jQuery("#length").val();
+	length = length == "" ? 0 : length
+	var width = jQuery("#width").val();
+	width = width == "" ? 0 : width
+	var height = jQuery("#height").val();
+	height = height == "" ? 0 : height
+	var volum = length * height * width;
+	jQuery("#volum").html(volum);
+	var volWeight = volum / 5000;
+	jQuery("#volWeight").html("(体积重量：" + volWeight + ")");
+}
+#if($product)
+calVolum();
+#end
+</script>

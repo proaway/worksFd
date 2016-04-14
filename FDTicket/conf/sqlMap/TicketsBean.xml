@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertTicketsBean" parameterClass="com.fd.fashion.ticket.bean.TicketsBean">
+        <![CDATA[
+insert into T_TICKETS
+  (SEND_TIME, TITLE, TICKETS_SYSTEM, QUESTION_TYPE, LAST_REPLAY_TIME, LAST_RELAYER, BUYER_READ_TIME, SYSTEM_READ_TIME,STATUS,BUYER_ID,BUYER_NAME,IDENTITY)
+values
+  (#sendTime#, #title#, #ticketsSystem#, #questionType#, #lastReplayTime#, #lastRelayer#, #buyerReadTime#, #systemReadTime#,#status#,#buyerId#,#buyerName#,#identity#)
+        ]]>
+        <selectKey keyProperty="ticketsId" resultClass="long">
+            <![CDATA[select @@identity as ticketsId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateTicketsBean" parameterClass="com.fd.fashion.ticket.bean.TicketsBean">
+        <![CDATA[
+update T_TICKETS 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="lastReplayTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[LAST_REPLAY_TIME = #lastReplayTime#]]>
+            </isNotNull>
+            <isNotNull property="lastRelayer" prepend="," removeFirstPrepend="true">
+                <![CDATA[LAST_RELAYER = #lastRelayer#]]>
+            </isNotNull>
+            <isNotNull property="buyerReadTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[BUYER_READ_TIME = #buyerReadTime#]]>
+            </isNotNull>
+            <isNotNull property="systemReadTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[SYSTEM_READ_TIME = #systemReadTime#]]>
+            </isNotNull>
+             <isNotNull property="status" prepend="," removeFirstPrepend="true">
+                <![CDATA[STATUS = #status#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where TICKETS_ID = #ticketsId#
+        ]]>
+    </update>
+
+    <sql id="getTicketsBeanCondition">
+         <isNotNull property="ticketsId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TICKETS_ID = #ticketsId#]]>
+         </isNotNull>
+         <isNotNull property="sendTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SEND_TIME = #sendTime#]]>
+         </isNotNull>
+         <isNotNull property="title" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TITLE = #title#]]>
+         </isNotNull>
+         <isNotNull property="ticketsSystem" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TICKETS_SYSTEM = #ticketsSystem#]]>
+         </isNotNull>
+         <isNotNull property="questionType" prepend="and" removeFirstPrepend="true">
+             <![CDATA[QUESTION_TYPE = #questionType#]]>
+         </isNotNull>
+         <isNotNull property="lastReplayTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LAST_REPLAY_TIME = #lastReplayTime#]]>
+         </isNotNull>
+         <isNotNull property="lastRelayer" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LAST_RELAYER = #lastRelayer#]]>
+         </isNotNull>
+         <isNotNull property="buyerReadTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[BUYER_READ_TIME = #buyerReadTime#]]>
+         </isNotNull>
+         <isNotNull property="systemReadTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SYSTEM_READ_TIME = #systemReadTime#]]>
+         </isNotNull>
+         <isNotNull property="status" prepend="and" removeFirstPrepend="true">
+                <![CDATA[STATUS = #status#]]>
+            </isNotNull>
+          <isNotNull property="buyerId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[BUYER_ID = #buyerId#]]>
+            </isNotNull>
+             <isNotNull property="buyerName" prepend="and" removeFirstPrepend="true">
+                <![CDATA[BUYER_NAME = #buyerName#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getTicketsBeanCount" parameterClass="com.fd.fashion.ticket.bean.TicketsBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_TICKETS 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getTicketsBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getTicketsBean" parameterClass="com.fd.fashion.ticket.bean.TicketsBean"
+        resultClass="com.fd.fashion.ticket.bean.TicketsBean">
+        <![CDATA[
+select 
+	TICKETS_ID	as ticketsId,
+	SEND_TIME	as sendTime,
+	TITLE	as title,
+	TICKETS_SYSTEM	as ticketsSystem,
+	QUESTION_TYPE	as questionType,
+	LAST_REPLAY_TIME	as lastReplayTime,
+	LAST_RELAYER	as lastRelayer,
+	BUYER_READ_TIME	as buyerReadTime,
+	SYSTEM_READ_TIME	as systemReadTime,
+    STATUS      as 	status,
+    BUYER_ID   as buyerId,
+    BUYER_NAME   as buyerName,
+    IDENTITY     as identity
+from T_TICKETS 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getTicketsBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteTicketsBean" parameterClass="com.fd.fashion.ticket.bean.TicketsBean">
+        <![CDATA[
+delete from T_TICKETS where TICKETS_ID=#ticketsId#
+        ]]>
+    </delete>
+    
+    <select id="getTicketsListCount" parameterClass="com.fd.fashion.ticket.vo.SearchTicketVo"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_TICKETS 
+        ]]>
+        <dynamic prepend="where">
+            <isNotNull property="sendTimeStart" prepend="and">
+			<![CDATA[ SEND_TIME >= #sendTimeStart# ]]>
+		</isNotNull>
+		<isNotNull property="sendTimeEnd" prepend="and">
+			<![CDATA[ SEND_TIME <= ADDDATE(#sendTimeEnd#,1) ]]>
+		</isNotNull>
+         <isNotNull property="keyword" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TITLE like '%$keyword$%']]>
+         </isNotNull>
+         <isNotNull property="questionType" prepend="and" removeFirstPrepend="true">
+             <![CDATA[QUESTION_TYPE = #questionType#]]>
+         </isNotNull>
+         <isNotNull property="replyTimeStart" prepend="and">
+			<![CDATA[ LAST_REPLAY_TIME >= #replyTimeStart# ]]>
+		</isNotNull>
+		<isNotNull property="replyTimeEnd" prepend="and">
+			<![CDATA[ LAST_REPLAY_TIME <= ADDDATE(#replyTimeEnd#,1) ]]>
+		</isNotNull>
+         <isNotNull property="messType">
+			<isEqual property="messType" compareValue="1">
+				<![CDATA[ STATUS = 1 ]]>
+			</isEqual>
+			<isEqual property="messType" compareValue="2">
+				<![CDATA[ STATUS = 2 ]]>
+			</isEqual>
+			<isEqual property="messType" compareValue="3">
+				<![CDATA[ STATUS = 3 ]]>
+			</isEqual>
+		</isNotNull>
+		 <isNotNull property="sender" prepend="and" removeFirstPrepend="true">
+		 	<isEqual property="sendType" compareValue="1">
+				 <![CDATA[BUYER_NAME = #sender#]]>
+			</isEqual>
+            <isEqual property="sendType" compareValue="2">
+				 <![CDATA[TICKETS_SYSTEM = #sender#]]>
+			</isEqual>
+         </isNotNull>
+        </dynamic>
+    </select>
+    
+    
+    <select id="getTicketsList" parameterClass="com.fd.fashion.ticket.vo.SearchTicketVo"
+        resultClass="com.fd.fashion.ticket.bean.TicketsBean">
+        <![CDATA[
+select 
+	TICKETS_ID	as ticketsId,
+	SEND_TIME	as sendTime,
+	TITLE	as title,
+	TICKETS_SYSTEM	as ticketsSystem,
+	QUESTION_TYPE	as questionType,
+	LAST_REPLAY_TIME	as lastReplayTime,
+	LAST_RELAYER	as lastRelayer,
+	BUYER_READ_TIME	as buyerReadTime,
+	SYSTEM_READ_TIME	as systemReadTime,
+    STATUS      as 	status,
+    BUYER_ID     as buyerId,
+    BUYER_NAME     as buyerName,
+    IDENTITY      as identity
+from T_TICKETS 
+        ]]>
+     <dynamic prepend="where">
+         <isNotNull property="sendTimeStart" prepend="and">
+			<![CDATA[ SEND_TIME >= #sendTimeStart# ]]>
+		</isNotNull>
+		<isNotNull property="sendTimeEnd" prepend="and">
+			<![CDATA[ SEND_TIME <= ADDDATE(#sendTimeEnd#,1) ]]>
+		</isNotNull>
+         <isNotNull property="keyword" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TITLE like '%$keyword$%']]>
+         </isNotNull>
+         <isNotNull property="questionType" prepend="and" removeFirstPrepend="true">
+             <![CDATA[QUESTION_TYPE = #questionType#]]>
+         </isNotNull>
+         <isNotNull property="replyTimeStart" prepend="and">
+			<![CDATA[ LAST_REPLAY_TIME >= #replyTimeStart# ]]>
+		</isNotNull>
+		<isNotNull property="replyTimeEnd" prepend="and">
+			<![CDATA[ LAST_REPLAY_TIME <= ADDDATE(#replyTimeEnd#,1) ]]>
+		</isNotNull>
+         <isNotNull property="messType" prepend="and" removeFirstPrepend="true">
+			<isEqual property="messType" compareValue="1">
+				<![CDATA[ STATUS = 1 ]]>
+			</isEqual>
+			<isEqual property="messType" compareValue="2">
+				<![CDATA[ STATUS = 2 ]]>
+			</isEqual>
+			<isEqual property="messType" compareValue="3">
+				<![CDATA[ STATUS = 3 ]]>
+			</isEqual>
+		</isNotNull>
+		  <isNotNull property="sender" prepend="and" removeFirstPrepend="true">
+		 	<isEqual property="sendType" compareValue="1">
+				 <![CDATA[BUYER_NAME = #sender# and IDENTITY=2]]>
+			</isEqual>
+            <isEqual property="sendType" compareValue="2">
+				 <![CDATA[TICKETS_SYSTEM = #sender# and IDENTITY=1]]>
+			</isEqual>
+         </isNotNull>
+         <isNull property="sender" prepend="and" removeFirstPrepend="true">
+         	<isEqual property="sendType" compareValue="4">
+         		<![CDATA[ BUYER_NAME = #buyerName# ]]>
+         	</isEqual>
+         	<isEqual property="sendType" compareValue="5">
+         		<![CDATA[ IDENTITY=1 and BUYER_NAME=#buyerName# ]]>
+         	</isEqual>
+         </isNull>
+    </dynamic>
+    <![CDATA[ order by SEND_TIME desc ]]>
+    <dynamic>
+		<isNotNull property="pageInfo">
+			<![CDATA[
+		limit #pageInfo.beginRowNum#,#pageInfo.endRowNum#
+           ]]>
+		</isNotNull>
+	</dynamic>
+	
+    </select>
+    
+    
+
+</sqlMap>

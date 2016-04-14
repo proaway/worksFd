@@ -1,0 +1,151 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>$page.title</title>
+        <meta content="&lt;!--MICCMS:Meta-Description--&gt;" name="description" />
+        <meta content="&lt;!--MICCMS:Meta-Keywords--&gt;" name="keywords" />
+        <link type="image/ico" href="/static/web/images/logo-ico.ico" rel="shortcut icon">
+        <script src="/static/prototype/product_fashion/inc/jquery-1.7.2.min.js" type="text/javascript" language="javascript"></script>
+        
+        <link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/whole.css" />
+        <link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/fashion.css" />
+        
+        <script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/product_fashion_nav.js"></script>
+        
+        <link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/images/list-new/baseline.css">
+<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/images/list-new/webkit.css">
+<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/images/list-new/colorbox.css">
+        <link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/list.css" />
+
+<style type="text/css">
+.more_color_p a { font-size:10px; margin-left:16px;}
+.more_color_p a img{ margin-top:-3px;}
+</style>
+
+<script type="text/javascript" src="/static/prototype/product_fashion/images/list-new/jquery_006.js"></script>
+<script type="text/javascript" src="/static/prototype/product_fashion/images/list-new/tooltip.js"></script>
+<script type="text/javascript" src="/static/prototype/product_fashion/images/list-new/namespace.js"></script>
+<script type="text/javascript" src="/static/prototype/product_fashion/images/list-new/xgn.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/showLoading.css"/>
+<script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/jquery.showLoading.js"></script>
+<script language="javascript" src="/static/prototype/product_fashion/inc/logintest.js"></script>
+<script language="javascript" src="/static/prototype/product_fashion/inc/tips/tips.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/inc/tips/tips.css" />
+<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/log_reg.css" />
+        
+        <style>
+        	.productsList{
+	position: relative;
+	padding-left: 4px;
+	color: #333333;
+	clear:both;
+	margin:0 0;
+	text-align:left;
+	height:133px!important;/*height:140px!important;*/
+	/*overflow:hidden;*/
+	padding:10px 0 7px;/*padding-top:5px;*/
+}
+.productsList .pd_pa{
+	/*border-left:1px #CCCCCC solid;*/
+	padding-left:10px;
+	padding-top:0px;/*padding-top:5px;*/
+}
+.productsList div{
+	color:#8e8e8e;
+	font-size:10px;
+	font-family:Verdana, Arial, Helvetica, sans-serif;
+	font-weight:normal;
+}
+.productsList .reviewtxt{
+	font:normal 10px verdana;
+	clear:both;
+	line-height:140%;
+	padding:4px 0;
+	color:#555;
+}
+.reviewtxt{
+	font:normal 12px verdana;
+	clear:both;
+	line-height:140%;
+	padding:4px 0;
+	color:#555;
+}
+.reviewtxt img{padding:0 8px ;}
+.productsListImg{/*border: 1px solid #F3F3F3;border: 1px solid #d7d7d7;*/ margin-right:10px;}
+.productsListName {
+	font:bold 12px verdana;
+	margin-bottom: 4px;
+	line-height: 16px;
+}
+.productsList h3.productname{
+  color:#555;
+	font:bold 12px verdana;
+	margin:0 0 4px 0;
+	line-height: 16px;
+	background:none;
+	text-align:left;
+}
+h3.productname a{
+	text-decoration: none!important;
+	/*margin-right: 20px;*/
+	color:#555!important;
+}
+
+h3.productname a:hover{
+	text-decoration: underline!important;
+}
+
+h3.productname a span{
+	font:bold 12px verdana;
+	/*color: #C00;*/ /*SE list keywords color*/
+	color:#2779e6;
+}
+h3.productname .date{
+	font:normal 9px verdana;
+	color:#8e8e8e;
+}
+.discout{ position:absolute; margin-top:0px; margin-left:-71px; background:url(/static/prototype/product_fashion/images/index_new_12_11_12/buyer_index.png) 0 -506px; width:51px; height:23px; color:#FFF; font-weight:bold; padding:0 0 0 10px; line-height:26px;}
+.discout_1{ font-size:16px;}
+        </style>
+</head>
+<body>
+    <div id="container">
+        <!-- ------------------------- S header ------------------------- -->
+        <div id="header">
+           $navigation.setTemplate('Head.html')
+		</div>
+		<!-- ------------------------- E header ------------------------- -->
+		<br class="clearfloat">
+		<!-- ------------------------- S mainContent ------------------------- -->
+<form name="listForm" id="listForm" method="get" action="">
+        <div id="mainContent">
+            <!-- --------------- S sidebar --------------- -->
+            <div id="left_sidebar">
+                $navigation.setTemplate('search,ProductsLeft.html')
+            </div>
+            <!-- --------------- E sidebar --------------- -->
+            <!-- --------------- S content --------------- -->
+            <div id="right_content">
+				$screen_placeholder
+			</div>
+			<!-- --------------- E content --------------- -->
+			$navigation.setTemplate('inc,Clearance.html')
+    	</div>
+</form>	
+        <!-- ------------------------- E mainContent ------------------------- -->
+        <br class="clearfloat">
+		<!-- ------------------------- S footer ------------------------- -->
+        <div id="footer">
+            <!--S footer-->
+			$navigation.setTemplate('Bottom.html')
+			<br class="clearfloat" />
+            <!--E footer-->
+        </div>
+		<!-- ------------------------- S footer ------------------------- -->
+		<br class="clearfloat">
+	</div>
+	<div class="tooltipChrome" id="tooltip" style="display: none;">
+        $navigation.setTemplate('search,TooltipChrome.html')
+	</div>
+</body>
+</html>

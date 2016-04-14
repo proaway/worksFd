@@ -1,0 +1,54 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        
+        <title>$page.title</title>
+        <meta name="description" content="" />
+        <meta name="keywords" content="" />
+        
+        <link rel="shortcut icon" href="/static/web/images/logo-ico.ico" type="image/ico" />
+        
+        <script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/jquery-1.7.2.min.js"></script>
+        <script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/jsonconvert.js"></script>
+        ##<script language="javascript" type="text/javascript" src="$content.getURI('js/jsonconvert.js')"></script>
+        <script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/buyercheck.js"></script>
+        
+        <link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/whole.css" />
+        <link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/fashion.css" />
+        <link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/log_reg.css" />
+        
+        <script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/product_fashion_nav.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/cart.css" />
+<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/list.css"/>
+<script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/show_layer.js"></script>
+<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/css/showLoading.css"/>
+<script language="javascript" type="text/javascript" src="/static/prototype/product_fashion/inc/jquery.showLoading.js"></script>
+	</head>
+	<body>
+		<div id="container">
+			<!-- ------------------------- S header ------------------------- -->
+			<div id="header">
+				<!--S header-->
+				$navigation.setTemplate('Head.html')
+				<!--E header-->
+			</div>
+			<!-- ------------------------- E header ------------------------- -->
+			<br class="clearfloat" />
+			<!-- ------------------------- S mainContent ------------------------- -->
+			$screen_placeholder
+			<!-- ------------------------- E mainContent ------------------------- -->
+			<br class="clearfloat" />
+			<!-- ------------------------- S footer ------------------------- -->
+			<div id="footer">
+				<!--S footer-->
+				$navigation.setTemplate('Bottom.html')
+				<br class="clearfloat" />
+				<!--E footer-->
+			</div>
+			<!-- ------------------------- S footer ------------------------- -->
+			<br class="clearfloat" />
+		</div>
+	</body>
+</html>

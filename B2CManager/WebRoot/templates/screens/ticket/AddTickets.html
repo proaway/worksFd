@@ -1,0 +1,129 @@
+##新增tickets
+
+<div aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal hide fade in" id="add_tickets_b" style="display: block;">
+<div class="modal-header">
+<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+<h5 id="myModalLabel">新增Tickets</h5>
+</div>
+<div class="modal-body">
+<table cellspacing="0" cellpadding="0" border="0" class="mar_left_20">
+  <tbody>
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">主题：</label></td>
+    <td>
+    	<input type="text" class="input-xlarge" placeholder="主题" id="titleContent" name="titleContent">
+		<br class="clear">
+		<span class="help-block left hide" id="titleErr" name="err"><span class="red">主题不能为空。</span></span>
+    </td>
+  </tr>
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">买家昵称：</label></td>
+    <td>
+    	<input type="text" class="input-medium" placeholder="买家昵称" id="buyerName" name="buyerName" onblur="javascript:ajaxCheckBuyerName();">
+		<input type="hidden" id="buyerId" name="buyerId" value=""/>
+		<br class="clear">
+		<span class="help-block left hide" id="buyerErr" name="err"><span class="red">不能为空（或者买家不存在）。</span></span>
+	</td>
+  </tr>
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">问题分类：</label></td>
+    <td>
+    	<select id="question" name="question" class="left oi_status_max_w">
+				<option value="1" selected >账户问题</option>
+                <option value="2">交易和询盘</option>
+				<option value="3">订单投诉</option>
+				<option value="4">功能报错</option>
+				<option value="5">侵权举报</option>
+				<option value="6">其他</option>
+        </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">正文：</label></td>
+    <td>
+    	<textarea placeholder="请用英文填写" style="resize: none;ime-mode:disabled;" class="input-xlarge left" rows="3" name="messContent" id="messContent"></textarea>
+		<br class="clear"><span class="help-block left hide" id="messErr" name="err"><span class="red">不能为空。</span></span>
+        <br class="clear">
+        <input type="button"  class="btn  right" value="保存" onclick="addTickets();"><label class="checkbox right mar_top_5 mar_right_10">
+        <input type="checkbox" value="同时发送邮件" onclick="changeSend();" name="sendIt" id="sendIt"><input type="hidden" value="0" id="sendEmail" name="sendEmail" />
+        同时发送邮件
+      </label>
+    </td>
+  </tr>
+</tbody></table>
+</div>
+<div class="modal-footer">
+<!--<button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+<button class="btn btn-primary" data-dismiss="modal" aria-hidden="true">确定</button>-->
+</div>
+</div>
+	
+<script>
+jQuery('#add_tickets_b').modal({
+	show:true
+})
+
+
+	//发送邮件，选中状态为1时表示发送
+	function changeSend(){
+		if(jQuery("#sendIt").checked==true){
+			jQuery("#sendEmail").val("1");
+		}else{
+			jQuery("#sendEmail").val("0");
+		}
+	}
+	
+	function ajaxCheckBuyerName(){
+		jQuery("#buyerErr").hide();
+		var userId = jQuery("#buyerName").val();
+		if(userId==""){
+			jQuery("#buyerErr").show();
+			return;;
+		}
+		jQuery.getJSON("$link.setAction('buyer.AjaxCheckUserIdAction')", {userId:userId}, function(data){
+			if (data.status == 1) {
+				jQuery("#buyerId").val(data.buyerId);
+			} else {
+				jQuery("#buyerErr").show();
+				return;
+			}
+		});
+	}
+	
+	function addTickets(){
+		jQuery("span[name='err']").addClass("hide");
+		
+		var titleContent = jQuery("#titleContent").val();
+		if(titleContent==""){
+			jQuery("#titleErr").show();
+			return;
+		}
+		var buyerName = jQuery("#buyerName").val();
+		var buyerId = jQuery("#buyerId").val();
+		
+		if(buyerId==""){
+			jQuery("#buyerErr").show();
+			return;
+		}
+		
+		var messContent = jQuery("#messContent").val();
+		if(messContent==""){
+			jQuery("#messErr").show();
+			return ;
+		}
+		var question = jQuery("#question").val();
+		
+		var sendEmail  =jQuery("#sendEmail").val();
+		jQuery("span[name='err']").addClass("hide");
+		jQuery.getJSON("$link.setAction('ticket.AjaxAddTicketsAction')", {titleContent:titleContent,buyerName:buyerName,buyerId:buyerId,messContent:messContent,questionType:question,sendEmail:sendEmail}, function(data){
+			if (data.status == 1) {
+				jQuery("#add_tickets_b").remove();
+				addTikcetToShow(data.ticket);
+			} else {
+				alert("添加失败");
+			}
+		});
+		
+	}
+	
+</script>

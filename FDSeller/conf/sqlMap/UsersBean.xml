@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertUsersBean" parameterClass="com.fd.fashion.seller.bean.UsersBean">
+        <![CDATA[
+insert into T_SYS_USERS
+  (ROLE_ID, LOGIN_NAME, USER_NAME, PSW, EMAIL, PHONE, DEPARTMENT_ID, MAIN_INDUSTRY, CREATE_TIME, CREATOR, UPDATE_TIME, OPERATOR, VAILD, PRIORITY)
+values
+  (#roleId#, #loginName#, #userName#, #psw#, #email#, #phone#, #departmentId#, #mainIndustry#, #createTime#, #creator#, #updateTime#, #operator#, #vaild#, #priority#)
+        ]]>
+        <selectKey keyProperty="userId" resultClass="long">
+            <![CDATA[select @@identity as userId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateUsersBean" parameterClass="com.fd.fashion.seller.bean.UsersBean">
+        <![CDATA[
+update T_SYS_USERS 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="roleId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ROLE_ID = #roleId#]]>
+            </isNotNull>
+            <isNotNull property="loginName" prepend="," removeFirstPrepend="true">
+                <![CDATA[LOGIN_NAME = #loginName#]]>
+            </isNotNull>
+            <isNotNull property="userName" prepend="," removeFirstPrepend="true">
+                <![CDATA[USER_NAME = #userName#]]>
+            </isNotNull>
+            <isNotNull property="psw" prepend="," removeFirstPrepend="true">
+                <![CDATA[PSW = #psw#]]>
+            </isNotNull>
+            <isNotNull property="email" prepend="," removeFirstPrepend="true">
+                <![CDATA[EMAIL = #email#]]>
+            </isNotNull>
+            <isNotNull property="phone" prepend="," removeFirstPrepend="true">
+                <![CDATA[PHONE = #phone#]]>
+            </isNotNull>
+            <isNotNull property="departmentId" prepend="," removeFirstPrepend="true">
+                <![CDATA[DEPARTMENT_ID = #departmentId#]]>
+            </isNotNull>
+            <isNotNull property="mainIndustry" prepend="," removeFirstPrepend="true">
+                <![CDATA[MAIN_INDUSTRY = #mainIndustry#]]>
+            </isNotNull>
+            <isNotNull property="createTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_TIME = #createTime#]]>
+            </isNotNull>
+            <isNotNull property="creator" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATOR = #creator#]]>
+            </isNotNull>
+            <isNotNull property="updateTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[UPDATE_TIME = #updateTime#]]>
+            </isNotNull>
+            <isNotNull property="operator" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPERATOR = #operator#]]>
+            </isNotNull>
+            <isNotNull property="vaild" prepend="," removeFirstPrepend="true">
+                <![CDATA[VAILD = #vaild#]]>
+            </isNotNull>
+            <isNotNull property="priority" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRIORITY = #priority#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where USER_ID = #userId#
+        ]]>
+    </update>
+
+    <sql id="getUsersBeanCondition">
+         <isNotNull property="userId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[USER_ID = #userId#]]>
+         </isNotNull>
+         <isNotNull property="roleId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ROLE_ID = #roleId#]]>
+         </isNotNull>
+         <isNotNull property="loginName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LOGIN_NAME = #loginName#]]>
+         </isNotNull>
+         <isNotNull property="userName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[USER_NAME = #userName#]]>
+         </isNotNull>
+         <isNotNull property="psw" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PSW = #psw#]]>
+         </isNotNull>
+         <isNotNull property="email" prepend="and" removeFirstPrepend="true">
+             <![CDATA[EMAIL = #email#]]>
+         </isNotNull>
+         <isNotNull property="phone" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PHONE = #phone#]]>
+         </isNotNull>
+         <isNotNull property="departmentId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[DEPARTMENT_ID = #departmentId#]]>
+         </isNotNull>
+         <isNotNull property="mainIndustry" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MAIN_INDUSTRY = #mainIndustry#]]>
+         </isNotNull>
+         <isNotNull property="createTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATE_TIME = #createTime#]]>
+         </isNotNull>
+         <isNotNull property="creator" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATOR = #creator#]]>
+         </isNotNull>
+         <isNotNull property="updateTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[UPDATE_TIME = #updateTime#]]>
+         </isNotNull>
+         <isNotNull property="operator" prepend="and" removeFirstPrepend="true">
+             <![CDATA[OPERATOR = #operator#]]>
+         </isNotNull>
+         <isNotNull property="vaild" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VAILD = #vaild#]]>
+         </isNotNull>
+         <isNotNull property="priority" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PRIORITY = #priority#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getUsersBeanCount" parameterClass="com.fd.fashion.seller.bean.UsersBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_SYS_USERS 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getUsersBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getUsersBean" parameterClass="com.fd.fashion.seller.bean.UsersBean"
+        resultClass="com.fd.fashion.seller.bean.UsersBean">
+        <![CDATA[
+select 
+	USER_ID	as userId,
+	ROLE_ID	as roleId,
+	LOGIN_NAME	as loginName,
+	USER_NAME	as userName,
+	PSW	as psw,
+	EMAIL	as email,
+	PHONE	as phone,
+	DEPARTMENT_ID	as departmentId,
+	MAIN_INDUSTRY	as mainIndustry,
+	CREATE_TIME	as createTime,
+	CREATOR	as creator,
+	UPDATE_TIME	as updateTime,
+	OPERATOR	as operator,
+	VAILD	as vaild,
+	PRIORITY	as priority
+from T_SYS_USERS 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getUsersBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteUsersBean" parameterClass="com.fd.fashion.seller.bean.UsersBean">
+        <![CDATA[
+delete from T_SYS_USERS where USER_ID=#userId#
+        ]]>
+    </delete>
+    
+     <select id="getUserListCount" parameterClass="com.fd.fashion.seller.vo.UserSearchVo"
+        resultClass="java.lang.Integer">
+        <![CDATA[
+select 
+	count(*)
+from T_SYS_USERS 
+        ]]>
+        <dynamic prepend="where">
+        <isNotNull property="roleId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ROLE_ID = #roleId#]]>
+         </isNotNull>
+         <isNotNull property="loginName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LOGIN_NAME like '%$loginName$%']]>
+         </isNotNull>
+         <isNotNull property="userName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[USER_NAME like '%$userName$%']]>
+         </isNotNull>
+         <isNotNull property="email" prepend="and" removeFirstPrepend="true">
+             <![CDATA[EMAIL like '%$email$%']]>
+         </isNotNull>
+         <isNotNull property="phone" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PHONE like '%$phone$%']]>
+         </isNotNull>
+         <isNotNull property="departmentId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[DEPARTMENT_ID = #departmentId#]]>
+         </isNotNull>
+          <isNotNull property="vaild" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VAILD = #vaild#]]>
+         </isNotNull>
+         <isNotNull property="createTimeStart" prepend="and" removeFirstPrepend="true">
+              <![CDATA[ CREATE_TIME >= #createTimeStart# ]]>
+          </isNotNull>
+          <isNotNull property="createTimeEnd" prepend="and" removeFirstPrepend="true">
+              <![CDATA[ CREATE_TIME <= #createTimeEnd# + 1 ]]>
+          </isNotNull>
+        </dynamic>
+    </select>
+    
+    
+     <select id="getUserList" parameterClass="com.fd.fashion.seller.vo.UserSearchVo"
+        resultClass="com.fd.fashion.seller.bean.UsersBean">
+        <dynamic>
+            <isNotNull property="pageInfo">
+                <![CDATA[
+select * from (select rownum num, tt.* from (
+                ]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+select 
+	USER_ID	as userId,
+	ROLE_ID	as roleId,
+	LOGIN_NAME	as loginName,
+	USER_NAME	as userName,
+	PSW	as psw,
+	EMAIL	as email,
+	PHONE	as phone,
+	DEPARTMENT_ID	as departmentId,
+	MAIN_INDUSTRY	as mainIndustry,
+	CREATE_TIME	as createTime,
+	CREATOR	as creator,
+	UPDATE_TIME	as updateTime,
+	OPERATOR	as operator,
+	VAILD	as vaild,
+	PRIORITY	as priority
+from T_SYS_USERS 
+        ]]>
+        <dynamic prepend="where">
+        <isNotNull property="roleId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ROLE_ID = #roleId#]]>
+         </isNotNull>
+         <isNotNull property="loginName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LOGIN_NAME like '%$loginName$%']]>
+         </isNotNull>
+         <isNotNull property="userName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[USER_NAME like '%$userName$%']]>
+         </isNotNull>
+         <isNotNull property="email" prepend="and" removeFirstPrepend="true">
+             <![CDATA[EMAIL like '%$email$%']]>
+         </isNotNull>
+         <isNotNull property="phone" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PHONE like '%$phone$%']]>
+         </isNotNull>
+         <isNotNull property="departmentId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[DEPARTMENT_ID = #departmentId#]]>
+         </isNotNull>
+          <isNotNull property="vaild" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VAILD = #vaild#]]>
+         </isNotNull>
+         <isNotNull property="createTimeStart" prepend="and" removeFirstPrepend="true">
+              <![CDATA[ CREATE_TIME >= #createTimeStart# ]]>
+          </isNotNull>
+          <isNotNull property="createTimeEnd" prepend="and" removeFirstPrepend="true">
+              <![CDATA[ CREATE_TIME <= #createTimeEnd# + 1 ]]>
+          </isNotNull>
+        </dynamic>
+        <dynamic>
+        	<isNotEmpty property="adsc">
+        		<isEqual property="adsc" compareValue="0">
+        			<![CDATA[ order by CREATE_TIME asc ]]>
+        		</isEqual>
+        		<isEqual property="adsc" compareValue="1">
+        			<![CDATA[ order by CREATE_TIME desc ]]>
+        		</isEqual>
+        	</isNotEmpty>
+        </dynamic>
+        
+      <!--  
+      <dynamic>
+       <isNotEmpty property="orderBy">
+             <isEqual property="orderBy" compareValue="0">
+                 <isEqual property="adsc" compareValue="0">
+                     <![CDATA[ order by CREATE_TIME asc ]]>
+                 </isEqual>
+                <isEqual property="adsc" compareValue="1">
+                     <![CDATA[ order by CREATE_TIME desc ]]>
+                 </isEqual>
+             </isEqual>
+             <isEqual property="orderBy" compareValue="1">
+                 <isEqual property="adsc" compareValue="0">
+                     <![CDATA[ order by LOGIN_NAME asc ]]>
+                 </isEqual>
+                <isEqual property="adsc" compareValue="1">
+                     <![CDATA[ order by LOGIN_NAME desc ]]>
+                 </isEqual>
+             </isEqual>
+              <isEqual property="orderBy" compareValue="2">
+                 <isEqual property="adsc" compareValue="0">
+                     <![CDATA[ order by USER_NAME asc ]]>
+                 </isEqual>
+                <isEqual property="adsc" compareValue="1">
+                     <![CDATA[ order by USER_NAME desc ]]>
+                 </isEqual>
+             </isEqual>
+             <isEqual property="orderBy" compareValue="2">
+                 <isEqual property="adsc" compareValue="0">
+                     <![CDATA[ order by EMAIL asc ]]>
+                 </isEqual>
+                <isEqual property="adsc" compareValue="1">
+                     <![CDATA[ order by EMAIL desc ]]>
+                 </isEqual>
+             </isEqual>
+       </isNotEmpty>
+       </dynamic>
+      -->
+        <dynamic>
+            <isNotNull property="pageInfo">
+                <![CDATA[
+) tt ) where num > #pageInfo.beginRowNum# and num <= #pageInfo.endRowNum#
+                ]]>
+            </isNotNull>
+        </dynamic>
+    </select>
+    
+    <update id="updateUserByRole" parameterClass="com.fd.fashion.seller.bean.UsersBean">
+    	<![CDATA[
+update T_SYS_USERS 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="updateTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[UPDATE_TIME = #updateTime#]]>
+            </isNotNull>
+            <isNotNull property="operator" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPERATOR = #operator#]]>
+            </isNotNull>
+            <isNotNull property="vaild" prepend="," removeFirstPrepend="true">
+                <![CDATA[VAILD = #vaild#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where USER_ID = #userId#
+        ]]>
+    </update>
+
+</sqlMap>

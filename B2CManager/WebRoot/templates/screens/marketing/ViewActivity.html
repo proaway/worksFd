@@ -1,0 +1,112 @@
+<div id="view_activity_info" class="modal hide fade" tabindex="-1"
+	role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal"
+			aria-hidden="true">×</button>
+		<h5 id="myModalLabel">查看详情</h5>
+	</div>
+
+	<div class="modal-body">
+		<label class="mar_right_10 left mar_top_5">关联产品：</label><br
+			class="clear" />
+		<div id="related_products_after" class="padding_10">
+			<div class="div_left">
+				<img title="" alt="" class="img-polaroid"
+					src="$!product.smallImageUrl">
+			</div>
+			<div class="div_middle">
+				<a target="_blank"
+					href="$!product.productUrl">$!product.product.productName</a><label class="font12 mar_top_5">SKU: $!product.product.sku</label>
+			</div>
+			<br class="clear" />
+		</div>
+#if($!activity.type==1)
+
+		<label class="mar_right_10 left mar_top_5">赠品：</label><br
+			class="clear" />
+		<table
+			class="view_gifts_activity_tab table table-bordered table-striped table-hover">
+			<tr>
+				<td>产品信息</td>
+				<td>赠品总数</td>
+				<td>已赠总数</td>
+			</tr>
+			#foreach($gift in $gifts)
+			<tr>
+				<td>
+					<div class="div_left">
+						<img title="" alt="" class="img-polaroid"
+							src="$!gift.productVo.smallImageUrl">
+					</div>
+					<div class="div_middle">
+						<a
+							href="$!gift.productVo.productUrl">$!gift.productVo.product.productName</a>
+							<label class="font12 mar_top_5">SKU: $!gift.productVo.product.sku</label>
+					</div> <br class="clear" />
+				</td>
+				<td>#if($!gift.numType==0) $!gift.productVo.product.stock #elseif($!gift.numType==1) $!gift.num #end </td>
+				<td>$!gift.giftsCount</td>
+			</tr>
+			#end
+			
+		</table>
+
+
+<!-- E view_gifts_activity -->
+#else
+
+		<label class="mar_right_10 left mar_top_5">组合产品：</label><br
+			class="clear" />
+
+		<div class="alert view_gifts_activity_div">
+			<ul class="unstyled">
+			#foreach($groupProduct in $groupProductList)
+				<li>
+					<div class="div_left">
+						<img title="" alt="" class="img-polaroid"
+							src="$!groupProduct.smallImageUrl">
+					</div>
+					<div class="div_middle">
+						<a
+							href="$!groupProduct.productUrl">$!groupProduct.product.productName</a>
+							<label class="font12 mar_top_5">SKU: $!groupProduct.product.sku</label>
+					</div> <br class="clear" />
+				</li>
+			#end
+			</ul>
+		</div>
+
+
+		<label class="mar_right_10 left mar_top_5">折扣设置：</label><br
+			class="clear" />
+		<ul class="unstyled">
+			<li #if(!$!group.groupDiscount1)class="hide" #end><label class="left mar_top_5">同时购买一件搭配产品折扣值：</label><label
+				class="left mar_left_5 mar_top_5"><span
+					class="font16 bold red"> $!group.groupDiscount1%</span> OFF</label></li>
+			<br class="clear" />
+			<li #if(!$!group.groupDiscount2)class="hide" #end><label class="left mar_top_5">同时购买二件搭配产品折扣值：</label><label
+				class="left mar_left_5 mar_top_5"><span
+					class="font16 bold red">$!group.groupDiscount2%</span> OFF</label></li>
+			<br class="clear" />
+			<li #if(!$!group.groupDiscount3)class="hide" #end><label class="left mar_top_5">同时购买三件搭配产品折扣值：</label><label
+				class="left mar_left_5 mar_top_5"><span
+					class="font16 bold red">$!group.groupDiscount3%</span> OFF</label></li>
+			<br class="clear" />
+			<li #if(!$!group.groupDiscount4)class="hide" #end><label class="left mar_top_5">同时购买四件搭配产品折扣值：</label><label
+				class="left mar_left_5 mar_top_5"><span
+					class="font16 bold red">$!group.groupDiscount4%</span> OFF</label></li>
+			<br class="clear" />
+		</ul>
+		<br class="clear" />
+
+
+#end
+	</div>
+
+</div>
+<script>
+	jQuery('#view_activity_info').modal({
+		show : true
+	})
+</script>

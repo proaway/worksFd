@@ -1,0 +1,32 @@
+<br class="clear">
+    <form name="listForm" id="listForm" method="get" action="$link.setPage('buyer,HistOrderList.html')">
+		<input type="hidden" id="buyerId" name="buyerId" value="$buyerId" />
+        <h4 class="mar_top_15 mar_bottom_20">订单历史</h4>
+        <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-striped table-hover center_t font12 tl_mt3_mb3">
+            <thead>
+                <tr>
+                    <th>订单号</th>
+                    <th>生成时间</th>
+                    <th>金额（$）</th>
+                    <th>支付方式</th>
+                    <th>支付时间</th>
+                    <th>订单状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($histVo in $orderHistList)
+                    <tr>
+                        <td>
+                            <a class="" target="_blank" href="$link.setPage('order,OrderDetail.html')?orderId=$histVo.orderId">$!histVo.orderId</a>
+                        </td>
+                        <td>#if($!histVo.createDate)$!StringUtil.getDateString($!histVo.createDate,'yyyy-MM-dd HH:mm:ss')#end</td>
+                            <td>$!histVo.total</td>
+                            <td>#if($!histVo.paymentDate)$histVo.paymentType#end</td>
+                            <td>#if($!histVo.paymentDate)$!StringUtil.getDateString($histVo.paymentDate,'yyyy-MM-dd HH:mm:ss')#end</td>
+                                <td>$!histVo.orderStatusCN</td>
+                    </tr>
+                #end
+            </tbody>
+        </table>
+        #parse("screens/Nap.html")
+    </form>

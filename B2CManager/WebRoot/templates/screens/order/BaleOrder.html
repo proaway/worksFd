@@ -1,0 +1,159 @@
+<script>
+var actionUrl = "$link.setAction('order.AjaxBaleOrderAction')";
+var count=0;
+	
+jQuery(function(){
+	jQuery("#pickUser").focus();
+});
+
+</script>
+
+<br class="clear">
+<h4 class="mar_top_15 mar_bottom_20">打包</h4>
+<div class="search_form">
+	<ul class="inline">
+        <li><label class="left mar_top_5">打包复检人：</label><input type="text" placeholder="打包复检人" class="input-medium left" id="pickUser" name="pickUser" onkeydown="if(event.keyCode==13) checkUser();" onblur="jQuery('#errorInfo').hide();"></li>
+        <li><label class="left mar_top_5">订单号：</label><input type="text" placeholder="订单号" class="input-medium left" id="orderId" name="orderId" onkeydown="return checkOrderNum(event);"></li>
+        <li><label class="left mar_top_5">重量：</label><input type="text" placeholder="重量" class="input-medium left" id="totalWeight" name="totalWeight" onkeydown="if(event.keyCode==13) checkWeight();"><label class="left mar_top_5 mar_left_5">kg</label></li>
+        <li><input type="button" class="btn btn-primary left" value="打印" onclick="baleSubmit();"></li>
+		<li></li>
+		<li><span id="errorInfo"></span></li>
+    </ul>
+</div>
+<br class="clear">
+
+<div class="border_top width_100 mar_top_10 mar_bottom_10"></div>
+
+<div id="orderInfomation"></div>
+
+
+<script>
+function checkOrderNum(evt){
+	var k=window.event?evt.keyCode:evt.which;
+	if(k==13){
+        checkOrderNo();
+	}
+}
+
+function checkOrderNo(){
+		var orderNo = jQuery("#orderId").val();
+		if(orderNo==""){
+			jQuery("#orderId").val("").focus();
+			jQuery("#errorInfo").show().html("<font color='red'>订单号不能为空</font>");
+			return false;
+		}
+
+		jQuery.get(
+		"$link.setAction('order.AjaxBaleOrderAction')?orderId="+orderNo,
+		function(data){
+			if(data==1){
+				getOrderInfo(orderNo);
+			} else {
+				jQuery("#errorInfo").show().html("<font color='red'>订单号无效</font>");
+    			jQuery("#orderId").val("").focus();
+			}
+		});
+	}
+	
+	function checkUser(){
+		var pickUser = jQuery("#pickUser").val();
+		if(pickUser==""){
+			jQuery("#pickUser").val("").focus();
+			jQuery("#errorInfo").show().html("<font color='red'>复检人名称不能为空</font>");
+			return ; 
+		}
+		if(pickUser!=""){
+    		jQuery.getJSON(
+        		actionUrl,
+        		{pickUser:pickUser,flag:"checkUser"},
+        		function(data){
+        			if(data==1){
+						doNext();
+        			}else{
+        				jQuery("#pickUser").val("").focus();
+						jQuery("#errorInfo").show().html("<font color='red'>复检人名称无效</font>");
+        			}
+        		});
+		}
+		
+	}
+	
+	function checkWeight(){
+		var weight = jQuery("#totalWeight").val();
+		if(weight!=""){
+			if(isNaN(weight)){
+				jQuery("#totalWeight").val("").focus();
+				jQuery("#errorInfo").show().html("<font color='red'>重量输入错误(数字)</font>");
+			}
+		}
+		doNext();
+	}
+	
+	function doNext(){
+		jQuery("#errorInfo").hide();
+		var orderId = jQuery("#orderId").val();
+		var pickUser = jQuery("#pickUser").val();
+		var weight = jQuery("#totalWeight").val();
+		if(orderId!="" && pickUser!="" && weight!=""){
+			//执行打印操作与订单更新操作
+			jQuery.getJSON(
+        		actionUrl,
+        		{orderId:orderId,pickUser:pickUser,flag:"print"},
+        		function(data){
+        			if(data==3){
+						jQuery("#errorInfo").show().html("<font color='red'>订单号无效</font>");
+    					jQuery("#orderId").val("").focus();
+						return false;
+        			}else if(data==2){
+						jQuery("#pickUser").val("").focus();
+						jQuery("#errorInfo").show().html("<font color='red'>复检人名称无效</font>");
+						return;
+        			}else if(data==1){
+						jQuery("#orderId").focus();
+        			}
+        		});
+		}else{
+			if(pickUser==""){
+				jQuery("#pickUser").focus();
+			}else if(orderId==""){
+				jQuery("#orderId").focus();
+			}else{
+				jQuery("#totalWeight").focus();
+			}
+		}
+	}
+	
+	function getOrderInfo(orderNo){
+		jQuery.get(
+		"$link.setAction('order.AjaxBaleOrderAction')?orderId="+orderNo+"&flag=getInfoFlag",
+		function(data){
+			if(data!=null){
+				jQuery("#orderInfomation").html(data);
+				jQuery("#errorInfo").hide();
+				return true;
+			}else{
+				jQuery("#orderId").val("").focus();
+				return false;
+			}
+		});
+		doNext();
+	}
+	
+function baleSubmit(){
+		var orderId = jQuery("#orderId").val();
+		var pickUser = jQuery("#pickUser").val();
+		var weight = jQuery("#totalWeight").val();
+		if(orderId=="" && pickUser=="" && weight==""){
+			jQuery("#pickUser").val("").focus();
+		}else if(orderId!="" && pickUser!="" && weight!=""){
+			doNext();
+		}else if(pickUser!=""){
+			checkUser();
+		}else if(orderId!=""){
+			checkOrderNo();
+		}else{
+			checkWeight();
+		}
+	}
+</script>
+

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertOrderAddressBean" parameterClass="com.fd.fashion.order.bean.OrderAddressBean">
+        <![CDATA[
+insert into T_ORDER_ADDRESS
+  (BUYER_ID, FIRST_NAME, LAST_NAME, ADDRESSLINE1, ADDRESSLINE2, CITY, COUNTRY, PROVINCE, POSTAL_CODE, PHONE)
+values
+  (#buyerId#, #firstName#, #lastName#, #addressline1#, #addressline2#, #city#, #country#, #province#, #postalCode#, #phone#)
+        ]]>
+        <selectKey keyProperty="orderAddressId" resultClass="long">
+            <![CDATA[select @@identity as orderAddressId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateOrderAddressBean" parameterClass="com.fd.fashion.order.bean.OrderAddressBean">
+        <![CDATA[
+update T_ORDER_ADDRESS 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="orderAddressId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ORDER_ADDRESS_ID = #orderAddressId#]]>
+            </isNotNull>
+            <isNotNull property="buyerId" prepend="," removeFirstPrepend="true">
+                <![CDATA[BUYER_ID = #buyerId#]]>
+            </isNotNull>
+            <isNotNull property="firstName" prepend="," removeFirstPrepend="true">
+                <![CDATA[FIRST_NAME = #firstName#]]>
+            </isNotNull>
+            <isNotNull property="lastName" prepend="," removeFirstPrepend="true">
+                <![CDATA[LAST_NAME = #lastName#]]>
+            </isNotNull>
+            <isNotNull property="addressline1" prepend="," removeFirstPrepend="true">
+                <![CDATA[ADDRESSLINE1 = #addressline1#]]>
+            </isNotNull>
+            <isNotNull property="addressline2" prepend="," removeFirstPrepend="true">
+                <![CDATA[ADDRESSLINE2 = #addressline2#]]>
+            </isNotNull>
+            <isNotNull property="city" prepend="," removeFirstPrepend="true">
+                <![CDATA[CITY = #city#]]>
+            </isNotNull>
+            <isNotNull property="country" prepend="," removeFirstPrepend="true">
+                <![CDATA[COUNTRY = #country#]]>
+            </isNotNull>
+            <isNotNull property="province" prepend="," removeFirstPrepend="true">
+                <![CDATA[PROVINCE = #province#]]>
+            </isNotNull>
+            <isNotNull property="postalCode" prepend="," removeFirstPrepend="true">
+                <![CDATA[POSTAL_CODE = #postalCode#]]>
+            </isNotNull>
+            <isNotNull property="phone" prepend="," removeFirstPrepend="true">
+                <![CDATA[PHONE = #phone#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ORDER_ADDRESS_ID = #orderAddressId#
+        ]]>
+    </update>
+
+    <sql id="getOrderAddressBeanCondition">
+         <isNotNull property="orderAddressId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ORDER_ADDRESS_ID = #orderAddressId#]]>
+         </isNotNull>
+         <isNotNull property="buyerId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[BUYER_ID = #buyerId#]]>
+         </isNotNull>
+         <isNotNull property="firstName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[FIRST_NAME = #firstName#]]>
+         </isNotNull>
+         <isNotNull property="lastName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LAST_NAME = #lastName#]]>
+         </isNotNull>
+         <isNotNull property="addressline1" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ADDRESSLINE1 = #addressline1#]]>
+         </isNotNull>
+         <isNotNull property="addressline2" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ADDRESSLINE2 = #addressline2#]]>
+         </isNotNull>
+         <isNotNull property="city" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CITY = #city#]]>
+         </isNotNull>
+         <isNotNull property="country" prepend="and" removeFirstPrepend="true">
+             <![CDATA[COUNTRY = #country#]]>
+         </isNotNull>
+         <isNotNull property="province" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PROVINCE = #province#]]>
+         </isNotNull>
+         <isNotNull property="postalCode" prepend="and" removeFirstPrepend="true">
+             <![CDATA[POSTAL_CODE = #postalCode#]]>
+         </isNotNull>
+         <isNotNull property="phone" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PHONE = #phone#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getOrderAddressBeanCount" parameterClass="com.fd.fashion.order.bean.OrderAddressBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_ORDER_ADDRESS 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getOrderAddressBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getOrderAddressBean" parameterClass="com.fd.fashion.order.bean.OrderAddressBean"
+        resultClass="com.fd.fashion.order.bean.OrderAddressBean">
+        <![CDATA[
+select 
+	ORDER_ADDRESS_ID	as orderAddressId,
+	BUYER_ID	as buyerId,
+	FIRST_NAME	as firstName,
+	LAST_NAME	as lastName,
+	ADDRESSLINE1	as addressline1,
+	ADDRESSLINE2	as addressline2,
+	CITY	as city,
+	COUNTRY	as country,
+	PROVINCE	as province,
+	POSTAL_CODE	as postalCode,
+	PHONE	as phone
+from T_ORDER_ADDRESS 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getOrderAddressBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteOrderAddressBean" parameterClass="com.fd.fashion.order.bean.OrderAddressBean">
+        <![CDATA[
+delete from T_ORDER_ADDRESS where ORDER_ADDRESS_ID=#orderAddressId#
+        ]]>
+    </delete>
+
+</sqlMap>

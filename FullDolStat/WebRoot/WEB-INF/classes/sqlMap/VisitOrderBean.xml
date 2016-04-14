@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertVisitOrderBean" parameterClass="com.fd.statistics.bean.VisitOrderBean">
+        <![CDATA[
+insert into T_VISIT_ORDER
+  (VISIT_ID, ORDER_ID)
+values
+  (#visitId#, #orderId#)
+        ]]>
+        <selectKey keyProperty="visitId" resultClass="long">
+            <![CDATA[select @@identity as visitId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateVisitOrderBean" parameterClass="com.fd.statistics.bean.VisitOrderBean">
+        <![CDATA[
+update T_VISIT_ORDER 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="visitId" prepend="," removeFirstPrepend="true">
+                <![CDATA[VISIT_ID = #visitId#]]>
+            </isNotNull>
+            <isNotNull property="orderId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ORDER_ID = #orderId#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where VISIT_ID = #visitId#
+        ]]>
+    </update>
+
+    <sql id="getVisitOrderBeanCondition">
+         <isNotNull property="visitId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VISIT_ID = #visitId#]]>
+         </isNotNull>
+         <isNotNull property="orderId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ORDER_ID = #orderId#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getVisitOrderBeanCount" parameterClass="com.fd.statistics.bean.VisitOrderBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_VISIT_ORDER 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitOrderBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getVisitOrderBean" parameterClass="com.fd.statistics.bean.VisitOrderBean"
+        resultClass="com.fd.statistics.bean.VisitOrderBean">
+        <![CDATA[
+select 
+	VISIT_ID	as visitId,
+	ORDER_ID	as orderId
+from T_VISIT_ORDER 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitOrderBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteVisitOrderBean" parameterClass="com.fd.statistics.bean.VisitOrderBean">
+        <![CDATA[
+delete from T_VISIT_ORDER where VISIT_ID=#visitId#
+        ]]>
+    </delete>
+
+</sqlMap>

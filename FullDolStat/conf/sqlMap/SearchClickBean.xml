@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertSearchClickBean" parameterClass="com.fd.statistics.bean.SearchClickBean">
+        <![CDATA[
+insert into T_SEARCH_CLICK
+  (RESULT_ID, PRODUCT_ID, POSITION)
+values
+  (#resultId#, #productId#, #position#)
+        ]]>
+    </insert>
+
+    <update id="updateSearchClickBean" parameterClass="com.fd.statistics.bean.SearchClickBean">
+        <![CDATA[
+update T_SEARCH_CLICK 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="resultId" prepend="," removeFirstPrepend="true">
+                <![CDATA[RESULT_ID = #resultId#]]>
+            </isNotNull>
+            <isNotNull property="productId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="position" prepend="," removeFirstPrepend="true">
+                <![CDATA[POSITION = #position#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where RESULT_ID = #resultId#
+        ]]>
+    </update>
+
+    <sql id="getSearchClickBeanCondition">
+         <isNotNull property="resultId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[RESULT_ID = #resultId#]]>
+         </isNotNull>
+         <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PRODUCT_ID = #productId#]]>
+         </isNotNull>
+         <isNotNull property="position" prepend="and" removeFirstPrepend="true">
+             <![CDATA[POSITION = #position#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getSearchClickBeanCount" parameterClass="com.fd.statistics.bean.SearchClickBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_SEARCH_CLICK 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getSearchClickBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getSearchClickBean" parameterClass="com.fd.statistics.bean.SearchClickBean"
+        resultClass="com.fd.statistics.bean.SearchClickBean">	
+        <![CDATA[
+select 
+	RESULT_ID	as resultId,
+	PRODUCT_ID	as productId,
+	POSITION	as position
+from T_SEARCH_CLICK 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getSearchClickBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteSearchClickBean" parameterClass="com.fd.statistics.bean.SearchClickBean">
+        <![CDATA[
+delete from T_SEARCH_CLICK where RESULT_ID=#resultId#
+        ]]>
+    </delete>
+
+</sqlMap>

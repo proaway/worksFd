@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertShoppingCartBean" parameterClass="com.fd.fashion.order.bean.ShoppingCartBean">
+        <![CDATA[
+insert into T_SHOPPING_CART
+  (BUYER_ID, PRODUCT_ID, MAIN_CONFIG_ID, SUB_CONFIG_ID, SKU, QUANTITY, PRODUCT_NAME, STANDARD_ID, WEIGHT, LENGTH, WIDTH, HEIGHT, CREATE_DATE, IMAGE_URL, PRICE, MAIN_TITLE, SUB_TITLE, MAIN_ID, SUB_ID, MAX_STOCK_DAYS)
+values
+  (#buyerId#, #productId#, #mainConfigId#, #subConfigId#, #sku#, #quantity#, #productName#, #standardId#, #weight#, #length#, #width#, #height#, #createDate#, #imageUrl#, #price#, #mainTitle#, #subTitle#, #mainId#, #subId#, #maxStockDays#)
+        ]]>
+        <selectKey keyProperty="cartId" resultClass="long">
+            <![CDATA[select @@identity as cartId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateShoppingCartBean" parameterClass="com.fd.fashion.order.bean.ShoppingCartBean">
+        <![CDATA[
+update T_SHOPPING_CART 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="cartId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CART_ID = #cartId#]]>
+            </isNotNull>
+            <isNotNull property="buyerId" prepend="," removeFirstPrepend="true">
+                <![CDATA[BUYER_ID = #buyerId#]]>
+            </isNotNull>
+            <isNotNull property="productId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="mainConfigId" prepend="," removeFirstPrepend="true">
+                <![CDATA[MAIN_CONFIG_ID = #mainConfigId#]]>
+            </isNotNull>
+            <isNotNull property="subConfigId" prepend="," removeFirstPrepend="true">
+                <![CDATA[SUB_CONFIG_ID = #subConfigId#]]>
+            </isNotNull>
+            <isNotNull property="sku" prepend="," removeFirstPrepend="true">
+                <![CDATA[SKU = #sku#]]>
+            </isNotNull>
+            <isNotNull property="quantity" prepend="," removeFirstPrepend="true">
+                <![CDATA[QUANTITY = #quantity#]]>
+            </isNotNull>
+            <isNotNull property="productName" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_NAME = #productName#]]>
+            </isNotNull>
+            <isNotNull property="standardId" prepend="," removeFirstPrepend="true">
+                <![CDATA[STANDARD_ID = #standardId#]]>
+            </isNotNull>
+            <isNotNull property="weight" prepend="," removeFirstPrepend="true">
+                <![CDATA[WEIGHT = #weight#]]>
+            </isNotNull>
+            <isNotNull property="length" prepend="," removeFirstPrepend="true">
+                <![CDATA[LENGTH = #length#]]>
+            </isNotNull>
+            <isNotNull property="width" prepend="," removeFirstPrepend="true">
+                <![CDATA[WIDTH = #width#]]>
+            </isNotNull>
+            <isNotNull property="height" prepend="," removeFirstPrepend="true">
+                <![CDATA[HEIGHT = #height#]]>
+            </isNotNull>
+            <isNotNull property="createDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_DATE = #createDate#]]>
+            </isNotNull>
+            <isNotNull property="imageUrl" prepend="," removeFirstPrepend="true">
+                <![CDATA[IMAGE_URL = #imageUrl#]]>
+            </isNotNull>
+            <isNotNull property="price" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRICE = #price#]]>
+            </isNotNull>
+            <isNotNull property="mainTitle" prepend="," removeFirstPrepend="true">
+                <![CDATA[MAIN_TITLE = #mainTitle#]]>
+            </isNotNull>
+            <isNotNull property="subTitle" prepend="," removeFirstPrepend="true">
+                <![CDATA[SUB_TITLE = #subTitle#]]>
+            </isNotNull>
+            <isNotNull property="mainId" prepend="," removeFirstPrepend="true">
+                <![CDATA[MAIN_ID = #mainId#]]>
+            </isNotNull>
+            <isNotNull property="subId" prepend="," removeFirstPrepend="true">
+                <![CDATA[SUB_ID = #subId#]]>
+            </isNotNull>
+            <isNotNull property="maxStockDays" prepend="," removeFirstPrepend="true">
+                <![CDATA[MAX_STOCK_DAYS = #maxStockDays#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where CART_ID = #cartId#
+        ]]>
+    </update>
+
+    <sql id="getShoppingCartBeanCondition">
+         <isNotNull property="cartId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CART_ID = #cartId#]]>
+         </isNotNull>
+         <isNotNull property="buyerId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[BUYER_ID = #buyerId#]]>
+         </isNotNull>
+         <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PRODUCT_ID = #productId#]]>
+         </isNotNull>
+         <isNotNull property="mainConfigId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MAIN_CONFIG_ID = #mainConfigId#]]>
+         </isNotNull>
+         <isNotNull property="subConfigId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SUB_CONFIG_ID = #subConfigId#]]>
+         </isNotNull>
+         <isNotNull property="sku" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SKU = #sku#]]>
+         </isNotNull>
+         <isNotNull property="quantity" prepend="and" removeFirstPrepend="true">
+             <![CDATA[QUANTITY = #quantity#]]>
+         </isNotNull>
+         <isNotNull property="productName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PRODUCT_NAME = #productName#]]>
+         </isNotNull>
+         <isNotNull property="standardId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[STANDARD_ID = #standardId#]]>
+         </isNotNull>
+         <isNotNull property="weight" prepend="and" removeFirstPrepend="true">
+             <![CDATA[WEIGHT = #weight#]]>
+         </isNotNull>
+         <isNotNull property="length" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LENGTH = #length#]]>
+         </isNotNull>
+         <isNotNull property="width" prepend="and" removeFirstPrepend="true">
+             <![CDATA[WIDTH = #width#]]>
+         </isNotNull>
+         <isNotNull property="height" prepend="and" removeFirstPrepend="true">
+             <![CDATA[HEIGHT = #height#]]>
+         </isNotNull>
+         <isNotNull property="createDate" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATE_DATE = #createDate#]]>
+         </isNotNull>
+         <isNotNull property="imageUrl" prepend="and" removeFirstPrepend="true">
+             <![CDATA[IMAGE_URL = #imageUrl#]]>
+         </isNotNull>
+         <isNotNull property="price" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PRICE = #price#]]>
+         </isNotNull>
+         <isNotNull property="mainTitle" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MAIN_TITLE = #mainTitle#]]>
+         </isNotNull>
+         <isNotNull property="subTitle" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SUB_TITLE = #subTitle#]]>
+         </isNotNull>
+         <isNotNull property="mainId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MAIN_ID = #mainId#]]>
+         </isNotNull>
+         <isNotNull property="subId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SUB_ID = #subId#]]>
+         </isNotNull>
+         <isNotNull property="maxStockDays" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MAX_STOCK_DAYS = #maxStockDays#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getShoppingCartBeanCount" parameterClass="com.fd.fashion.order.bean.ShoppingCartBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_SHOPPING_CART 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getShoppingCartBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getShoppingCartBean" parameterClass="com.fd.fashion.order.bean.ShoppingCartBean"
+        resultClass="com.fd.fashion.order.bean.ShoppingCartBean">
+        <![CDATA[
+select 
+	CART_ID	as cartId,
+	BUYER_ID	as buyerId,
+	PRODUCT_ID	as productId,
+	MAIN_CONFIG_ID	as mainConfigId,
+	SUB_CONFIG_ID	as subConfigId,
+	SKU	as sku,
+	QUANTITY	as quantity,
+	PRODUCT_NAME	as productName,
+	STANDARD_ID	as standardId,
+	WEIGHT	as weight,
+	LENGTH	as length,
+	WIDTH	as width,
+	HEIGHT	as height,
+	CREATE_DATE	as createDate,
+	IMAGE_URL	as imageUrl,
+	PRICE	as price,
+	MAIN_TITLE	as mainTitle,
+	SUB_TITLE	as subTitle,
+	MAIN_ID	as mainId,
+	SUB_ID	as subId,
+	MAX_STOCK_DAYS	as maxStockDays
+from T_SHOPPING_CART 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getShoppingCartBeanCondition"/>
+        </dynamic>
+        <dynamic>
+			<isNotNull property="pageInfo">
+				<![CDATA[
+			limit #pageInfo.beginRowNum#,#pageInfo.endRowNum#
+            ]]>
+			</isNotNull>
+		</dynamic>
+    </select>
+
+    <delete id="deleteShoppingCartBean" parameterClass="com.fd.fashion.order.bean.ShoppingCartBean">
+        <![CDATA[
+delete from T_SHOPPING_CART where BUYER_ID=#buyerId# and PRODUCT_ID=#productId#
+        ]]>
+        <dynamic>
+            <isNotNull property="standardId" prepend="and">
+                <![CDATA[STANDARD_ID = #standardId#]]>
+            </isNotNull>
+        </dynamic>
+    </delete>
+
+</sqlMap>

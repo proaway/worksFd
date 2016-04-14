@@ -1,0 +1,492 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"><head>
+  <title>订单详情</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="<!--MICCMS:Meta-Description-->" name="description">
+  <meta content="<!--MICCMS:Meta-Keywords-->" name="keywords">
+  <meta content="" name="author">
+<script src="/static/prototype/shopmic-manage/js/jquery-1.7.2.min.js" type="text/javascript" language="javascript"></script>
+<script src="/static/prototype/shopmic-manage/js/bootstrap.min.js" type="text/javascript" language="javascript"></script>
+  <script src="/static/prototype/shopmic-manage/js/jquery-ui-1.10.0.custom.min.js" type="text/javascript" language="javascript"></script>
+  <link type="image/ico" href="/static/web/images/logo-ico.ico" rel="shortcut icon"> 
+  <link href="/static/prototype/shopmic-manage/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+  <link href="/static/prototype/shopmic-manage/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
+  <link href="/static/prototype/shopmic-manage/css/whole.css" type="text/css" rel="stylesheet">
+  <link href="/static/prototype/shopmic-manage/css/shopmic_m.css" type="text/css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="/static/prototype/shopmic-manage/css/showLoading.css"/>
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/jquery.showLoading.min.js"></script>
+</head>
+<body>  
+<form id="frm" name="frm" method="post" action="$link.setPage('order,OrderDetail.html')">
+<br class="clearfloat">
+<div class="nav_footer"></div>
+<br class="clearfloat">
+
+    <!--</div><!-- E header -->
+  <div id="container">
+  	<br class="clear">
+  	<h2 class="mar_bottom_5 text-center border_bottom pad_bottom_5">订单详情</h2>
+    <!--<p class="font14 mar_top_15">订单状态追踪：</p>  -->    
+    <!--<div class="step_show_div">
+      <table cellspacing="0" cellpadding="0" border="0">
+        <tbody><tr>
+          <td colspan="4">
+			#if($orderInfo.getOrderStatus().startsWith('OA'))
+              <div class="step_show_bg_1"></div>
+			#elseif($orderInfo.getOrderStatus()=='OS005')
+				<div class="step_show_bg_3"></div>
+			#elseif($orderInfo.getOrderStatus().startsWith('OS'))
+				<div class="step_show_bg_2"></div>
+			#elseif($orderInfo.getOrderStatus().startsWith('OC1'))
+				<div class="step_show_bg_4"></div>
+			#end
+          </td>
+        </tr>
+        <tr>
+          <td class="step_show_char">#if($orderInfo.createDate)$!StringUtil.getDateString($!orderInfo.createDate,'yyyy-MM-dd HH:mm:ss')#end</td>
+          <td class="step_show_char">#if($secondDate)$!StringUtil.getDateString($secondDate,'yyyy-MM-dd HH:mm:ss')#end</td>
+          <td class="step_show_char">#if($thirdDate)$!StringUtil.getDateString($thirdDate,'yyyy-MM-dd HH:mm:ss')#end</td>
+          <td>#if($fourDate)$!StringUtil.getDateString($fourDate,'yyyy-MM-dd HH:mm:ss')#end</td>
+        </tr>
+      </tbody></table>
+    </div><!--E step show-->
+	
+	<div class="step_show_div">
+      <table cellspacing="0" cellpadding="0" border="0">
+        <tbody><tr>
+          <td colspan="4">
+              <div class="step_show_1"></div>
+			  #if($goMap.get("sendDate"))
+              <div class="step_show_2_2"></div>
+			  #else
+				#if($goMap.get("fourStatus")=="OC201")
+					<div class="step_show_4_3"></div>
+				#else
+					<div class="step_show_2_1"></div>
+				#end
+			  #end
+              #if($goMap.get("thirdDate"))
+              <div class="step_show_3_2"></div>
+			  #else
+				#if($goMap.get("fourStatus")=="OC201")
+					#if($goMap.get("sendDate"))
+						<div class="step_show_4_3"></div>
+    				#else
+    				#end
+				#else
+					<div class="step_show_3_1"></div>
+				#end
+			  #end
+               #if($goMap.get("fourDate"))
+    				#if($goMap.get("fourStatus")=="OC101")
+    					<div class="step_show_4_2"></div>
+    				#else
+    					#if($goMap.get("thirdDate"))
+        					<div class="step_show_4_3"></div>
+        				#else
+        				#end
+    				#end
+			  #else
+					<div class="step_show_4_1"></div>
+			  #end
+          </td>
+        </tr>
+        <tr>
+          <td class="step_show_char">$!StringUtil.getDateString($!orderInfo.createDate,'yyyy-MM-dd HH:mm:ss')</td>
+          #if($goMap.get("sendDate"))<td class="step_show_char">$goMap.get("sendDate")</td>#end
+          #if($goMap.get("thirdDate"))<td class="step_show_char">$goMap.get("thirdDate")</td>#end
+          #if($goMap.get("fourDate"))<td>$goMap.get("fourDate")</td>#else <td>&nbsp;</td>#end
+        </tr>
+      </tbody></table>
+    </div>
+	
+	
+    <!--<h4>订单信息：</h4>-->
+    <blockquote class="pad_left_15 alert black">
+    	<table cellspacing="0" cellpadding="0" border="0" class="mar_left_10">
+  <tbody><tr>
+    <td class="right_t"><label>订单号：</label></td>
+    <td>
+		<label class="text-info">$orderInfo.orderId</label>
+		<input type="hidden" id="orderId" name="orderId" value="$orderInfo.orderId" />
+	</td>
+  </tr>
+  <tr>
+    <td class="right_t"><label>生成时间：</label></td>
+    <td><label class="text-info">#if($orderInfo.createDate)$!StringUtil.getDateString($!orderInfo.createDate,'yyyy-MM-dd HH:mm:ss')#else --- #end</label></td>
+  </tr>
+  <tr>
+    <td class="right_t"><label>订单状态：</label></td>
+    <td><label class="text-info">$!currentStatus.getOrderStatusCn()</label></td>
+  </tr>
+  <tr>
+    <td class="right_t"><label>金额：</label></td>
+    <td><label class="text-info">$cnu.cullNum($totalPrice)</label></td>
+  </tr>
+  #if($country)
+  <tr>
+    <td class="right_t"><label>国家：</label></td>
+    <td><label class="text-info">$country.regionNameCn ($country.regionId)</label></td>
+  </tr>
+  #end
+  <tr>
+    <td class="right_t"><label>货运方式：</label></td>
+    <td><label class="text-info">$orderInfo.shippingType</label></td>
+  </tr>
+  #if($orderShipInfos && $orderShipInfos.size()>0)
+       <tr>
+        <td class="right_t"><label>物流跟踪号(运输方式)：</label></td>
+		<td><label class="text-info">
+		 #foreach($orderShipInfo in $orderShipInfos)
+			#if($orderShipInfo.trackingNo)
+            ${orderShipInfo.trackingNo}($orderShipInfo.shippingType),
+    		 #end
+		 #end
+		 </label></td>
+      </tr>
+#end	 
+</tbody></table>
+    </blockquote>
+
+<div id="accordion1" class="accordion mar_top_15">
+  <div class="accordion-group">
+      <div class="accordion-heading upload_tit">
+          <a href="#collapseOne" data-parent="#accordion1" data-toggle="collapse" class="accordion-toggle font_s_14 bold">买家历史订单<span class="icon-chevron-down"></span></a>
+      </div>
+      <div class="accordion-body collapse" id="collapseOne">
+        <div class="">
+          <table cellspacing="0" cellpadding="0" border="0" style="margin-bottom:0px;" class="table table-striped table-hover">
+            	<thead>
+                	<tr>
+                    	<th>订单号</th>
+                    	<th>订单生成时间</th>
+                    	<th>货运地址</th>
+                    	<th>订单状态<a href="$link.setPage('buyer,HistOrderList.html')?buyerId=$orderInfo.buyerId" class="font_s_14 right" target="_blank">more&gt;&gt;</a></th>
+                    </tr>
+                </thead>
+  <tbody>
+	#if($orderHistList)
+		#foreach($orderHist in $orderHistList)
+    	<tr>
+        <td>$orderHist.orderId</td>
+        <td>#if($orderHist.createDate)$!StringUtil.getDateString($!orderHist.createDate,'yyyy-MM-dd HH:mm:ss')#end</td>
+        <td>$!orderHist.addressBean.addressLine1 $!orderHist.addressBean.addressLine2 $!orderHist.addressBean.city $!orderHist.addressBean.province $!orderHist.addressBean.country</td>
+        <td>$!orderHist.orderStatusCN</td>
+      </tr>
+      #end
+  #end
+  
+</tbody></table>
+        </div>
+      </div>
+  </div><!-- E 1 -->
+</div><!-- E all div -->
+    <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered center_t od_table">
+  <tbody><tr class="info bold">
+    <td width="400px"><label>产品信息</label></td>
+    <td width="120px"><label>单价（$）</label></td>
+    <td><label>规格</label></td>
+    <td><label>数量</label></td>
+    <td><label>总价（$）</label></td>
+  </tr>
+#if($orderProductList)
+	#foreach($productVo in $orderProductList)
+      <tr>
+        <td class="pmp_info">
+        <div class="div_left"><a  target="_blank"
+#if($productVo.snapshot)
+	href="$RewriteUtil.getSnapshotUrl($productVo.snapshot)"
+#else
+	href="$RewriteUtil.getProductUrl($productVo.productName, $productVo.productId)"
+#end	
+			><img title="$!productVo.productName" alt="$!productVo.productName" class="img-polaroid" src="$!productVo.imageUrl"></a></div>
+        <div class="div_right"><a target="_blank"
+#if($productVo.snapshot)
+	href="$RewriteUtil.getSnapshotUrl($productVo.snapshot)"
+#else
+	href="$RewriteUtil.getProductUrl($productVo.productName, $productVo.productId)"
+#end	
+			>$!productVo.productName</a><br class="clear"><label class="font12 mar_top_5">SKU: $!productVo.sku</label></div>
+        <br class="clear">
+        <div class="div_left right_t mar_top_10">买家留言：</div>
+        <div class="div_right mar_top_10 width_290">
+            <label class="font12 mar_top_3">暂无</label>
+        </div>
+        </td>
+        <td>
+			<span class="label label-info left">现</span>
+			<label class="left">$cnu.cullNum($productVo.itemPrice)</label>
+			<br class="clear">
+			#if($productVo.discount && $productVo.discount>0)
+				<span class="label label-warning left">原</span>
+				<label class="left t_line_through">$cnu.cullNum($productVo.itemCost)</label>
+			#end
+	   </td>
+        <td class="font14">
+			#if($productVo.config)
+				#if($!productVo.config.get('mainTitle'))
+					<span>$!productVo.config.get('mainTitle').getValue():</span>
+					<span>$!productVo.config.get('mainValue').getValue()</span>
+					<br class="clear" />
+				#end
+				#if($!productVo.config.get('subTitle'))
+					<span>$!productVo.config.get('subTitle').getValue():</span>
+					<span>$!productVo.config.get('subValue').getValue()</span>
+				#end
+				
+			#end
+		</td>
+        <td><label>$!productVo.quantity</label></td>
+        <td><label>$!cnu.cullNum($!productVo.itemTotal)</label></td>
+      </tr>
+  #end
+#end
+  <tr><td colspan="5">
+  	<div class="search_form mar_top_10">
+    	<ul class="inline right font16">
+        	<li><label class="left mar_right_0">运输模式：</label><label class="left bold">$orderInfo.shippingType</label></li>
+        	<li><label class="left mar_right_0">运费：</label><label class="left bold">$ #if($!orderInfo.shippingTotal && $!orderInfo.shippingTotal>0) $cnu.cullNum($!orderInfo.shippingTotal) #else 0.0 #end</label></li>
+        	<li><label class="left mar_right_0">折扣：</label><label class="left bold">$ $cnu.cullNum($!orderInfo.couponAmount)</label></li>
+			<li><label class="left mar_right_0">金额调整：</label><label class="left bold">$ #if($orderInfo.adjustAmount) $cnu.cullNum($!orderInfo.adjustAmount)#else 0.0 #end</label></li>
+        	<li><label class="left mar_right_0">总价：</label><label class="left bold">$ $cnu.cullNum($!totalPrice)</label></li>
+        </ul>
+    </div>
+  </td></tr>
+</tbody></table>
+    	
+    <h4>买家信息：</h4>
+    <blockquote class="pad_left_15 mar_top_5 alert black">
+    	<table cellspacing="0" cellpadding="0" border="0" class="mar_left_10">
+  <tbody><tr>
+    <td class="right_t"><label>昵称：</label></td>
+    <td><label class="text-info">$!buyerInfo.userId</label></td>
+  </tr>
+  <tr>
+    <td class="right_t"><label>联系电话：</label></td>
+    <td><label class="text-info">$!orderAddressInfo.phone</label></td>
+  </tr>
+  <tr>
+    <td class="right_t"><label>用户等级：</label></td>
+    <td>
+		<label class="left text-info">
+			<span class="icon-star mar_top_3"></span>
+			<span class="icon-star mar_top_3"></span>
+			<span class="icon-star mar_top_3"></span>
+			<span class="icon-star mar_top_3"></span>
+			<span class="icon-star-empty mar_top_3"></span>
+		</label>
+		<label class="left red mar_left_10 font12">初次购买</label>
+	</td>
+  </tr>
+  <tr>
+    <td class="right_t"><label>货运地址：</label></td>
+    <td><label class="text-info">$!orderAddressInfo.addressline1,$!orderAddressInfo.province,$!orderAddressInfo.city,$!orderAddressInfo.country</label></td>
+  </tr>
+  <tr>
+    <td class="right_t"><label>注册IP：</label></td>
+    <td><label class="text-info">$!buyerInfo.ipAddress</label></td>
+  </tr>
+  <tr>
+    <td class="right_t"><label>注册邮箱：</label></td>
+    <td><label class="text-info">$!buyerInfo.email</label></td>
+  </tr>
+</tbody></table>
+    </blockquote>
+
+    
+    <h4>支付信息：</h4>
+    <blockquote class="pad_left_15 mar_top_5 alert black">
+    	<table cellspacing="0" cellpadding="0" border="0" class="mar_left_10">
+  <tbody><tr>
+    <td class="right_t"><label>支付方式：</label></td>
+    <td>
+		<label class="text-info">
+			$!paymentInfo.paymentType
+		</label></td>
+  </tr>
+  <tr>
+    <td class="right_t"><label>付款时间：</label></td>
+    <td><label class="text-info">$!paymentInfo.payTime</label></td>
+  </tr>
+  <!--
+  <tr>
+    <td class="right_t"><label>卡号：</label></td>
+    <td><label class="left text-info">1234**********3456</label></td>
+  </tr>
+  -->
+  <tr>
+    <td class="right_t"><label>付款交易号：</label></td>
+    <td><label class="text-info">$!paymentInfo.paymentInfoBean.txnId</label></td>
+  </tr>
+  <tr>
+    <td class="right_t"><label>支付IP：</label></td>
+    <td><label class="text-info">$!paymentInfo.paymentInfoBean.paymentIp</label></td>
+  </tr>
+  #if($paymentInfo.billAddress)
+  <tr>
+    <td class="right_t"><label>账单地址：</label></td>
+    <td><label class="text-info">$paymentInfo.billAddress</label></td>
+  </tr>
+  #end
+  #if($paymentInfo.billEmail)
+  <tr>
+    <td class="right_t"><label>账户邮箱：</label></td>
+    <td><label class="text-info">$paymentInfo.billEmail</label></td>
+  </tr>
+  #end
+  #if($paymentInfo.paypalVerified)
+  <tr>
+    <td class="right_t"><label>Paypal账户信息：</label></td>
+    <td><label class="text-info">$paymentInfo.paypalVerified</label></td>
+  </tr>
+  #end
+</tbody></table>
+    </blockquote>
+    
+<div class="well well-small alert black mar_top_10" id="remarks_info">
+    <div class="modal-header">
+        <h5 id="myModalLabel">备注信息</h5>
+    </div>
+    <div class="padding_15">
+        <!--<p><label>内容：</label></p>
+        <p class="text-ino">messages messages messages messages messages messages messages messages messages messages messages messages messages messages messages messages messages messages messages messages messages</p>-->
+        
+        <div class="panel">
+            <div style="height:36px;" class="title">
+                <h5 class="mar_left_15 lineh_36">历史备注信息</h5>
+            </div>
+            <div style="padding-bottom:0px;" class="content">
+                <table cellspacing="0" cellpadding="0" border="0" style="margin-bottom:0px; clear:both;" class="table table-striped table-hover" id="histTable">
+                    <thead>
+                        <tr>
+                            <th width="150px">时间</th>
+                            <th width="120px">订单历史状态</th>
+                            <th>内容</th>
+                            <th width="100px">备注人</th>
+                            <th width="100px">买家是否可见</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderStatus">
+                  #if($orderStatuList)
+						#foreach($orderStatu in $orderStatuList)
+                      <tr>
+                        <td>#if($orderStatu.createTime)$!StringUtil.getDateString($!orderStatu.createTime,'yyyy-MM-dd HH:mm:ss')#else --- #end</td>
+                        <td>$orderStatu.orderStatusCn</td>
+                        <td id="memo">#if($orderStatu.memo) $orderStatu.memo #end </td>
+                        <td>$!orderStatu.operator
+                        </td>
+                        <td><label class="font12">#if($orderStatu.status=='0') 不可见  #else 可见  #end</label></td>
+                      </tr>
+					  #end
+    				#end
+                  </tbody>
+                </table>
+            </div><!-- E panel content -->
+        </div><!-- E panel -->
+        <br class="clear">
+        <textarea style="resize: none;" placeholder="如果使用买家前台可见请填写英文Message" class="input-xxlarge left" rows="3" id="message" name="message"></textarea>
+		<input type="button" class="btn btn-large left mar_left_10 mar_top_15 bold" value="确定" onclick="addMessage();">
+        <table cellspacing="0" cellpadding="0" border="0" width="130px" class="left mar_top_15 mar_left_15 font12">
+  <tbody><tr>
+    <td><label class="checkbox red">
+        <input type="checkbox" value="0" id="buyerToSee" name="buyerToSee" onclick="changeValue('buyerToSee','statesOne');">买家前台可见
+			<input type="hidden" id="statesOne" name="statesOne" value="0" />
+      </label></td>
+  </tr>
+  <tr>
+    <td><label class="checkbox red">
+        <input type="checkbox" value="0" id="emailToBuyer" name="emailToBuyer"  onclick="changeValue('emailToBuyer','statesTwo');">邮件通知买家
+			<input type="hidden" id="statesTwo" name="statesTwo" value="0" />
+      </label></td>
+  </tr>
+</tbody></table>
+
+        <br class="clear">
+    </div>
+
+</div>
+<div class="center_t">
+    <button class="btn btn-large btn-primary bold mar_top_10" type="button"><span class="icon-print mar_right_5"></span>打印订单</button><br class="clear">
+    </div>
+    
+    <br class="clear">
+  </div><!-- E container -->
+  <br class="clear">
+  <!--<div style="width:100%; height:30px; margin-top:50px; background:url(/static/prototype/shopmic-manage/img/footer.jpg) repeat-x;"></div>-->
+  
+  <div id="layer_box">
+   <p class="layer_box_tit"><a href="javascript:();">新支付</a></p>
+   <p class="layer_box_tit"><a href="javascript:();">新订单</a></p>
+  </div>
+<!-- S javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript">
+(function() {
+    var backToTopTxt = "",  backToTopEle = jQuery('<div class="backToTop_pro"></div>').appendTo(jQuery("body"))
+    .text( backToTopTxt).attr("title",  backToTopTxt).click(function() {
+        jQuery("html, body").animate({ scrollTop: 0 }, 120);
+	}),  backToTopFun = function() {
+	    var st = jQuery(document).scrollTop(), winh = jQuery(window).height();
+	    (st > 0)?  backToTopEle.show():  backToTopEle.hide();
+	    //IE6下的定位
+	    if (!window.XMLHttpRequest) {
+	         backToTopEle.css("top", st + winh - 166);
+	    }
+	};
+	jQuery(window).bind("scroll", backToTopFun);
+	jQuery(function() { backToTopFun(); });
+})();
+</script><div class="backToTop_pro" title="" style="display: none;"></div>
+
+<script>
+
+String.prototype.trim = function () {
+    //用正则表达式将前后空格用空字符串替代
+	return this.replace(/(^\s*)|(\s*$)/g, "");
+};
+
+function changeValue(id,name){
+	if(jQuery("#"+id).attr("checked")=='checked'){
+		jQuery("#"+name).val("1");
+	}else{
+		jQuery("#"+name).val("0");
+	}
+}
+
+function addMessage(){
+	var mess = jQuery("#message").val();
+	if(mess==""){
+		jQuery("#message")[0].focus();;
+		return;
+	}
+	jQuery("body").showLoading();
+	var buyer2see = jQuery("#statesOne").val();
+	var email2buyer = jQuery("#statesTwo").val();
+	jQuery.getJSON(
+		"$link.setAction('order.AjaxAddOrderStatusHistAction')",
+		{orderId:'${orderInfo.orderId}', orderStatus:'${currentStatus.orderStatus}', buyerSeeFlag:buyer2see, emailSendFlag:email2buyer, message:encodeURIComponent(mess)},
+		function(data){
+			jQuery("body").hideLoading();
+			if(data!=null){
+				var tr = jQuery("#orderStatus").find("tr:first").clone();
+				var d = new Date();
+				var dateStr = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+				tr.find("td:first").html(dateStr);
+				tr.find("#memo").html(mess);
+				if (buyer2see == "1") {
+					tr.find("td:last").html("可见");
+				} else {
+					tr.find("td:last").html("不可见");
+				}
+				jQuery("#orderStatus").prepend(tr);
+				alert("success");
+			}
+		});
+}
+
+</script>
+
+</form>
+</body></html>
+	

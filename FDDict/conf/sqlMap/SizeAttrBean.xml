@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertSizeAttrBean" parameterClass="com.fd.fashion.dict.bean.SizeAttrBean">
+        <![CDATA[
+insert into TC_SIZE_ATTR
+  (ATTR_ID, NAME, NAME_CN)
+values
+  (#attrId#, #name#, #nameCn#)
+        ]]>
+        <selectKey keyProperty="attrId" resultClass="long">
+            <![CDATA[select @@identity as attrId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateSizeAttrBean" parameterClass="com.fd.fashion.dict.bean.SizeAttrBean">
+        <![CDATA[
+update TC_SIZE_ATTR 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="attrId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ATTR_ID = #attrId#]]>
+            </isNotNull>
+            <isNotNull property="name" prepend="," removeFirstPrepend="true">
+                <![CDATA[NAME = #name#]]>
+            </isNotNull>
+            <isNotNull property="nameCn" prepend="," removeFirstPrepend="true">
+                <![CDATA[NAME_CN = #nameCn#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ATTR_ID = #attrId#
+        ]]>
+    </update>
+
+    <sql id="getSizeAttrBeanCondition">
+            <isNotNull property="attrId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[ATTR_ID = #attrId#]]>
+            </isNotNull>
+            <isNotNull property="name" prepend="and" removeFirstPrepend="true">
+                <![CDATA[NAME = #name#]]>
+            </isNotNull>
+            <isNotNull property="nameCn" prepend="and" removeFirstPrepend="true">
+                <![CDATA[NAME_CN = #nameCn#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getSizeAttrBeanCount" parameterClass="com.fd.fashion.dict.bean.SizeAttrBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from TC_SIZE_ATTR 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getSizeAttrBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getSizeAttrBean" parameterClass="com.fd.fashion.dict.bean.SizeAttrBean"
+        resultClass="com.fd.fashion.dict.bean.SizeAttrBean">
+        <![CDATA[
+select 
+	ATTR_ID	as attrId,
+	NAME	as name,
+	NAME_CN	as nameCn
+from TC_SIZE_ATTR 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getSizeAttrBeanCondition"/>        </dynamic>
+    </select>
+
+    <delete id="deleteSizeAttrBean" parameterClass="com.fd.fashion.dict.bean.SizeAttrBean">
+        <![CDATA[
+delete from TC_SIZE_ATTR where ATTR_ID=#attrId#
+        ]]>
+    </delete>
+</sqlMap>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertPaymentTypeBean" parameterClass="com.fd.payment.bean.PaymentTypeBean">
+        <![CDATA[
+insert into T_PAYMENT_TYPE
+  (PAYMENT_TYPE, NAME, ENABLED, LOGO, DESCRIPTION)
+values
+  (#paymentType#, #name#, #enabled#, #logo#, #description#)
+        ]]>
+    </insert>
+
+    <update id="updatePaymentTypeBean" parameterClass="com.fd.payment.bean.PaymentTypeBean">
+        <![CDATA[
+update T_PAYMENT_TYPE 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="paymentType" prepend="," removeFirstPrepend="true">
+                <![CDATA[PAYMENT_TYPE = #paymentType#]]>
+            </isNotNull>
+            <isNotNull property="name" prepend="," removeFirstPrepend="true">
+                <![CDATA[NAME = #name#]]>
+            </isNotNull>
+            <isNotNull property="enabled" prepend="," removeFirstPrepend="true">
+                <![CDATA[ENABLED = #enabled#]]>
+            </isNotNull>
+            <isNotNull property="logo" prepend="," removeFirstPrepend="true">
+                <![CDATA[LOGO = #logo#]]>
+            </isNotNull>
+            <isNotNull property="description" prepend="," removeFirstPrepend="true">
+                <![CDATA[DESCRIPTION = #description#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where PAYMENT_TYPE = #paymentType#
+        ]]>
+    </update>
+
+    <sql id="getPaymentTypeBeanCondition">
+         <isNotNull property="paymentType" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PAYMENT_TYPE = #paymentType#]]>
+         </isNotNull>
+         <isNotNull property="name" prepend="and" removeFirstPrepend="true">
+             <![CDATA[NAME = #name#]]>
+         </isNotNull>
+         <isNotNull property="enabled" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ENABLED = #enabled#]]>
+         </isNotNull>
+         <isNotNull property="logo" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LOGO = #logo#]]>
+         </isNotNull>
+         <isNotNull property="description" prepend="and" removeFirstPrepend="true">
+            <![CDATA[DESCRIPTION = #description#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getPaymentTypeBeanCount" parameterClass="com.fd.payment.bean.PaymentTypeBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_PAYMENT_TYPE 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getPaymentTypeBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getPaymentTypeBean" parameterClass="com.fd.payment.bean.PaymentTypeBean"
+        resultClass="com.fd.payment.bean.PaymentTypeBean">
+        <![CDATA[
+select 
+	PAYMENT_TYPE	as paymentType,
+	NAME	as name,
+	ENABLED	as enabled,
+	LOGO	as logo,
+	DESCRIPTION    as description
+from T_PAYMENT_TYPE 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getPaymentTypeBeanCondition"/>
+        </dynamic>
+<![CDATA[
+order by idx
+]]>
+    </select>
+
+    <delete id="deletePaymentTypeBean" parameterClass="com.fd.payment.bean.PaymentTypeBean">
+        <![CDATA[
+delete from T_PAYMENT_TYPE where PAYMENT_TYPE=#paymentType#
+        ]]>
+    </delete>
+
+</sqlMap>

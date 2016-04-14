@@ -1,0 +1,87 @@
+#if($actionFlag && $actionFlag=="orderListFlag")
+   #if($ord.freeze=='OF001')
+		<a class="mar_right_10" href="javascript:freezeOrUnfreezeOrder('$ord.orderId',2,'orderListFlag');">解冻</a>
+	#else
+		#if($ord.orderStatus=='OA001'||$ord.orderStatus=='OA003')
+			<a class="mar_right_10" href="javascript:showAdjustAmount('$ord.orderId','$ord.orderStatus');">调整金额</a>
+		#elseif($ord.orderStatus=='OA002')
+			<a class="mar_right_5" href="javascript:showConfirmPayment('$ord.orderId','$ord.orderStatus');">付款确认</a>
+		#elseif($ord.refundStatus=='OR201')
+			<a class="mar_right_5" href="javascript:showPaymentHandle('$ord.orderId');">退款处理</a>
+		#elseif($ord.refundStatus=='OR213'||$ord.refundStatus=='OR202'||$ord.refundStatus=='OR203'||$ord.refundStatus=='OR204'
+			||$ord.refundStatus=='OR205'||$ord.refundStatus=='OR206'||$ord.refundStatus=='OR207'||$ord.refundStatus=='OR208'||$ord.refundStatus=='OR209'
+			||$ord.refundStatus=='OR210' ||$ord.refundStatus=='OR211'||$ord.refundStatus=='OR212')
+			<a class="mar_right_5"  href="showRefundPayment('$ord.orderId');" >退款确认</a>
+		#elseif($ord.orderStatus =='OR101'||$ord.riskStatus=='OR101')
+			<a class="mar_right_5"  href="riskOrder('$ord.orderId');" >风控审核</a>
+		#end
+	    #if($ord.orderStatus.startsWith('OC') || $ord.orderStatus.startsWith('OD')||$ord.refundStatus=='OR214'||$ord.refundStatus=='OR230'||$ord.refundStatus=='OR221'||$ord.refundStatus=='OR222'||$ord.refundStatus=='OR224'||$ord.refundStatus=='OR225'||$ord.refundStatus=='OR227'||$ord.refundStatus=='OR228')
+		#else
+			<a class="mar_right_10" href="javascript:freezeOrUnfreezeOrder('$ord.orderId',1,'orderListFlag');">冻结</a>
+		#end
+		#if($ord.orderStatus.startsWith('OS'))
+			#if($ord.orderStatus=='OS006')
+			<a class="mar_right_5"  href="javascript:splitOrder('$ord.orderId');" >拆分订单</a>
+			#else
+				#if($ord.badOrder==1)
+				#else
+					<a class="mar_right_5"  href="javascript:showShippingInfo('$ord.orderId');" >发货</a>
+				#end
+			#end
+		#end
+#end
+    <a class="mar_right_10" href="javascript:showContactBuyer('$ord.buyerId','$ord.orderId');">联系买家</a>
+    <a role="button" data-toggle="modal" href="javascript:showOrderMeno('$ord.orderId','$ord.orderStatus');">备注</a>
+#elseif($actionFlag && $actionFlag=="paymentConfirmationFlag")
+	#if($ord.freeze=='OF001')
+	<a class="mar_right_10" href="javascript:();" onclick="freezeOrUnfreezeOrder('$ord.orderId',2,'paymentConfirmationFlag');">解冻</a>
+	#else
+	<a class="mar_right_10" href="javascript:();" onclick="freezeOrUnfreezeOrder('$ord.orderId',1,'paymentConfirmationFlag');">冻结</a>
+	#end
+	<a data-toggle="modal" class="mar_right_5" role="button" href="#" onclick="showConfirmPayment('$ord.orderId','$ord.orderStatus')">付款确认</a>
+	<a onclick="showOrderMeno('$ord.orderId','$ord.orderStatus')" href="#">备注</a>
+#elseif($actionFlag && $actionFlag=="refundConfirmactionFlag")
+	#if($ord.freeze=='OF001')
+	<a class="mar_right_10" href="javascript:();" onclick="freezeOrUnfreezeOrder('$ord.orderId',2,'refundConfirmactionFlag');">解冻</a>
+	#else
+	<a class="mar_right_10" href="javascript:();" onclick="freezeOrUnfreezeOrder('$ord.orderId',1,'refundConfirmactionFlag');">冻结</a>
+	#end
+	<a data-toggle="modal" class="mar_right_5" role="button" href="#" onclick="showRefundConfirm('$ord.orderId')">退款确认</a>
+	<a onclick="showOrderMeno('$ord.orderId','$ord.orderStatus')" href="#">备注</a>
+#elseif($actionFlag && $actionFlag=="waitingForPaymentFlag")
+	#if($ord.freeze=='OF001')
+	<a class="mar_right_10" href="javascript:();" onclick="freezeOrUnfreezeOrder('$ord.orderId',2,'waitingForPaymentFlag');">解冻</a>
+	#else
+	<a class="mar_right_10" href="javascript:();" onclick="freezeOrUnfreezeOrder('$ord.orderId',1,'waitingForPaymentFlag');">冻结</a>
+	#end
+	<a class="mar_right_10" href="javascript:();" onclick="showAdjustAmount('$ord.orderId','$ord.orderStatus');">调整金额</a>
+	<a data-toggle="modal" class="mar_right_5" role="button" href="#" onclick="showContactBuyer('$ord.buyerId','$ord.orderId');">联系买家</a>
+	<a href="#" role="button" data-toggle="modal"  onclick="showOrderMeno('$ord.orderId','$ord.orderStatus')">备注</a>
+#elseif($actionFlag && $actionFlag=="waitingForPaymentFlag")
+	#if($ord.freeze=='OF001')
+	<a class="mar_right_10" href="javascript:();" onclick="freezeOrUnfreezeOrder('$ord.orderId',2,'waitingForPaymentFlag');">解冻</a>
+	#else
+	<a class="mar_right_10" href="javascript:();" onclick="freezeOrUnfreezeOrder('$ord.orderId',1,'waitingForPaymentFlag');">冻结</a>
+	#end
+	<a class="mar_right_10" href="javascript:();" onclick="showAdjustAmount('$ord.orderId','$ord.orderStatus');">调整金额</a>
+	<a data-toggle="modal" class="mar_right_5" role="button" href="#" onclick="showContactBuyer('$ord.buyerId','$ord.orderId');">联系买家</a>
+	<a href="#" role="button" data-toggle="modal"  onclick="showOrderMeno('$ord.orderId','$ord.orderStatus')">备注</a>
+#elseif($actionFlag && $actionFlag=="waitingForSendFlag")
+	#if($ord.freeze=='OF001')
+	<a class="mar_right_10" href="javascript:();" onclick="freezeOrUnfreezeOrder('$ord.orderId',2,'waitingForSendFlag');">解冻</a>
+	#else
+	<a class="mar_right_5" onclick="showShippingInfo('$ord.orderId');" href="#">开始发货</a>
+	<a class="mar_right_10" href="javascript:();" onclick="freezeOrUnfreezeOrder('$ord.orderId',1,'waitingForSendFlag');">冻结</a>
+	#end
+	<a data-toggle="modal" class="mar_right_5" role="button" href="#" onclick="showContactBuyer('$ord.buyerId','$ord.orderId');">联系买家</a>
+	<a href="#" role="button" data-toggle="modal" onclick="showOrderMeno('$ord.orderId','$ord.orderStatus')">备注</a>
+#elseif($actionFlag && $actionFlag=="disputeOrderFlag")
+	#if($ord.freeze=='OF001')
+	<a class="mar_right_10" href="javascript:();" onclick="freezeOrUnfreezeOrder('$ord.orderId',2,'disputeOrderFlag');">解冻</a>
+	#else
+	<a class="mar_right_10" href="javascript:();" onclick="freezeOrUnfreezeOrder('$ord.orderId',1,'disputeOrderFlag');">冻结</a>
+	#end
+	<a data-toggle="modal" class="mar_right_5" role="button" href="#" onclick="showContactBuyer('$ord.buyerId','$ord.orderId')">联系买家</a>
+	<!--<a data-toggle="modal" class="mar_right_5" role="button" href="#" onclick="showDisputeOrder('$ord.orderId');">纠纷处理</a>-->
+	<a onclick="document.getElementById('remarks_info').style.display='block';" href="#"  onclick="showOrderMeno('$ord.orderId','$ord.orderStatus')">备注</a></td>
+#end

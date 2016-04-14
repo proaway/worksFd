@@ -1,0 +1,128 @@
+<div style="width:190px; height:30px; line-height:30px; background:#777777;">
+    <strong style="font-size:17px; color:#FFF; font-weight:bold; margin-left:12px;">Shop by Category</strong>
+</div>
+<div style="width:190px; height:auto; line-height:24px; background:#ebebeb; margin-bottom:16px; padding-bottom:12px; padding-top:8px;">
+#if($searchProductVo.categoryList && $searchProductVo.categoryList.size()>0)
+    <ul style="margin-left:10px; color:#900;" class="son_ul_l">
+		#if($keywords && $catId) 
+		<li style="color:#333;" title="Any Category">
+			<a href="$RewriteUtil.getKeywordUrl($keywords)">Any Category</a>
+		</li>
+		#end
+        #foreach($catVo in $searchProductVo.categoryList)
+            <li style="color:#333;" title="$catVo.catName">#foreach($i in [1 ..$catVo.catLevel]) &nbsp; #end
+				#if($catId && $catVo.catId == $catId)
+					<strong>$!StringUtil.stringformat($catVo.catName,18)</strong>
+				#else
+					#if($keywords)<a href="$RewriteUtil.getSearchUrl($keywords, $catVo.catName, $catVo.catId)">$!StringUtil.stringformat($catVo.catName,18)</a>#if($catVo.productCount)($catVo.productCount)#end
+					#else<a href="$RewriteUtil.getCategoryUrl($catVo.catName, $catVo.catId)">$!StringUtil.stringformat($catVo.catName,20)</a>#if($catVo.productCount)($catVo.productCount)#end
+					#end
+				#end
+			</li>
+		#end
+	</ul>
+#end
+</div>
+<div style="width:190px; height:30px; line-height:30px; background:#777777;">
+	<strong style="font-size:17px; color:#FFF; font-weight:bold; margin-left:12px;">Narrow by</strong>
+</div>
+#if($searchConfs)
+	#foreach($attrVo in $searchConfs)
+		#if($attrVo.nodes)
+		<div style="width:190px; height:30px; line-height:30px; background:#ebebeb;">
+            <strong style="font-size:12px; color:#333; font-weight:bold; margin-left:12px;">$attrVo.attrValue</strong>
+            <img width="8" height="4" src="/static/prototype/product_fashion/images/down_icon.gif" style="float:right; margin-top:13px; margin-right:12px;">
+        </div>
+        <div style="width:190px; max-height:211px; overflow:auto; line-height:22px; padding-top:6px; margin-bottom:16px; border-bottom:solid 1px #ebebeb;">
+            <ul class="pro_left_ul" id="configList">
+				#foreach($node in $attrVo.nodes)
+                <li>
+                    <label#if($node.isChecked()) class="red" #end><input type="checkbox" #if($node.isChecked()) checked='checked' #end name="config_id" value="$node.attrId" attrValue="$node.attrValue" id="check_${node.attrId}" class="list_left_ulli_ck"  onclick="addOptionToCondition(this);" >
+                    $node.attrValue ($node.prodCount)</label>
+        		</li>
+				#end
+        	 </ul>
+        </div>
+		#end
+	#end
+#end
+#if($searchAttrs)
+	#foreach($attrVo in $searchAttrs)
+		#if($attrVo.nodes)
+		<div style="width:190px; height:30px; line-height:30px; background:#ebebeb;">
+            <strong style="font-size:12px; color:#333; font-weight:bold; margin-left:12px;">$attrVo.attrValue</strong>
+            <img width="8" height="4" src="/static/prototype/product_fashion/images/down_icon.gif" style="float:right; margin-top:13px; margin-right:12px;">
+        </div>
+        <div style="width:190px; max-height:211px; overflow:auto; line-height:22px; padding-top:6px; margin-bottom:16px; border-bottom:solid 1px #ebebeb;">
+            <ul class="pro_left_ul" id="attrList">
+				#foreach($node in $attrVo.nodes)
+                <li>
+                    <label#if($node.isChecked()) class="red" #end><input type="checkbox" #if($node.isChecked()) checked='checked' #end name="attr_id" value="$node.attrId" attrValue="$node.attrValue" id="check_${node.attrId}" class="list_left_ulli_ck" onclick="addOptionToCondition(this);">
+					$node.attrValue ($node.prodCount)</label>
+        		</li>
+				#end
+        	 </ul>
+        </div>
+		#end
+	#end
+#end
+<div style="width:190px; height:30px; line-height:30px; background:#ebebeb;">
+	<strong style="font-size:12px; color:#333; font-weight:bold; margin-left:12px;">PRICE RANGE</strong><img width="8" height="4" style="float:right; margin-top:13px; margin-right:12px;" src="/static/prototype/product_fashion/images/down_icon.gif">
+</div>
+<div style="width:190px; line-height:22px; padding-top:6px; margin-bottom:16px;">
+    <ul class="pro_left_ul">
+        <li>
+        <span>$ <input type="text" style="width:40px;" size="4" name="priceStart" id="priceStart" value="$!priceStart"> - $ <input type="text" style="width:40px;" size="4" name="priceEnd" id="priceEnd" value="$!priceEnd"></span><input type="button" style="margin-left:6px;" onclick="searchPrice();" value="go" class="" id=""></li>
+        <li><input type="checkbox" class="list_left_ulli_ck" value="checkbox" onclick="changePrice(10,19)">
+        <a title="cardigan" style="" onclick="changePrice(5,10)">$5 - $10
+                        </a></li>
+        <li><input type="checkbox" class="list_left_ulli_ck" value="checkbox" onclick="changePrice(10,19)">
+        <a title="mock + turtleneck" style="" onclick="changePrice(10,20)">$10 - $20
+                        </a></li>
+        <li><input type="checkbox" class="list_left_ulli_ck" value="checkbox" onclick="changePrice(20,19)">
+        <a title="layered look" style="" onclick="changePrice(20,30)">$20 - $30
+                        </a></li>
+        <li><input type="checkbox" class="list_left_ulli_ck" value="checkbox" onclick="changePrice(30,49)">
+        <a title="sweater shells" style="" onclick="changePrice(30,50)">$30 - $50
+                        </a></li>
+        <li><input type="checkbox" class="list_left_ulli_ck" value="checkbox" onclick="changePrice(50,99)">
+        <a title="sweater shells" style="" onclick="changePrice(50,100)">$50 - $100
+                        </a></li>
+    </ul>    
+</div>
+<script>
+jQuery("document").ready(function(){
+	var chkboxs = jQuery("input[id^='check_']:checked");
+	for(var i=0; i<chkboxs.length; i++) {
+		var o = chkboxs[i];
+		addOptionConfig(o);
+	}
+});
+function addOptionToCondition(o){
+	addOptionConfig(o);
+	attrConfigChanage();
+}
+
+function addOptionConfig(o){
+	var attrId = o.value;
+	var attrName = jQuery(o).attr("attrValue")
+	if(o.checked){
+		var name = jQuery(o).attr("name");
+    	if(name=='attr_id'){
+    		var str = "<span class='option_span' id='option_"+attrId+"'>"+attrName;
+    		str = str+"<span style=''>&nbsp; ";
+            str = str+"<a onclick='jQuery(\"#option_"+attrId+"\").remove();jQuery(\"#check_"+attrId+"\").removeAttr(\"checked\");attrConfigChanage();'>×</a></span></span>";
+    		jQuery("#attrPiv").append(str);
+    	}else{
+    		var str = "<span class='option_span' id='option_"+attrId+"'>"+attrName;
+    		str = str+"<span style=''>&nbsp; ";
+    		str = str+"<a onclick='jQuery(\"#option_"+attrId+"\").remove();jQuery(\"#check_"+attrId+"\").removeAttr(\"checked\");attrConfigChanage();'>×</a></span></span>";
+    		jQuery("#configPiv").append(str);
+    	}
+	}else{
+		jQuery("#option_"+attrId).remove();
+	}
+}
+</script>
+
+

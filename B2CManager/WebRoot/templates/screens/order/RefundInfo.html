@@ -1,0 +1,94 @@
+##退款信息
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal hide fade" id="waiting_for_refund">
+<div class="modal-header">
+<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+<h5 id="myModalLabel">退款处理</h5>
+</div>
+<div class="modal-body">
+<table cellspacing="0" cellpadding="0" border="0" class="">
+  <tbody><tr>
+<td width="130px" class="v_top right_t"><label class="mar_right_10">订单号：</label></td>
+<td><label class="text-info">$order.orderId</label></td>
+  </tr>
+  <tr>
+<td class="v_top right_t"><label class="mar_right_10">生成时间：</label></td>
+<td>
+	<label class="text-info">$StringUtil.getDateString($order.createDate,'yyyy-MM-dd HH:mm:ss')</label>
+</td>
+  </tr>
+  <tr>
+<td class="v_top right_t"><label class="mar_right_10">订单金额（$）：</label></td>
+<td>
+	<label class="text-info">$order.total</label>
+</td>
+  </tr>
+  <tr>
+<td class="v_top right_t"><label class="mar_right_10">运输方式：</label></td>
+<td>
+	<label class="text-info">$order.shippingType</label>
+</td>
+  </tr><tr>
+<td class="v_top right_t"><label class="mar_right_10">运费（$）：</label></td>
+<td>
+	<label class="text-info">$order.shippingTotal</label>
+</td>
+  </tr><tr>
+<td class="v_middle right_t"><label class="mar_right_10">处理方式：</label></td>
+<td>
+	<select class="left mar_right_10" id="refundType">
+          <option value="OR202">全部退款，不发货，不退货</option>
+          <option value="OR203">全退货,不重新发货，全部退款</option>
+          <option value="OR204">部分退款，不发货，不退货</option>
+          <option value="OR205">部分退款，不发货，部分退货</option>
+          <option value="OR206">部分退款，部分重发货，不退货</option>
+          <option value="OR207">不退款，不发货，不退货</option>
+          <option value="OR208">不退款，全部重发货，不退货</option>
+          <option value="OR209">不退款，全部重发货，全退货</option>
+          <option value="OR2010">不退款，全部重发货，部分退货</option>
+          <option value="OR2011">不退款，部分重发货，不退货</option>
+          <option value="OR2012">不退款，部分重发货，部分退货</option>
+        </select>
+
+</td>
+  </tr>
+  <tr>
+<td class="v_top right_t"><label class="mar_right_10 mar_top_5">退款金额（$）：</label></td>
+<td>
+	<input type="text" placeholder="退款金额" class="input-medium" id="refundNum">
+</td>
+  </tr>
+  <tr>
+<td class="v_top right_t"><label class="mar_right_10 mar_top_5">备注：</label></td>
+<td><textarea rows="3" class="input-xlarge" placeholder="备注" style="resize: none;" id="remark"></textarea>
+<p class="help-block red">必须填写备注内容。</p></td>
+  </tr>
+</tbody></table>
+</div>
+<div class="modal-footer">
+<button aria-hidden="true" data-dismiss="modal" class="btn">取消</button>
+<button aria-hidden="true" data-dismiss="modal" class="btn btn-primary" onclick="doRefund();">确定</button>
+</div>
+</div><!-- E waiting_for_refund -->
+<script>
+jQuery('#waiting_for_refund').modal({
+	show:true
+})
+
+function doRefund(){
+	jQuery("body").showLoading();
+	var orderId = '$order.orderId';
+	var refundNum = jQuery("#refundNum").val();
+	var remark = jQuery("#remark").val();
+	var refundType = jQuery("#refundType").val();
+	var url = '$link.setAction("order.AjaxRefund")';
+	jQuery.getJSON(url, {orderId:orderId,refundNum:refundNum,remark:remark,refundType:refundType}, function(data) {
+		jQuery("body").hideLoading();
+		if (data == "1") {
+			alert("操作成功!");
+			location.reload(); 
+		}else{
+			alert("退款金额不能大于订单金额，且不能为负数!");
+		}
+	});
+}
+</script>

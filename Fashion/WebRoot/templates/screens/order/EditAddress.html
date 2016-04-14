@@ -1,0 +1,193 @@
+
+<!-- --------------- S add address --------------- -->
+
+<form name="addressForm" id="addressForm">
+	<input name="addressId" id="addressId" value="$!book.addressId"
+		type="hidden" />
+	<div style="width:540px; height:500px;" id="blockLayer">
+		<table class="shippingAddr">
+			<tbody>
+				<tr>
+					<td></td>
+				</tr>
+				<tr>
+					<th><label>Your Name:</label></th>
+					<td class="recipient">
+						<div>
+							<input type="text" name="firstName" id="firstName" maxlength="32"
+								class="elmbBlur" value="$!book.firstName"/>
+							<p>
+								<span class="required">*</span>&nbsp;First Name
+							</p>
+							<p class="errorInfo"></p>
+						</div>
+						<div>
+							<input type="text" name="lastName" id="lastName" maxlength="32"
+								class="elmbBlur"  value="$!book.lastName"/>
+							<p>
+								<span class="required">*</span>&nbsp;Last Name
+							</p>
+							<p class="errorInfo"></p>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th><span class="required">*</span><label>Address Line
+							1:</label></th>
+					<td><input type="text" name="addressLine1" id="addressLine1"
+						maxlength="35" class="elmbBlur" value="$!book.addressLine1" />
+						<p class="errorInfo"></p>
+					</td>
+				</tr>
+				<tr>
+					<th><label> Address Line 2:</label></th>
+					<td><input type="text" name="addressLine2" id="addressLine2"
+						maxlength="32" class="elmbBlur" value="$!book.addressLine2" />
+						<p class="font11">Example: apartment, suite, unit, building,
+							floor</p>
+					</td>
+				</tr>
+				<tr>
+					<th><span class="required">*</span><label>City:</label></th>
+					<td><input type="text" name="city" id="city" maxlength="30"
+						class="elmbBlur" value="$!book.city" />
+						<p class="errorInfo"></p>
+					</td>
+				</tr>
+				<tr>
+					<th><span class="required">*</span><label>Destination
+							Country:</label></th>
+					<td><select name="country" id="country"
+						placeholder="Please Choose Your Country">
+							<option value="-1"></option>
+							<optgroup label="---------">
+								<option value="US">United States</option>
+								<option value="AU">Australia</option>
+								<option value="BR">Brazil</option>
+								<option value="CA">Canada</option>
+								<option value="FR">France</option>
+								<option value="DE">Germany</option>
+								<option value="IT">Italy</option>
+								<option value="ES">Spain</option>
+								<option value="CH">Switzerland</option>
+								<option value="UK">United Kingdom</option>
+							</optgroup>
+							<optgroup label="---------">
+								#foreach($countries in $countriesList)
+								#if($!countries.getRegionId() != 238)
+								<option value="$!countries.regionId"
+									#if($!book.country && $!book.country==
+									$!countries.regionId) selected #end>
+									$!countries.regionName</option>
+								#end #end
+							</optgroup>
+					</select>
+						<p class="errorInfo"></p>
+					</td>
+				</tr>
+				<tr id="state">
+					<th><span class="required">*</span><label>State /
+							Province / Region:</label></th>
+					<td><input type="text" name="province" maxlength="32" id="province"
+						class="elmbBlur" value="$!book.province" />
+					</td>
+				</tr>
+				<tr>
+					<th><span class="required">*</span><label>ZIP / Postal
+							Code:</label></th>
+					<td><input type="text" name="postalCode" id="postalCode"
+						maxlength="10" class="elmbBlur" value="$!book.postalCode" />
+						<p class="errorInfo"></p>
+					</td>
+				</tr>
+				<tr>
+					<th><span class="required">*</span><label>Phone
+							Number:</label></th>
+					<td><input type="text" name="phone" id="phone"
+						value="$!book.phone" class="phoneNum elmbBlur" maxlength="20"
+						autocomplete="off" />
+						<p class="font11">Example: +1 9549031647-535</p>
+						<p class="errorInfo"></p>
+					</td>
+				</tr>
+				<tr>
+					<th></th>
+					<td height="10"></td>
+				</tr>
+				<tr>
+					<th></th>
+					<td><input name="" type="button" class="btn_shippingAddr"
+						id="" onclick="submitAddressBook();"
+						value="Use This Shipping Address" />
+					</td>
+				</tr>
+
+			</tbody>
+		</table>
+
+	</div>
+</form>
+
+
+<!-- --------------- E add address --------------- -->
+<script>
+function submitAddressBook() {
+	var firstName=jQuery("#firstName").val();
+	if(firstName==""){
+		alert("firstName is empty!");
+		jQuery("#firstName")[0].focus();
+		return ;
+	}
+	var lastName = jQuery("#lastName").val();
+	if(lastName==""){
+		alert("lastName is empty!");
+		jQuery("#lastName")[0].focus();
+		return ;
+	}
+	var addr = jQuery("#addressLine1").val();
+	if(addr==""){
+		alert("addressLine1 is empty!");
+		jQuery("#addressLine1")[0].focus();
+		return ;
+	}
+	var city = jQuery("#city").val();
+	if(city==""){
+		alert("city is empty!");
+		jQuery("#city")[0].focus();
+		return ;
+	}
+	var country = jQuery("#country").val();
+	if(country==-1||country==""){
+		alert("please choose the country first");
+		jQuery("#country")[0].focus();
+		return ;
+	}
+	var provin = jQuery("#province").val();
+	if(provin==""){
+		alert("please choose the province first");
+		jQuery("#province")[0].focus();
+		return ;
+	}
+	var postalCode = jQuery("#postalCode").val();
+	if(postalCode==""){
+		alert("please choose the postalCode first");
+		jQuery("#postalCode")[0].focus();
+		return ;
+	}
+	var phone = jQuery("#phone").val();
+	if(phone==""){
+		alert("please choose the phone first");
+		jQuery("#phone")[0].focus();
+		return ;
+	}
+	var url = "$link.setAction('order.UpdateAddressBookAction')?" + form2URL("addressForm");
+	jQuery.getJSON(url, function(data){
+		if(data.status==0) {
+			jQuery("#addmsg").html("Save failed!");
+		} else {
+			frashAddressBook(data.book);
+		}
+	});
+}
+
+</script>

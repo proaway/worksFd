@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertGiftsBean" parameterClass="com.fd.fashion.product.bean.GiftsBean">
+        <![CDATA[
+insert into T_GIFTS
+  (GIFTS_ID, ACTIVITY_ID, PRODUCT_ID, NUM_TYPE, NUM, GIFTS_COUNT)
+values
+  (#giftsId#,#activityId#, #productId#, #numType#, #num# , #giftsCount#)
+        ]]>
+        <selectKey keyProperty="giftsId" resultClass="long">
+            <![CDATA[select @@identity as giftsId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateGiftsBean" parameterClass="com.fd.fashion.product.bean.GiftsBean">
+        <![CDATA[
+update T_GIFTS 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="giftsId" prepend="," removeFirstPrepend="true">
+                <![CDATA[GIFTS_ID = #giftsId#]]>
+            </isNotNull>        
+            <isNotNull property="activityId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ACTIVITY_ID = #activityId#]]>
+            </isNotNull>
+            <isNotNull property="productId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="numType" prepend="," removeFirstPrepend="true">
+                <![CDATA[NUM_TYPE = #numType#]]>
+            </isNotNull>
+            <isNotNull property="num" prepend="," removeFirstPrepend="true">
+                <![CDATA[NUM = #num#]]>
+            </isNotNull>
+            <isNotNull property="giftsCount" prepend="," removeFirstPrepend="true">
+                <![CDATA[GIFTS_COUNT = #giftsCount#]]>
+            </isNotNull>            
+        </dynamic>
+        <![CDATA[
+where ACTIVITY_ID = #activityId#
+        ]]>
+    </update>
+
+    <sql id="getGiftsBeanCondition">
+         <isNotNull property="giftsId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[GIFTS_ID = #giftsId#]]>
+         </isNotNull>    
+         <isNotNull property="activityId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ACTIVITY_ID = #activityId#]]>
+         </isNotNull>
+         <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PRODUCT_ID = #productId#]]>
+         </isNotNull>
+         <isNotNull property="numType" prepend="and" removeFirstPrepend="true">
+           	 <![CDATA[NUM_TYPE = #numType#]]>
+         </isNotNull>
+         <isNotNull property="num" prepend="and" removeFirstPrepend="true">
+           	 <![CDATA[NUM = #num#]]>
+         </isNotNull>
+         <isNotNull property="giftsCount" prepend="and" removeFirstPrepend="true">
+           	 <![CDATA[GIFTS_COUNT = #giftsCount#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getGiftsBeanCount" parameterClass="com.fd.fashion.product.bean.GiftsBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_GIFTS 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getGiftsBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getGiftsBean" parameterClass="com.fd.fashion.product.bean.GiftsBean"
+        resultClass="com.fd.fashion.product.bean.GiftsBean">
+        <![CDATA[
+select 
+	GIFTS_ID	as giftsId,
+	ACTIVITY_ID	as activityId,
+	PRODUCT_ID	as productId,
+	NUM_TYPE	as numType,
+	NUM 		as num,
+	GIFTS_COUNT as giftsCount
+from T_GIFTS 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getGiftsBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteGiftsBean" parameterClass="com.fd.fashion.product.bean.GiftsBean">
+        <![CDATA[
+delete from T_GIFTS where ACTIVITY_ID=#activityId#
+        ]]>
+    </delete>
+
+</sqlMap>

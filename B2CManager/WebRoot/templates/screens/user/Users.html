@@ -1,0 +1,245 @@
+<script language="javascript" src="/static/prototype/shopmic-manage/js/dict.js"></script>
+<form id="listForm" name="listForm" method="get" action="$link.setPage('user,Users.html')">
+<br class="clear">
+<h4 class="mar_top_15 mar_bottom_20">用户管理</h4>
+<input type="hidden" id="loginUserId" name="loginUserId" value="$userBean.userId"/>
+<div class="search_form mar_bottom_10">
+    <ul class="inline">
+    	<li>
+            <select class="left oi_status_max_w" name="userNameFlag" id="userNameFlag" onchange="jQuery('#userValue').val('');jQuery('#userValue').attr('placeholder','')">
+              <option value="1"  #if($cond.userNameFlag=="1") selected  #end>用户名</option>
+              <option value="2"  #if($cond.userNameFlag=="2") selected  #end>姓名</option>
+              <option value="3"  #if($cond.userNameFlag=="3") selected  #end>E-mail</option>
+              <option value="4"  #if($cond.userNameFlag=="4") selected  #end>电话</option>
+            </select>
+			#if($cond.userNameFlag)
+				#if($cond.userNameFlag=="1")
+					<input type="text" placeholder="买家昵称" class="input-medium left mar_left_5" name="userValue" id="userValue" value="$!cond.loginName">
+				#elseif($cond.userNameFlag=="2")
+					<input type="text" placeholder="买家名称" class="input-medium left mar_left_5" name="userValue" id="userValue" value="$!cond.userName">
+				#elseif($cond.userNameFlag=="3")
+					<input type="text" placeholder="邮箱地址" class="input-medium left mar_left_5" name="userValue" id="userValue" value="$!cond.email">
+				#elseif($cond.userNameFlag=="4")
+					<input type="text" placeholder="电话" class="input-medium left mar_left_5" name="userValue" id="userValue" value="$!cond.phone">
+				#else
+				<input type="text" placeholder="买家昵称" class="input-medium left mar_left_5" name="userValue" id="userValue" value="">
+				#end
+			#else
+			<input type="text" placeholder="买家昵称" class="input-medium left mar_left_5" name="userValue" id="userValue" value="">
+			#end
+        </li>
+        <li>
+            <label class="left mar_top_5">部门：</label>
+            <select class="left oi_status_max_w" name="departmentId" id="departmentId">
+				<option value="">请选择</option>
+                #foreach($dep in $departments)
+                	<option #if($cond.departmentId==$dep.departmentId)selected#end value="$dep.departmentId">$dep.departmentName</option>
+                #end
+            </select>
+    </li>
+        <li>
+            <label class="left mar_top_5">角色：</label>
+            <select class="left oi_status_max_w" name="roleId" id="roleId">
+             <option value="">请选择</option>
+            #foreach($r in $roles)
+            	<option #if($cond.roleId==$r.roleId)selected#end value="$r.roleId">$r.roleName</option>
+            #end
+            </select>
+        </li>
+        <li>
+            <label class="left mar_top_5">状态：</label>
+            <select class="left oi_status_max_w" name="vaild" id="vaild">
+              <option value="" #if($cond.vaild)#else selected  #end>所有状态</option>
+			  <option value="0" #if($cond.vaild=="0")selected  #end>禁用</option>
+			  <option value="1" #if($cond.vaild=="1")selected #end>启用</option>
+            </select>
+        </li>
+		<li>
+    		<label class="left mar_top_5">创建时间：</label>
+    		<input type="text" class="input-small mar_right_10 left" id="datepickera" value="$!StringUtil.getDateString($!cond.createTimeStart)" name="createTimeStart">
+    		<label class="left mar_top_5">到</label>
+    		<input type="text" class="input-small mar_left_10 mar_right_10 left " id="datepickerb" value="$!StringUtil.getDateString($!cond.createTimeEnd)" name="createTimeEnd">
+		</li>
+       <!--
+		<li>
+            <label class="left mar_top_5">选择排序方式：</label>
+            <select class="left oi_status_max_w" name="select4" id="select4">
+              <option value="0" selected="selected">创建时间</option>
+              <option value="1">用户名</option>
+              <option value="2">姓名</option>
+              <option value="3">E-mail</option>
+              <option value="4">电话</option>
+              <option value="5">部门</option>
+              <option value="6">所属角色</option>
+              <option value="7">状态</option>
+            </select>
+            <select class="left oi_status_max_w mar_left_5" name="select3" id="select3">
+              <option value="0">升序</option>
+              <option value="1">降序</option>
+            </select>
+        </li>
+		-->
+        <li>
+            <label class="left mar_top_5">按创建时间排序</label>
+			<select class="left oi_status_max_w mar_left_5" name="adsc" id="adsc">
+              <option value="0" #if($cond.adsc=="0")selected  #end>升序</option>
+              <option value="1" #if($cond.adsc=="1")selected  #end>降序</option>
+            </select>
+		</li>
+		<li>
+            <label class="left mar_top_5">显示：</label>
+            <select class="left oi_status_max_w" name="pageSize" id="pageSize">
+              <option value="10" #if($pageInfo.pageSize=="10") selected  #end>10</option>
+              <option value="20" #if($pageInfo.pageSize=="20") selected  #end>20</option>
+			  <option value="20" #if($pageInfo.pageSize=="40") selected  #end>40</option>
+            </select>
+        </li>
+      <li><input type="submit" name="Submit" value="查  询" class="btn btn-primary left"></li>
+    </ul>
+    <br class="clear">
+</div>
+
+<table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-striped table-hover center_t font12 tl_mt3_mb3 mar_bottom_0">
+  <tbody>
+    <tr class="info bold">
+        <td><label class="checkbox left"><input  name="checkbox" type="checkbox" value="checkbox" onclick="selectChk('userId', this.checked);">全选</label><label>用户名</label></td>
+        <td><label>姓名</label></td>
+        <td><label>E-mail</label></td>
+        <td><label>电话</label></td>
+        <td><label>部门</label></td>
+        <td><label>所属角色</label></td>
+        <td><label>创建时间</label></td>
+        <td><label>负责行业</label></td>
+        <td><label>级别</label></td>
+        <td><label>状态</label></td>
+        <td><label>操作</label></td>
+    </tr>
+    #foreach($user in $users)
+    <tr class="alignL" id="user_$user.userId">
+        <td><label class="checkbox"><input type="checkbox" name="userIds" id="userId" value="$user.userId" /><input type="hidden" id="name_$user.userId" name="name_$user.userId" value="$user.loginName" />$user.loginName</span></label></td>
+        <td><label>$!user.userName</label></td>
+        <td><label>$!user.email</label></td>
+        <td><label>$!user.phone</label></td>
+        <td><label>$!departments.get($!user.departmentId).departmentName</label></td>
+        <td><label>$!roles.get($!user.roleId).roleName<input  type="hidden" id="role_$user.userId" name="role_$user.userId" value="$user.roleId" /></label></td>
+        <td class="font10"><label>$!StringUtil.getDateTimeString($!user.createTime)</label></td>
+        <td><label>#if($user.mainIndustry) $!industry.get($!user.mainIndustry).catNameCn #else 所有 #end</label></td>
+        <td><label>$!DictUtil.getUserPriority($!user.priority)</label></td>
+        <td id="userstatus_$user.userId"><label name="stautsName">#if($!user.vaild=="1")<span class="label label-success">#else <span class="label label-important"> #end $!DictUtil.getVaildStatus($!user.vaild)</span></label></td>
+        <td id="oper_$user.userId" class="">
+			<a href="javascript:editUser($!user.userId);" role="button" class=" mar_left_10">修改信息</a>
+			<a href="javascript:editPsw($user.userId, '$user.loginName');" role="button" class=" mar_left_10">重置密码</a>
+			#if($!roles.get($!user.roleId).status=="1")
+				<a href="javascript:viewRole($user.roleId)" role="button" class=" mar_left_10">角色查看</a>
+			#end
+			#if($!user.vaild=="1")
+				<span id="opertor">
+				<!--#if($user.roleId=="1")
+					#else 
+						<a href="javascript:changeUserStatus($user.userId,1);" role="button" class=" mar_left_10" >禁用</a>
+					#end  
+						-->
+				<a href="javascript:changeUserStatus($user.userId,1);" role="button" class=" mar_left_10" >禁用</a>
+			#else 
+				#if($!roles.get($!user.roleId).status=="1")
+					<a href="javascript:changeUserStatus($user.userId,2);" role="button" class=" mar_left_10" >启用</a>
+				#end
+			#end</span>
+		</td>
+    </tr>
+	#end
+  </tbody>
+</table>
+
+<table style="margin-top:0px;" class="table font14">
+<tbody><tr class="success">
+        <td><input type="button" value="新增" onclick="editUser()" class="btn btn-success font12 left mar_left_15"></td>
+  </tr>
+</tbody>
+</table>
+#parse("/screens/Nap.html")
+</from>
+<script>
+function vaildUser(vaild) {
+	jQuery("body").showLoading();
+	var url = "$link.setAction('user.Ajaxvailduser')?" + form2URLbySelector("#userId:checked");
+	jQuery.getJSON(url, {vaild:vaild}, function(data){
+		jQuery("body").hideLoading();
+		if (data.status) {
+    		jQuery("#userId:checked").each(function(i,o){
+    			jQuery("#userstatus_"+o.value).html(getVaildStatus(vaild));
+    		});
+			alert('操作成功');
+		} else {
+			alert('操作失败');
+		}
+	});
+}
+function editUser(userId) {
+	window.open('$link.setPage("user,EditUser.html")?userId=' + userId + "&" + Math.random(), 'edituser','height=550,width=640,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no,top=200')
+}
+function editPsw(userId, loginName) {
+	tipsWindown("修改用户密码","url:get?$link.setPage('user,ChangeUserPSW.html')?userId="+userId+"&loginName=" + loginName + "&supplierId=$!supplier.supplierId&" + Math.random(),"400","200","true","","true","text");
+}
+function viewRole(roleId) {
+	tipsWindown("查看角色详细信息","url:get?$link.setPage('user,ViewRoleDetail.html')?roleId=" + (roleId==null?"":roleId) + "&" + Math.random(),"450","400","true","","true","text","关闭");
+}
+function addUser(user) {
+	document.listForm.submit();
+}
+function selectChk(id, checked) {
+	var chks = jQuery("*").find("#" + id);
+	for(i=0; i<chks.length; i++) {chks[i].checked=checked;}
+}
+</script>
+<script>
+function editListUser(userId) {
+	var div = jQuery("#addUserDiv");
+	if (div.length == 0) {
+		div = jQuery("<div id='addUserDiv'></div>");
+		jQuery("body").append(div);
+	}
+	div.empty();
+	div.load("$link.setPage('user,EditUser.html')?userId=" + userId);
+}
+
+function returnIdsLength(){
+	var ids = document.getElementsByName("userIds");
+	var count = 0;
+	for(var i=0;i<ids.length;i++){
+			if(	ids[i].checked==true){
+				count++;
+			}
+		}
+	return count;
+}
+//启用或者禁用
+function changeUserStatus(userId,flag){
+	if(confirm("确定要执行此操作吗？")){
+		var loginUserId = jQuery("#loginUserId").val();
+    	if(loginUserId==userId){
+    		alert("该用户正在登录中，不能进行禁用操作！！");
+    		return ;
+    	}
+		jQuery("body").showLoading();
+		var loginName = jQuery("#name_"+userId).val();
+		var roleId = jQuery("#role_"+userId).val();
+    	var url = '$link.setAction("user.AjaxVaildUserAction")';
+    	jQuery.getJSON(url, {userId:userId,actionFlag:flag}, function(data) {
+			jQuery("body").hideLoading();
+    		if(data.status) {
+    			if(flag=="1"){
+                    jQuery("#userstatus_"+userId).find("label[name='stautsName']").html("<span class='label label-important'>禁用</span>");
+    				jQuery("#oper_"+userId).html("<a href='javascript:changeUserStatus("+userId+",2);' role='button' class='mar_left_10' >启用</a>");
+    			}else{
+                    jQuery("#userstatus_"+userId).find("label[name='stautsName']").html("<span class='label label-success'>启用</span>");
+    				jQuery("#oper_"+userId).html("<a href='javascript:viewRole("+roleId+")' role='button' >角色查看</a><a href='javascript:editListUser("+userId+");' role='button' class='mar_left_10'>修改信息</a><a href='javascript:editPsw("+userId+","+loginName+");' role='button' class='mar_left_10'>重置密码</a><a href='javascript:changeUserStatus("+userId+",1);' role='button' class='mar_left_10' >禁用</a>");
+    			}
+    			
+    		}else{
+    			alert("操作失败");
+    		}
+    	});
+	}
+}
+</script>

@@ -1,0 +1,286 @@
+$page.setTitle("$!productVo.product.productName.replaceAll('-', ' ')")
+  <div id="add_to_cart_div1" class="hide">
+  	<span class="close_right_top" title="close" onclick="javascript:document.getElementById('add_to_cart_div1').style.display='none';"></span>
+    <div class="add_to_cart_div2">
+        <table border="0" cellspacing="0" cellpadding="0">
+          <tr>
+            <td rowspan="2" align="right" class="pad_right_20"><img src="/static/prototype/product_fashion/images/green_32px.gif" width="32" height="32" alt="successful" title="successful" /></td>
+            <td><p style="font-size:14px; color:#666; margin-top:5px;">A new item has been added to your Shopping Cart.</p></td>
+          </tr>
+          <tr>
+            <td class="pad_top_15">
+                <span class="mar_right_20"><a href="javascript:;" onclick="document.getElementById('add_to_cart_div1').style.display='none';">Continue Shopping</a></span>
+                <span><input name="" type="button" class="btn_successful" id="" onclick="window.location='$link.setPage('cart,Cart.html')';" value="View Shopping Cart" /></span>
+            </td>
+          </tr>
+        </table>
+    </div>
+</div>
+ <h2 style="float:left;" class="min_height_60"><span id="productName">$productVo.product.productName</span></h2>
+          
+          <div class="clear"></div>
+          <!--S code and price-->
+          <table border="0" style="margin-top:10px; width:450px;" class="mart10">
+            <tbody><tr>
+              <td valign="middle" style="color:#Lavender; padding-top:2px; padding_bottom:2px; width:250px;" class="padl5">SKU: <span id="sku">$productVo.product.sku</span></td>
+            </tr>
+            <tr>
+			  <td valign="middle" class="padl5"><b style="color:#555; padding-top:10px; float:left;">Our Price: &nbsp;</b> <span style="color:#d80303; font-size:13px;"><b>USD</b></span><span style="color:#d80303; font-size:22px;"><b> $ <span id="currDiscountPrice">${productVo.priceVo.discountPrice}</span> </b></span><span style="color:#000; margin-left:5px;">/ $productVo.product.packing </span><span id="showDiscount"  #if($productVo.priceVo.save==0) class="hide" #end> <span style="margin-left:5px; color:#900; font-size:14px;">(<span id="discount">${productVo.priceVo.priceBean.discount}</span>% Off)</span> <span style="font-size:11px; margin-left:5px; color:#999;">Save $<span id="savePrice">$productVo.priceVo.save</span></span></span></td>
+            </tr>
+            <tr id="showDiscount" #if($productVo.priceVo.save == 0) class="hide" #end>
+			  <td valign="middle" height="25px" style="color:#555;" class="padl5">
+				<span style="float:left;">Price: </span><span style="float:left; margin-left:3px;" class="pasprice">USD $ <span id="currPrice">${productVo.priceVo.price}</span></span><span style="color:#000; float:left; margin-left:3px;">/ $productVo.product.packing </span> 
+				#if($productVo.product.expiredDay>0 && $productVo.expiredDay && $productVo.expiredDay>0)<span style="float:left; margin-left:5px;">${productVo.expiredDay} day left</span>#end
+			  </td>
+            </tr>
+            #if($promotionImages)
+            <tr>
+              <td height="40px" valign="middle" class="padl5" style="color:#555; line-height:30px;">Extra gift: 
+              #foreach($imageVo in $promotionImages)
+              <a href="$link.setPage('product,Product.html')?productId=$imageVo.productId" target="_blank" class="gift_link"><img src="$imageVo.imageUrl" alt="$imageVo.productId" title="$imageVo.productId" /></a>
+             #end
+              </td>
+            </tr>
+            #end
+          </tbody></table>
+          <!--E code and price-->
+          <!--S reviews-->
+          <table border="0" style=" margin-top:3px; width:450px;">
+            <tbody><tr>
+              <td valign="bottom" height="23px" style="color:#555;" class=""><span class="fLeft disblock marT8L5"><b style="color:#555; padding-top:0px; float:left;">Feedbacke: &nbsp;</b>
+                <div title="4.5" class="star_display_8"></div>
+                </span> <span class="Rating_txt"><a onclick="location.href='#Reviews';nTabs(this,1);document.getElementById('Reviews').className = 'active_tab';document.getElementById('Specification').className = 'normal_tab'; this.className='curpointer';" class="curpointer">(321 reviews)</a></span> <span>&nbsp;&nbsp;<a href="#">Write a review
+</a></span></td>
+            </tr>
+          </tbody></table>
+          <!--E reviews-->
+ 
+							<!--S choose-->
+<table width="450px" height="auto" class="mart10"
+	style="border: 1px solid #CCC; float: left; background-color: #f4f2f3; background-color: #f9f8f8;">
+	<tr>
+		<td height="10px" colspan="2"></td>
+	</tr>
+#if($productConfigs)
+#if($productConfigs.mainShow)
+	<tr id="mainShowTr">
+			<td width="70px">
+				<b style="margin-top: 6px; margin-left: 12px; float: left;">$productConfigs.mainShow.titleAttr.value :</b>
+			</td>
+			<td valign="middle"  id="choose_${configShow.titileAttr.value}" class="sizeChoose">
+				<ul name="$productConfigs.mainShow.titleAttr.value">
+				</ul>
+			</td>
+	</tr>
+#end
+#if($productConfigs.subShow)
+	<tr id="subShowTr">
+			<td width="70px">
+				<b style="margin-top: 6px; margin-left: 12px; float: left;">$productConfigs.subShow.titleAttr.value :</b>
+			</td>
+			<td valign="middle"  id="choose_${configShow.titileAttr.value}" class="sizeChoose">
+				<ul name="$productConfigs.subShow.titleAttr.value">
+				</ul>
+			</td>
+	</tr>
+#end
+#end
+	<tr>
+		<td colspan="2" style="text-align: right;" height="17">
+#if($productVo.product.sizeTemplateId && $productVo.product.sizeTemplateId>0)
+			<a
+				style="width: 60px; height: 17px; float: right; margin-right: 25px; background: url(/static/prototype/product_fashion/images/size_chart.gif) no-repeat; font-size: 10px; color: #000; text-align: center;"
+				href="#size_table_image">size chart</a>
+#end
+		</td>
+	</tr>
+#if($stockNumber>0)
+	<tr>
+		<td height="25" valign="middle" class="padl5" style="font-size: 12px;" width="70px">
+			<b style="margin-top: 6px; margin-left: 7px; float: left;">Quantity:</b>
+		</td>
+		<td valign="middle" class="foot_simple"
+			style="padding-left: 5px; padding-top: 3px;">
+			<input id="quantity" type="text" size="6" value="1" style="font-size: 16px;" />
+		</td>
+	</tr>
+#end
+#if(!$productVo.product.saleIgnoreStock && $stockNumber>0)
+	<tr>
+		<td height="25" valign="middle" class="padl5" style="font-size: 12px;">
+			<b style="margin-top: 6px; margin-left: 7px; float: left;">Stock</b>
+		</td>
+		<td valign="middle" class="foot_simple"
+			style="padding-left: 5px; padding-top: 6px;">
+			<span id="stockNumber">$stockNumber</span>
+		</td>
+	</tr>
+#end
+	<tr style="border-bottom: 1px solid #CCC;" height="15px">
+		<td colspan="2"></td>
+	</tr>
+	<tr>
+		<td valign="middle"
+			style="padding-top: 10px; padding-left: 10px; padding-bottom: 10px;"
+			colspan="2">
+#if($snapshot)
+		<span style="color:#d80303; font-size:22px;"><b>Snapshot</b></span>
+#else
+			<div style="float: left; width: 430px;display:none;" id="addCartDiv">
+				<a href="javascript:;" onclick="addToFavorite()"
+					style="float: left; margin-right: 16px; margin-top: 10px;"><img
+						src="/static/prototype/product_fashion/images/heart_ico.gif"
+						alt="Add to My Favorite" title="Add to My Favorite" width="15"
+						height="15" class="featured_detail_iconimg1" />Add to My Favorite</a>
+				<input type="button" name=""
+					onclick="addToCart('$productVo.product.productId');"
+					value="Add To Cart" class="btn_addToCart" />
+			</div>
+			<div style="float: left; margin-top: 5px; width: 430px;display:none;" id="outStockDiv">
+				<a href="javascript:;" onclick="addToFavorite()"
+					style="float: left; margin-right: 16px; margin-top: 10px;"><img
+						src="/static/prototype/product_fashion/images/heart_ico.gif"
+						alt="Add to My Favorite" title="Add to My Favorite" width="15"
+						height="15" class="featured_detail_iconimg1" />Add to My Favorite</a>
+				<b style="float: left; font-size: 20px; color: #900;">Out Of
+					Stock</b>
+				<input type="button" name="" onclick="addStockNotice($productVo.product.productId);" value="In Stock Notice" 
+					class="btn_noPro" />
+#end
+			</div>
+		</td>
+	</tr>
+</table>
+<script>
+#if(${stockNumber}>0)
+	jQuery("#addCartDiv").show();
+#else
+	jQuery("#outStockDiv").show();
+#end
+#if($productConfigs)
+var productConfig = $JSONUtil.obj2JSON($productConfigs);
+new ProductConfig($productVo.product.productId, productConfig);
+#end
+</script>
+
+<script>
+function addStockNotice(productId){
+	if (jQuery("tr[id='mainShowTr']").length>0) {
+		var mainId = jQuery("#mainShowTr").find("li[class='choose']").attr("mainId");
+		var subId = jQuery("#subShowTr").find("li[class='choose']").attr("subId");
+		if(mainId== "" || mainId==null){
+			alert("please choose the color");
+			return ;
+		}
+	}
+	if (jQuery("tr[id='subShowTr']").length>0) {
+		if(subId== ""||subId==null){
+			alert("please choose the size");
+			return ;
+		}
+	}
+	var id = "standard_"+mainId+"_"+subId;
+	var configId = jQuery("#"+id).val();
+	jQuery("body").showLoading();
+	var url="/fashion/action/product.AjaxAddStockNotice";
+	jQuery.getJSON(url, {productId:productId,productConfigId:configId}, function(data) {
+		jQuery("body").hideLoading();
+		if (data != null && data.length>0) {
+			alert("add sucess");
+		}
+	});
+}
+function addToFavorite() {
+	testLogin(function(){
+		jQuery("body").showLoading();
+		var url="/fashion/action/product.AjaxAddProductListAction";
+		jQuery.getJSON(url, {productId:$productVo.product.productId}, function(data) {
+			jQuery("body").hideLoading();
+			if (data != null && data > 0) {
+				alert("Added to product list  sucess!");
+			}else{
+				alert("Added to product list  Failure!");
+			}
+		});
+	});
+}
+
+function addToCart(productId){
+	if (jQuery("tr[id='mainShowTr']").length>0) {
+    	var mainConfigId = jQuery("tr[id='mainShowTr'] li[class='choose']").attr("mainid");
+    	var mainId = jQuery("tr[id='mainShowTr'] li[class='choose']").text();
+    	var mainTitle = jQuery("tr[id='mainShowTr'] li[class='choose']").parent().attr("name");
+    	if(mainId== "" || mainId==null){
+    		alert("please choose the color");
+    		return ;
+    	}
+	}
+	if (jQuery("tr[id='subShowTr']").length>0) {
+    	var subConfigId = jQuery("tr[id='subShowTr'] li[class='choose']").attr("subid");
+    	var subId = jQuery("tr[id='subShowTr'] li[class='choose']").text();
+    	var subTitle = jQuery("tr[id='subShowTr'] li[class='choose']").parent().attr("name");
+    	if(subId== ""||subId==null){
+    		alert("please choose the size");
+    		return ;
+    	}
+	}
+	if (mainConfigId != null || subConfigId != null) {
+		var mid = mainConfigId == null ? 0 : mainConfigId
+		var sid = subConfigId == null ? 0 : subConfigId
+		var standardId = jQuery("#standard_" + mid + "_" + sid).attr("standardId");
+	}
+	var quantity = jQuery("#quantity").val();
+	if (jQuery("#stockNumber").length>0) {
+    	var stock = parseInt(jQuery("#stockNumber").html());
+    	if (quantity > stock) {
+    		alert("out of stock");
+    		return;
+    	}
+	}
+	
+	jQuery("body").showLoading();
+	var productName = jQuery("#productName").text();
+	var price = jQuery("#currPrice").text();
+	var sku = '$productVo.product.sku';
+	var imageUrl = jQuery("ul#imageMenu li img")[0].src;
+	var weight = '$!productVo.product.weight';
+	var length = '$!productVo.product.length';
+	var width = '$!productVo.product.width';
+	var height = '$!productVo.product.height';
+	var catId =  '$!productVo.product.customCatId'
+	var maxStockDays = '$!productVo.product.stockDays';
+	var url="$link.setAction('cart.AddToCartAction')";
+	jQuery.getJSON(url, 
+		{productId:productId,
+		 mainConfigId:mainConfigId,
+		 mainId:mainId,
+		 mainTitle:mainTitle,
+		 subConfigId:subConfigId,
+		 standardId:standardId,
+		 subId:subId,
+		 subTitle:subTitle,
+		 quantity:quantity,
+		 sku:sku,
+		 price:price,
+		 productName:productName,
+		 imageUrl:imageUrl,
+		 weight:weight,
+		 height:height,
+		 width:width,
+		 length:length,
+		 catId:catId,
+		 maxStockDays:maxStockDays
+		 }, 
+		function(data) {
+			jQuery("body").hideLoading();
+    		if (data != null && data > 0) {
+    			document.getElementById("add_to_cart_div1").style.display="block";
+    			getwebstatus();
+    		}
+	});
+}
+//浜у搧璇︾粏椤垫墦寮�粺璁�
+saveProduct('$!productVo.product.productId', 0);
+</script>
+
+<!--E choose-->

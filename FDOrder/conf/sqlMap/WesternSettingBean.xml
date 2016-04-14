@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertWesternSettingBean" parameterClass="com.fd.payment.bean.WesternSettingBean">
+        <![CDATA[
+insert into T_WESTERN_SETTING
+  (FIRST_NAME, LAST_NAME, COUNTRY, CITY, ADDRESS, TEL)
+values
+  (#firstName#, #lastName#, #country#, #city#, #address#, #tel#)
+        ]]>
+        <selectKey keyProperty="id" resultClass="long">
+            <![CDATA[select @@identity as id]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateWesternSettingBean" parameterClass="com.fd.payment.bean.WesternSettingBean">
+        <![CDATA[
+update T_WESTERN_SETTING 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="id" prepend="," removeFirstPrepend="true">
+                <![CDATA[ID = #id#]]>
+            </isNotNull>
+            <isNotNull property="firstName" prepend="," removeFirstPrepend="true">
+                <![CDATA[FIRST_NAME = #firstName#]]>
+            </isNotNull>
+            <isNotNull property="lastName" prepend="," removeFirstPrepend="true">
+                <![CDATA[LAST_NAME = #lastName#]]>
+            </isNotNull>
+            <isNotNull property="country" prepend="," removeFirstPrepend="true">
+                <![CDATA[COUNTRY = #country#]]>
+            </isNotNull>
+            <isNotNull property="city" prepend="," removeFirstPrepend="true">
+                <![CDATA[CITY = #city#]]>
+            </isNotNull>
+            <isNotNull property="address" prepend="," removeFirstPrepend="true">
+                <![CDATA[ADDRESS = #address#]]>
+            </isNotNull>
+            <isNotNull property="tel" prepend="," removeFirstPrepend="true">
+                <![CDATA[TEL = #tel#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ID = #id#
+        ]]>
+    </update>
+
+    <sql id="getWesternSettingBeanCondition">
+         <isNotNull property="id" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ID = #id#]]>
+         </isNotNull>
+         <isNotNull property="firstName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[FIRST_NAME = #firstName#]]>
+         </isNotNull>
+         <isNotNull property="lastName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LAST_NAME = #lastName#]]>
+         </isNotNull>
+         <isNotNull property="country" prepend="and" removeFirstPrepend="true">
+             <![CDATA[COUNTRY = #country#]]>
+         </isNotNull>
+         <isNotNull property="city" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CITY = #city#]]>
+         </isNotNull>
+         <isNotNull property="address" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ADDRESS = #address#]]>
+         </isNotNull>
+         <isNotNull property="tel" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TEL = #tel#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getWesternSettingBeanCount" parameterClass="com.fd.payment.bean.WesternSettingBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_WESTERN_SETTING 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getWesternSettingBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getWesternSettingBean" parameterClass="com.fd.payment.bean.WesternSettingBean"
+        resultClass="com.fd.payment.bean.WesternSettingBean">
+        <![CDATA[
+select 
+	ID	as id,
+	FIRST_NAME	as firstName,
+	LAST_NAME	as lastName,
+	COUNTRY	as country,
+	CITY	as city,
+	ADDRESS	as address,
+	TEL	as tel
+from T_WESTERN_SETTING 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getWesternSettingBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteWesternSettingBean" parameterClass="com.fd.payment.bean.WesternSettingBean">
+        <![CDATA[
+delete from T_WESTERN_SETTING where ID=#id#
+        ]]>
+    </delete>
+
+</sqlMap>

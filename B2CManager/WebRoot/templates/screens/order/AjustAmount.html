@@ -1,0 +1,66 @@
+##订单调整金额页面
+<div id="adjust_amount" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+<h5 id="myModalLabel">调整金额</h5>
+</div>
+<div class="modal-body">
+<table border="0" cellspacing="0" cellpadding="0" class="mar_left_20">
+  <tr>
+    <td class="v_top right_t" width="110px"><label class="mar_right_10">订单号：</label></td>
+    <td><label class="text-info">$orderId</label></td>
+  </tr>
+  <tr>
+    <td class="v_top right_t"><label class="mar_right_10">订单金额：</label></td>
+    <td>
+    	<label class="text-info">$ $!orderTotal</label>
+    </td>
+  </tr>
+  <tr>
+    <td class="v_top right_t"><label class="mar_right_10 mar_top_5">增加订单金额：</label></td>
+    <td><input type="text" class="input-medium" placeholder="" id="ajustNum"/>
+    <p class="help-block red">如需要减少订单金额，可以在输入框内填写负数。</p></td>
+  </tr>
+</table>
+</div>
+<div class="modal-footer">
+<button class="btn" data-dismiss="modal" aria-hidden="true">取消</button>
+<input type="button" class="btn btn-primary" onclick="return doAjustAmount();" value="确认"/>
+</div>
+</div><!-- E adjust_amount -->
+<script>
+jQuery('#adjust_amount').modal({
+	show:true
+})
+function doAjustAmount(){
+	if(checkNumber("ajustNum") == false)
+		return false;
+	jQuery("body").showLoading();
+	var orderId = '$orderId';
+	var ajustNum = jQuery("#ajustNum").val();
+	var orderStatus = '$orderStatus';
+	var url = '$link.setAction("order.AjaxAjustAmount")';
+	jQuery.getJSON(url, {orderId:orderId,ajustNum:ajustNum,orderStatus:orderStatus}, function(data) {
+		jQuery("body").hideLoading();
+		if (data == 1) {
+			var total = $!orderTotal + parseFloat(ajustNum);
+			jQuery("#adjust_amount").modal("hide");
+			jQuery("#"+orderId).find("label[name='total']").text(total);
+		}else{
+			alert("调整金额失败!");
+		}
+	});
+}
+
+//判断输入的是否是数字和小数点
+function checkNumber(id){
+    var obj = jQuery("#"+id).val();
+    if(isNaN(obj.trim()) || obj == ""){
+       alert("格式不对！");
+	   jQuery("#"+id).val("");	
+	   jQuery("#"+id)[0].focus();
+	   return false;
+    }
+	return true;
+}
+</script>

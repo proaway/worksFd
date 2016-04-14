@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertCatConfigBean" parameterClass="com.fd.fashion.dict.bean.CatConfigBean">
+        <![CDATA[
+insert into TC_CAT_CONFIG
+  (CAT_ID, ATTR_ID, ALLOW_CUSTOM, SHOW_STYLE, SHOW_TYPE)
+values
+  (#catId#, #attrId#, #allowCustom#, #showStyle#, #showType#)
+        ]]>
+        <selectKey keyProperty="configId" resultClass="long">
+            <![CDATA[select @@identity as configId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateCatConfigBean" parameterClass="com.fd.fashion.dict.bean.CatConfigBean">
+        <![CDATA[
+update TC_CAT_CONFIG 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="configId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CONFIG_ID = #configId#]]>
+            </isNotNull>
+            <isNotNull property="catId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CAT_ID = #catId#]]>
+            </isNotNull>
+            <isNotNull property="attrId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ATTR_ID = #attrId#]]>
+            </isNotNull>
+            <isNotNull property="allowCustom" prepend="," removeFirstPrepend="true">
+                <![CDATA[ALLOW_CUSTOM = #allowCustom#]]>
+            </isNotNull>
+            <isNotNull property="showStyle" prepend="," removeFirstPrepend="true">
+                <![CDATA[SHOW_STYLE = #showStyle#]]>
+            </isNotNull>
+            <isNotNull property="showType" prepend="," removeFirstPrepend="true">
+                <![CDATA[SHOW_TYPE = #showType#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where CONFIG_ID = #configId#
+        ]]>
+    </update>
+
+    <sql id="getCatConfigBeanCondition">
+            <isNotNull property="configId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[CONFIG_ID = #configId#]]>
+            </isNotNull>
+            <isNotNull property="catId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[CAT_ID = #catId#]]>
+            </isNotNull>
+            <isNotNull property="attrId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[ATTR_ID = #attrId#]]>
+            </isNotNull>
+            <isNotNull property="allowCustom" prepend="and" removeFirstPrepend="true">
+                <![CDATA[ALLOW_CUSTOM = #allowCustom#]]>
+            </isNotNull>
+        <isNotNull property="showStyle" prepend="and" removeFirstPrepend="true">
+            <![CDATA[SHOW_STYLE = #showStyle#]]>
+        </isNotNull>
+        <isNotNull property="showType" prepend="and" removeFirstPrepend="true">
+            <![CDATA[SHOW_TYPE = #showType#]]>
+        </isNotNull>
+    </sql>
+
+    <select id="getCatConfigBeanCount" parameterClass="com.fd.fashion.dict.bean.CatConfigBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from TC_CAT_CONFIG 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getCatConfigBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getCatConfigBean" parameterClass="com.fd.fashion.dict.bean.CatConfigBean"
+        resultClass="com.fd.fashion.dict.bean.CatConfigBean">
+        <![CDATA[
+select 
+	CONFIG_ID	as configId,
+	CAT_ID	as catId,
+	ATTR_ID	as attrId,
+	ALLOW_CUSTOM	as allowCustom,
+	SHOW_STYLE	as showStyle,
+	SHOW_TYPE as showType
+from TC_CAT_CONFIG 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getCatConfigBeanCondition"/>
+        </dynamic>
+        <![CDATA[
+order by CAT_ID, CONFIG_ID
+        ]]>
+    </select>
+
+    <delete id="deleteCatConfigBean" parameterClass="com.fd.fashion.dict.bean.CatConfigBean">
+        <![CDATA[
+delete from TC_CAT_CONFIG where CONFIG_ID=#configId#
+        ]]>
+    </delete>
+</sqlMap>

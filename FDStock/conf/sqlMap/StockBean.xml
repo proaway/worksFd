@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+	<insert id="insertStockBean" parameterClass="com.fd.fashion.stock.bean.StockBean">
+        <![CDATA[
+insert into T_STOCK
+  (STOCK_ID,TASK_ID,ENTER_COUNT,ENTER_TIME,PROFF_ID,SKU,ENTER_PRICE,STATUS,EXPECT_ENTER_COUNT,SHELF,MEMO)
+  values
+  (#stockId#,#taskId#,#enterCount#,#enterTime#,#proffId#,#sku#,#enterPrice#,#status#,#expectEnterCount#,#shelf#,#memo#)
+        ]]>
+		<selectKey keyProperty="stockId" resultClass="long">
+            <![CDATA[select @@identity as stockId]]>
+		</selectKey>
+	</insert>
+
+	<update id="updateStockBean" parameterClass="com.fd.fashion.stock.bean.StockBean">
+        <![CDATA[
+update T_STOCK 
+        ]]>
+		<dynamic prepend="set">
+			<isNotNull property="stockId" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[STOCK_ID = #stockId#]]>
+			</isNotNull>
+			<isNotNull property="taskId" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[TASK_ID = #taskId#]]>
+			</isNotNull>
+			<isNotNull property="enterCount" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[ENTER_COUNT = #enterCount#]]>
+			</isNotNull>
+			<isNotNull property="proffId" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[PROFF_ID = #proffId#]]>
+			</isNotNull>
+			<isNotNull property="sku" prepend="," removeFirstPrepend="true">
+                <![CDATA[SKU = #sku#]]>
+			</isNotNull>
+			<isNotNull property="enterPrice" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[ENTER_PRICE = #enterPrice#]]>
+			</isNotNull>
+			<isNotNull property="status" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[STATUS = #status#]]>
+			</isNotNull>
+			<isNotNull property="expectEnterCount" prepend=","
+				removeFirstPrepend="true">
+                <![CDATA[EXPECT_ENTER_COUNT = #expectEnterCount#]]>
+			</isNotNull>
+			<isNotNull property="shelf" prepend="," removeFirstPrepend="true">
+                <![CDATA[SHELF = #shelf#]]>
+			</isNotNull>
+			<isNotNull property="MEMO" prepend="," removeFirstPrepend="true">
+                <![CDATA[MEMO = #memo#]]>
+			</isNotNull>
+		</dynamic>
+        <![CDATA[
+where STOCK_ID = #stockId#
+        ]]>
+	</update>
+
+	<sql id="getStockBeanCondition">
+		<isNotNull property="stockId" prepend="and"
+			removeFirstPrepend="true">
+                <![CDATA[STOCK_ID = #stockId#]]>
+		</isNotNull>
+		<isNotNull property="taskId" prepend="and"
+			removeFirstPrepend="true">
+                <![CDATA[TASK_ID = #taskId#]]>
+		</isNotNull>
+		<isNotNull property="enterCount" prepend="and"
+			removeFirstPrepend="true">
+                <![CDATA[ENTER_COUNT = #enterCount#]]>
+		</isNotNull>
+		<isNotNull property="proffId" prepend="and"
+			removeFirstPrepend="true">
+                <![CDATA[PROFF_ID = #proffId#]]>
+		</isNotNull>
+		<isNotNull property="sku" prepend="and" removeFirstPrepend="true">
+                <![CDATA[SKU = #sku#]]>
+		</isNotNull>
+		<isNotNull property="enterPrice" prepend="and"
+			removeFirstPrepend="true">
+                <![CDATA[ENTER_PRICE = #enterPrice#]]>
+		</isNotNull>
+		<isNotNull property="status" prepend="and"
+			removeFirstPrepend="true">
+                <![CDATA[STATUS = #status#]]>
+		</isNotNull>
+		<isNotNull property="expectEnterCount" prepend="and"
+			removeFirstPrepend="true">
+                <![CDATA[EXPECT_ENTER_COUNT = #expectEnterCount#]]>
+		</isNotNull>
+		<isNotNull property="shelf" prepend="and"
+			removeFirstPrepend="true">
+                <![CDATA[SHELF = #shelf#]]>
+		</isNotNull>
+		<isNotNull property="MEMO" prepend="and" removeFirstPrepend="true">
+                <![CDATA[MEMO = #memo#]]>
+		</isNotNull>
+	</sql>
+
+	<select id="getStockBeanCount" parameterClass="com.fd.fashion.stock.bean.StockBean"
+		resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_STOCK 
+        ]]>
+		<dynamic prepend="where">
+			<include refid="getStockBeanCondition" />
+		</dynamic>
+	</select>
+
+	<select id="getStockBean" parameterClass="com.fd.fashion.stock.bean.StockBean"
+		resultClass="com.fd.fashion.stock.bean.StockBean">
+        <![CDATA[
+select 
+	STOCK_ID as stockId,
+	TASK_ID as taskId,
+	ENTER_COUNT as enterCount,
+	ENTER_TIME as enterTime,
+	PROFF_ID as proffId,
+	SKU as  sku,
+	ENTER_PRICE as enterPrice, 
+	STATUS as status,
+	EXPECT_ENTER_COUNT as 
+	SHELF as shelf,
+	MEMO as memo
+from T_STOCK 
+        ]]>
+		<dynamic prepend="where">
+			<include refid="getStockBeanCondition" />
+		</dynamic>
+	</select>
+
+	<delete id="deleteStockBean" parameterClass="com.fd.fashion.stock.bean.StockBean">
+        <![CDATA[
+delete from T_STOCK where STOCK_ID=#stockId#
+        ]]>
+	</delete>
+
+</sqlMap>

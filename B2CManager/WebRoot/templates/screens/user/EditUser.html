@@ -1,0 +1,173 @@
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"><head>
+  <title>#if($user.userId)修改#else新增#end用户 <!--MICCMS:Title--></title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="<!--MICCMS:Meta-Description-->" name="description">
+  <meta content="<!--MICCMS:Meta-Keywords-->" name="keywords">
+  <meta content="" name="author">
+ <link type="image/ico" href="/static/web/images/ys-logo-ico.ico" rel="shortcut icon">
+<link href="/static/prototype/shopmic-manage/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+<link href="/static/prototype/shopmic-manage/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet">
+<link href="/static/prototype/shopmic-manage/css/jquery-ui-1.10.0.custom.css" type="text/css" rel="stylesheet">
+<link href="/static/prototype/shopmic-manage/css/whole.css" type="text/css" rel="stylesheet">
+<link href="/static/prototype/shopmic-manage/css/shopmic_m.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+  <div id="">
+	<form id="userForm">
+	<input type="hidden" name="userId" id="userId" value="$!user.userId"/>
+  	<br class="clear">
+    <div style="width:560; max-width:560px; margin:0px auto; margin-bottom:100px;">
+        <div style="background:#fff; border:#CCC 1px solid;" class="alert black pad_bottom_20 pad_top_20 font12">
+            <table cellspacing="0" cellpadding="0" border="0" class="mar_left_20">
+  <tbody><tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">用户名称：</label><span class="required mar_right_5 right mar_top_5">*</span></td>
+    <td><input type="text" placeholder="用户名称" class="input-medium" name="loginName" value="$!user.loginName" /><br /><span class="hide">由字母a~z,数字0~9,点、减号或者下划线组成，只能以数字或者字母开始和结尾，4~18个字符之内，例如sales-001，accountant_007</span></td>
+#if($user.userId)
+#else
+  </tr>
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">密码：</label><span class="required mar_right_5 right mar_top_5">*</span></td>
+    <td>
+    	<input type="password" placeholder="密码" class="input-medium" name="psw" id="psw" value="" /><br />
+		<span class="hide">密码长度5~16个字符，字母区分大小写</span>
+    </td>
+  </tr>
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">重复密码：</label><span class="required mar_right_5 right mar_top_5">*</span></td>
+    <td>
+    	<input type="password" placeholder="重复密码" class="input-medium" name="pswrepeat" id="pswrepeat" value="" /><br />
+		<span class="hide">两次输入的密码不一致</span>
+    </td>
+  </tr>
+ #end
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">姓名：</label><span class="required mar_right_5 right mar_top_5">*</span></td>
+    <td>
+    	<input type="text" placeholder="姓名" class="input-medium" name="userName" id="userName" value="$!user.userName" />
+    </td>
+  </tr>
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">部门：</label><span class="required mar_right_5 right mar_top_5">*</span></td>
+    <td>
+    	<select class="left oi_status_max_w"  name="departmentId" id="departmentId">
+            <option value="">请选择</option>
+            #foreach($dep in $departments)
+            	<option #if($user.departmentId==$dep.departmentId)selected#end value="$dep.departmentId">$dep.departmentName</option>
+            #end
+                </select>&nbsp;<a href="javascript:addDepartment();">新增部门</a>
+    </td>
+  </tr>
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">所属角色：</label><span class="required mar_right_5 right mar_top_5">*</span></td>
+    <td>
+    	<select class="left oi_status_max_w" name="roleId" id="roleId">
+            <option value="">请选择</option>
+            #foreach($r in $roles)
+				#if($r.status==1)
+            	<option #if($user.roleId==$r.roleId)selected#end value="$r.roleId">$r.roleName</option>
+				#end
+            #end
+                </select>
+    </td>
+  </tr>
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">电话：</label></td>
+    <td>
+    	<input type="text" placeholder="电话" class="input-medium" name="phone"  value="$!user.phone">
+    </td>
+  </tr>
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">Email：</label><span class="required mar_right_5 right mar_top_5">*</span></td>
+    <td>
+    	<input type="text" placeholder="Email" class="input-medium" name="email" value="$!user.email">
+    </td>
+  </tr>
+  
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">负责行业：</label><span class="required mar_right_5 right mar_top_5">*</span></td>
+    <td>
+    	<select class="left oi_status_max_w" name="mainIndustry" id="mainIndustry">
+            <option value="">请选择</option>
+            #foreach($c in $industries)
+            	<option value="$c.catId" #if($!user.mainIndustry == $c.catId)selected#end>$c.catNameCn</option>
+            #end
+                </select>
+		
+    </td>
+  </tr>
+  
+  <tr>
+    <td class="v_top"><label class="mar_right_10 right mar_top_5">级别：</label></td>
+	<td>
+    	<label class="radio left">
+        <input type="radio" name="priority" value="1" #if($user.priority==1) checked #end>
+			所有信息操作权
+      </label>
+      <label class="radio left mar_left_20">
+        <input type="radio" name="priority" value="0" #if($user.priority==0) checked #end>
+			私有信息操作权
+      </label>
+	  <br /><span class="hide">员工是否可以查看和操作自己所管理的以外的信息</span>
+    </td>
+  </tr>
+  <tr>
+  	<td></td><td><input type="button" onclick="saveUser();" value="保  存" class="btn"/>&nbsp;&nbsp;<input type="button" onclick="window.close();" value="取消" class="btn"/></td>
+  </tr>
+</tbody></table>
+        </div>
+    </div>
+    
+
+	</form> 
+  </div>
+  <br class="clear">
+<script src="/static/prototype/shopmic-manage/js/jquery-1.7.2.min.js" type="text/javascript" language="javascript" ></script>
+<script src="/static/prototype/shopmic-manage/js/bootstrap.min.js" type="text/javascript" language="javascript" ></script>
+<script src="/static/prototype/shopmic-manage/js/jquery-ui-1.10.0.custom.min.js" type="text/javascript" language="javascript" ></script>
+<script src="/static/prototype/shopmic-manage/js/datepicker.js" type="text/javascript" language="javascript" ></script>
+<script type="text/javascript">
+(function() {
+    var backToTopTxt = "",  backToTopEle = jQuery('<div class="backToTop_pro"></div>').appendTo(jQuery("body"))
+    .text( backToTopTxt).attr("title",  backToTopTxt).click(function() {
+        jQuery("html, body").animate({ scrollTop: 0 }, 120);
+	}),  backToTopFun = function() {
+	    var st = jQuery(document).scrollTop(), winh = jQuery(window).height();
+	    (st > 0)?  backToTopEle.show():  backToTopEle.hide();
+	    //IE6下的定位
+	    if (!window.XMLHttpRequest) {
+	         backToTopEle.css("top", st + winh - 166);
+	    }
+	};
+	jQuery(window).bind("scroll", backToTopFun);
+	jQuery(function() { backToTopFun(); });
+})();
+</script><div class="backToTop_pro" title="" style="display: none;"></div>
+<script>
+
+function saveUser() {
+	var userId = jQuery("#userId").val();
+	if(userId==""){
+		//执行新增操作
+		if(jQuery("#psw").val() != jQuery("#pswrepeat").val()) {
+    		alert('两次密码不一致');
+    		return;
+    	}
+	}
+	var url = "$link.setAction('user.Ajaxedituser')?"+Math.random();
+	var param = form2JSON("userForm");
+	jQuery.getJSON(url, param, function(data){
+		if(data.status) {
+			window.opener.addUser(data.user);
+			window.close();
+		} else {
+			alert("操作失败!");
+		}
+	});
+}
+function addDepartment() {
+	tipsWindown("增加部门","url:get?$link.setPage('user,adddepartment.html')?" + Math.random(),"250","180","true","","true","text");
+}
+</script>
+
+</body> 
+</html>

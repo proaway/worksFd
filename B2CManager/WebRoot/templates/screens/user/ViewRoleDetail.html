@@ -1,0 +1,97 @@
+  <SCRIPT type="text/javascript" >
+  <!--
+	var zTree;
+	var demoIframe;
+	var setting = {
+		view: {
+			dblClickExpand: false,
+			showLine: true,
+			selectedMulti: false
+		},
+		data: {
+			simpleData: {
+				enable:true,
+				idKey: "id",
+				pIdKey: "pId",
+				rootPId: ""
+			}
+		},
+		callback: {
+			beforeClick: function(treeId, treeNode) {
+				var zTree = $.fn.zTree.getZTreeObj("tree");
+				if (treeNode.isParent) {
+					zTree.expandNode(treeNode);
+					return false;
+				} else {
+					demoIframe.attr("src",treeNode.file + ".html");
+					return true;
+				}
+			}
+		}
+	};
+
+	var zNodes =$!rootRoleList;
+	
+	$(document).ready(function(){
+		var t = $("#tree");
+		t = $.fn.zTree.init(t, setting, zNodes);
+		demoIframe = $("#testIframe");
+		demoIframe.bind("load", loadReady);
+		var zTree = $.fn.zTree.getZTreeObj("tree");
+
+	});
+
+	function loadReady() {
+		var bodyH = demoIframe.contents().find("body").get(0).scrollHeight,
+		htmlH = demoIframe.contents().find("html").get(0).scrollHeight,
+		maxH = Math.max(bodyH, htmlH), minH = Math.min(bodyH, htmlH),
+		h = demoIframe.height() >= maxH ? minH:maxH ;
+		if (h < 530) h = 530;
+		demoIframe.height(h);
+	}
+
+  //-->
+  </SCRIPT>
+  
+  <table width="100%" border="0" cellpadding="0" cellspacing="2" bgcolor="#FFFFFF"  class="tbox">
+    <tr >
+      <td width="80"  align="left" valign="top"><b>角色名称：</b></td>
+      <td  align="left" valign="top">$!role.roleName</td>
+    </tr><tr >
+      <td width="63"  align="left" valign="top"><b>角色描述：</b> </td>
+      <td align="left" valign="top">$!role.roleDesc</td>
+    </tr>
+    <tr>
+      <td height="24"  align="left" valign="top"><b>权限：</b></td>
+      <td height="24"  align="left" valign="top"  class="li_img">&nbsp;</td>
+    </tr>
+<!--  
+#foreach($rm in $rootmodules)
+#if($roleMap.get($rm.modulesId))
+    <tr>
+      <td height="24">&nbsp;</td>
+      <td height="24"  align="left" valign="top"  class="li_img">
+			$rm.modulesName
+	  </td>
+    </tr>
+#if($rm)
+#foreach($m in $rm.subModules)
+#if($roleMap.get($m.modulesId))
+    <tr>
+      <td height="24">&nbsp;</td>
+      <td height="24"  align="left" valign="top"  class="li_img">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			$m.modulesName
+	  </td>
+    </tr>
+#end
+#end
+#end
+#end
+#end
+-->	
+#if($!rootRoleList)
+	<tr>
+      <td height="24">&nbsp;</td>
+      <td><ul id="tree" class="ztree" style="width:260px; overflow:auto;"></ul></td>
+    </tr>#end
+  </table>

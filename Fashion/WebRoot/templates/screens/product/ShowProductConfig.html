@@ -1,0 +1,19 @@
+<script>
+var productConfigs = $productConfigsJson;
+</script>
+	--- $productConfigs.mainShow.titleAttr.valueCn : 
+	#foreach($prodConfig in $productConfigs.mainShow.configs)
+		* $prodConfig.attribute.valueCn 
+		#if($prodConfig.subConfigs) 
+		(
+		#foreach($subConfig in $prodConfig.subConfigs)
+			$subConfig.attribute.valueCn, 
+		#end
+		)
+		#end
+	#end
+	<br/>
+	--- $productConfigs.subShow.titleAttr.valueCn : 
+	#foreach($prodConfig in $productConfigs.subShow.configs)
+		* $prodConfig.attribute.valueCn 
+	#end

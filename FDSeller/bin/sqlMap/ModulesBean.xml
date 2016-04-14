@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertModulesBean" parameterClass="com.fd.fashion.seller.bean.ModulesBean">
+        <![CDATA[
+insert into T_SYS_MODULES
+  (MODULES_NAME, PARENT_ID, URL, CREATE_TIME, CREATOR, SORT)
+values
+  (#modulesName#, #parentId#, #url#, #createTime#, #creator#, #sort#)
+        ]]>
+        <selectKey keyProperty="modulesId" resultClass="long">
+            <![CDATA[select @@identity as modulesId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateModulesBean" parameterClass="com.fd.fashion.seller.bean.ModulesBean">
+        <![CDATA[
+update T_SYS_MODULES 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="modulesId" prepend="," removeFirstPrepend="true">
+                <![CDATA[MODULES_ID = #modulesId#]]>
+            </isNotNull>
+            <isNotNull property="modulesName" prepend="," removeFirstPrepend="true">
+                <![CDATA[MODULES_NAME = #modulesName#]]>
+            </isNotNull>
+            <isNotNull property="parentId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PARENT_ID = #parentId#]]>
+            </isNotNull>
+            <isNotNull property="url" prepend="," removeFirstPrepend="true">
+                <![CDATA[URL = #url#]]>
+            </isNotNull>
+            <isNotNull property="createTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_TIME = #createTime#]]>
+            </isNotNull>
+            <isNotNull property="creator" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATOR = #creator#]]>
+            </isNotNull>
+            <isNotNull property="sort" prepend="," removeFirstPrepend="true">
+                <![CDATA[SORT = #sort#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where MODULES_ID = #modulesId#
+        ]]>
+    </update>
+
+    <sql id="getModulesBeanCondition">
+         <isNotNull property="modulesId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MODULES_ID = #modulesId#]]>
+         </isNotNull>
+         <isNotNull property="modulesName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MODULES_NAME = #modulesName#]]>
+         </isNotNull>
+         <isNotNull property="parentId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PARENT_ID = #parentId#]]>
+         </isNotNull>
+         <isNotNull property="url" prepend="and" removeFirstPrepend="true">
+             <![CDATA[URL = #url#]]>
+         </isNotNull>
+         <isNotNull property="createTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATE_TIME = #createTime#]]>
+         </isNotNull>
+         <isNotNull property="creator" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATOR = #creator#]]>
+         </isNotNull>
+         <isNotNull property="sort" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SORT = #sort#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getModulesBeanCount" parameterClass="com.fd.fashion.seller.bean.ModulesBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_SYS_MODULES 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getModulesBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getModulesBean" parameterClass="com.fd.fashion.seller.bean.ModulesBean"
+        resultClass="com.fd.fashion.seller.bean.ModulesBean">
+        <![CDATA[
+select 
+	MODULES_ID	as modulesId,
+	MODULES_NAME	as modulesName,
+	PARENT_ID	as parentId,
+	URL	as url,
+	CREATE_TIME	as createTime,
+	CREATOR	as creator,
+	SORT	as sort
+from T_SYS_MODULES 
+        ]]>
+        <dynamic prepend="where">
+            <isNotNull property="parentId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[PARENT_ID = #parentId#]]>
+            </isNotNull>
+            <isNotNull property="modulesId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[MODULES_ID = #modulesId#]]>
+            </isNotNull>
+            <isNull property="parentId" prepend="and" removeFirstPrepend="true">
+                <isNull property="modulesId" prepend="and" removeFirstPrepend="true">
+                    <![CDATA[PARENT_ID is null]]>
+                </isNull>
+            </isNull>
+        </dynamic>
+        <![CDATA[
+order by SORT
+        ]]>
+    </select>
+    <select id="getAllModulesBean" parameterClass="com.fd.fashion.seller.bean.ModulesBean"
+        resultClass="com.fd.fashion.seller.bean.ModulesBean">
+        <![CDATA[
+select 
+	MODULES_ID	as modulesId,
+	MODULES_NAME	as modulesName,
+	PARENT_ID	as parentId,
+	URL	as url,
+	CREATE_TIME	as createTime,
+	CREATOR	as creator,
+	SORT	as sort
+from T_SYS_MODULES 
+order by SORT
+        ]]>
+    </select>
+
+    <delete id="deleteModulesBean" parameterClass="com.fd.fashion.seller.bean.ModulesBean">
+        <![CDATA[
+delete from T_SYS_MODULES where MODULES_ID=#modulesId#
+        ]]>
+    </delete>
+
+</sqlMap>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertSizeRowattrBean" parameterClass="com.fd.fashion.dict.bean.SizeRowattrBean">
+        <![CDATA[
+insert into TC_SIZE_ROWATTR
+  (ROW_ID, SIZECAT_ID, ATTR_ID, INDEX_ID, COL_ID)
+values
+  (#rowId#, #sizecatId#, #attrId#, #indexId#, #colId#)
+        ]]>
+        <selectKey keyProperty="rowId" resultClass="long">
+            <![CDATA[select @@identity as rowId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateSizeRowattrBean" parameterClass="com.fd.fashion.dict.bean.SizeRowattrBean">
+        <![CDATA[
+update TC_SIZE_ROWATTR 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="rowId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ROW_ID = #rowId#]]>
+            </isNotNull>
+            <isNotNull property="sizecatId" prepend="," removeFirstPrepend="true">
+                <![CDATA[SIZECAT_ID = #sizecatId#]]>
+            </isNotNull>
+            <isNotNull property="attrId" prepend="," removeFirstPrepend="true">
+                <![CDATA[ATTR_ID = #attrId#]]>
+            </isNotNull>
+            <isNotNull property="indexId" prepend="," removeFirstPrepend="true">
+                <![CDATA[INDEX_ID = #indexId#]]>
+            </isNotNull>
+            <isNotNull property="colId" prepend="," removeFirstPrepend="true">
+                <![CDATA[COL_ID = #colId#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where ROW_ID = #rowId#
+        ]]>
+    </update>
+
+    <sql id="getSizeRowattrBeanCondition">
+            <isNotNull property="rowId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[ROW_ID = #rowId#]]>
+            </isNotNull>
+            <isNotNull property="sizecatId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[SIZECAT_ID = #sizecatId#]]>
+            </isNotNull>
+            <isNotNull property="attrId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[ATTR_ID = #attrId#]]>
+            </isNotNull>
+            <isNotNull property="indexId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[INDEX_ID = #indexId#]]>
+            </isNotNull>
+            <isNotNull property="colId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[COL_ID = #colId#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getSizeRowattrBeanCount" parameterClass="com.fd.fashion.dict.bean.SizeRowattrBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from TC_SIZE_ROWATTR 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getSizeRowattrBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getSizeRowattrBean" parameterClass="com.fd.fashion.dict.bean.SizeRowattrBean"
+        resultClass="com.fd.fashion.dict.bean.SizeRowattrBean">
+        <![CDATA[
+select 
+	ROW_ID	as rowId,
+	SIZECAT_ID	as sizecatId,
+	ATTR_ID	as attrId,
+	INDEX_ID	as indexId,
+	COL_ID	as colId
+from TC_SIZE_ROWATTR 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getSizeRowattrBeanCondition"/>        </dynamic>
+    </select>
+
+    <delete id="deleteSizeRowattrBean" parameterClass="com.fd.fashion.dict.bean.SizeRowattrBean">
+        <![CDATA[
+delete from TC_SIZE_ROWATTR where ROW_ID=#rowId#
+        ]]>
+    </delete>
+</sqlMap>

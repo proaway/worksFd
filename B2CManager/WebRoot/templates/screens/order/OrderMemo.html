@@ -1,0 +1,118 @@
+##订单备注
+
+<div style="width: 990px; margin-left: -495px; display: block;" aria-hidden="false" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal hide fade" id="remarks_info">
+      <div class="modal-header">
+		<input type="hidden" id="orderId" name="orderId" value="$orderId" />
+		<input type="hidden" id="statusCode" name="statusCode" value="$statusCode" />
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h5 id="myModalLabel">备注信息</h5>
+      </div>
+      <div class="modal-body">
+        <div class="panel">
+            <div style="height:36px;" class="title">
+                <h5 class="mar_left_15 lineh_36">历史备注信息</h5>
+            </div>
+            <div style="padding-bottom:0px;" class="content">
+                <table cellspacing="0" cellpadding="0" border="0" style="margin-bottom:0px; clear:both;" class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th width="150px">时间</th>
+                            <th width="120px">订单历史状态</th>
+                            <th>内容</th>
+                            <th width="100px">备注人</th>
+                            <th width="100px">买家是否可见</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderStatus">
+        			#if($orderStatuList)
+        				#foreach($orderStatu in $orderStatuList)
+                          <tr>
+                            <td>#if($orderStatu.createTime)$!StringUtil.getDateString($!orderStatu.createTime,'yyyy-MM-dd HH:mm:ss')#else --- #end</td>
+                            <td>$orderStatu.orderStatusCn</td>
+                            <td id="memo">#if($orderStatu.memo) $orderStatu.memo #else --- #end</td>
+                            <td>$!orderStatu.operator</td>
+                            <td><label class="font12">#if($orderStatu.status=='0') 不可见  #else 可见  #end</label></td>
+                          </tr>
+        				#end
+        			#end
+                  </tbody>
+                </table>
+            </div><!-- E panel content -->
+        </div><!-- E panel --><br class="clear">
+        <textarea style="resize: none;" placeholder="Message" class="input-xxlarge left" rows="3" id="message" name="message"></textarea>
+		<input type="button"  class="btn btn-large left mar_left_10 mar_top_15 bold " value="确定"  onclick="addMessage();">
+         <table cellspacing="0" cellpadding="0" border="0" width="130px" class="left mar_top_15 mar_left_15 font12">
+  <tbody><tr>
+    <td><label class="checkbox red">
+        <input type="checkbox" value="0" id="buyerToSee" name="buyerToSee" onclick="changeValue('buyerToSee','statesOne');">买家前台可见
+			<input type="hidden" id="statesOne" name="statesOne" value="0" />
+      </label></td>
+  </tr>
+  <tr>
+    <td><label class="checkbox red">
+        <input type="checkbox" value="0" id="emailToBuyer" name="emailToBuyer"  onclick="changeValue('emailToBuyer','statesTwo');">邮件通知买家
+			<input type="hidden" id="statesTwo" name="statesTwo" value="0" />
+      </label></td>
+  </tr>
+</tbody></table>
+
+        <br class="clear">
+      </div>
+      <div class="modal-footer">
+      <input type="button" class="btn btn-info" data-dismiss="modal" aria-hidden="true" value="关闭">
+      <!--<button data-dismiss="modal" class="btn btn-primary">确定更改</button>-->
+      </div>
+  </div>
+  <script>
+jQuery('#remarks_info').modal({
+	show:true
+})
+</script>
+
+<script>
+
+String.prototype.trim = function () {
+    //用正则表达式将前后空格用空字符串替代
+	return this.replace(/(^\s*)|(\s*$)/g, "");
+};
+
+function changeValue(id,name){
+	if(jQuery("#"+id).attr("checked")=='checked'){
+		jQuery("#"+name).val("1");
+	}else{
+		jQuery("#"+name).val("0");
+	}
+}
+
+function addMessage(){
+	var mess = jQuery("#message").val();
+	if(mess==""){
+		jQuery("#message")[0].focus();
+		return;
+	}
+	jQuery("body").showLoading();
+	var buyer2see = jQuery("#statesOne").val();
+	var email2buyer = jQuery("#statesTwo").val();
+	jQuery.getJSON(
+		"$link.setAction('order.AjaxAddOrderStatusHistAction')",
+		{orderId:'${orderId}', orderStatus:'${statusCode}', buyerSeeFlag:buyer2see, emailSendFlag:email2buyer, message:encodeURIComponent(mess)},
+		function(data){
+			jQuery("body").hideLoading();
+			if(data!=null){
+				var tr = jQuery("#orderStatus").find("tr:first").clone();
+				var d = new Date();
+				var dateStr = d.getFullYear() + "-" + (d.getMonth()+1) + "-" + d.getDate() + " " + d.getHours() + ":" + d.getMinutes() + ":" + d.getSeconds();
+				tr.find("td:first").html(dateStr);
+				tr.find("#memo").html(mess);
+				if (buyer2see == "1") {
+					tr.find("td:last").html("可见");
+				} else {
+					tr.find("td:last").html("不可见");
+				}
+				jQuery("#orderStatus").prepend(tr);
+				alert("success");
+			}
+		});
+}
+
+</script>

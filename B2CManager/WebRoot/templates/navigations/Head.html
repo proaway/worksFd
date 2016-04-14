@@ -1,0 +1,53 @@
+  <div id="header">
+    <div class="header">
+	<div style="float:left; width:500px;"><a href="http://www.shopmadeinchina.com/" target="_blank"><img src="/static/prototype/shopmic-manage/img/logo.gif" alt="ShopMadeInChina.com" title="ShopMadeInChina.com" width="206" height="36" class="header_logo" /></a><b class="header_logotit">| <a href="/static/prototype/shopmic-manage/sign_in.shtml" style="text-decoration:none;">业务管理后台</a></b></div>
+    <div style="float:right; width:400px;">
+        <table width="400" height="20" border="0" cellspacing="0" cellpadding="0" style="margin-top:19px;">
+          <tr>
+            <td align="center"><span style="color:#333;">欢迎您，</span><a href="javascript:;">$user.userName</a> !</td>
+            <td align="center" width="60"><a href="$link.setAction('user.LogoutAction')">退出登录</a></td>
+            <td align="center" width="60"><a href="javascript:window.open('$link.setPage('user,Repassword.html')')">修改密码</a></td>
+          </tr>
+        </table>
+    </div>
+</div>
+<div id="nav">
+	<div id="nav_content">
+		<ul>
+#foreach($m in $rootModules)
+		<li><a #if($m.url)href="$link.setPage($m.url)"#end>$m.modulesName</a>
+  #if($m.subModules && $m.subModules.size()>0)
+		<br class="clear" />
+		<ul><li><dl>
+	#foreach($sm in $m.subModules)  #set($idx=0)
+      #if($sm.subModules && $sm.subModules.size()>0)
+			<dt #if($idx>0) class="mar_top_10" #end><small class="white">#if($sm.url)<a href="$link.setPage($sm.url)">$sm.modulesName--</a>#else ${sm.modulesName}--#end</small></dt>
+    		<dd>#set($idx=1)
+	    #foreach($ssm in $sm.subModules)
+			<a #if($ssm.url)href="$link.setPage($ssm.url)"#end>$ssm.modulesName</a>
+	    #end
+            </dd><br class="clear" />
+	  #else
+			<dt class="left"></dt><dd class="left"><a #if($sm.url)href="$link.setPage($sm.url)"#end>$sm.modulesName</a></dd>
+	  #end
+	#end
+        </dl></li></ul>
+  #end
+		</li>
+#end		
+            <li class="nav_tit"><a href="javascript:;">CMS管理(原型)</a>
+            	<br class="clear" />
+                <ul class="nav_down">
+                	<li class="nav_tit_tit"><a href="/static/prototype/shopmic-manage/cms_template_settings.shtml">模板设置</a></li>
+                    <li class="nav_tit_tit"><a href="/static/prototype/shopmic-manage/cms_page_manage.shtml">页面管理</a></li>
+                	<li class="nav_tit_tit"><a href="/static/prototype/shopmic-manage/cms_page_edit.shtml" target="_blank">页面修改</a></li>
+                    <li class="nav_tit_tit"><a href="/static/prototype/shopmic-manage/cms_page_preview.shtml" target="_blank">页面预览</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div><br class="clearfloat" />
+<div class="nav_footer"></div>
+<br class="clearfloat" />
+
+  </div><!-- E header -->

@@ -1,0 +1,718 @@
+$page.setTitle("活动管理")
+<form name="listForm" id="listForm" method="get"
+	action="$link.setPage('marketing,ActivityManage.html')">
+	<br class="clear" />
+	<h4 class="mar_top_15 mar_bottom_20">活动管理</h4>
+	<table border="0" cellspacing="0" cellpadding="0" width="92%">
+		<tr>
+			<td class="v_top right_t" width="90px"><label
+				class=" mar_top_10">活动搜索：</label>
+			</td>
+			<td class="v_top">
+				<ul class="inline mar_top_5 black">
+					<li><select class="left" name="searchDateType" id="">
+							<option value="">全部</option>
+							<option value="1" #if($!searchDateType== 1) selected #end>创建时间</option>
+							<option value="2" #if($!searchDateType== 2) selected #end>最后编辑时间</option>
+							<option value="3" #if($!searchDateType== 3) selected #end>活动开始时间</option>
+							<option value="4" #if($!searchDateType== 4) selected #end>活动结束时间</option>
+					</select><input type="text" value="$!searchStartDate" id="datepickera"
+						name="searchStartDate"
+						class="input-small mar_right_10 left mar_left_10" /><label
+						class="left mar_top_5">到</label><input type="text"
+						value="$!searchEndDate" id="datepickerb" name="searchEndDate"
+						class="input-small mar_left_10 left" /></li>
+					<li><select class="left" name="type">
+							<option value="">全部活动类型</option>
+							<option value="0" #if($!type== 0) selected #end>组合销售</option>
+							<option value="1" #if($!type== 1) selected #end>赠品</option>
+					</select></li>
+					<li><select class="left" name="status">
+							<option value="">全部活动状态</option>
+							<option value="0" #if($!status== 0) selected #end>未开始</option>
+							<option value="1" #if($!status== 1) selected #end>开始</option>
+							<option value="2" #if($!status== 2) selected #end>结束</option>
+					</select></li>
+					<br />
+					<li><input type="text" class="input-xxlarge left"
+						name="activityName" value="$!activityName" placeholder="可输入活动名称查询" />
+					</li>
+					<li><input type="submit"
+						class="btn btn-primary left mar_top_f40" value="查询" />
+					</li>
+				</ul></td>
+		</tr>
+		<tr>
+			<td class="v_top right_t"><label class="mar_top_10">添加新活动：</label>
+			</td>
+			<td class="v_top">
+				<ul class="inline mar_top_5 black">
+					<li><label class="radio"> <input checked="checked"
+							value="1" name="addType" type="radio"> 赠品活动 </label></li>
+					<li><label class="radio"> <input checked="checked"
+							value="2" name="addType" type="radio"> 组合销售活动 </label></li>
+					<li><input type="button" class="btn" value="添加新活动"
+						onclick="showContent();" /></li>
+				</ul> <br class="clear" /></td>
+		</tr>
+	</table>
+	<table border="0" cellspacing="0" cellpadding="0"
+		class="table table-bordered center_t font12 tl_mt3_mb3">
+
+		<tr class="info bold">
+			<td><label>活动名称</label></td>
+			<td><label>创建时间</label></td>
+			<td><label>最后编辑时间</label></td>
+			<td><label>活动类型</label></td>
+			<td><label>活动内容</label></td>
+			<td><label>活动开始时间</label></td>
+			<td><label>活动结束时间</label></td>
+			<td><label>活动状态</label></td>
+			<td><label>操作</label></td>
+		</tr>
+		#foreach($activity in $activityList)
+		<tr>
+			<td><label>$activity.activityName</label></td>
+			<td><label class="font11">$!StringUtil.getDateTimeString($activity.createTime)</label>
+			</td>
+			<td><label class="font11">$!StringUtil.getDateTimeString($activity.lastEditTime)</label>
+			</td>
+			<td><label>#if($activity.type==0) 组合销售
+					#elseif($activity.type==1) 赠品 #end</label></td>
+			<td><a
+				href="javascript:veiwActivityInfo('$activity.activityId')"
+				role="button">查看</a></td>
+			<td><label class="font11">$!StringUtil.getDateString($activity.startTime)</label>
+			</td>
+			<td><label class="font11">$!StringUtil.getDateString($activity.endTime)</label>
+			</td>
+			<td><label> #if($activity.status==0) 未开始
+					#elseif($activity.status==1) 开始 #elseif($activity.status==2) 结束
+					#end </label></td>
+			<td><a href="javascript:;;" role="button" class="mar_right_5"
+				onclick="editActivity('$activity.activityId');">修改</a>
+				#if($activity.status!=2) <a role="button" href="javascript:;;"
+				onclick="stopActivity('$activity.activityId')">终止</a></td> #end
+		</tr>
+		#end
+	</table>
+	#parse("/screens/Nap.html")
+	<!-- E page -->
+</form>
+
+
+<!-- E view_numbers_activity -->
+<form action="" id="giftForm" name="giftForm">
+	<div id="add_gifts_activity" name="giftForm" class="modal hide fade" tabindex="-1"
+		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+		style="width: 990px; max-width: 990px; margin-left: -495px;">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">×</button>
+			<h5 id="myModalLabel">添加活动（赠品）</h5>
+		</div>
+		<div class="modal-body">
+			<table cellspacing="0" cellpadding="0" border="0" class="mar_left_20"
+				style="width:850px;">
+				<tbody>
+					<tr>
+						<td width="110px" class="v_top right_t"><label
+							class="mar_right_10">活动类型：</label></td>
+						<td><label>赠品</label></td>
+					</tr>
+					<tr>
+						<td class="v_top"><label class="mar_right_10 right mar_top_5">活动名称：</label><span
+							class="required mar_right_5 right mar_top_5">*</span></td>
+						<td><input type="text" placeholder="活动名称" class=""
+							name="activityName">
+						</td>
+					</tr>
+					<tr>
+						<td class="v_top"><label class="mar_right_10 right mar_top_5">起始时间：</label><span
+							class="required mar_right_5 right mar_top_5">*</span></td>
+						<td><input type="text" value="" id="datepickerc"
+							name="startTime" class="input-small mar_right_10 left" /><label
+							class="left mar_top_5">至</label><input type="text" name="endTime"
+							value="" id="datepickerd" class="input-small mar_left_10 left" />
+						</td>
+					</tr>
+					<tr>
+						<td class="v_top"><label class="mar_right_10 right mar_top_5">最低消费金额：</label>
+						</td>
+						<td><input type="text" placeholder=""
+							class="input-small left" name="minAmount"><label
+							class="left mar_top_5 mar_left_3">$</label>
+						</td>
+					</tr>
+					<tr>
+						<td class="v_top"><label class="mar_right_10 right mar_top_5">指定国家：</label>
+						</td>
+						<td><select class="left oi_status_max_w left"
+							name="country_id" id="country">
+								<option value="">全部</option>
+								<optgroup label="非洲">
+									#foreach($region in $regionMap.get(1))
+									<option value="$region.regionId">$region.regionNameCn</option>
+									#end
+								</optgroup>
+								<optgroup label="亚洲">
+									#foreach($region in $regionMap.get(2))
+									<option value="$region.regionId">$region.regionNameCn</option>
+									#end
+								</optgroup>
+								<optgroup label="大洋洲">
+									#foreach($region in $regionMap.get(3))
+									<option value="$region.regionId">$region.regionNameCn</option>
+									#end
+								</optgroup>
+								<optgroup label="欧洲">
+									#foreach($region in $regionMap.get(4))
+									<option value="$region.regionId">$region.regionNameCn</option>
+									#end
+								</optgroup>
+								<optgroup label="北美洲">
+									#foreach($region in $regionMap.get(5))
+									<option value="$region.regionId">$region.regionNameCn</option>
+									#end
+								</optgroup>
+								<optgroup label="南美洲">
+									#foreach($region in $regionMap.get(6))
+									<option value="$region.regionId">$region.regionNameCn</option>
+									#end
+								</optgroup>
+						</select> <input type="button" class="btn left mar_left_5"
+							onclick="addCountry(this);" value="添加" />
+						</td>
+					</tr>
+					<tr>
+						<td class="v_top"><label class="mar_right_10 right mar_top_5"></label>
+						</td>
+						<td>
+							<ul class="inline" name="countrys">
+							</ul></td>
+					</tr>
+					<tr>
+						<td class="v_top"><label class="mar_right_10 right mar_top_5">关联产品：</label><span
+							class="required mar_right_5 right mar_top_5">*</span></td>
+						<td>
+							<div id="related_gifts_products_before" style="display: block;">
+								<input type="text" class="input-medium left" placeholder="输入SKU"
+									name="sku" value=""> <input type="button"
+									onclick="return getProduct(this,1);" class="btn left mar_left_5"
+									value="确定" />
+							</div>
+							<div id="related_gifts_products_after" class="hide alert black">
+								<div class="div_left">
+									<img title="" alt="" class="img-polaroid" id="pimg" src="">
+								</div>
+								<div class="div_middle">
+									<a id="pName" href=""></a> <label class="font12 mar_top_5">SKU:
+										<span id="psku"></span> </label>
+								</div>
+								<div class="div_right">
+									<button class="btn btn-small left mar_left_5"
+										onclick="document.getElementById('related_gifts_products_before').style.display='block';document.getElementById('related_gifts_products_after').style.display='none';">修改</button>
+								</div>
+								<input type="hidden" id="productId" name="productId" value="" />
+								<br class="clear" />
+							</div> <br class="clear" />
+						</td>
+					</tr>
+					<tr>
+						<td class="v_top"><label class="mar_right_10 right mar_top_5">赠品：</label><span
+							class="required mar_right_5 right mar_top_5">*</span></td>
+						<td>
+							<div id="related_gifts_before">
+								<input type="text" value="" placeholder="输入SKU"
+									class="input-medium left" /> <input type="button"
+									class="btn left mar_left_5" onclick="searchGiftProducts(this)"
+									value="确定" />
+								<p class="help-block gray left mar_top_5 mar_left_10">至少添加一件搭配产品，最多添加五件赠品。</p>
+								<br class="clear" />
+							</div>
+							<div id="related_gifts_after" class="hide alert black">
+								<table id="giftProducts">
+
+								</table>
+							</div> <br class="clear" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="modal-footer">
+			<input type="button" class="btn" data-dismiss="modal"
+				aria-hidden="true" value="取消" /> <input type="button"
+				class="btn btn-primary" aria-hidden="true"
+				onclick="addActivity('giftForm')" value="确定" />
+		</div>
+	</div>
+	<!-- E edit_gifts_activity -->
+	<input type="hidden" name="type" value="1" />
+</form>
+<form id="numberForm" name="numberForm">
+	<div id="add_numbers_activity" name="numberForm" class="modal hide fade" tabindex="-1"
+		role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+		style="width: 990px; max-width: 990px; margin-left: -495px;">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal"
+				aria-hidden="true">×</button>
+			<h5 id="myModalLabel">添加组合销售活动</h5>
+		</div>
+		<div class="modal-body">
+			<table cellspacing="0" cellpadding="0" border="0" class="mar_left_20"
+				style="width:850px;">
+				<tbody>
+					<tr>
+						<td width="110px" class="v_top right_t"><label
+							class="mar_right_10">活动类型：</label></td>
+						<td><label>组合销售</label></td>
+					</tr>
+					<tr>
+						<td class="v_top"><label class="mar_right_10 right mar_top_5">活动名称：</label><span
+							class="required mar_right_5 right mar_top_5">*</span></td>
+						<td><input type="text" placeholder="活动名称" class=""
+							name="activityName">
+						</td>
+					</tr>
+					<tr>
+						<td class="v_top"><label class="mar_right_10 right mar_top_5">起始时间：</label><span
+							class="required mar_right_5 right mar_top_5">*</span></td>
+						<td><input type="text" value="" id="datepickere"
+							name="startTime" class="input-small mar_right_10 left" /><label
+							class="left mar_top_5">至</label><input type="text" name="endTime"
+							value="" id="datepickerf" class="input-small mar_left_10 left" />
+						</td>
+					</tr>
+					<tr>
+						<td class="v_top"><label class="mar_right_10 right mar_top_5">最低消费金额：</label>
+						</td>
+						<td><input type="text" placeholder=""
+							class="input-small left" name="minAmount"><label
+							class="left mar_top_5 mar_left_3">$</label>
+						</td>
+					</tr>
+					<tr>
+						<td class="v_top"><label class="mar_right_10 right mar_top_5">指定国家：</label>
+						</td>
+						<td><select class="left oi_status_max_w left"
+							name="country_id" id="country">
+								<option value="">全部</option>
+								<optgroup label="非洲">
+									#foreach($region in $regionMap.get(1))
+									<option value="$region.regionId">$region.regionNameCn</option>
+									#end
+								</optgroup>
+								<optgroup label="亚洲">
+									#foreach($region in $regionMap.get(2))
+									<option value="$region.regionId">$region.regionNameCn</option>
+									#end
+								</optgroup>
+								<optgroup label="大洋洲">
+									#foreach($region in $regionMap.get(3))
+									<option value="$region.regionId">$region.regionNameCn</option>
+									#end
+								</optgroup>
+								<optgroup label="欧洲">
+									#foreach($region in $regionMap.get(4))
+									<option value="$region.regionId">$region.regionNameCn</option>
+									#end
+								</optgroup>
+								<optgroup label="北美洲">
+									#foreach($region in $regionMap.get(5))
+									<option value="$region.regionId">$region.regionNameCn</option>
+									#end
+								</optgroup>
+								<optgroup label="南美洲">
+									#foreach($region in $regionMap.get(6))
+									<option value="$region.regionId">$region.regionNameCn</option>
+									#end
+								</optgroup>
+						</select> <input type="button" class="btn left mar_left_5"
+							onclick="addCountry(this);" value="添加" />
+						</td>
+					</tr>
+					<tr>
+						<td class="v_top"><label class="mar_right_10 right mar_top_5"></label>
+						</td>
+						<td>
+							<ul class="inline" name="countrys">
+							</ul>
+						</td>
+					</tr>
+					<tr>
+						<td class="v_top"><label class="mar_right_10 right mar_top_5">关联产品：</label><span
+							class="required mar_right_5 right mar_top_5">*</span></td>
+						<td>
+							<div id="related_numbers_products_before">
+								<input type="text" value="" placeholder="输入SKU"
+									class="input-medium left"> <input type="button"
+									onclick="return getProduct(this,0);" class="btn left mar_left_5"
+									value="确定" />
+							</div>
+							<div id="related_numbers_products_after" class="hide alert black">
+								<div class="div_left">
+									<img title="" alt="" class="img-polaroid" id="pimg" src="">
+								</div>
+								<div class="div_middle">
+									<a id="pName" href=""></a> <label class="font12 mar_top_5">SKU:
+										<span id="psku"></span> </label>
+								</div>
+								<div class="div_right">
+									<button class="btn btn-small left mar_left_5"
+										onclick="document.getElementById('related_numbers_products_before').style.display='block';document.getElementById('related_numbers_products_after').style.display='none';">修改</button>
+								</div>
+								<input type="hidden" id="productId" name="productId" value="" />
+								<br class="clear" />
+							</div> <br class="clear" />
+						</td>
+					</tr>
+					<tr>
+						<td class="v_top"><label class="mar_right_10 right mar_top_5">搭配产品：</label><span
+							class="required mar_right_5 right mar_top_5">*</span></td>
+						<td>
+							<div id="related_numbers_gifts_before">
+								<input type="text" value="" placeholder="输入SKU"
+									class="input-medium left" /> <input type="button"
+									class="btn left mar_left_5"
+									onclick="searchNumberProducts(this)" value="确定" />
+								<p class="help-block gray mar_top_3">至少添加一件搭配产品，最多添加四件搭配产品。</p>
+								<br class="clear" />
+							</div>
+							<div id="related_numbers_gifts_after" class="hide alert black">
+								<table id="numberProducts">
+
+
+								</table>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="v_top"><label class="mar_right_10 right mar_top_5">折扣设置：</label><span
+							class="required mar_right_5 right mar_top_5">*</span></td>
+						<td>
+							<table width="720">
+								<tr>
+									<td>
+										<ul class="unstyled" id="amoutList">
+											<li class="hide"><label class="left mar_top_5">同时购买一件搭配产品折扣值：</label><input
+												type="text" name="groupDiscount1" value="" placeholder=""
+												class="input-small left"><label
+												class="left mar_left_5 mar_top_5">% OFF</label></li>
+											<br class="clear" />
+											<li class="hide"=><label class="left mar_top_5">同时购买二件搭配产品折扣值：</label><input
+												type="text" name="groupDiscount2" value="" placeholder=""
+												class="input-small left"><label
+												class="left mar_left_5 mar_top_5">% OFF</label></li>
+											<br class="clear" />
+											<li class="hide"><label class="left mar_top_5">同时购买三件搭配产品折扣值：</label><input
+												type="text" name="groupDiscount3" value="" placeholder=""
+												class="input-small left"><label
+												class="left mar_left_5 mar_top_5">% OFF</label></li>
+											<br class="clear" />
+											<li class="hide"><label class="left mar_top_5">同时购买四件搭配产品折扣值：</label><input
+												type="text" name="groupDiscount4" value="" placeholder=""
+												class="input-small left"><label
+												class="left mar_left_5 mar_top_5">% OFF</label></li>
+											<br class="clear" />
+										</ul>
+									</td>
+									<td><div
+											style="width:300px; color:#999; background:#fff; border:#CCC 1px solid;"
+											class="padding_15">
+											<span class="red">温馨提示：</span><br>
+											&emsp;&emsp;此处的折扣值是将购买的所有搭配产品打折。如，够买A产品、搭配1、搭配2，设置的购买两件搭配产品的折扣为95%off，则总价为：A+（搭配1+搭配2）*0.95
+										</div></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<br class="clear" />
+		</div>
+		<div class="modal-footer">
+			<input type="button" class="btn" data-dismiss="modal"
+				aria-hidden="true" value="取消" /> <input type="button"
+				class="btn btn-primary" aria-hidden="true"
+				onclick="addActivity('numberForm')" value="确定" />
+		</div>
+	</div>
+	<!-- E edit_numbers_activity -->
+	<input type="hidden" name="type" value="0" />
+</form>
+<script language="javascript" type="text/javascript"
+	src="/static/prototype/shopmic-manage/js/jquery-ui-1.10.0.custom.min.js"></script>
+<script language="javascript" type="text/javascript"
+	src="/static/prototype/shopmic-manage/js/datepicker.js"></script>
+<script type="text/javascript">
+	jQuery("#datepickerc").datepicker(
+			{
+				onClose : function(selectedDate) {
+					defaultDate: "+1w", jQuery("#datepickerd").datepicker(
+							"option", "minDate", selectedDate);
+				}
+			});
+
+	jQuery("#datepickerd").datepicker(
+			{
+				onClose : function(selectedDate) {
+					defaultDate: "+1w", jQuery("#datepickerc").datepicker(
+							"option", "maxDate", selectedDate);
+				}
+			});
+
+	jQuery("#datepickere").datepicker(
+			{
+				onClose : function(selectedDate) {
+					defaultDate: "+1w", jQuery("#datepickerf").datepicker(
+							"option", "minDate", selectedDate);
+				}
+			});
+
+	jQuery("#datepickerf").datepicker(
+			{
+				onClose : function(selectedDate) {
+					defaultDate: "+1w", jQuery("#datepickere").datepicker(
+							"option", "maxDate", selectedDate);
+				}
+			});
+
+	function showContent() {
+		var type = jQuery("input[name='addType']:checked").val();
+		if (type == 1) {
+			jQuery("#add_gifts_activity").modal("show");
+		} else if (type == 2) {
+			jQuery("#add_numbers_activity").modal("show");
+		}
+	}
+	function addCountry(obj) {
+		var o = jQuery(obj).parents("table").find("ul[name='countrys']");
+		var countryName = jQuery(obj).prev().find("option:selected").text();
+		var countryId = jQuery(obj).prev().find("option:selected").val();
+		o
+				.append('<li><input type="hidden" name="countryIds" value="'+countryId+'"/><label class="left lineh_30"><span class="black">'
+						+ countryName
+						+ '</span></label><button class="btn btn-link left" onclick="del(this);">删除</button></li>');
+	}
+	function del(obj) {
+		jQuery(obj).parent().remove();
+	}
+	function getProduct(obj, type) {
+		var sku = jQuery(obj).prev().val();
+		var o = jQuery(obj).parent("div");
+		jQuery.ajax({
+			url : "$link.setAction('product.AjaxGetProduct')",
+			type : "post",
+			data : "sku=" + sku + "&type=" + type,
+			dataType : "json",
+			success : function(data) {
+				if (data == 1) {
+					alert("此产品已经参加过类似活动!");
+					jQuery(obj).prev().val('');
+					jQuery(obj).prev().focus();
+				} else if (data == 0) {
+					alert("产品不存在!");
+					jQuery(obj).prev().val('');
+					jQuery(obj).prev().focus();
+				} else {
+					var imgurl = data.smallImageUrl;
+					var productName = data.product.productName;
+					var sku = data.product.sku;
+
+					o.next().find("#pimg").attr("src", imgurl);
+					o.next().find("#psku").text(sku);
+					o.next().find("#pName").text(productName);
+					o.next().find("#pName").attr("href", data.productUrl);
+					o.next().find("#productId").val(data.product.productId);
+					o.hide();
+					o.next().show();
+				}
+
+			}
+		});
+
+	}
+	function searchGiftProducts(obj) {
+		var o = jQuery(obj).prev();
+		var sku = o.val();
+		var n = jQuery(obj).parent("div").next("div");
+		var skus = jQuery(n).find("span[name='zsku']");
+		if (skus.length == 5) {
+			alert('只能选择五件赠品!');
+			return;
+		}
+		if (checkSku(sku, skus)) {
+			jQuery
+				.ajax({
+					url : "$link.setAction('product.AjaxGetProduct')",
+					type : "post",
+					data : "sku=" + sku +"&productType=1",
+					dataType : "json",
+					success : function(data) {
+						var imgurl = data.smallImageUrl;
+						var productName = data.product.productName;
+						var sku = data.product.sku;
+						var productUrl = data.productUrl;
+						var productId = data.product.productId;
+						var html = '<tr><td><div class="div_left"><img title="" alt="" class="img-polaroid"src="'
+					+ imgurl +
+				'"></div><div class="div_middle"><a href="'
+					+ productUrl +
+				'">'
+								+ productName
+								+ '</a><label class="font12 mar_top_5">SKU:<span name="zsku">'
+								+ sku
+								+ '</span></label></div> <br class="clear" /></td><td class="v_top pad_left_20"><label class="left mar_top_5">赠品数量：</label>'
+								+ ' <label class="left mar_top_5 mar_left_10"> <input checked="checked" value="0" name="ntype_'+productId+'" type="radio" class="radio"> 库存 </label>'
+								+ ' <label class="left mar_left_10 mar_top_5"> <input value="1" name="ntype_'+productId+'" type="radio" class="radio">'
+								+ ' 自定义 </label> <input type="text" name="num_'+productId+'" class="input-mini left mar_left_10"><input type="hidden" name="zpProductId" value="'
+					+ productId +
+				'"/><input type="button" class="btn" onclick="removeProduct(this)" value="删除"/></td></tr>'
+
+						jQuery(n).find("#giftProducts").append(html);
+						jQuery(n).show();
+						o.val('');
+						o.focus();
+					}
+				});
+		}
+
+	}
+
+	function addActivity(formId) {
+		var activityName = jQuery("#"+formId).find("input[name=activityName]").val();
+		var startTime = jQuery("#"+formId).find("input[name=startTime]").val();
+		var endTime = jQuery("#"+formId).find("input[name=endTime]").val();
+		var productId = jQuery("#"+formId).find("input[name=productId]").val();
+		if(activityName == "" ||startTime == "" ||endTime == "" ||productId == "" ){
+			alert("信息不完整!");
+			return false;
+		}
+		
+		jQuery.ajax({
+			url : "$link.setAction('marketing.AddActivity')",
+			type : "post",
+			data : form2URL(formId),
+			dataType : "json",
+			success : function(data) {
+				if (data == 1) {
+					alert("添加成功!");
+					jQuery("div[name="+formId+"]").modal("hide");
+					location.reload();
+				} else {
+					alert("添加失败!");
+				}
+			}
+		});
+	}
+
+	function searchNumberProducts(obj) {
+		var o = jQuery(obj).prev();
+		var sku = o.val();
+		var n = jQuery(obj).parent("div").next("div");
+		var skus = jQuery(n).find("span[name='zsku']");
+		var num = skus.length;
+		if (skus.length == 4) {
+			alert('搭配产品已满!');
+			return;
+		}
+
+		if (checkSku(sku, skus)) {
+			jQuery
+					.ajax({
+						url : "$link.setAction('product.AjaxGetProduct')",
+						type : "post",
+						data : "sku=" + sku +"&productType=1",
+						dataType : "json",
+						success : function(data) {
+							var imgurl = data.smallImageUrl;
+							var productName = data.product.productName;
+							var sku = data.product.sku;
+							var productUrl = data.productUrl;
+							var productId = data.product.productId;
+							var html = '<tr><td><div class="div_left"><img title="" alt="" class="img-polaroid"src="'
+						+ imgurl +
+					'"></div><div class="div_middle"><a href="'
+						+ productUrl +
+					'">'
+									+ productName
+									+ '</a><label class="font12 mar_top_5">SKU: <span name="zsku">'
+									+ sku
+									+ '</span></label></div> <br class="clear" /></td><td class="v_top pad_left_20"><input type="hidden" name="groupProductId" value="'
+					+ productId +
+					'"/><input type="button" class="btn" onclick="removeProduct(this)" value="删除"/></td></tr>'
+
+							jQuery(n).find("#numberProducts").append(html);
+							jQuery(n).show();
+							//document.getElementById('related_gifts_after').style.display='block';
+
+							jQuery(n).parents("tr").next().find("#amoutList")
+									.find("li:eq(" + num + ")").show();
+							o.val('');
+							o.focus();
+						}
+					});
+		}
+
+	}
+
+	function checkSku(sku, skus) {
+		for ( var i = 0; i < skus.length; i++) {
+			var tmp = skus[i];
+			if (sku == jQuery(tmp).text()) {
+				alert('已添加过相同的sku!');
+				o.val('');
+				o.focus();
+				return false;
+			}
+		}
+		return true;
+	}
+
+	function removeProduct(obj) {
+		jQuery(obj).parent().parent().remove();
+	}
+
+	function editActivity(activityId) {
+		var div = jQuery("#edit_activity");
+		if (div.length == 0) {
+			div = jQuery("<div id='edit_activity'></div>");
+			jQuery("body").append(div);
+		}
+		div.empty();
+		div.load("$link.setPage('marketing,EditActivity.html')?activityId="
+				+ activityId);
+	}
+
+	function veiwActivityInfo(activityId) {
+		var div = jQuery("#view_activity");
+		if (div.length == 0) {
+			div = jQuery("<div id='view_activity'></div>");
+			jQuery("body").append(div);
+		}
+		div.empty();
+		div.load("$link.setPage('marketing,ViewActivity.html')?activityId="
+				+ activityId);
+	}
+
+	function stopActivity(activityId) {
+		if (confirm("确认要终止？")) {
+			jQuery.ajax({
+				url : "$link.setAction('marketing.StopActivity')",
+				type : "post",
+				data : "activityId=" + activityId,
+				dataType : "json",
+				success : function(data) {
+					if (data == 1) {
+						alert("终止成功!");
+						location.reload();
+					} else {
+						alert("终止失败!");
+					}
+				}
+			});
+
+		}
+	}
+</script>

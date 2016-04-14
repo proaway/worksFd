@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertVisitDailystatBean" parameterClass="com.fd.statistics.bean.VisitDailystatBean">
+        <![CDATA[
+insert into T_VISIT_DAILYSTAT
+  (STAT_DATE, PRODUCT_ID, ORDER_COUNT, PAYORDER_COUNT, SALE_COUNT, CLICK_COUNT)
+values
+  (#statDate#, #productId#, #orderCount#, #payorderCount#, #saleCount#, #clickCount#)
+        ]]>
+        <selectKey keyProperty="statDate" resultClass="long">
+            <![CDATA[select @@identity as statDate]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateVisitDailystatBean" parameterClass="com.fd.statistics.bean.VisitDailystatBean">
+        <![CDATA[
+update T_VISIT_DAILYSTAT 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="statDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[STAT_DATE = #statDate#]]>
+            </isNotNull>
+            <isNotNull property="productId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="orderCount" prepend="," removeFirstPrepend="true">
+                <![CDATA[ORDER_COUNT = #orderCount#]]>
+            </isNotNull>
+            <isNotNull property="payorderCount" prepend="," removeFirstPrepend="true">
+                <![CDATA[PAYORDER_COUNT = #payorderCount#]]>
+            </isNotNull>
+            <isNotNull property="saleCount" prepend="," removeFirstPrepend="true">
+                <![CDATA[SALE_COUNT = #saleCount#]]>
+            </isNotNull>
+            <isNotNull property="clickCount" prepend="," removeFirstPrepend="true">
+                <![CDATA[CLICK_COUNT = #clickCount#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where STAT_DATE = #statDate#
+        ]]>
+    </update>
+
+    <sql id="getVisitDailystatBeanCondition">
+         <isNotNull property="statDate" prepend="and" removeFirstPrepend="true">
+             <![CDATA[STAT_DATE = #statDate#]]>
+         </isNotNull>
+         <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PRODUCT_ID = #productId#]]>
+         </isNotNull>
+         <isNotNull property="orderCount" prepend="and" removeFirstPrepend="true">
+             <![CDATA[ORDER_COUNT = #orderCount#]]>
+         </isNotNull>
+         <isNotNull property="payorderCount" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PAYORDER_COUNT = #payorderCount#]]>
+         </isNotNull>
+         <isNotNull property="saleCount" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SALE_COUNT = #saleCount#]]>
+         </isNotNull>
+         <isNotNull property="clickCount" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CLICK_COUNT = #clickCount#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getVisitDailystatBeanCount" parameterClass="com.fd.statistics.bean.VisitDailystatBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_VISIT_DAILYSTAT 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitDailystatBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getVisitDailystatBean" parameterClass="com.fd.statistics.bean.VisitDailystatBean"
+        resultClass="com.fd.statistics.bean.VisitDailystatBean">
+        <![CDATA[
+select 
+	STAT_DATE	as statDate,
+	PRODUCT_ID	as productId,
+	ORDER_COUNT	as orderCount,
+	PAYORDER_COUNT	as payorderCount,
+	SALE_COUNT	as saleCount,
+	CLICK_COUNT	as clickCount
+from T_VISIT_DAILYSTAT 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitDailystatBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteVisitDailystatBean" parameterClass="com.fd.statistics.bean.VisitDailystatBean">
+        <![CDATA[
+delete from T_VISIT_DAILYSTAT where STAT_DATE=#statDate#
+        ]]>
+    </delete>
+
+</sqlMap>

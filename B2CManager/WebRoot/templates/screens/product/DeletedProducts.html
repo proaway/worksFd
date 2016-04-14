@@ -1,0 +1,131 @@
+#set($page.title = "产品管理")
+<script language="javascript" src="/static/prototype/shopmic-manage/js/customcatselector.js"></script> 
+##<script language="javascript" src="$content.getURI('js/customcatselector.js')"></script>
+	<br class="clear" />
+  	<h4 class="mar_top_15">产品垃圾箱</h4>
+    <br class="clear" />
+	<div id="listProd">
+	<button class="btn left mar_right_15" onclick="window.location='$link.setPage('product,DeletedProducts.html')'">$DictUtil.getProductStatusBtn(-1)（<b class="red" prodSt="-1">0</b>）</button>
+	<button class="btn left mar_right_15" onclick="window.location='$link.setPage('product,ProductsManage.html')?productStatuses=0'">$DictUtil.getProductStatusBtn(0)（<b class="red" prodSt="0">0</b>）</button>
+	<button class="btn left mar_right_15" onclick="window.location='$link.setPage('product,ProductsManage.html')?productStatuses=1'">$DictUtil.getProductStatusBtn(1)（<b class="red" prodSt="1">0</b>）</button>
+	<button class="btn left mar_right_15" onclick="window.location='$link.setPage('product,ProductsManage.html')?productStatuses=2'">$DictUtil.getProductStatusBtn(2)（<b class="red" prodSt="2">0</b>）</button>
+	<button class="btn left mar_right_15" onclick="window.location='$link.setPage('product,DeletedProducts.html')'">$DictUtil.getProductStatusBtn(3)（<b class="red" prodSt="3">0</b>）</button>
+<script>
+#foreach($prodCount in $productCounts)
+	jQuery("b[prodSt='"+$prodCount.productStatus+"']").html($prodCount.productCount);
+#end
+</script>
+	<br class="clear" />
+
+    <div class="search_form mar_top_10"><form name="listForm" id="listForm" method="get">
+		<input type="hidden" id="pageIndex" name="pageIndex" value="$pageInfo.pageIndex"/>
+        <ul class="inline">
+             <li><input type="text" name="key" value="$!searchVo.key" class="input-medium left" placeholder="请输入产品名称或者ID"></li>
+            <li><select class="left">
+            <option>负责人</option>
+            <option>负责人2</option>
+            <option>负责人3</option>
+            </select></li>
+            <li><select class="left" name="orderType">
+            <option value="5">删除日期正序</option>
+            <option value="6" selected>删除日期倒序</option>
+            </select></li>#if($!searchVo.orderType)<script>jQuery("[name='orderType']").val($!searchVo.orderType)</script>#end
+        <li><input class="btn btn-warning bold left mar_top_0" type="submit" value="搜 索"/>
+		</li><script>jQuery("document").ready(function(){if(getCookie("advSearch")==1){jQuery("a#block_more_search").click();}});</script>
+        </ul>
+        <br class="clear">
+        </form>
+    </div>
+	
+	
+	
+	<!-- E search -->
+    <div class="upload_tit pm_tit">
+    	<ul>
+        	<li><a href="javascript:deleteProduct();" onclick="">彻底删除</a></li>
+        	<li><a href="javascript:restoreProduct();" class="left">恢复到草稿箱</a></li>
+        </ul>
+        <span class="help-block mar_top_10">&nbsp;&nbsp;&nbsp;&nbsp;（先勾选产品，再点击左侧操作选项）</span>
+    </div><!-- E tool -->
+    <table border="0" cellspacing="0" cellpadding="0" class="table table-hover center_t pm_table mar_bottom_5">
+      <tr class="warning">
+        <td><label class="checkbox left"><input type="checkbox" id="select_all" value="pm_info" onclick='if(this.checked){jQuery("input#prodId").attr("checked","checked");}else{jQuery("input#prodId").removeAttr("checked")};'> ID</label></td>
+        <td width="260px"><label>产品信息</label></td>
+        <td width="200"><label>产品分类</label></td>
+        <td><label>售价（$）</label></td>
+        <td><label>库存</label></td>
+        <td><label>创建时间<br/>删除时间</label></td>
+      </tr>
+#foreach($prod  in $searchVo.productList)
+	  <tr id="$prod.product.productId">
+        <td><label class="checkbox left"><input type="checkbox" id="prodId" value="$prod.product.productId">$prod.product.productId</label></td>
+        <td class="pmp_info"><div class="div_left"><img src="$RewriteUtil.getImageUrl($prod.firstImage.imageUrl, 'm')" class="img-polaroid" alt="$prod.product.productName" title="$prod.product.productName" onerror="javascript:this.src='/static/prototype/shopmic-manage/img/product_default.gif'"/></div>
+			<div class="div_right"><a target="_blank" href="$RewriteUtil.getProductUrl($prod.product.productName, $prod.product.productId)">$prod.product.productName</a><label class="font12 mar_top_5">SKU: $prod.product.sku</label></div></td>
+        <td id="customCatName">#foreach($cat in $prod.cats) $cat.catNameCn >> #end</td>
+        <td><span class="label label-info left">零</span><label>$prod.priceVo.price</label><br style="height:2px; line-height:2px;" />
+			#if($prod.priceVo.wholesalePrice>0)<span class="label label-warning left">批</span><label>$!prod.priceVo.wholesalePrice</label>#end
+		</td>
+        <td><label id="stockDays">#if($prod.productConfigs) $prod.productConfigs.stockNum #else $!prod.product.stock #end</label></td>
+        <td><label id="createTime">#if($prod.product.createTime) $!StringUtil.getDateTimeString($prod.product.createTime) #else -- #end</label>
+		    <label id="updateTime">#if($prod.product.updateTime) $!StringUtil.getDateTimeString($prod.product.updateTime) #else -- #end</label>
+		</td>
+      </tr>
+#end
+    </table><!-- E content -->
+    <div class="upload_tit pm_tit">
+    	<ul>
+        	<li><a href="javascript:deleteProduct();" onclick="">彻底删除</a></li>
+        	<li><a href="javascript:restoreProduct();" class="left">恢复到草稿箱</a></li>
+        </ul>
+        <span class="help-block mar_top_10">&nbsp;&nbsp;&nbsp;&nbsp;（先勾选产品，再点击左侧操作选项）</span>
+    </div><!-- E tool -->
+    <br class="clear" />
+		#parse("/screens/Nap.html")
+    <!-- E page -->
+    <br class="clear" />
+    </div>
+<script>
+##批量修改产品层
+function restoreProduct(){
+	if (!confirm("确定要恢复到草稿箱?")) {
+		return;
+	}
+	var param = "";
+	for(var i=0; i<jQuery("input#prodId:checked").length; i++) {
+		param += "&productId=" + jQuery("input#prodId:checked")[i].value;
+	}
+	jQuery.getJSON("$link.setAction('product.AjaxRestoreProduct')?" + param, function(data){
+		if(data.status>0){
+			alert("恢复成功" + data.status + "个产品");
+			while(jQuery("input#prodId:checked").length>0) {
+        		var productId = jQuery("input#prodId:checked")[0].value;
+				jQuery("tr[id='" + productId+"']").remove();
+        	}
+		} else {
+			alert("恢复失败");
+		}
+	});
+}
+##彻底删除
+function deleteProduct() {
+	if (!confirm("确定要彻底删除?")) {
+		return;
+	}
+	var param = "";
+	for(var i=0; i<jQuery("input#prodId:checked").length; i++) {
+		param += "&productId=" + jQuery("input#prodId:checked")[i].value;
+	}
+	param = param.substring(1);
+	jQuery.getJSON("$link.setAction('product.AjaxCompleteDelProduct')?" + param, function(data){
+		if(data.status>0){
+			alert("删除成功" + data.status + "个产品");
+			while(jQuery("input#prodId:checked").length>0) {
+        		var productId = jQuery("input#prodId:checked")[0].value;
+				jQuery("tr[id='" + productId+"']").remove();
+        	}
+		} else {
+			alert("删除失败");
+		}
+	});
+}
+</script>

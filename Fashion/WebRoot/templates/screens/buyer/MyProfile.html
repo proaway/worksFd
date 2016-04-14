@@ -1,0 +1,285 @@
+$page.setTitle("My Profile")
+ <form method="post" action="$link.setPage('buyer,MyProfile.html')" enctype="multipart/form-data" name="frm1" id="frm1">
+  <table cellspacing="0" cellpadding="0" class="acc_addr_tab">
+  <tbody><tr class="acc_addr_tab_tit">
+    <td align="left" style="padding-left:10px;" colspan="5"><h2 class="cart_tit_h2">My Profile</h2></td>
+  </tr>
+  <tr>
+    <td>
+    	<div class="acc_my_pro">
+        	<span style="color:#4b4b4b;">Update your profile :</span>
+            <input type="hidden" id="actionFlag" name="actionFlag" value="" />
+        	<table cellspacing="0" cellpadding="0" border="0" class="mar_top_15">
+            <tbody><tr>
+                <th><input type="hidden" name="url1" id="url1" value="$!url" /> 
+                    <img src="$!buyerInfo.imageUrl" alt="User Pic" width="100" height="100" id="buyerImage"/></th>
+                <td style="vertical-align:bottom;">
+                   <input type="file" size="40" name="imgOldUrl" id="imgOldUrl" value="" class="input_btn_protal"/>
+				   <input type="submit" value="&uarr; Upload" class="input_btn_protal"  onclick="return upload();"/>
+                </td>
+            </tr>
+            <tr><th></th><td></td></tr>
+              <tr>
+                <th><span class="required">*</span> <label>Sex:</label></th>
+                <td>
+                    <select id="sex" name="sex">
+						<option value="0" #if($!buyerInfo.sex=="0") selected #end >Ms.</option>  
+						<option value="1" #if($!buyerInfo.sex=="1") selected #end >Mr.</option>
+					</select>								
+				</td>
+            </tr>
+            <tr>
+                <th><span class="required">*</span> <label>First name:</label></th>
+                <td>
+                    <input type="text" class="elmbBlur" id="firstName" name="firstName" value="$buyerInfo.firstName">									<p class="errorInfo"></p>
+                </td>
+            </tr>
+            <tr>
+                <th><span class="required">*</span> <label>Last name:</label></th>
+                <td>
+                    <input type="text" class="phoneNum elmbBlur" id="lastName" name="lastName" value="$buyerInfo.lastName">
+                </td>
+            </tr>
+            <tr>
+                <th><span class="required">*</span> <label>Which on describes you the best?</label></th>
+                <td>
+                    <select id="buyerType" name="buyerType">
+						<option value="1" #if($!buyerInfo.buyerType=="1" || $buyerInfo.buyerType=="") selected #end  >Consumer</option>
+						<option value="2" #if($!buyerInfo.buyerType=="2") selected #end>Wholesaler</option>
+						<option value="3" #if($!buyerInfo.buyerType=="3") selected #end>Offline Retailer</option>
+						<option value="4" #if($!buyerInfo.buyerType=="4") selected #end>Online Retailer</option>
+						<option value="5" #if($!buyerInfo.buyerType=="5") selected #end>Dropshipper</option>
+						<option value="6" #if($!buyerInfo.buyerType=="6") selected #end>Auction Seller</option>
+						<option value="7" #if($!buyerInfo.buyerType=="7") selected #end>Others</option>
+					</select>
+                </td>
+            </tr>
+            <tr>
+                <th><label>Your Company:</label></th>
+                <td>
+                    <input type="text" class="phoneNum elmbBlur" id="company" name="company" value="$!buyerInfo.company">
+                </td>
+            </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="button" value="Save" onclick="changeBuyerInfo()" id="" class="btn_acc_cpwd" name=""></td>
+              </tr>
+            </tbody></table>
+
+        </div>
+    
+    </td>
+  </tr>
+  </tbody></table>
+<br class="clearfloat">
+  <table cellspacing="0" cellpadding="0" class="acc_addr_tab">
+  <tbody><tr class="acc_addr_tab_tit">
+    <td align="left" style="padding-left:10px;" colspan="5"><h2 class="cart_tit_h2">E-mail Address</h2></td>
+  </tr>
+  <tr>
+    <td>
+    	<div class="acc_my_pro">
+            <span style="color:#4b4b4b; font-weight:bold; float:left;"><span id="loginEmail" >$buyerInfo.email</span>	
+			#if($buyerInfo&&$buyerInfo.emailActive&&$buyerInfo.emailActive==1)<img style="margin-top:5px;" id="checkedThis" src="/static/prototype/product_fashion/images/green_13px.gif">#end</span>
+				<span style="float:right; margin-right:20px;" id="checkNewEmailDiv"  #if($buyerInfo&&$buyerInfo.emailActive&&$buyerInfo.emailActive==1) class="hide"  #end>Check 
+					<a href="#">
+						<span id="loginNewEmail" >$buyerInfo.email</span>
+					</a> for confirmation email. 
+					<a style="color:#F60;" href="javascript:sendActiveEmail('$buyerInfo.buyerId');">Resend Email</a>
+				</span>
+			<br class="clearfloat">
+            <p style="padding-top:10px;">Update your E-mail :</p>
+            <p style="padding-top:16px; padding-left:30px;"><span class="required">*</span> Indicates required fields</p>
+        	<table cellspacing="0" cellpadding="0" border="0" style="margin-left:80px;">
+            <tbody><tr>
+                <th><span class="required">*</span> <span id="title1">Existing password:</span></th>
+                <td>
+                    <input type="password" class="elmbBlur" id="originPass" name="originPass" onblur="checkPass(this);">
+						<input type="hidden" id="passFlag" name="passFlag" value="0" />
+                    <label class="hide" id="errorPassInfo"><font color="red" >Please enter your password</font></label>
+                </td>
+            </tr>
+            <tr>
+                <th><span class="required">*</span> <span id="title2">New e-mail address:</span></th>
+                <td>
+					<input type="hidden" id="emailFlag" name="emailFlag" value="0" />
+                    <input type="text" class="phoneNum elmbBlur" id="newAddress" name="newAddress" onblur="chkBuyerEmail(this)">
+                    <label class="log_email_red hide" id="empty"><br /><font color="red" >Please enter your Email Address.</font></label>
+                    <label class="log_email_red hide" id="notemail"><br /><font color="red" >Please enter valid email.</font></label>
+                    <label class="log_email_red hide" id="error"><br /><font color="red" >Sorry! This account already exists. Please input valid.</font></label>
+                </td>
+            </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="button" value="Save" onclick="changeEmail();" id="" class="btn_acc_cpwd" name=""></td>
+              </tr>
+            </tbody></table>
+
+        </div>
+    
+    </td>
+  </tr>
+  </tbody></table>
+  <br class="clearfloat">
+</form>
+
+<script>
+function changeBuyerInfo(){
+	var imageUrl = jQuery("#imgOldUrl").val();
+	var url = jQuery("#url1").val();
+	if((imageUrl!="" )&& (url=="")){
+		alert("please upload the image first");
+		return false;
+	}
+	var firstName = jQuery("#firstName").val();
+	if(firstName==null || firstName==""){
+		alert("firstName can be empty");
+		return false;
+	}
+	var lastName = jQuery("#lastName").val();
+	if(firstName==null || firstName==""){
+		alert("lastName can be empty");
+		return false;
+	}
+	jQuery("body").showLoading();
+	jQuery.get(
+	"$link.setAction('buyer.AjaxChangeBuyerInfoAction')?imageurl="+url+"&firstName="+firstName+"&lastName="+lastName+"&sex="+jQuery("#sex").val()+"&buyerType="+jQuery("#buyerType").val()+"&company="+jQuery("#company").val(),
+	function(data){
+		jQuery("body").hideLoading();
+		if(data!=null){
+			alert("update sucess!");
+			jQuery("#url").val("");
+			jQuery("#buyerImage").attr("src",data.imageUrl);
+			jQuery("#firstName").val(data.getFirstName());
+			jQuery("#lastName").val(data.getLastName());
+			jQuery("#sex").find("option[value='"+data.sex+"']").attr("selected","selected");
+			jQuery("#buyerType").find("option[value='"+data.buyerType+"']").attr("selected","selected");
+			if(data.company!="" || data.company!=null){
+				jQuery("#company").val(data.getCompany());
+			}
+			
+		} else {
+			alert("update failure!");
+		}
+	});
+}
+</script>
+
+<script>
+function upload(){
+	var imageUrl = jQuery("#imgOldUrl").val();
+	if(imageUrl=="" || imageUrl==null){
+		alert("please upload the image first");
+		return false;
+	}
+	var i = imageUrl.lastIndexOf(".");
+	var sname = imageUrl.substring(i);
+	if(sname.toLowerCase()!=".jpg"){
+		if(sname.toLowerCase()!=".jpeg"){
+    		alert("please choose the image end with .jpg or .jpeg or .JPG or .JPEG ");
+    		return false;
+		}
+	}
+	jQuery("#actionFlag").val("uploadImage");
+	return true;
+}
+</script>
+#if($msg)
+	<script>
+	alert('$msg');
+    </script>
+#end
+
+<script>
+function chkBuyerEmail(obj) {
+	var email = jQuery(obj).val();
+	email = email.trim();
+	jQuery(obj).parents("tr").find("label").each(function(i,o){jQuery(o).hide();});
+	if (email == "") {
+		jQuery(obj).parents("tr").find("#empty").show();
+		jQuery("#emailFlag").val(0);
+	}else if(!isEmail(email)){
+		jQuery(obj).parents("tr").find("#notemail").show();
+		jQuery("#emailFlag").val(0);
+	} else {
+		jQuery("#container").showLoading();
+		jQuery.getJSON("$link.setAction('buyer.AjaxCheckEmail')", {email:email}, function(data){
+			jQuery("#container").hideLoading();
+			if (data.status == 1) {
+				jQuery(obj).parents("tr").find("#ok").show();
+				jQuery("#emailFlag").val(1);
+			} else {
+				jQuery(obj).parents("tr").find("#error").show();
+				jQuery("#emailFlag").val(0);
+			}
+		});
+	}
+}
+
+function checkPass(obj){
+jQuery(obj).parents("tr").find("label").each(function(i,o){jQuery(o).hide();});
+	var pass = jQuery("#originPass").val();
+	if(pass==""){
+		jQuery(obj).parents("tr").find("#errorPassInfo").show();
+		jQuery("#passFlag").val(0);
+	}else{
+		jQuery("#passFlag").val(1);
+	}
+	
+}
+
+function changeEmail(){
+	var passFlag = jQuery("#passFlag").val();
+	var emailFlag = jQuery("#emailFlag").val();
+	if(passFlag=="0"){
+		jQuery("#originPass")[0].focus();
+		return false;
+	}
+	if(emailFlag == "0"){
+		jQuery("#newAddress")[0].focus();
+		return false;
+	}
+	jQuery("#container").showLoading();
+	jQuery.get(
+	"$link.setAction('buyer.AjaxChangeEmailAction')?password="+jQuery("#originPass").val()+"&emailAddr="+jQuery("#newAddress").val(),
+	function(data){
+		jQuery("#container").hideLoading();
+		if(data!=null){
+    		jQuery("span[id='loginEmail']").html(jQuery("#newAddress").val());
+			jQuery("span[id='loginNewEmail']").html(jQuery("#newAddress").val());
+    		jQuery("#originPass").val("");
+    		jQuery("#newAddress").val("");
+    		jQuery("#passFlag").val(0);
+    		jQuery("#emailFlag").val(0);
+			alert("update success!!");
+			jQuery("span[id='checkNewEmailDiv']").show();
+			jQuery("img[id='checkedThis']").hide();
+			jQuery("img[id='unconfirmed']").show();
+		} else {
+			alert("update failure!");
+		}
+	});
+}
+
+	//检测邮箱
+	function isEmail(str) { //是邮箱地址返回true,不是邮箱地址返回false
+		    var reg=/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+		    		return reg.test(str);
+	}
+	
+	//发送邮件
+function sendActiveEmail(buyerId) {
+	jQuery("#container").showLoading();
+	jQuery.getJSON(
+		"$link.setAction('buyer.AjaxSendActiveEmailAction')",
+		{buyerId:buyerId},
+		function(data){
+			jQuery("#container").hideLoading();
+			if(data=="1"){
+				alert("Send email success");
+			}else{
+				alert("发送失败");
+			}
+		});
+}
+</script>

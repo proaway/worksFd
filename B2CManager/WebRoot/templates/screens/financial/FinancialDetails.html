@@ -1,0 +1,119 @@
+<form name="listForm" id="listForm" method="get"
+	action="$link.setPage('financial,FinancialDetails.html')">
+	<br class="clear" />
+	<h4 class="mar_top_15 mar_bottom_20">收支明细</h4>
+	<div class="search_form mar_bottom_10">
+		<input type="hidden" value="$searchType" name="searchType"
+			id="searchType" />
+		<ul class="inline">
+			<li><label class="left mar_top_5">收入：</label><label
+				class="left mar_top_5 green bold font16">$!financialVo.incomeTotal</label><label
+				class="left mar_top_5 mar_left_3">美元</label><label
+				class="left mar_top_5 mar_left_3 font12">（≈$!financialVo.incomeTotalRMB元）</label></li>
+			<li><label class="left mar_top_5">支出：</label><label
+				class="left mar_top_5 red bold font16">$!CullNumUtil.cullNum($!financialVo.expendTotal)</label><label
+				class="left mar_top_5 mar_left_3">元</label></li>
+			<li><input type="submit" class="btn btn-primary left" value="查询"/><a
+				id="block_more_search"
+				class="btn btn-link left #if($!searchType == 1) hide #end"
+				onclick="javascript:document.getElementById('more_search').style.display='block';jQuery('#searchType').val(1);document.getElementById('block_more_search').style.display='none';document.getElementById('hide_more_search').style.display='block';">高级查询<span
+					class="icon-chevron-down"></span> </a><a id="hide_more_search"
+				class="btn btn-link left #if($!searchType == 0) hide #end"
+				onclick="javascript:document.getElementById('more_search').style.display='none';jQuery('#searchType').val(0);document.getElementById('block_more_search').style.display='block';document.getElementById('hide_more_search').style.display='none';">收起<span
+					class="icon-chevron-up"></span> </a></li>
+			<li><a href="javascript:exportFinancialDataForExcel('listForm');" class="btn">导出Excel</a></li>
+		</ul>
+		<br class="clear" />
+		<div id="more_search"
+			class="alert alert-success pad_top_15 black #if($searchType == 0) hide #end">
+
+			<ul class="inline">
+				<li><label class="left mar_top_5">资金流向：</label> <label
+					class="radio left mar_top_5 mar_left_10"><input
+						type="radio" checked="checked" value="2" name="type">所有</label> <label
+					class="radio left mar_top_5 mar_left_10"><input
+						type="radio" name="type" value="1" #if($!type==1) checked #end>收入</label> <label
+					class="radio left mar_top_5 mar_left_10"><input
+						type="radio" name="type" value="0" #if($!type==0) checked #end>支出</label></li>
+				<li><label class="left mar_top_5">起止日期：</label>
+				<input
+					type="text" class="input-small mar_right_10 left"
+					value="$!startDate" id="datepickera" name="startDate">
+					<label
+					class="left mar_top_5">到</label><input type="text"
+					class="input-small mar_left_10 mar_right_5 left"
+					value="$!endDate" id="datepickerb" name="endDate"></li>
+				<li><label class="left mar_top_5">金额区间：</label><input
+					name="startAmount" value="$!startAmount" type="text" placeholder=""
+					class="input-small mar_right_10 left"><label
+					class="left mar_top_5">到</label><input type="text" placeholder=""
+					name="endAmount" value="$!endAmount"
+					class="input-small mar_left_10 mar_right_5 left"><label
+					class="left mar_top_5">元</label></li>
+				<li>
+					<button class="btn btn-success left">
+						<span class="white">应用</span>
+					</button></li>
+			</ul>
+			<br class="clear">
+		</div>
+
+	</div>
+
+	<table border="0" cellspacing="0" cellpadding="0"
+		class="table table-bordered table-hover center_t font12 tl_mt3_mb3 mar_bottom_0">
+		<tr class="info bold">
+			<td><label>流水号</label></td>
+			<td><label>交易时间</label></td>
+			<td><label>名称 | 备注</label></td>
+			<td><label>收入（美元）</label></td>
+			<td><label>支出（美元）</label></td>
+			<td><label>账户盈余</label></td>
+			<td><label>交易方式</label></td>
+			<td><label>交易状态 | 订单状态</label></td>
+			<td><label>操作</label></td>
+		</tr>
+		#foreach($financial in $financialVo.financialList)
+		<tr>
+			<td><label>$!financial.financialId</label></td>
+			<td><label class="font10">$!StringUtil.getDateString($!financial.createTime,'yyyy-MM-dd hh:mm:ss')</label></td>
+			<td><label> #if($!financial.amountType == 1) 收入
+					#elseif($!financial.amountType == 2) 退款
+					#elseif($!financial.amountType == 3) 采购
+					#elseif($!financial.amountType == 4) 运费
+					#elseif($!financial.amountType == 5) 佣金
+					#elseif($!financial.amountType == 6) 活动 #end </label></td>
+			#if($!financial.amount > 0)
+			<td>$!financial.amount</td>
+			<td></td> #else
+			<td></td>
+			<td><label class="orange">$!financial.amount</label></td> #end
+
+			<td><label>$ $!financial.balance</label></td>
+			<td><label>#if($!financial.paymentType)$!financial.paymentType#else--#end</label>
+			</td>
+			<td><label>$!financial.financialStatus</label></td>
+			<td><a href="javascript:();" role="button" class="mar_right_10"
+				data-toggle="modal">详情</a></td>
+		</tr>
+		#end
+
+	</table>
+	#parse("/screens/Nap.html")
+	<!-- E page -->
+</form>
+ <script language="javascript" type="text/javascript"
+	src="/static/prototype/shopmic-manage/js/jquery-ui-1.10.0.custom.min.js"></script>
+<script language="javascript" type="text/javascript"
+	src="/static/prototype/shopmic-manage/js/datepicker.js"></script>
+<script type="text/javascript">
+
+//-->
+
+// 导出操作(查数据库)
+function exportFinancialDataForExcel(formId) {
+	var formObj = document.getElementById(formId);
+	formObj.action="$link.setAction('financial.FinancialExceportExcelAction')";
+	formObj.submit();
+}
+</script>

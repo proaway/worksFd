@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertSizeTemplateBean" parameterClass="com.fd.fashion.seller.bean.SizeTemplateBean">
+        <![CDATA[
+insert into T_SIZE_TEMPLATE
+  (TEMPLATE_ID, SIZECAT_ID, TEMPLATE_NAME, IMAGE_ID, MODIFY_TIME, OPERATOR)
+values
+  (#templateId#, #sizecatId#, #templateName#, #imageId#, #modifyTime#, #operator#)
+        ]]>
+        <selectKey keyProperty="templateId" resultClass="long">
+            <![CDATA[select @@identity as templateId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateSizeTemplateBean" parameterClass="com.fd.fashion.seller.bean.SizeTemplateBean">
+        <![CDATA[
+update T_SIZE_TEMPLATE 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="templateId" prepend="," removeFirstPrepend="true">
+                <![CDATA[TEMPLATE_ID = #templateId#]]>
+            </isNotNull>
+            <isNotNull property="sizecatId" prepend="," removeFirstPrepend="true">
+                <![CDATA[SIZECAT_ID = #sizecatId#]]>
+            </isNotNull>
+            <isNotNull property="templateName" prepend="," removeFirstPrepend="true">
+                <![CDATA[TEMPLATE_NAME = #templateName#]]>
+            </isNotNull>
+            <isNotNull property="imageId" prepend="," removeFirstPrepend="true">
+                <![CDATA[IMAGE_ID = #imageId#]]>
+            </isNotNull>
+            <isNotNull property="modifyTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[MODIFY_TIME = #modifyTime#]]>
+            </isNotNull>
+            <isNotNull property="operator" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPERATOR = #operator#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where TEMPLATE_ID = #templateId#
+        ]]>
+    </update>
+
+    <sql id="getSizeTemplateBeanCondition">
+            <isNotNull property="templateId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[TEMPLATE_ID = #templateId#]]>
+            </isNotNull>
+            <isNotNull property="sizecatId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[SIZECAT_ID = #sizecatId#]]>
+            </isNotNull>
+            <isNotNull property="templateName" prepend="and" removeFirstPrepend="true">
+                <![CDATA[TEMPLATE_NAME = #templateName#]]>
+            </isNotNull>
+            <isNotNull property="imageId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[IMAGE_ID = #imageId#]]>
+            </isNotNull>
+            <isNotNull property="modifyTime" prepend="and" removeFirstPrepend="true">
+                <![CDATA[MODIFY_TIME = #modifyTime#]]>
+            </isNotNull>
+            <isNotNull property="operator" prepend="and" removeFirstPrepend="true">
+                <![CDATA[OPERATOR = #operator#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getSizeTemplateBeanCount" parameterClass="com.fd.fashion.seller.bean.SizeTemplateBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_SIZE_TEMPLATE 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getSizeTemplateBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getSizeTemplateBean" parameterClass="com.fd.fashion.seller.bean.SizeTemplateBean"
+        resultClass="com.fd.fashion.seller.bean.SizeTemplateBean">
+        <![CDATA[
+select 
+	TEMPLATE_ID	as templateId,
+	SIZECAT_ID	as sizecatId,
+	TEMPLATE_NAME	as templateName,
+	IMAGE_ID	as imageId,
+	MODIFY_TIME	as modifyTime,
+	OPERATOR	as operator
+from T_SIZE_TEMPLATE 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getSizeTemplateBeanCondition"/>        </dynamic>
+    </select>
+
+    <delete id="deleteSizeTemplateBean" parameterClass="com.fd.fashion.seller.bean.SizeTemplateBean">
+        <![CDATA[
+delete from T_SIZE_TEMPLATE where TEMPLATE_ID=#templateId#
+        ]]>
+    </delete>
+</sqlMap>

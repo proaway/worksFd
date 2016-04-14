@@ -1,0 +1,341 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>页面修改 <!--MICCMS:Title--></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="<!--MICCMS:Meta-Description-->" />
+  <meta name="keywords" content="<!--MICCMS:Meta-Keywords-->" />
+  <meta name="author" content="">
+  <link rel="shortcut icon" href="/static/web/images/ys-logo-ico.ico" type="image/ico" /> 
+  <link rel="stylesheet" type="text/css" href="/static/prototype/shopmic-manage/css/bootstrap.min.css" />
+  <link rel="stylesheet" type="text/css" href="/static/prototype/shopmic-manage/css/bootstrap-responsive.min.css" />
+  <link rel="stylesheet" type="text/css" href="/static/prototype/shopmic-manage/css/whole.css" />
+  <link rel="stylesheet" type="text/css" href="/static/prototype/shopmic-manage/css/shopmic_m.css" />
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/jquery-1.7.2.min.js"></script>
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/bootstrap.min.js"></script>
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/jquery-ui-1.10.0.custom.min.js"></script>
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/datepicker.js"></script>
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/jsonconvert.js"></script>
+		<link rel="stylesheet" href="/static/plugins/kindeditor/themes/default/default.css">
+		<script charset="utf-8" src="/static/plugins/kindeditor/kindeditor.js"></script>
+  		<script charset="utf-8" src="/static/plugins/kindeditor/lang/zh_CN.js"></script>
+		<link rel="stylesheet" type="text/css" href="/static/prototype/product_fashion/inc/tips/tips.css" />
+		<script language="javascript" src="/static/prototype/product_fashion/inc/tips/tips.js"></script>
+</head>
+<body>
+  <div id="container">
+	<form id="channelForm" action="$link.setAction('cms.ReviewChannel')" target="_blank">
+  	<br class="clear" />
+    <div style="width:1100; max-width:1100px; margin:0px auto; background:#a1afc9; margin-bottom:100px;">
+    <div style="width:990px; margin:0px auto;">    
+    <h2 class="pad_top_20 mar_bottom_15 white">编辑网页信息</h2>
+	<div class="alert alert-danger hide" id="invalidinfo">
+    	<h5 class="pad_bottom_10 pad_top_10">有<span id="invalidcount">0</span>个产品链接已失效，请尽快更新！</h5>
+    </div>
+    <div class="alert alert-info black pad_top_20">
+    	<ul class="unstyled left pad_left_15" style="width:320px;">
+			<li>
+            	<label>网页编号：<span class="orange">$!channel.channelId</span></label>
+            </li>
+			<li>
+            	<label>网页名称：<span class="orange">$!channel.channelName</span></label>
+            </li>
+			<li>
+            	<label>栏目数：<span class="orange">$!channel.blockNum</span></label>
+            </li>
+			<li>
+            	<label>创建者：<span class="orange">$!channel.createUser</span></label>
+            </li>
+			<li>
+            	<label class="left">更新模式：<span class="orange">$!DictUtil.getChannelUpdateType($channel.updateType)</span></label><a href="#edit_mode" role="button" class="mar_left_10 font14" data-toggle="modal">修改模式</a><br class="clear" />
+            </li>
+			<li>
+            	<label class="left">网页状态：<span class="orange">$!DictUtil.getChannelStatus($channel.status)</span></label><span class="mar_left_10">/</span><span class="red mar_left_10"><span>禁用</span></span><a href="#edit_status" role="button" class="mar_left_10 font14" data-toggle="modal">修改状态</a>
+            </li>
+        </ul>
+    	<ul class="unstyled left">
+			<li>
+            	<label class="left">网页地址：</label><a class="mar_left_10" href="${webroot}$!{channel.channelUrl}" target="_blank">${webroot}$!{channel.channelUrl}</a><br class="clear" />
+            </li>
+			<li>
+            	<label>摸板类型：<span class="orange">首页</span></label>
+				<input id="templatePath" value="$template.fileUrl" type="hidden"/>
+				<input id="templateType" value="$template.templateType" type="hidden"/>
+				<input id="channelId" value="$!channel.channelId" name="channelId" type="hidden"/>
+				<input id="templateId" value="$!channel.templateId" name="templateId" type="hidden"/>
+            </li>
+			<li>
+            	<label class="left">摸板类型：<span class="orange">$DictUtil.getTemplateType($channel.templateType)模版（$channel.templateId）</span></label><a class="mar_left_10 font14" href="/static/prototype/shopmic-manage/cms_page_preview.shtml" target="_blank">预览样式</a><br class="clear" />
+            </li>
+			<li>
+            	<label>创建时间：<span class="orange">$!StringUtil.getDateTimeString($channel.createTime)</span></label>
+            </li>
+			<li>
+            	<label>发布时间：<span class="orange">$!StringUtil.getDateTimeString($channel.pubDate)</span></label>
+            </li>
+        </ul>        
+        <br class="clear" />
+    	<table class="unstyled left mar_top_20 mar_left_20" width="910px">
+        	<tr>
+				<td><label>网页地址：</label></td>
+                <td class="blue" colspan="2"><label class="left mar_top_10">${webroot}</label><input value="$!{channel.channelUrl}" id="channelUrl" name="channelUrl" class="span5 mar_top_5 left mar_left_5" type="text" placeholder=""></td>
+            </tr>
+        	<tr>
+				<td><label>网页Title：</label></td>
+                <td colspan="2"><input value="$!{channel.titleInfo}" name="titleInfo" class="span7 mar_top_5 mar_right_15" type="text" placeholder=""><span class="font12 gray">220个字符以内</span></td>
+            </tr>
+        	<tr>
+				<td><label>Keywords：</label></td>
+                <td colspan="2"><input value="$!{channel.keywords}" name="keywords" class="span7 mar_top_5 mar_right_15" type="text" placeholder=""><span class="font12 gray">220个字符以内</span></td>
+            </tr>
+        	<tr>
+				<td><label>Description：</label></td>
+                <td colspan="2"><textarea rows="2" class="span7 mar_right_15" name="description" placeholder="" style="resize: none;">$!{channel.description}</textarea><span class="font12 gray">300个字符以内</span></td>
+            </tr>
+        </table> 
+        <br class="clear" />
+    </div>
+    </div>
+        <div class="cms_page_div pad_bottom_30">
+            <div class="cms_page_div_content">
+                $channelContent
+                <br class="clear" />
+            </div>
+        </div><br class="clear" />
+        <div class="mar_top_20 pad_bottom_40" style="text-align:center;">
+        <table width="36%" style="margin:0 auto;" cellspacing="0" cellpadding="0" border="0">
+          <tbody><tr>
+            <td>
+            </td>
+            <td><input type="submit" type="button" class="btn btn-large font_w_b" value="预览"></td>
+            <td><input type="button" onclick="javascript:saveChannelDetail(1);" type="button" class="btn btn-large btn-primary font_w_b" value="发布"/></td>
+            <td><input type="button" onclick="javascript:saveChannelDetail(2);" type="button" class="btn btn-large btn-success font_w_b" value="保存"/></td>
+          </tr>
+        </tbody></table>
+    </div>
+    </div>
+</form>
+    
+<div id="edit_mode" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+<input type="button" class="close" data-dismiss="modal" aria-hidden="true" value="×"/>
+<h5 id="myModalLabel">修改更新模式</h5>
+</div>
+<div class="modal-body">
+    <label class="radio mar_left_80">
+      <input value="手动更新" name="group" checked="checked" type="radio">
+      手动更新
+    </label>
+    <label class="radio mar_left_80 mar_top_10">
+      <input value="自动更新" name="group" checked="checked" type="radio">
+      自动更新
+    </label>
+</div>
+<div class="modal-footer">
+<input type="button" class="btn" data-dismiss="modal" aria-hidden="true" value="取消"/>
+<input type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true" value="确定"/>
+</div>
+</div><!-- E edit_mode -->
+    
+<div id="edit_status" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-header">
+<input type="button" class="close" data-dismiss="modal" aria-hidden="true" value="×"/>
+<h5 id="myModalLabel">修改网页状态</h5>
+</div>
+<div class="modal-body">
+    <label class="radio mar_left_80">
+      <input value="启用" name="group" checked="checked" type="radio">
+      启用（可见）
+    </label>
+    <label class="radio mar_left_80 mar_top_10">
+      <input value="禁用" name="group" checked="checked" type="radio">
+      禁用（不可见）
+    </label>
+</div>
+<div class="modal-footer">
+<input type="button" class="btn" data-dismiss="modal" aria-hidden="true" value="取消"/>
+<input type="button" class="btn btn-primary" data-dismiss="modal" aria-hidden="true" value="确定"/>
+</div>
+</div><!-- E edit_status -->
+    
+  </div><!-- E container -->
+  <br class="clear" /> <div id="popdiv"></div>
+<script>
+jQuery("document").ready(function(){
+	var blocks = jQuery("div.cms_page_div_content").find("[block]");
+	var locations = [];
+	for(var i=0; i<blocks.length; i++) {
+		var block = blocks[i];
+		jQuery(block).attr("block", i);
+		var content = jQuery(block).html();
+		var pid = getSubString(content, /product\/[^_\/]*_(\d+)\.html/ig, 1)
+		if (pid != "") {			
+			locations.push(i+"_"+pid);
+		}
+		jQuery(block).wrap("<div class='position_relative'></div>");
+		jQuery(block).append('<div mask class="cms_page_mask center_t"><input type="button" onclick="showEditBlock(this, '+i+')" class="btn btn-success btn-small right mar_top_0 mar_right_5" value="编辑"/></div>');
+	}
+	if (locations.length > 0) {
+		jQuery.getJSON("$link.setAction('cms.AjaxGetInvalidProd')", {locations:locations, channelId:"${channel.channelId}"}, function(data){
+			for(var i=0; i<data.length; i++) {
+				var block = data[i];
+				jQuery("[block='"+block.location+"']").find("[mask]").removeClass("cms_page_mask");
+				jQuery("[block='"+block.location+"']").find("[mask]").addClass("cms_page_mask_off");
+			}
+			jQuery("#invalidcount").html(data.length);
+			jQuery("#invalidinfo").show();
+		});
+	}
+});
+var blockDivs={};
+function showEditBlock(o, idx){
+	var block = jQuery(o).parents("[block]");
+	var div = jQuery("#popdiv");
+	div.empty();
+	if(blockDivs[idx] == null) {
+		div.load("$link.setAction('cms.EditBlock')?channelId=${channel.channelId}&location=" + block.attr("block"));
+		blockDivs[idx] = div.html();
+	} else {
+		div.html(blockDivs[idx]);
+	}
+}
+
+KindEditor.ready(function(K) { 
+	var editor = K.editor({
+		allowFileManager : true,
+		allowUpload : true,
+		uploadJson : '$link.setAction('product.ProductUploadImage')',
+		fileManagerJson : '$link.setAction('product.ProductImageZone')'
+	});
+	K('#popdiv').click(function(o) {
+		var oo = jQuery(o.target);
+		if (oo.attr("id")=="selectLocalImg") {
+    		editor.loadPlugin('multiimage', function() {
+    			editor.plugin.multiImageDialog({
+    				clickFn : function(urlList) {
+    					var div = oo.parent().find("ul");
+    					K.each(urlList, function(i, data) {
+							jQuery("img#imgUrl").attr("src", data.url);
+							jQuery("[name='imgUrl']").val(data.url);
+    					});
+    					editor.hideDialog();
+    				}
+    			});
+    		});
+		} else if (oo.attr("id")=="selectImg") {
+    		editor.loadPlugin('filemanager',function() {
+    			editor.loadPlugin('filemanager', function() {
+    				editor.plugin.filemanagerDialog({
+    					viewType : 'VIEW',
+    					dirName : 'image',
+    					clickFn : function(url, title) {
+    						jQuery("img#imgUrl").attr("src", url);
+							jQuery("[name='imgUrl']").val(url);
+    						editor.hideDialog();
+    					}
+    				});
+    			});
+    		});
+		}
+	});
+});
+
+function confirmAdBlock(modalId, location) {
+	var param = form2JSON("blockForm");
+	param["templatePath"] = jQuery("#templatePath").val();
+	param["templateType"] = jQuery("#templateType").val();
+	param["channelUrl"] = jQuery("#channelUrl").val();
+	jQuery.get("$link.setAction('cms.ReplaceCmsBlock')", param, 
+		function(data){
+			if (data != "") {
+				blockDivs[location] = jQuery("#"+modalId).parent().html();
+				var block = jQuery("div.cms_page_div_content").find("[block]")[location];
+				var maskDiv = jQuery(block).find("[mask]");
+				jQuery(block).html(data);
+				
+				var infoId = jQuery("#"+modalId).find("[name='infoId']").val();
+				var linkUrl = jQuery("#"+modalId).find("[name='linkUrl']").val();
+				var imgUrl = jQuery("#"+modalId).find("[name='imgUrl']").val();
+				var title = jQuery("#"+modalId).find("[name='title']").val();
+				var summary = jQuery("#"+modalId).find("[name='summary']").val();
+				var imgAlt = jQuery("#"+modalId).find("[name='imgAlt']").val();
+				var sku = jQuery("#"+modalId).find("[name='sku']").val();
+				if (jQuery("#"+modalId).find("[name='newProd']").val() == 1) {
+    				jQuery(block).append('<input type="hidden" name="infoId_'+location+'" value="'+infoId+'"/>');
+    				jQuery(block).append('<input type="hidden" name="linkUrl_'+location+'" value="'+linkUrl+'"/>');
+    				jQuery(block).append('<input type="hidden" name="imgUrl_'+location+'" value="'+imgUrl+'"/>');
+    				jQuery(block).append('<input type="hidden" name="title_'+location+'" value="'+title+'"/>');
+    				jQuery(block).append('<input type="hidden" name="summary_'+location+'" value="'+summary+'"/>');
+    				jQuery(block).append('<input type="hidden" name="imgAlt_'+location+'" value="'+imgAlt+'"/>');
+    				jQuery(block).append('<input type="hidden" name="sku_'+location+'" value="'+sku+'"/>');
+				}
+				jQuery(block).append(maskDiv);
+				jQuery("#"+modalId).modal("hide");
+			} else {
+				alert("修改失败");
+			}
+		});
+}
+
+function getSubString(content, reg, idx) {
+	var res = reg.exec(content)
+	var subStr = "";
+	if (res != null) {
+		subStr = res[idx];
+	}
+	return subStr;
+}
+
+function saveChannelDetail(act) {
+	if (act == 1) {
+		
+	}
+	tipsWindown("","text:正在保存","200","50","true","","true","text","确定");
+	var param = form2JSON("channelForm");
+	jQuery.ajax({
+    	url:"$link.setAction('cms.SaveChannelDetail')",
+    	type:"post",
+    	data:param,
+    	dataType:"json",
+    	success:function(data){
+    		if (data.status == 1) {
+        		tipsWindown("","text:保存成功","200","50","true","","true","text","确定");
+        		if (act == 1) {
+        			tipsWindown("","text:正在发布","200","50","true","","true","text","确定");
+        			jQuery.getJSON("$link.setAction('cms.BuildeChannelFile')", {channelId:data.channelId}, function(data2){
+    					if (data2.status == 1) {
+							tipsWindown("","text:发布成功","200","50","true","","true","text","确定");
+						} else {
+							tipsWindown("","text:发布失败","200","50","true","","true","text","确定");
+						}
+    				});
+        		}
+    		} else {
+    			tipsWindown("","text:保存失败","200","50","true","","true","text","确定");
+    		}
+		}
+	 });
+}
+</script>  
+<!-- S javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript">
+(function() {
+    var $backToTopTxt = '', backToTopEle = $('<div class="backToTop_pro"></div>').appendTo($("body"))
+        .text($backToTopTxt).attr("title", $backToTopTxt).click(function() {
+            $("html, body").animate({ scrollTop: 0 }, 120);
+    }), $backToTopFun = function() {
+        var st = $(document).scrollTop(), winh = $(window).height();
+        (st > 0)? backToTopEle.show(): backToTopEle.hide();
+        //IE6下的定位
+        if (!window.XMLHttpRequest) {
+            backToTopEle.css("top", st + winh - 166);
+        }
+    };
+    $(window).bind("scroll", $backToTopFun);
+    $(function() { $backToTopFun(); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertCmsChannelBean" parameterClass="com.fd.fashion.cms.bean.CmsChannelBean">
+        <![CDATA[
+insert into T_CMS_CHANNEL
+  (CHANNEL_ID, CHANNEL_NAME, TEMPLATE_ID, TEMPLATE_TYPE, TEMPLATE_NAME, CHANNEL_URL, BLOCK_NUM, CREATE_TIME, PUB_DATE, CREATE_USER, UPDATA_TYPE, STATUS, OPERATE_USER, OPERATE_TIME, DESCRIPTION, KEYWORDS, TITLE_INFO)
+values
+  (#channelId#, #channelName#, #templateId#, #templateType#, #templateName#, #channelUrl#, #blockNum#, #createTime#, #pubDate#, #createUser#, #updataType#, #status#, #operateUser#, #operateTime#, #description#, #keywords#, #titleInfo#)
+        ]]>
+    </insert>
+
+    <update id="updateCmsChannelBean" parameterClass="com.fd.fashion.cms.bean.CmsChannelBean">
+        <![CDATA[
+update T_CMS_CHANNEL 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="channelId" prepend="," removeFirstPrepend="true">
+                <![CDATA[CHANNEL_ID = #channelId#]]>
+            </isNotNull>
+            <isNotNull property="channelName" prepend="," removeFirstPrepend="true">
+                <![CDATA[CHANNEL_NAME = #channelName#]]>
+            </isNotNull>
+            <isNotNull property="templateId" prepend="," removeFirstPrepend="true">
+                <![CDATA[TEMPLATE_ID = #templateId#]]>
+            </isNotNull>
+            <isNotNull property="templateType" prepend="," removeFirstPrepend="true">
+                <![CDATA[TEMPLATE_TYPE = #templateType#]]>
+            </isNotNull>
+            <isNotNull property="templateName" prepend="," removeFirstPrepend="true">
+                <![CDATA[TEMPLATE_NAME = #templateName#]]>
+            </isNotNull>
+            <isNotNull property="channelUrl" prepend="," removeFirstPrepend="true">
+                <![CDATA[CHANNEL_URL = #channelUrl#]]>
+            </isNotNull>
+            <isNotNull property="blockNum" prepend="," removeFirstPrepend="true">
+                <![CDATA[BLOCK_NUM = #blockNum#]]>
+            </isNotNull>
+            <isNotNull property="createTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_TIME = #createTime#]]>
+            </isNotNull>
+            <isNotNull property="pubDate" prepend="," removeFirstPrepend="true">
+                <![CDATA[PUB_DATE = #pubDate#]]>
+            </isNotNull>
+            <isNotNull property="createUser" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_USER = #createUser#]]>
+            </isNotNull>
+            <isNotNull property="updataType" prepend="," removeFirstPrepend="true">
+                <![CDATA[UPDATA_TYPE = #updataType#]]>
+            </isNotNull>
+            <isNotNull property="status" prepend="," removeFirstPrepend="true">
+                <![CDATA[STATUS = #status#]]>
+            </isNotNull>
+            <isNotNull property="operateUser" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPERATE_USER = #operateUser#]]>
+            </isNotNull>
+            <isNotNull property="operateTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[OPERATE_TIME = #operateTime#]]>
+            </isNotNull>
+            <isNotNull property="description" prepend="," removeFirstPrepend="true">
+                <![CDATA[DESCRIPTION = #description#]]>
+            </isNotNull>
+            <isNotNull property="keywords" prepend="," removeFirstPrepend="true">
+                <![CDATA[KEYWORDS = #keywords#]]>
+            </isNotNull>
+            <isNotNull property="titleInfo" prepend="," removeFirstPrepend="true">
+                <![CDATA[TITLE_INFO = #titleInfo#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where CHANNEL_ID = #channelId#
+        ]]>
+    </update>
+
+    <sql id="getCmsChannelBeanCondition">
+         <isNotNull property="channelId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CHANNEL_ID = #channelId#]]>
+         </isNotNull>
+         <isNotNull property="channelName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CHANNEL_NAME = #channelName#]]>
+         </isNotNull>
+         <isNotNull property="templateId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TEMPLATE_ID = #templateId#]]>
+         </isNotNull>
+         <isNotNull property="templateType" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TEMPLATE_TYPE = #templateType#]]>
+         </isNotNull>
+         <isNotNull property="templateName" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TEMPLATE_NAME = #templateName#]]>
+         </isNotNull>
+         <isNotNull property="channelUrl" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CHANNEL_URL = #channelUrl#]]>
+         </isNotNull>
+         <isNotNull property="blockNum" prepend="and" removeFirstPrepend="true">
+             <![CDATA[BLOCK_NUM = #blockNum#]]>
+         </isNotNull>
+         <isNotNull property="createTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATE_TIME = #createTime#]]>
+         </isNotNull>
+         <isNotNull property="pubDate" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PUB_DATE = #pubDate#]]>
+         </isNotNull>
+         <isNotNull property="createUser" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATE_USER = #createUser#]]>
+         </isNotNull>
+         <isNotNull property="updataType" prepend="and" removeFirstPrepend="true">
+             <![CDATA[UPDATA_TYPE = #updataType#]]>
+         </isNotNull>
+         <isNotNull property="status" prepend="and" removeFirstPrepend="true">
+             <![CDATA[STATUS = #status#]]>
+         </isNotNull>
+         <isNotNull property="operateUser" prepend="and" removeFirstPrepend="true">
+             <![CDATA[OPERATE_USER = #operateUser#]]>
+         </isNotNull>
+         <isNotNull property="operateTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[OPERATE_TIME = #operateTime#]]>
+         </isNotNull>
+         <isNotNull property="description" prepend="and" removeFirstPrepend="true">
+             <![CDATA[DESCRIPTION = #description#]]>
+         </isNotNull>
+         <isNotNull property="keywords" prepend="and" removeFirstPrepend="true">
+             <![CDATA[KEYWORDS = #keywords#]]>
+         </isNotNull>
+         <isNotNull property="titleInfo" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TITLE_INFO = #titleInfo#]]>
+         </isNotNull>
+         <isNotNull property="createDateStart" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATE_TIME > #createDateStart#]]>
+         </isNotNull>         
+         <isNotNull property="createDateEnd" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATE_TIME <= ADDDATE(#createDateEnd#,1)]]>
+         </isNotNull>
+         <isNotNull property="pubDateStart" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PUB_DATE > #"pubDateStart"#]]>
+         </isNotNull>         
+         <isNotNull property="pubDateEnd" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PUB_DATE <= ADDDATE(#pubDateEnd#,1)]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getCmsChannelBeanCount" parameterClass="com.fd.fashion.cms.bean.CmsChannelBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_CMS_CHANNEL 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getCmsChannelBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getCmsChannelBean" parameterClass="com.fd.fashion.cms.bean.CmsChannelBean"
+        resultClass="com.fd.fashion.cms.bean.CmsChannelBean">
+        <![CDATA[
+select 
+	CHANNEL_ID	as channelId,
+	CHANNEL_NAME	as channelName,
+	TEMPLATE_ID	as templateId,
+	TEMPLATE_TYPE	as templateType,
+	TEMPLATE_NAME	as templateName,
+	CHANNEL_URL	as channelUrl,
+	BLOCK_NUM	as blockNum,
+	CREATE_TIME	as createTime,
+	PUB_DATE	as pubDate,
+	CREATE_USER	as createUser,
+	UPDATA_TYPE	as updataType,
+	STATUS	as status,
+	OPERATE_USER	as operateUser,
+	OPERATE_TIME	as operateTime,
+	DESCRIPTION	as description,
+	KEYWORDS	as keywords,
+	TITLE_INFO	as titleInfo
+from T_CMS_CHANNEL 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getCmsChannelBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteCmsChannelBean" parameterClass="com.fd.fashion.cms.bean.CmsChannelBean">
+        <![CDATA[
+delete from T_CMS_CHANNEL where CHANNEL_ID=#channelId#
+        ]]>
+    </delete>
+
+    <select id="getLastChannelId" resultClass="string">
+        <![CDATA[
+select max(CHANNEL_ID) from T_CMS_CHANNEL
+        ]]>
+    </select>
+</sqlMap>

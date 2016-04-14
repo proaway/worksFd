@@ -1,0 +1,21 @@
+var commission = $commission;
+#if($configNodes)
+var configNodes = $JSONUtil.list2JSON($configNodes);
+var catConfig = new CatConfig('', configNodes);
+if(productConfig != null) {
+	catConfig.setProductConfig(productConfig);
+}
+#else
+new CatConfig('', []);
+#end
+
+#if($attrNodes)
+var attrNodes = $JSONUtil.list2JSON($attrNodes);
+var catAttr = new CatAttribute('', attrNodes);
+if(productAttrs != null) {
+	catAttr.setProductAttribute(productAttrs);
+}
+#else
+new CatAttribute('', []);
+#end
+

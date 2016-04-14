@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"><head>
+  <title>买家详情 <!--MICCMS:Title--></title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <meta content="<!--MICCMS:Meta-Description-->" name="description" />
+  <meta content="<!--MICCMS:Meta-Keywords-->" name="keywords" />
+  <meta content="" name="author" />
+  <link type="image/ico" href="/static/web/images/logo-ico.ico" rel="shortcut icon" /> 
+  <link href="/static/prototype/shopmic-manage/css/bootstrap.min.css" type="text/css" rel="stylesheet" />
+  <link href="/static/prototype/shopmic-manage/css/bootstrap-responsive.min.css" type="text/css" rel="stylesheet" />
+  <link href="/static/prototype/shopmic-manage/css/whole.css" type="text/css" rel="stylesheet" />
+  <link href="/static/prototype/shopmic-manage/css/shopmic_m.css" type="text/css" rel="stylesheet" />
+  <script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/jquery-1.7.2.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/static/prototype/shopmic-manage/css/showLoading.css"/>
+<script language="javascript" type="text/javascript" src="/static/prototype/shopmic-manage/js/jquery.showLoading.min.js"></script>
+</head>
+<body>
+
+  <div style="width:990px;" class="mar_bottom_20 pad_bottom_80 label_cursor_auto buyer_details_container" id="container">
+	$screen_placeholder
+	
+    <div id="accordion1" class="accordion">
+		$navigation.setTemplate('buyer,HistOrder.html')
+    </div><!-- E 1 -->
+    
+    <div id="accordion2" class="accordion">
+         $navigation.setTemplate('buyer,BuyerProduct.html')
+    </div><!-- E 2 -->
+    
+    <div id="accordion3" class="accordion">
+         $navigation.setTemplate('buyer,BuyerCart.html')
+    </div><!-- E 3 -->
+    
+    <div id="accordion4" class="accordion">
+         $navigation.setTemplate('buyer,MyFavorite.html')
+    </div><!-- E 4 -->
+    
+    <div id="accordion5" class="accordion">
+         $navigation.setTemplate('buyer,ViewHistory.html')
+    </div><!-- E 5 -->
+    
+    <div id="accordion6" class="accordion">
+          $navigation.setTemplate('buyer,SaleEmail.html')
+    </div><!-- E 6 -->
+    
+    <div id="accordion7" class="accordion">
+          $navigation.setTemplate('buyer,SystemEmail.html') 
+    </div><!-- E 7 -->
+    
+    <div class="well well-small alert alert-success black mar_top_10" id="remarks_info">
+		$navigation.setTemplate('buyer,BuyerMemo.html') 	
+    </div><!-- E remarks_info -->
+    
+    <br class="clear" />
+
+	
+  </div><!-- E container -->
+  <br class="clear" />
+    
+  <div id="layer_box">
+   <p class="layer_box_tit"><a href="javascript:();">新支付</a></p>
+   <p class="layer_box_tit"><a href="javascript:();">新订单</a></p>
+  </div>
+<!-- S javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="/static/prototype/shopmic-manage/js/jquery-1.7.2.min.js" type="text/javascript" language="javascript"></script>
+<script src="/static/prototype/shopmic-manage/js/bootstrap.min.js" type="text/javascript" language="javascript"></script>
+<script type="text/javascript">
+(function() {
+    var backToTopTxt = "",  backToTopEle = jQuery('<div class="backToTop_pro"></div>').appendTo(jQuery("body"))
+    .text( backToTopTxt).attr("title",  backToTopTxt).click(function() {
+        jQuery("html, body").animate({ scrollTop: 0 }, 120);
+	}),  backToTopFun = function() {
+	    var st = jQuery(document).scrollTop(), winh = jQuery(window).height();
+	    (st > 0)?  backToTopEle.show():  backToTopEle.hide();
+	    //IE6下的定位
+	    if (!window.XMLHttpRequest) {
+	         backToTopEle.css("top", st + winh - 166);
+	    }
+	};
+	jQuery(window).bind("scroll", backToTopFun);
+	jQuery(function() { backToTopFun(); });
+})();
+</script><div class="backToTop_pro" title="" style="display: none;"></div>
+
+
+</body></html>

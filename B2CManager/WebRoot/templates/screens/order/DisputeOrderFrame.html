@@ -1,0 +1,75 @@
+##纠纷处理
+<div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" class="modal hide fade" id="dispute_manage">
+<div class="modal-header">
+<button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+<h5 id="myModalLabel">纠纷处理</h5>
+</div>
+<div class="modal-body">
+
+<!--<h5 class="mar_top_3 mar_bottom_15">选择协议内容：</h5>-->
+
+<ul class="unstyled">
+<li><label class="radio">
+    <input type="radio" name="manage" value="1、买家不退货，卖家全额退款，不重新发货" checked="checked">
+    1、买家不退货，卖家全额退款，不重新发货
+  </label></li>
+  <li><label class="radio">
+    <input type="radio" name="manage" value="2、买家不退货，卖家部分退款，不重新发货，退款金额：">
+    2、买家不退货，卖家部分退款，不重新发货，退款金额：
+  </label><input type="text" class="input-mini display_block mar_bottom_0" placeholder="金额"></li>
+  <li> <label class="radio">
+    <input type="radio" name="manage" value="3、买家不退货，卖家不退款，全部重新发货">
+    3、买家不退货，卖家不退款，全部重新发货
+  </label></li>
+  <li><label class="radio">
+    <input type="radio" name="manage" value="4、买家不退货，卖家部分退款，部分重新发货，退款金额：">
+    4、买家不退货，卖家部分退款，部分重新发货，退款金额：
+  </label><input type="text" class="input-mini display_block mar_bottom_0" placeholder="金额"></li>
+  <li><label class="radio">
+    <input type="radio" name="manage" value="5、买家不退货，卖家不退款，部分重新发货">
+    5、买家不退货，卖家不退款，部分重新发货
+  </label></li>
+  <li><label class="radio">
+    <input type="radio" name="manage" value="6、买家全部退货，卖家全部退款，不重新发货">
+    6、买家全部退货，卖家全部退款，不重新发货
+  </label></li>
+  <li><label class="radio">
+    <input type="radio" name="manage" value="7、买家全部退货，卖家部分退款，不重新发货，退款金额：">
+    7、买家全部退货，卖家部分退款，不重新发货，退款金额：
+  </label><input type="text" class="input-mini display_block mar_bottom_0" placeholder="金额"></li>
+  <li><label class="radio">
+    <input type="radio" name="manage" value="8、买家全部退货，卖家不退款，全部重新发货">
+    8、买家全部退货，卖家不退款，全部重新发货
+  </label></li>
+  <li><label class="radio">
+    <input type="radio" name="manage" value="9、买家部分退货，卖家部分退款，不重新发货，退款金额：">
+    9、买家部分退货，卖家部分退款，不重新发货，退款金额：
+  </label><input type="text" class="input-mini display_block mar_bottom_0" placeholder="金额"></li>
+  <li><label class="radio">
+    <input type="radio" name="manage" value="10、买家部分退货，卖家不退款，部分重新发货">
+    10、买家部分退货，卖家不退款，部分重新发货
+  </label></li>
+  <li><label class="radio">
+    <input type="radio" name="manage" value="11、关闭纠纷，无需退款退货">
+    11、关闭纠纷，无需退款退货
+  </label></li>
+</ul>
+<br class="clear">
+<table cellspacing="0" cellpadding="0" border="0" class="mar_top_10 mar_left_20">
+  <tbody><tr>
+<td class="v_top"><label class="mar_right_10 mar_top_5">备注：</label></td>
+<td><textarea rows="3" class="input-xlarge" placeholder="备注" style="resize: none;"></textarea>
+  </td></tr>
+</tbody></table>
+
+</div>
+<div class="modal-footer">
+<button aria-hidden="true" data-dismiss="modal" class="btn">取消</button>
+<button aria-hidden="true" data-dismiss="modal" class="btn btn-primary">提交</button>
+</div>
+</div><!-- E dispute_manage -->
+<script>
+jQuery('#dispute_manage').modal({
+	show:true
+})
+</script>

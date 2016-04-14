@@ -1,0 +1,42 @@
+<form id="pswForm">
+<input name="userId" type="hidden" value="$userId"/>
+<div id="tit" align="left">修改用户密码</div>
+<div id="tit1" align="left" valign="top">
+  <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" >
+    <tr >
+      <td  class="alignR"  >用户名称： </td>
+      <td>$loginName</td>
+    </tr>
+    <tr>
+      <td class="alignR"><span class="F00">*</span>新密码：</td>
+      <td><input name="psw" id="psw" type="password" /></td>
+    </tr>
+    <tr>
+      <td class="alignR"><span class="F00">*</span>重复密码：</td>
+      <td><input name="pswrepeat" id="pswrepeat" type="password" /></td>
+    </tr>
+  </table>
+</div>
+<div id="tit1" align="center">
+  <input type="button" value="保  存"  onclick="changePsw()"/>
+  <input type="button" value="取  消"  onclick="closeWindown()"/>
+</div>
+</form>
+<script>
+function changePsw() {
+	if(jQuery("#psw").val() != jQuery("#pswrepeat").val()) {
+		alert('两次密码不一致');
+		return;
+	}
+	var url = "$link.setAction('user.Ajaxchangepsw')?" + Math.random();
+	var param = form2JSON("pswForm");
+	jQuery.post(url, param, function(data){
+		if(data==1) {
+			alert('修改成功');
+			closeWindown();
+		} else {
+			alert('修改失败');
+		}
+	});
+}
+</script>

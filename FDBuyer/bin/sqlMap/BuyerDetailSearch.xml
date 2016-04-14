@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+
+	<select id="getBuyerOrderHistoryCount" parameterClass="com.fd.fashion.buyer.bean.BuyerBean" resultClass="java.lang.Integer">
+	 	<![CDATA[
+	 	SELECT count(0) from 
+(	
+		SELECT 
+				o.ORDER_ID as orderId,
+				o.ITEM_TOTAL as total,
+				o.CREATE_DATE as createDate,
+				os.ORDER_STATUS  as orderStatus,
+				tcos.STATUS_CN   as orderStatusCN
+		from t_order o ,tc_order_status tcos,t_orderstatus_info os
+		where o.ORDER_STATUS = tcos.STATUS_CODE 
+				and o.ORDER_ID=os.ORDER_ID
+				and o.BUYER_ID=#buyerId#
+		group by o.ORDER_ID
+		having max(os.CREATE_TIME)
+		order by o.CREATE_DATE desc
+	) tt	
+		 ]]>
+	</select>
+	
+	<select id="getBuyerOrderHistory"  parameterClass="com.fd.fashion.buyer.bean.BuyerBean" resultClass="com.fd.fashion.order.vo.OrderVo">
+		 <![CDATA[
+		 SELECT 
+				o.ORDER_ID as orderId,
+				o.ITEM_TOTAL as total,
+				o.CREATE_DATE as createDate,
+				os.ORDER_STATUS  as orderStatus,
+				tcos.STATUS_CN   as orderStatusCN,
+				o.PAYMENT_INFO_ID as paymentInfoId
+		from t_order o ,tc_order_status tcos,t_orderstatus_info os
+		where o.ORDER_STATUS = tcos.STATUS_CODE 
+				and o.ORDER_ID=os.ORDER_ID
+				and o.BUYER_ID=#buyerId#
+		group by o.ORDER_ID
+		having max(os.CREATE_TIME)
+		order by o.CREATE_DATE desc
+			
+		  ]]>
+		  <dynamic>
+			<isNotNull property="pageInfo">
+				<![CDATA[
+			limit #pageInfo.beginRowNum#,#pageInfo.endRowNum#
+            ]]>
+			</isNotNull>
+		</dynamic>
+	</select>
+	
+	<select id="getViewerProductsCount" parameterClass="java.lang.Long" resultClass="java.lang.Integer">
+	<![CDATA[
+			select count(tt.PRODUCT_ID) from (
+SELECT DISTINCT t.PRODUCT_ID from t_order_product t where t.ORDER_ID in (SELECT o.ORDER_ID from t_order o where o.BUYER_ID=#buyerId#))tt
+       ]]>
+	
+	</select>
+	
+	<select id="getViewerProducts" parameterClass="com.fd.fashion.product.bean.BuyerProductListBean" resultClass="com.fd.fashion.product.bean.ProductBean">
+	<![CDATA[
+			SELECT 
+			DISTINCT 
+			t.PRODUCT_ID as productId
+			from t_order_product t 
+			where t.ORDER_ID in (SELECT o.ORDER_ID from t_order o where o.BUYER_ID=#buyerId#)
+       ]]>
+       <dynamic>
+			<isNotNull property="pageInfo">
+				<![CDATA[
+			limit #pageInfo.beginRowNum#,#pageInfo.endRowNum#
+            ]]>
+			</isNotNull>
+		</dynamic>
+	</select>
+	
+	<select id="getBuyerMemoList" parameterClass="java.lang.Long" resultClass="com.fd.fashion.buyer.bean.BuyerMemoBean" >
+	<![CDATA[
+	SELECT h.BUYER_ID as buyerId,
+			 h.CREATE_TIME as createDate,
+			 h.ID        as id,
+			 h.MEMO			 as memo,
+			 h.OPERATOR  as operator
+	from t_buyer_memo_history h 
+	where h.BUYER_ID=#buyerId#
+	order by h.CREATE_TIME desc
+       ]]>
+	</select>
+	
+	<insert id="insertBuyerMemo" parameterClass="com.fd.fashion.buyer.bean.BuyerMemoBean">
+	 <![CDATA[
+insert into t_buyer_memo_history
+  (CREATE_TIME, MEMO, BUYER_ID, OPERATOR)
+values
+  (#createDate#, #memo#, #buyerId#, #operator#)
+        ]]>
+		<selectKey keyProperty="id" resultClass="long">
+            <![CDATA[select @@identity as id]]>
+		</selectKey>
+	</insert>
+	
+	<select id="buyerEmailByTypeAndBuyerIdCount" parameterClass="com.fd.fashion.buyer.bean.EmailInfoBean" 
+	resultClass="java.lang.Integer">
+		<![CDATA[
+SELECT 
+count(*)
+from t_sent_email_history h
+where h.BUYER_ID=#buyerId# and h.EMAIL_TYPE=#emailType#
+ ]]>
+	</select>
+	
+	<select id="buyerEmailListByTypeAndBuyerId" parameterClass="com.fd.fashion.buyer.bean.EmailInfoBean"
+	resultClass="com.fd.fashion.buyer.bean.EmailInfoBean">
+	<![CDATA[
+SELECT 
+	h.BUYER_ID  as buyerId,
+	h.EMAIL_CODE    as emailCode,
+	h.EMAIL_TITLE    as emailTitle,
+	h.EMAIL_TYPE    as emailType,
+	h.ID   	   as id,
+	h.OPEN_TIME    as openTime,
+	h.SENT_TIME    as sendTime,
+	h.RECIPIENT_EMAIL   as recipientEmail,
+	h.SENDER_EMAIL      as senderEmail 
+from t_sent_email_history h
+where h.BUYER_ID=#buyerId# and h.EMAIL_TYPE=#emailType#
+ ]]>
+		<dynamic>
+			<isNotNull property="pageInfo">
+				<![CDATA[
+			limit #pageInfo.beginRowNum#,#pageInfo.endRowNum#
+            ]]>
+			</isNotNull>
+		</dynamic>
+	</select>
+	
+	<select id="getBuyerPaymentType" parameterClass="java.lang.Long" resultClass="com.fd.payment.bean.PaymentTypeBean">
+	<![CDATA[
+			SELECT 
+			t.PAYMENT_TYPE			as paymentType,
+			t.DESCRIPTION 			as name
+			from t_order o,t_payment_type t 
+			where o.BUYER_ID = #buyerId# and  o.PAYMENT_TYPE = t.PAYMENT_TYPE and  o.PAYMENT_TYPE is not null GROUP BY o.PAYMENT_TYPE
+     ]]>
+	</select>
+	
+	<select id="getBuyerOrderCount" parameterClass="java.lang.Long" resultClass="com.fd.fashion.buyer.vo.BuyerVo">
+		<![CDATA[
+SELECT
+	count(DISTINCT o.ORDER_ID) AS paymentOrderCount,
+	sum(DISTINCT o.TOTAL) AS paymentOrderTotal,
+	sum(DISTINCT o.TOTAL) / count(DISTINCT o.ORDER_ID) AS paymentOrderAverage
+FROM
+	t_buyer b,
+	t_order o,
+	t_orderstatus_info oif
+WHERE
+	oif.ORDER_ID = o.ORDER_ID
+AND o.BUYER_ID=#buyerId#
+AND oif.ORDER_STATUS = 'OS001'
+     ]]>
+	</select>
+	
+	<select id="getBuyerWaitOrderCount" parameterClass="java.lang.Long" resultClass="com.fd.fashion.buyer.vo.BuyerVo">
+		<![CDATA[
+SELECT
+	count(a.order_id) AS waitForPayOrderCount,
+	sum(a.TOTAL) AS waitForPayOrderTotal
+FROM
+	(
+		SELECT DISTINCT
+			o.ORDER_ID,
+			o.TOTAL
+		FROM
+			t_orderstatus_info oif,
+			t_order o
+		WHERE
+			oif.ORDER_ID = o.ORDER_ID
+		AND oif.ORDER_STATUS IN ('OA001', 'OA003')
+		AND o.BUYER_ID=#buyerId#
+	) a
+     ]]>
+	</select>
+	
+	<select id="getBuyerRefundOrderCount" parameterClass="java.lang.Long" resultClass="com.fd.fashion.buyer.vo.BuyerVo">
+		<![CDATA[
+SELECT
+	count(a.order_id) AS refundOrderCount,
+	sum(a.REFUND_AMOUNT) AS refundOrderTotal
+FROM
+	(
+		SELECT DISTINCT
+			o.order_id,
+			o.REFUND_AMOUNT
+		FROM
+			t_orderstatus_info oif,
+			t_order o
+		WHERE
+			oif.ORDER_ID = o.ORDER_ID
+		AND o.BUYER_ID=#buyerId#
+		AND oif.ORDER_STATUS = 'OR214'
+	) a
+     ]]>
+	</select>
+	
+	<select id="getBuyerCreateOrderDayCount" parameterClass="java.lang.Long" resultClass="java.lang.Integer">
+				<![CDATA[
+			select count( distinct  substr(o.CREATE_DATE,1,10)) from t_order o WHERE o.BUYER_ID=#buyerId#
+            ]]>
+	</select>
+	
+	<select id="getProductRecentyBuyTime" parameterClass="java.util.HashMap" resultClass="com.fd.fashion.order.bean.OrderBean">
+		<![CDATA[ 
+		SELECT 
+			o.ORDER_ID as orderId,
+			o.CREATE_DATE as createDate 
+		from t_order o where o.ORDER_ID in (
+			SELECT p.ORDER_ID 
+			from t_order_product p 
+			where p.PRODUCT_ID=#productId#) 
+		and o.BUYER_ID=#buyerId# order by o.CREATE_DATE desc
+		 ]]>
+		
+	</select>
+	
+</sqlMap>

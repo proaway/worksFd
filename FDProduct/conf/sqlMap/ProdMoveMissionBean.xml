@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertProdMoveMissionBean" parameterClass="com.fd.fashion.product.bean.ProdMoveMissionBean">
+        <![CDATA[
+insert into T_PROD_MOVE_MISSION
+  (WEBSITE, STORE_URL, STORE_CODE, VERIFY_CODE, VERIFY_URL, VERIFY_STATUS, VERIFY_TIME, PRODUCT_COUNT, SYNC_COUNT, PRODUCT_STATUS, SYNC_FREQ, SYNC_STATUS, CREATE_TIME, UPDATE_TIME, STATUS)
+values
+  (#website#, #storeUrl#, #storeCode#, #verifyCode#, #verifyUrl#, #verifyStatus#, #verifyTime#, #productCount#, #syncCount#, #productStatus#, #syncFreq#, #syncStatus#, #createTime#, #updateTime#, #status#)
+        ]]>
+        <selectKey keyProperty="missionId" resultClass="long">
+            <![CDATA[select @@identity as missionId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateProdMoveMissionBean" parameterClass="com.fd.fashion.product.bean.ProdMoveMissionBean">
+        <![CDATA[
+update T_PROD_MOVE_MISSION 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="missionId" prepend="," removeFirstPrepend="true">
+                <![CDATA[MISSION_ID = #missionId#]]>
+            </isNotNull>
+            <isNotNull property="website" prepend="," removeFirstPrepend="true">
+                <![CDATA[WEBSITE = #website#]]>
+            </isNotNull>
+            <isNotNull property="storeUrl" prepend="," removeFirstPrepend="true">
+                <![CDATA[STORE_URL = #storeUrl#]]>
+            </isNotNull>
+            <isNotNull property="storeCode" prepend="," removeFirstPrepend="true">
+                <![CDATA[STORE_CODE = #storeCode#]]>
+            </isNotNull>
+            <isNotNull property="verifyCode" prepend="," removeFirstPrepend="true">
+                <![CDATA[VERIFY_CODE = #verifyCode#]]>
+            </isNotNull>
+            <isNotNull property="verifyUrl" prepend="," removeFirstPrepend="true">
+                <![CDATA[VERIFY_URL = #verifyUrl#]]>
+            </isNotNull>
+            <isNotNull property="verifyStatus" prepend="," removeFirstPrepend="true">
+                <![CDATA[VERIFY_STATUS = #verifyStatus#]]>
+            </isNotNull>
+            <isNotNull property="verifyTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[VERIFY_TIME = #verifyTime#]]>
+            </isNotNull>
+            <isNotNull property="productCount" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_COUNT = #productCount#]]>
+            </isNotNull>
+            <isNotNull property="syncCount" prepend="," removeFirstPrepend="true">
+                <![CDATA[SYNC_COUNT = #syncCount#]]>
+            </isNotNull>
+            <isNotNull property="productStatus" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_STATUS = #productStatus#]]>
+            </isNotNull>
+            <isNotNull property="syncFreq" prepend="," removeFirstPrepend="true">
+                <![CDATA[SYNC_FREQ = #syncFreq#]]>
+            </isNotNull>
+            <isNotNull property="syncStatus" prepend="," removeFirstPrepend="true">
+                <![CDATA[SYNC_STATUS = #syncStatus#]]>
+            </isNotNull>
+            <isNotNull property="createTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[CREATE_TIME = #createTime#]]>
+            </isNotNull>
+            <isNotNull property="updateTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[UPDATE_TIME = #updateTime#]]>
+            </isNotNull>
+            <isNotNull property="status" prepend="," removeFirstPrepend="true">
+                <![CDATA[STATUS = #status#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where MISSION_ID = #missionId#
+        ]]>
+    </update>
+
+    <sql id="getProdMoveMissionBeanCondition">
+         <isNotNull property="missionId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MISSION_ID = #missionId#]]>
+         </isNotNull>
+         <isNotNull property="website" prepend="and" removeFirstPrepend="true">
+             <![CDATA[WEBSITE = #website#]]>
+         </isNotNull>
+         <isNotNull property="storeUrl" prepend="and" removeFirstPrepend="true">
+             <![CDATA[STORE_URL = #storeUrl#]]>
+         </isNotNull>
+        <isNotNull property="storeCode" prepend="and" removeFirstPrepend="true">
+            <![CDATA[STORE_CODE = #storeCode#]]>
+         </isNotNull>
+         <isNotNull property="verifyCode" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VERIFY_CODE = #verifyCode#]]>
+         </isNotNull>
+         <isNotNull property="verifyUrl" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VERIFY_URL = #verifyUrl#]]>
+         </isNotNull>
+         <isNotNull property="verifyStatus" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VERIFY_STATUS = #verifyStatus#]]>
+         </isNotNull>
+         <isNotNull property="verifyTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VERIFY_TIME = #verifyTime#]]>
+         </isNotNull>
+         <isNotNull property="productCount" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PRODUCT_COUNT = #productCount#]]>
+         </isNotNull>
+         <isNotNull property="syncCount" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SYNC_COUNT = #syncCount#]]>
+         </isNotNull>
+         <isNotNull property="productStatus" prepend="and" removeFirstPrepend="true">
+             <![CDATA[PRODUCT_STATUS = #productStatus#]]>
+         </isNotNull>
+         <isNotNull property="syncFreq" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SYNC_FREQ = #syncFreq#]]>
+         </isNotNull>
+         <isNotNull property="syncStatus" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SYNC_STATUS = #syncStatus#]]>
+         </isNotNull>
+         <isNotNull property="createTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[CREATE_TIME = #createTime#]]>
+         </isNotNull>
+         <isNotNull property="updateTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[UPDATE_TIME = #updateTime#]]>
+         </isNotNull>
+         <isNotNull property="status" prepend="and" removeFirstPrepend="true">
+             <![CDATA[STATUS = #status#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getProdMoveMissionBeanCount" parameterClass="com.fd.fashion.product.bean.ProdMoveMissionBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_PROD_MOVE_MISSION 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getProdMoveMissionBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getProdMoveMissionBean" parameterClass="com.fd.fashion.product.bean.ProdMoveMissionBean"
+        resultClass="com.fd.fashion.product.bean.ProdMoveMissionBean">
+        <![CDATA[
+select 
+	MISSION_ID	as missionId,
+	WEBSITE	as website,
+	STORE_URL	as storeUrl,
+	STORE_CODE	as storeCode,
+	VERIFY_CODE	as verifyCode,
+	VERIFY_URL	as verifyUrl,
+	VERIFY_STATUS	as verifyStatus,
+	VERIFY_TIME	as verifyTime,
+	PRODUCT_COUNT	as productCount,
+	SYNC_COUNT	as syncCount,
+	PRODUCT_STATUS	as productStatus,
+	SYNC_FREQ	as syncFreq,
+	SYNC_STATUS	as syncStatus,
+	CREATE_TIME	as createTime,
+	UPDATE_TIME	as updateTime,
+	STATUS	as status
+from T_PROD_MOVE_MISSION 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getProdMoveMissionBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteProdMoveMissionBean" parameterClass="com.fd.fashion.product.bean.ProdMoveMissionBean">
+        <![CDATA[
+delete from T_PROD_MOVE_MISSION where MISSION_ID=#missionId#
+        ]]>
+    </delete>
+
+</sqlMap>

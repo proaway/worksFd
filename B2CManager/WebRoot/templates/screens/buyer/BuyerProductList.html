@@ -1,0 +1,46 @@
+#if($productList)
+    <form id="listForm" name="listForm" action="$link.setPage('buyer,BuyerProductList.html')" method="get">
+        <input type="hidden" id="buyerId" name="buyerId" value="$buyerId" />
+
+        <div class="accordion-body">
+            <table cellspacing="0" cellpadding="0" border="0" style="margin-bottom:0px;" class="table table-striped table-hover border_bottom">
+                <br class="clear">
+                    <form name="listForm" id="listForm" method="get">
+                        <h4 class="mar_top_15 mar_bottom_20">买家购买过的产品</h4>
+                        <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-striped table-hover center_t font12 tl_mt3_mb3">
+                            <thead>
+                                <tr>
+                                    <th width="120px">SKU</th>
+                                    <th width="60px">产品图片</th>
+                                    <th>产品名称</th>
+                                    <th width="100px">单价（$）</th>
+                                    <th width="80px">购买数量</th>
+                                    <th>产品分类</th>
+                                    <th>时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                #foreach($prod in $productList)
+                                    <tr class="v_middle">
+                                        <td>
+                                            <a class="" target="_blank" href="$RewriteUtil.getProductUrl($prod.product.productName, $prod.product.productId)">$!prod.product.sku</a>
+                                        </td>
+                                        <td>
+                                            <a class="" target="_blank" href="$RewriteUtil.getProductUrl($prod.product.productName, $prod.product.productId)">
+                                                <img style="width:50px; height:50px;" title="$StringUtil.substring($prod.product.productName,10)" alt="$StringUtil.substring($prod.product.productName,10)" class="img-polaroid" src="$RewriteUtil.getImageUrl($prod.firstImage.imageUrl, 'm')"></a>
+</td>
+<td>
+    <a class="" target="_blank" href="$RewriteUtil.getProductUrl($prod.product.productName, $prod.product.productId)">$!prod.product.productName</a>
+</td>
+<td>$!prod.priceVo.price</td>
+<td>$!prod.product.quantity</td>
+<td>$!prod.category.catNameCn</td>
+<td>$!StringUtil.getDateString($!prod.product.createTime,'yyyy-MM-dd HH:mm:ss')</td>
+</tr>
+                                #end
+</tbody>
+</table>
+#parse("screens/Nap.html")
+</form>
+</div>
+#end

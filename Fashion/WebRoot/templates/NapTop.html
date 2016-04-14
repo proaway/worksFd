@@ -1,0 +1,39 @@
+##分页   要传pageInfo过来
+<table>
+<!--<table width="100%" border="0" cellpadding="0" cellspacing="0">-->
+  <tr>
+    <td><span>每页$!pageInfo.pageSize 条&nbsp;&nbsp;共有$!pageInfo.recordCount 条/$!pageInfo.pageCount 页 
+      ##下一页   尾页
+      #if($pageInfo.pageIndex==$pageInfo.prePageNo||$pageInfo.prePageNo==0)
+          上一页 首页        
+      #else
+        <a href="javascript:TurnPage('$pageInfo.prePageNo','listForm')">上一页</a> <a href="javascript:TurnPage('$pageInfo.startNo','listForm')">首页</a>
+      #end         
+    
+   ##for 循环
+     #if($pageInfo.rangeMin)#set($beginNo=$pageInfo.rangeMin)#end
+     #if($pageInfo.rangeMax)#set($endNo=$pageInfo.rangeMax)#end
+     #if($pageInfo.rangeMin && $pageInfo.rangeMax)
+   #foreach($i in [$beginNo ..$endNo] )   
+       #if($i==$pageInfo.pageIndex)   
+       ##不加链接  
+       <font color="red">$i</font>
+       #else
+       ##加上链接
+       <a href="javascript:TurnPage('$i','listForm')">$i</a>
+       #end
+   #end       
+   #end
+ ##下一页   尾页
+   #if($pageInfo.pageIndex==$pageInfo.nextPageNo||$pageInfo.nextPageNo==0)   
+    下一页 尾页
+   #else
+     <a href="javascript:TurnPage('$pageInfo.nextPageNo','listForm')">下一页</a> <a href="javascript:TurnPage('$pageInfo.endNo','listForm')">尾页</a>
+   #end    
+     &nbsp;&nbsp;
+    <input value="$!pageInfo.pageIndex" id="pageIndexTop" name="pageIndexTop" type="text" size="4" style="height:18px;" onchange="document.getElementById('pageIndex').value=document.getElementById('pageIndexTop').value;return true;"  onkeypress="if(event.keyCode=='13'){ document.getElementById('go').focus(); }"/>
+      &nbsp;&nbsp;<input type="button" name="go"  onclick="TurnPage ('goto','listForm')" value="确定"  />
+    </span>
+</td>
+    </tr>
+  </table>

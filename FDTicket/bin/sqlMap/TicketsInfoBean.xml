@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertTicketsInfoBean" parameterClass="com.fd.fashion.ticket.bean.TicketsInfoBean">
+        <![CDATA[
+insert into T_TICKETS_INFO
+  (TICKETS_ID, SENDER, MESSAGE, EMAIL, SEND_TIME,IDENTITY)
+values
+  (#ticketsId#, #sender#, #message#,#email#, #sendTime#,#identity#)
+        ]]>
+        <selectKey keyProperty="ticketsInfoId" resultClass="long">
+            <![CDATA[select @@identity as ticketsInfoId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateTicketsInfoBean" parameterClass="com.fd.fashion.ticket.bean.TicketsInfoBean">
+        <![CDATA[
+update T_TICKETS_INFO 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="ticketsInfoId" prepend="," removeFirstPrepend="true">
+                <![CDATA[TICKETS_INFO_ID = #ticketsInfoId#]]>
+            </isNotNull>
+            <isNotNull property="ticketsId" prepend="," removeFirstPrepend="true">
+                <![CDATA[TICKETS_ID = #ticketsId#]]>
+            </isNotNull>
+            <isNotNull property="sender" prepend="," removeFirstPrepend="true">
+                <![CDATA[SENDER = #sender#]]>
+            </isNotNull>
+            <isNotNull property="message" prepend="," removeFirstPrepend="true">
+                <![CDATA[MESSAGE = #message#]]>
+            </isNotNull>
+            <isNotNull property="email" prepend="," removeFirstPrepend="true">
+                <![CDATA[EMAIL = #email#]]>
+            </isNotNull>
+            <isNotNull property="sendTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[SEND_TIME = #sendTime#]]>
+            </isNotNull>
+            <isNotNull property="sendTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[SEND_TIME = #sendTime#]]>
+            </isNotNull>
+             <isNotNull property="identity" prepend="," removeFirstPrepend="true">
+                <![CDATA[IDENTITY = #identity#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where TICKETS_INFO_ID = #ticketsInfoId#
+        ]]>
+    </update>
+
+    <sql id="getTicketsInfoBeanCondition">
+         <isNotNull property="ticketsInfoId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TICKETS_INFO_ID = #ticketsInfoId#]]>
+         </isNotNull>
+         <isNotNull property="ticketsId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[TICKETS_ID = #ticketsId#]]>
+         </isNotNull>
+         <isNotNull property="sender" prepend="and" removeFirstPrepend="true">
+             <![CDATA[SENDER = #sender#]]>
+         </isNotNull>
+         <isNotNull property="message" prepend="and" removeFirstPrepend="true">
+             <![CDATA[MESSAGE = #message#]]>
+         </isNotNull>
+         <isNotNull property="email" prepend="and" removeFirstPrepend="true">
+             <![CDATA[EMAIL = #email#]]>
+         </isNotNull>
+         <isNotNull property="identity" prepend="and" removeFirstPrepend="true">
+             <![CDATA[IDENTITY = #identity#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getTicketsInfoBeanCount" parameterClass="com.fd.fashion.ticket.bean.TicketsInfoBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_TICKETS_INFO 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getTicketsInfoBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getTicketsInfoBean" parameterClass="com.fd.fashion.ticket.bean.TicketsInfoBean"
+        resultClass="com.fd.fashion.ticket.bean.TicketsInfoBean">
+        <![CDATA[
+select 
+	TICKETS_INFO_ID	as ticketsInfoId,
+	TICKETS_ID	as ticketsId,
+	SENDER	as sender,
+	MESSAGE	as message,
+	EMAIL	as email,
+	SEND_TIME	as sendTime,
+	IDENTITY    as identity
+from T_TICKETS_INFO 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getTicketsInfoBeanCondition"/>
+        </dynamic>
+        <![CDATA[
+			order by SEND_TIME desc
+        ]]>
+         <dynamic>
+			<isNotNull property="pageInfo">
+				<![CDATA[
+			limit #pageInfo.beginRowNum#,#pageInfo.endRowNum#
+	           ]]>
+			</isNotNull>
+		</dynamic>
+    </select>
+
+    <delete id="deleteTicketsInfoBean" parameterClass="com.fd.fashion.ticket.bean.TicketsInfoBean">
+        <![CDATA[
+delete from T_TICKETS_INFO where TICKETS_INFO_ID=#ticketsInfoId#
+        ]]>
+    </delete>
+
+</sqlMap>

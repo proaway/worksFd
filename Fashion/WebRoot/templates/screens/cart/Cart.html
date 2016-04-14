@@ -1,0 +1,215 @@
+$page.setTitle("Cart")
+
+ #if(!$cartProducts || $cartProducts.size() == 0)         
+          	<!--如果购物车为空，可以显示这部分，修改display属性-->
+          	<!--S Cart null-->
+          	<div class="cart_null_con" >
+            	<p class="reg_suc_now">
+                	<span>Your shopping cart is empty. <a href="#" style="color:#F60;">Start shopping now!</a></span>
+                </p>
+                <br />   
+            </div>
+          	<!--E Cart null-->
+ #else           
+            <!--如果购物车不为空，可以显示这部分，修改display属性-->
+            <!--S Cart-->
+            <div class="cart_content" style="display:block;">
+            	
+                <!--S Cart left-->
+                <div class="cart_left">
+                
+                    <div class="cart_left_top_btn">
+                        <input name=""  value="Continue Shopping" type="button" class="btn_cont" onclick="javascript:window.location.href='/static/prototype/product_fashion/index.shtml';" />
+                        &nbsp;
+                        <input name="" type="submit" class="btn_checkout" value="Proceed to Checkout" onclick="checkOut();" />
+                    </div>
+                    <br class="clearfloat" />
+                    <div class="cart_tit">
+                    	<h2 class="cart_tit_h2"><span style=" line-height:28px;">Cart (Review Your Order)</span></h2>
+                    </div>
+                    <table cellpadding="0" cellspacing="0" class="cart_tab">
+                        <tr class="cart_tab_tit">
+                          <td width="10%">&nbsp;</td>
+                          <td width="44%" align="center"><strong>Item</strong></td>
+                          <td width="12%"><strong>Unit Price</strong></td>
+                          <td width="8%"><strong>Quantity</strong></td>
+                          <td width="10%"><strong>Item Cost</strong></td>
+                          <td width="3%">&nbsp;</td>
+                        </tr>
+                       	#set($productIds="")
+                        #foreach($product in $cartProducts)
+                        #set($productIds=$productIds+$product.productId+",")
+	                        <tr id="${product.productId}_$!{product.mainConfigId}_$!{product.subConfigId}" class="cart_tr_bot_bor">
+	                            <td align="center" class="valign_m"><a href="$ru.getProductUrl($product.productName, $product.productId)" target="_blank" title="$product.productName"><img src="$product.imageUrl" width="50" height="50" alt="$product.productName"  class="pd_img"/></a></td>
+	                            <td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+	                                    <tr>
+	                                        <td><a href='$ru.getProductUrl($product.productName, $product.productId)' target="_blank" title="">$product.productName </a></td>
+	                                    </tr>
+	                                    <tr>
+	                                        <td>
+	                                            <span class="color666 font11">SKU: $product.sku</span><br />
+	                                            #if($product.mainId)<span class="color666">$product.mainTitle :</span>$product.mainId<br />#end
+	                                            #if($product.subId)<span class="color666">$product.subTitle :</span>$product.subId#end
+	                                       </td>
+	                                    </tr>
+	                                </table></td>
+	                            <td align="right" valign="top" class="red">USD <span class="colorC00">$ <span name="dPrice">$product.price</span></span></td>
+	                            <td align="center" valign="top"><label>
+	                                <input name="quantity" type="text" value="$product.quantity" size="4" class="text_re" onchange="changeQuantity('$product.productId','$!product.mainConfigId','$!product.subConfigId','$!product.standardId', this)"/>
+	                                </label></td>
+	                            <td align="right" valign="top"><span class="red">$ <span name="sPrice">$product.sumPrice</span></span></td>
+	                            <td><a href="javascript:;;" onclick="removeCartProduct('$product.productId','$!product.mainConfigId','$!product.subConfigId','$!product.standardId');"><img src="/static/prototype/product_fashion/images/remove-15.gif" alt="Remove" title="Remove" class="remove_img" /></a></td>
+	                        </tr>
+                        #end
+                    </table>
+                    
+                    <div class="searchbox">Total item cost:&nbsp;&nbsp;<span class="font18red">$ <span id="totalPrice">0</span></span></div>  
+                              
+                    <div class="btL2" align="center">
+                        <input type="submit" name="Submit1"  value="Continue Shopping" class="btn_cont" onclick="javascript:window.location.href='/static/prototype/product_fashion/index.shtml';" />
+                        &nbsp;
+                        <input type="submit" name="Submit2" value="Proceed to Checkout" class="btn_checkout" onclick="javascript:checkOut();" />
+                        
+                    </div>
+                    <br class="clearfloat" />
+                    #if($usePaypal)
+                    <div class="fast_checkout">New customers login with your paypal account for fast checkout. <a href="javascript:;" onclick="doExpressCheckout()" class="marl10"><img src="/static/prototype/product_fashion/images/btn_xpressCheckout.gif" width="145" height="42" align="absmiddle"/></a></div>
+					<script>
+					function doExpressCheckout() {
+						var amount = jQuery("#totalPrice").html();
+						var url = "$link.setAction('order.PaypalExpressCheckout')?amount="+amount;
+						window.location = url;
+					}
+					</script>
+					#end
+                
+                <!--S other Product-->
+                <div class="cirbox floatleft Featured_WH">
+                	<div style="height:28px; background:url(/static/prototype/product_fashion/images/cart_tit_bg.gif) repeat-x; border:solid 1px #d9d9da; padding-left:12px; margin-top:10px;">
+                          <h6 style="color:#990000; font-size:13px; line-height:28px;"><span>See what other people are watching</span></h6>
+                    </div>                 	
+                    <div class="cc" style="border:solid 1px #CCC; float:left; width:760px; padding-left:10px; height:190px;">
+                   #if($hotProducts)
+					<div class="freeshipping">
+                      <ul>
+						#foreach($hotProd in $hotProducts)
+                        <li>
+                          <div><a href="$hotProd.productUrl" target="_blank" title=""><img src="$RewriteUtil.getImageUrl($hotProd.firstImage.imageUrl, 'm')" width="130" height="130" title="$StringUtil.stringformat($hotProd.product.productName,30)" alt="$StringUtil.stringformat($hotProd.product.productName,30)" border="0"/></a></div>
+                          <p class="freename"><a href="$hotProd.productUrl" target="_blank" title="">$StringUtil.stringformat($hotProd.product.productName,50)</a></p>
+                          <p class="price"><span class="listprice_all">USD <span class="listprice_big">$hotProd.priceVo.price</span>
+						  </p>
+                        </li>
+						#end
+                      <!--  <li>
+                          <div><a href="/static/prototype/product_fashion/details.shtml" target="_blank" title=""><img src="http://images.madeinchina.com/seller/product/BD5216C7C9615C3FE040007F010038B1/214/10639214_8.m.jpg" width="130" height="130" title="Mascara" border="0"/></a></div>
+                          <p class="freename"><a href="/static/prototype/product_fashion/details.shtml" target="_blank" title="">Mascara</a></p>
+                          <p class="price"><span class="listprice_all">USD <span class="listprice_big">199</span><span class="listprice_small">.99</span></span>
+                </p>
+                        </li>
+                        <li>
+                          <div><a href="/static/prototype/product_fashion/details.shtml" target="_blank" title=""><img src="http://images.madeinchina.com/seller/product/67FCF4D9E7B33F5AE040007F01005E93/696/9826696_6.m.jpg" width="130" height="130" title="Makeup Brushies" border="0"/></a></div>
+                          <p class="freename"><a href="/static/prototype/product_fashion/details.shtml" target="_blank" title="">Makeup Brushies</a></p>
+                          <p class="price"><span class="listprice_all">USD <span class="listprice_big">199</span><span class="listprice_small">.99</span></span>
+                </p>
+                        </li>
+                        <li>
+                          <div><a href="/static/prototype/product_fashion/details.shtml" target="_blank" title=""><img src="http://images.madeinchina.com/seller/product/BD5216C7C9615C3FE040007F010038B1/214/10639214_8.m.jpg" width="130" height="130" border="0" title="Lip Gloss"/></a></div>
+                          <p class="freename"><a href="/static/prototype/product_fashion/details.shtml" target="_blank" title="">Lip Gloss</a></p>
+                          <p class="price">USD 147.55 ~ 170.25 / Lot
+                </p>
+                        </li>
+                        <li>
+                          <div><a href="/static/prototype/product_fashion/details.shtml" target="_blank" title=""><img src="http://images.madeinchina.com/seller/product/BD3C03FEBC0F79CCE040007F0100638F/557/9799557_1.m.jpg" width="130" height="130" border="0" title="Nail Polish"/></a></div>
+                          <p class="freename"><a href="/static/prototype/product_fashion/details.shtml" target="_blank" title="">Nail Polish</a></p>
+                          <p class="price">USD 42.00 ~ 59.02 / Lot
+                </p>
+                        </li>-->
+                      </ul>
+                    </div>
+					#end
+                  </div>
+                </div>
+                <!--E other Product--> 
+                
+                
+                </div>
+                <!--E Cart left-->
+                
+                <!--S Cart right-->
+                <div class="cart_right">
+                
+                	<div class="cart_right_top">
+                      <h3 class="cart_right_top_h3">Shop With Confidence</h3>
+                      <p class="cart_right_top_p">Shopping on <br />shopmadeinchina.com is safe and secure - guaranteed!</p>
+                      <div>
+                          <a target="_blank" href="https://www.mcafeesecure.com/RatingVerify?ref=#"><img width="115" height="32" src="/static/prototype/product_fashion/images/mcafee.gif" alt="HACKER SAFE certified sites prevent over 99.9% of hacker crime."></a><br />
+                          <img src="/static/prototype/product_fashion/images/verisignLogo.gif" width="92" height="46" style=" margin-bottom:20px; margin-top:10px;" />
+                      </div>
+                  </div>
+                  
+                  	<div class="cart_right_mid">
+                      <h3 class="cart_right_top_h3">Satisfaction Guaranteed</h3>
+                      <p class="cart_right_top_p">ShopMadeInChina.com cares about your complete satisfaction. We offer a comprehensive return policy on all items, allowing you to shop with confidence.</p>
+                  </div>
+                  
+                  <div class="cart_right_mid">
+                      <h3 class="cart_right_top_h3">Privacy Policy</h3>
+                      <p class="cart_right_top_p">ShopMadeInChina.com respects your privacy. We do NOT share or in any way distribute any personal, business or contact information you may provide.</p>
+                  </div>
+                  
+                </div>
+                <!--E Cart right-->
+                
+            	<div style="clear:both"></div>
+            </div>
+            <!--E Cart-->
+ #end           
+
+<script>
+function removeCartProduct(productId, mainConfigId, subConfigId, standardId){
+	var url="$link.setAction('cart.RemoveCartProductAction')";
+	jQuery.getJSON(url, 
+		{productId:productId, standardId:standardId}, 
+		function(data) {
+    		if (data != null && data > 0) {
+    			jQuery("#"+productId+"_"+mainConfigId+"_"+subConfigId).remove();
+				cellTotalPrice();
+				getwebstatus();
+    		}else{
+    			location.reload();
+    		}
+	});
+}
+function changeQuantity(productId, mainConfigId, subConfigId, standardId, o) {
+	var quantity = o.value;
+	var url="$link.setAction('cart.UpdateCartProductAction')";
+	jQuery.getJSON(url, 
+		{productId:productId, standardId:standardId, quantity:quantity}, 
+		function(data) {
+    		var dPrice = parseFloat(jQuery("#"+productId+"_"+mainConfigId+"_"+subConfigId).find("span[name='dPrice']").text());
+    		jQuery("#"+productId+"_"+mainConfigId+"_"+subConfigId).find("span[name='sPrice']").text(dPrice * quantity);
+    		cellTotalPrice();
+	});
+}
+
+function cellTotalPrice(){
+	var totalPrice = 0;
+	jQuery("span[name='sPrice']").each(function(){
+		totalPrice += parseFloat(jQuery(this).text());
+		totalPrice = Math.round(totalPrice*100)/100;
+	});
+	jQuery("#totalPrice").text(totalPrice);
+}
+cellTotalPrice();
+
+function checkOut() {
+	testLogin(function(){
+		window.location.href='$link.setPage('order,ConfirmOrder.html')';
+	});
+}
+#if($productIds && $productIds.trim()!="")
+	saveProduct("$productIds", 1);
+#end
+</script>         
+    
+ 

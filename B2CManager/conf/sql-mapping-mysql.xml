@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE sqlMapConfig      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map Config 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-config-2.dtd">
+
+<sqlMapConfig>
+	<settings cacheModelsEnabled="false" 
+		enhancementEnabled="true"
+		lazyLoadingEnabled="true" 
+		errorTracingEnabled="true"
+		maxRequests="32"
+		maxSessions="10"
+		maxTransactions="5"
+		useStatementNamespaces="true" />
+	<sqlMap resource="sqlMap/ProductBean.xml" />
+	<sqlMap resource="sqlMap/ProductConfigBean.xml" />
+	<sqlMap resource="sqlMap/AttributeBean.xml" />
+	<sqlMap resource="sqlMap/ProductImageBean.xml"/>
+	<sqlMap resource="sqlMap/ImageBean.xml" />
+	<sqlMap resource="sqlMap/PriceBean.xml" />
+	<sqlMap resource="sqlMap/SizeAttrBean.xml" />
+	<sqlMap resource="sqlMap/SizeCatBean.xml" />
+	<sqlMap resource="sqlMap/SizeColattrBean.xml" />
+	<sqlMap resource="sqlMap/SizeRowattrBean.xml" />
+	<sqlMap resource="sqlMap/SizeTemplateBean.xml" />
+	<sqlMap resource="sqlMap/SizeTemplateDetailBean.xml" />
+	<sqlMap resource="sqlMap/GroupsBean.xml" />
+	<sqlMap resource="sqlMap/ProductStandardBean.xml" />
+	<sqlMap resource="sqlMap/GiftsBean.xml" />
+	<sqlMap resource="sqlMap/ShippingDetailBean.xml" />
+	<sqlMap resource="sqlMap/ShippingCostBean.xml" />
+	<sqlMap resource="sqlMap/ShippingInfoBean.xml" />
+	<sqlMap resource="sqlMap/ShippingOptionBean.xml" />
+	<sqlMap resource="sqlMap/ProductConfImgBean.xml" />
+	<sqlMap resource="sqlMap/CategoryBean.xml" />
+	<sqlMap resource="sqlMap/CatAttrBean.xml" />
+	<sqlMap resource="sqlMap/CatConfigBean.xml" />
+	<sqlMap resource="sqlMap/ImageCatBean.xml" />
+	<sqlMap resource="sqlMap/CustomCategoryBean.xml" />
+	<sqlMap resource="sqlMap/PackageUnitBean.xml" />
+	<sqlMap resource="sqlMap/ProductAttrBean.xml" />
+	<sqlMap resource="sqlMap/RegionBean.xml" />
+	<sqlMap resource="sqlMap/OrderStatusBean.xml" />
+	<sqlMap resource="sqlMap/OrderBean.xml" />
+	<sqlMap resource="sqlMap/OrderShippingBean.xml" />
+	<sqlMap resource="sqlMap/OrderProductBean.xml" />
+	<sqlMap resource="sqlMap/OrderPaymentinfoBean.xml" />
+	<sqlMap resource="sqlMap/OrderAddressBean.xml" />
+	<sqlMap resource="sqlMap/BuyerBean.xml"/>
+	<sqlMap resource="sqlMap/BuyerAddressBook.xml" />
+	<sqlMap resource="sqlMap/OrderstatusInfoBean.xml" />
+	<sqlMap resource="sqlMap/OrderAmountBean.xml" />
+	<sqlMap resource="sqlMap/PaypalipnBean.xml" />
+	<sqlMap resource="sqlMap/WesternSettingBean.xml" />
+	<sqlMap resource="sqlMap/WesternUnionBean.xml" />
+	<sqlMap resource="sqlMap/PaymentTypeBean.xml" />
+	<sqlMap resource="sqlMap/SearchProduct.xml" />
+	<sqlMap resource="sqlMap/CouponBean.xml" />
+	<sqlMap resource="sqlMap/BuyerDetailSearch.xml" />
+	<sqlMap resource="sqlMap/ShoppingCartBean.xml" />
+	<sqlMap resource="sqlMap/DepartmentBean.xml" />
+	<sqlMap resource="sqlMap/ModulesBean.xml" />
+	<sqlMap resource="sqlMap/RolePrivsBean.xml" />
+	<sqlMap resource="sqlMap/RolesBean.xml" />
+	<sqlMap resource="sqlMap/UsersBean.xml" />
+	<sqlMap resource="sqlMap/FinancialBean.xml" />
+	<sqlMap resource="sqlMap/CmsTemplateBean.xml" />
+	<sqlMap resource="sqlMap/CmsBlockBean.xml" />
+	<sqlMap resource="sqlMap/CmsChannelBean.xml" />
+	<sqlMap resource="sqlMap/CmsChannelHistoyBean.xml" />
+	<sqlMap resource="sqlMap/ActivityBean.xml"/>
+	<sqlMap resource="sqlMap/TicketsAttachment.xml"/>
+	<sqlMap resource="sqlMap/TicketsBean.xml"/>
+	<sqlMap resource="sqlMap/TicketsInfoBean.xml"/>
+	<sqlMap resource="sqlMap/ProblemOrderBean.xml" />
+	<sqlMap resource="sqlMap/PickingBean.xml" />
+	<sqlMap resource="sqlMap/PickingInfoBean.xml" />
+	<sqlMap resource="sqlMap/StockoutBean.xml"/>
+	<sqlMap resource="sqlMap/ProdMoveMissionBean.xml"/>
+</sqlMapConfig>

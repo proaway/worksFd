@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertProductConfigBean" parameterClass="com.fd.fashion.product.bean.ProductConfigBean">
+        <![CDATA[
+insert into T_PRODUCT_CONFIG
+  (PRODUCT_CONFIG_ID, PRODUCT_ID, TITLE_ATTR_ID, VALUE_ATTR_ID, ATTR_NAME)
+values
+  (#productConfigId#, #productId#, #titleAttrId#, #valueAttrId#, #attrName#)
+        ]]>
+        <selectKey keyProperty="productConfigId" resultClass="long">
+            <![CDATA[select @@identity as productConfigId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateProductConfigBean" parameterClass="com.fd.fashion.product.bean.ProductConfigBean">
+        <![CDATA[
+update T_PRODUCT_CONFIG 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="productConfigId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_CONFIG_ID = #productConfigId#]]>
+            </isNotNull>
+            <isNotNull property="productId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="titleAttrId" prepend="," removeFirstPrepend="true">
+                <![CDATA[TITLE_ATTR_ID = #titleAttrId#]]>
+            </isNotNull>
+            <isNotNull property="valueAttrId" prepend="," removeFirstPrepend="true">
+                <![CDATA[VALUE_ATTR_ID = #valueAttrId#]]>
+            </isNotNull>
+            <isNotNull property="attrName" prepend="," removeFirstPrepend="true">
+                <![CDATA[ATTR_NAME = #attrName#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where PRODUCT_CONFIG_ID = #productConfigId#
+        ]]>
+    </update>
+
+    <sql id="getProductConfigBeanCondition">
+            <isNotNull property="productConfigId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[PRODUCT_CONFIG_ID = #productConfigId#]]>
+            </isNotNull>
+            <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="titleAttrId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[TITLE_ATTR_ID = #titleAttrId#]]>
+            </isNotNull>
+            <isNotNull property="valueAttrId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[VALUE_ATTR_ID = #valueAttrId#]]>
+            </isNotNull>
+            <isNotNull property="attrName" prepend="and" removeFirstPrepend="true">
+                <![CDATA[ATTR_NAME = #attrName#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getProductConfigBeanCount" parameterClass="com.fd.fashion.product.bean.ProductConfigBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_PRODUCT_CONFIG 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getProductConfigBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getProductConfigBean" parameterClass="com.fd.fashion.product.bean.ProductConfigBean"
+        resultClass="com.fd.fashion.product.bean.ProductConfigBean">
+        <![CDATA[
+select 
+	PRODUCT_CONFIG_ID	as productConfigId,
+	PRODUCT_ID	as productId,
+	TITLE_ATTR_ID	as titleAttrId,
+	VALUE_ATTR_ID	as valueAttrId,
+	ATTR_NAME	as attrName
+from T_PRODUCT_CONFIG 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getProductConfigBeanCondition"/>        
+        </dynamic>
+    </select>
+
+    <delete id="deleteProductConfigBean" parameterClass="com.fd.fashion.product.bean.ProductConfigBean">
+        <![CDATA[
+delete from T_PRODUCT_CONFIG where PRODUCT_ID = #productId#
+        ]]>
+    </delete>
+</sqlMap>

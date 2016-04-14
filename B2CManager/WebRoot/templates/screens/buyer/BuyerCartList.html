@@ -1,0 +1,31 @@
+<br class="clear">
+    <form name="listForm" id="listForm" method="get" action="$link.setPage('buyer,BuyerCartList.html')">
+		<input type="hidden" id="buyerId" name="buyerId" value="$buyerId" />
+        <h4 class="mar_top_15 mar_bottom_20">买家购物车</h4>
+        <table cellspacing="0" cellpadding="0" border="0" class="table table-bordered table-striped table-hover center_t font12 tl_mt3_mb3">
+            <thead>
+                <tr>
+                    <th width="120px">SKU</th>
+                    <th width="60px">产品图片</th>
+                    <th>产品名称</th>
+                    <th width="100px">单价（$）</th>
+                    <th width="80px">购买数量</th>
+                    <th>产品分类</th>
+                    <th>时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                #foreach($cartVo in $cartList)
+			<tr class="v_middle">
+                <td><a class="" target="_blank" href="RewriteUtil.getProductUrl($cartVo.productName, $cartVo.productId)">$!cartVo.sku</a></td>
+                <td><a class="" target="_blank" href="$RewriteUtil.getProductUrl($cartVo.productName, $cartVo.productId)"><img style="width:50px; height:50px;" title="$StringUtil.substring($cartVo.productName,10)" alt="$StringUtil.substring($cartVo.productName,10)" class="img-polaroid" src="$cartVo.imageUrl"></a></td>
+                <td><a class="" target="_blank" href="RewriteUtil.getProductUrl($cartVo.productName, $cartVo.productId)">$!cartVo.productName</a></td>
+                <td>$cartVo.price</td><td>$cartVo.quantity</td>
+                <td>$cartVo.catName</td>
+                <td>#if($cartVo.createDate)$!StringUtil.getDateTimeString($!cartVo.createDate)#end</td>
+          	</tr>
+			#end
+</tbody>
+</table>
+#parse("screens/Nap.html")
+</form>

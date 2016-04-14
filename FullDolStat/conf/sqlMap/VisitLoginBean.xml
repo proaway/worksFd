@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertVisitLoginBean" parameterClass="com.fd.statistics.bean.VisitLoginBean">
+        <![CDATA[
+insert into T_VISIT_LOGIN
+  (VISIT_ID, BUYER, LOGIN_TIME)
+values
+  (#visitId#, #buyer#, #loginTime#)
+        ]]>
+        <selectKey keyProperty="visitId" resultClass="long">
+            <![CDATA[select @@identity as visitId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateVisitLoginBean" parameterClass="com.fd.statistics.bean.VisitLoginBean">
+        <![CDATA[
+update T_VISIT_LOGIN 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="visitId" prepend="," removeFirstPrepend="true">
+                <![CDATA[VISIT_ID = #visitId#]]>
+            </isNotNull>
+            <isNotNull property="buyer" prepend="," removeFirstPrepend="true">
+                <![CDATA[BUYER = #buyer#]]>
+            </isNotNull>
+            <isNotNull property="loginTime" prepend="," removeFirstPrepend="true">
+                <![CDATA[LOGIN_TIME = #loginTime#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where VISIT_ID = #visitId#
+        ]]>
+    </update>
+
+    <sql id="getVisitLoginBeanCondition">
+         <isNotNull property="visitId" prepend="and" removeFirstPrepend="true">
+             <![CDATA[VISIT_ID = #visitId#]]>
+         </isNotNull>
+         <isNotNull property="buyer" prepend="and" removeFirstPrepend="true">
+             <![CDATA[BUYER = #buyer#]]>
+         </isNotNull>
+         <isNotNull property="loginTime" prepend="and" removeFirstPrepend="true">
+             <![CDATA[LOGIN_TIME = #loginTime#]]>
+         </isNotNull>
+    </sql>
+
+    <select id="getVisitLoginBeanCount" parameterClass="com.fd.statistics.bean.VisitLoginBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_VISIT_LOGIN 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitLoginBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getVisitLoginBean" parameterClass="com.fd.statistics.bean.VisitLoginBean"
+        resultClass="com.fd.statistics.bean.VisitLoginBean">
+        <![CDATA[
+select 
+	VISIT_ID	as visitId,
+	BUYER	as buyer,
+	LOGIN_TIME	as loginTime
+from T_VISIT_LOGIN 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getVisitLoginBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <delete id="deleteVisitLoginBean" parameterClass="com.fd.statistics.bean.VisitLoginBean">
+        <![CDATA[
+delete from T_VISIT_LOGIN where VISIT_ID=#visitId#
+        ]]>
+    </delete>
+
+</sqlMap>

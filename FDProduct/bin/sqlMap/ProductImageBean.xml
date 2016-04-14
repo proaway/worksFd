@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+<sqlMap>
+    <insert id="insertProductImageBean" parameterClass="com.fd.fashion.product.bean.ProductImageBean">
+        <![CDATA[
+insert into T_PRODUCT_IMAGE
+  (PRODUCT_ID, IMAGE_ID, INDEX_ID)
+values
+  (#productId#, #imageId#, #indexId#)
+        ]]>
+        <selectKey keyProperty="productId" resultClass="long">
+            <![CDATA[select @@identity as productId]]>
+        </selectKey>
+    </insert>
+
+    <update id="updateProductImageBean" parameterClass="com.fd.fashion.product.bean.ProductImageBean">
+        <![CDATA[
+update T_PRODUCT_IMAGE 
+        ]]>
+        <dynamic prepend="set">
+            <isNotNull property="productId" prepend="," removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="imageId" prepend="," removeFirstPrepend="true">
+                <![CDATA[IMAGE_ID = #imageId#]]>
+            </isNotNull>
+            <isNotNull property="indexId" prepend="," removeFirstPrepend="true">
+                <![CDATA[INDEX_ID = #indexId#]]>
+            </isNotNull>
+        </dynamic>
+        <![CDATA[
+where PRODUCT_ID = #productId#
+        ]]>
+    </update>
+
+    <sql id="getProductImageBeanCondition">
+            <isNotNull property="productId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[PRODUCT_ID = #productId#]]>
+            </isNotNull>
+            <isNotNull property="imageId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[IMAGE_ID = #imageId#]]>
+            </isNotNull>
+            <isNotNull property="indexId" prepend="and" removeFirstPrepend="true">
+                <![CDATA[INDEX_ID = #indexId#]]>
+            </isNotNull>
+    </sql>
+
+    <select id="getProductImageBeanCount" parameterClass="com.fd.fashion.product.bean.ProductImageBean"
+        resultClass="int">
+        <![CDATA[
+select 
+	count(0)
+from T_PRODUCT_IMAGE 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getProductImageBeanCondition"/>
+        </dynamic>
+    </select>
+
+    <select id="getProductImageBean" parameterClass="com.fd.fashion.product.bean.ProductImageBean"
+        resultClass="com.fd.fashion.product.bean.ProductImageBean">
+        <![CDATA[
+select 
+	PRODUCT_ID	as productId,
+	IMAGE_ID	as imageId,
+	INDEX_ID	as indexId
+from T_PRODUCT_IMAGE 
+        ]]>
+        <dynamic prepend="where">
+            <include refid="getProductImageBeanCondition"/>        
+        </dynamic>
+         <![CDATA[
+		order by INDEX_ID
+        ]]>
+    </select>
+
+    <delete id="deleteProductImageBean" parameterClass="com.fd.fashion.product.bean.ProductImageBean">
+        <![CDATA[
+delete from T_PRODUCT_IMAGE where PRODUCT_ID=#productId#
+        ]]>
+    </delete>
+</sqlMap>

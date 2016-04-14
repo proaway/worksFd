@@ -1,0 +1,209 @@
+$page.setTitle("Pay Order")
+<style >
+.payimg { width: expression(this.width > 82 ? 82 : true); max-width: 82px; height: expression(this.height > 27 ? 27 : true); max-height:27px;}
+</style>
+  <div id="mainContent">
+  	<h2 style="margin-left:13px; margin-bottom:20px;">Please Pay Your Order </h2>
+#if($order)
+	<!-- --------------- S Grand Total --------------- -->
+    	<p style="margin-left:20px; line-height:30px;">
+        	<span style=" font-size:14px; font-weight:bold;">Grand Total:</span> <span style="color:#900; font-size:14px; font-weight:bold;">USD $ $total</span>
+        </p>
+      <table cellpadding="0" cellspacing="0" class="pay_tab">
+          <tr class="pay_tab_tit">
+            <td>Order Number</td><td>Order Create Date</td><td>Subtotal</td><td>Shipping Cost</td><td>Total adjust</td><td>Discount/Coupon</td><td>Order Total</td>
+          </tr>
+          <tr>
+              <td><a href="$link.setPage('buyer,OrderDetail.html')?orderId=$order.orderId" target="_blank">$order.orderId</a></td>
+			  <td>$!StringUtil.getDateTimeString($order.createDate)</td>
+			  <td>$ $!order.itemTotal</td>
+			  <td>#if($!order.shippingTotal && $!order.shippingTotal>0)$ $!order.shippingTotal #else - #end</td>
+			  <td>#if($!order.adjustAmount && $!order.adjustAmount!=0)$ $!order.adjustAmount #else - #end</td>
+			  <td>#if($!order.couponAmount && $!order.couponAmount>0)$ $!order.couponAmount / $order.couponCode #else - #end</td>
+			  <td>$ $total</td>
+          </tr>
+      </table>
+    <!-- --------------- E Grand Total --------------- -->
+#end
+	<br class="clearfloat" />
+    <!-- --------------- S payment method --------------- -->
+    
+    <div class="btL">
+        <div class="infor_l_r_gray">
+        
+        	<div class="infor_1_r_gray_con">
+              <h2 style="margin:0px 0 15px 0; border:none;">Choose your payment method</h2>
+              <div class="clear"></div>
+              <div id="pay_n">
+                <div class="pay_n_l">
+                    <ul id="pay_n_l_ul">
+#foreach($paymentType in $paymentTypes)
+	<li #if($paymentType.paymentType==1) style="display:block;"#end>
+		<label style="cursor:pointer"><input type="radio" value="$paymentType.paymentType" name="paymentType" style="float:left; margin-top:8px; margin-right:5px;" /><img src="$paymentType.logo" alt="" title="" class="payimg"/><strong class="marl10" style="line-height:28px;">$paymentType.name</strong></label>
+	</li>
+#end
+                    </ul>
+                </div>
+                <div class="pay_n_r">
+                    <ul id="pay_n_r_ul">
+#set($idx = 1)
+#set($useAlipay = false)
+#foreach($paymentType in $paymentTypes)
+	<li #if($idx==1) style="display:block;" class="select_pay" #end>
+        <div class="off_left_border$idx"></div>
+        <h2 style="border:none; float:left; line-height:32px;">
+            Pay with 
+        </h2> <img src="$paymentType.logo" alt="" title="" />
+		<div class="clear"></div>
+  #if($paymentType.paymentType==1)
+       <table class="shippingAddr" width="660">
+			<tbody>
+				<tr>
+					<th></th>
+					<td style="padding-right:100px;">
+						<input type="button" class="btn_shippingAddr" id="" onclick="payByPaypal();" value="Pay My Order" />
+<script>function payByPaypal() {window.location = "$link.setAction('order.PayByPaypal')?orderId=$order.orderId";}</script>
+					</td>
+				</tr>
+                <tr><th></th><td height="10"></td></tr>
+			</tbody>
+		</table>
+  #elseif($paymentType.paymentType==2)
+        <table class="shippingAddr" width="660">
+			<tbody>
+				<tr>
+					<th></th>
+					<td style="padding-right:100px;"><form method="post" action="$link.setAction('order.PayByWesternUnion')"><input name="orderId" value="$order.orderId" type="hidden"/>
+					<div  class="area" style="display:">
+                  <div class="PI-bg_new0927">
+                    <div id="infor_1_0927">
+                      <h2>Western Union Information</h2>
+                      <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                        <tr>
+                          <td rowspan="2" align="right" valign="top"><strong>Beneficiary:</strong></td>
+                          <td>First Name: $westernSetting.firstName</td>
+                        </tr>
+                        <tr>
+                          <td>Last Name: $westernSetting.lastName</td>
+                        </tr>
+                        <tr>
+                          <td align="right"><strong>Country:</strong></td>
+                          <td>$westernSetting.country</td>
+                        </tr>
+                        <tr>
+                          <td align="right"><strong>City:</strong></td>
+                          <td>$westernSetting.city</td>
+                        </tr>
+                        <tr>
+                          <td align="right" valign="top"><strong>Address:</strong></td>
+                          <td>$westernSetting.address</td>
+                        </tr>
+                        <tr>
+                          <td align="right"><strong>Telephone:</strong></td>
+                          <td>$westernSetting.tel</td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="infor_down0927">
+                      <h2>Payment method: Western Union</h2>
+                      <table width="100%" border="0" cellspacing="2" cellpadding="2">
+                        <tr>
+                          <td width="37%" align="right" valign="top">MTCN :</td>
+                          <td width="63%" valign="top"><input name="mtcnCode" type="text" id="mtcnCode" size="25" maxlength="10"/>
+                            <br />
+                            <span class="font10" id="mtcncodeError">MTCN code should have 10 characters</span></td>
+                        </tr>
+                        <tr>
+                          <td align="right" valign="top">Sender's First Name:</td>
+                          <td valign="top"><input name="firstName" type="text" id="firstName" size="25" /></td>
+                        </tr>
+                        <tr>
+                          <td align="right" valign="top">Sender's Last Name:</td>
+                          <td valign="top"><input name="lastName" type="text" id="lastName" size="25" /></td>
+                        </tr>
+                        <tr>
+                          <td align="right">Country: </td>
+                          <td><select name="country" id="country" style="width:185px">
+#foreach($country in $countries)
+	<option value="$country.regionId">$country.regionName</option>
+#end
+							</select></td>
+                        </tr>
+                        <tr>
+                          <td align="right">Phone Number: </td>
+                          <td><label>
+                              <input name="phoneNo" type="text" id="phoneNo" size="25" />
+                            </label></td>
+                        </tr>
+					  </table>
+                    </div>
+                    <p class="red">Order number is necessary for us to check your payment and confirm the order, so please be sure to leave your order number in the remittance details when you remit.</p>
+                    <div style="clear: both;"></div>
+                    <div class="btL2_new2" align="right">
+      </div>
+                  </div>
+                </div>
+						<input type="submit" class="btn_shippingAddr" value="Pay My Order" /></form>
+					</td>
+				</tr>
+                <tr><th></th><td height="10"></td></tr>
+			</tbody>
+		</table>
+  #elseif($paymentType.paymentType==4 || $paymentType.paymentType==5)
+	#set($useAlipay = true)
+       <table class="shippingAddr" width="660">
+			<tbody>
+				<tr>
+					<th></th>
+					<td style="padding-right:100px;">
+						<input type="button" class="btn_shippingAddr" id="" onclick="payByAlipay();" value="Pay My Order" />
+					</td>
+				</tr>
+                <tr><th></th><td height="10"></td></tr>
+			</tbody>
+		</table>
+  #end
+	</li>
+#set($idx = $idx + 1)
+#end
+                    </ul>
+                </div>
+              </div>
+              <div class="clear"></div>
+          </div>
+        </div>
+      </div>
+<script>
+window.onload=function (){
+	var aLabelSmall = jQuery("ul#pay_n_l_ul").find("label");
+	var aPaySmall = jQuery("ul#pay_n_l_ul").find("li");
+	var aPayBig = jQuery("ul#pay_n_r_ul").find("li");
+	for(var i=0; i<aPaySmall.length; i++){
+		aLabelSmall[i].index=i;
+		aLabelSmall[i].onclick = function(){
+			for(var j=0; j<aPaySmall.length; j++){
+				aPaySmall[j].className = '';
+				aPayBig[j].style.display='none';
+			}
+			aPaySmall[this.index].className = 'select_pay';
+			aPayBig[this.index].style.display='block';
+		}
+	}
+	aPaySmall[0].className = 'select_pay';
+	jQuery(aPaySmall[0]).find("input:radio").attr("checked", "checked");
+}
+#if($useAlipay)
+function payByAlipay() {
+	var paymentType = jQuery("[name='paymentType']:checked").val();
+	window.location = "$link.setAction('order.PayByAlipay')?orderId=$order.orderId&paymentType="+paymentType;
+}
+#end
+
+#if($productIds && $productIds.trim()!="")
+	saveProduct("$productIds", 3);
+	saveOrder("$!ordersinfo");
+#end
+</script>
+    <!-- --------------- E payment method --------------- -->
+    <br class="clearfloat" />
+  </div>
